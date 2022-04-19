@@ -3,18 +3,33 @@ package it.polimi.ingsw.Model;
 import java.sql.Array;
 import java.util.*;
 
+/**
+ *
+ * @author Giuseppe Bonanno
+ *
+ * */
+
 public class GameModel {
 
     private int numberOfPlayers,numberOfStudent,numberOfTowers,motherNaturePosition,numberOfStudentBag;
     private boolean expertMode;
     private List<Player> players=new ArrayList<Player>();
+    private List<CharacterCard> cards=new ArrayList<CharacterCard>();
     private List<Cloud> clouds=new ArrayList<Cloud>();
     private Optional<Integer> coins;
     private List<Island> islands=new ArrayList<Island>();
     private EnumMap<Color,Integer> studentsBag=new EnumMap<>(Color.class);
-    private EnumMap <Color,Professor> professors=new EnumMap<>(Color.class);
+    private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
 
+    /**
+     * Initializes the whole game based on the number of players and expert mode
+     * @param expertMode
+     * @param players
+     */
     public GameModel(boolean expertMode,List<Player> players) {
+
+        //INIZIALIZZARE CHARACTER CARD PRENDENDO IL SUO VALORE TRAMITE UN HASHMAP <NOME,COSTO>
+
         this.numberOfPlayers=players.size();
         this.players=players;
         this.expertMode=expertMode;
@@ -46,6 +61,7 @@ public class GameModel {
             Professor p=new Professor(c); //ho immaginato di passare il colore così da creare i 5 professori già con il colore settato
             professors.put(c,p);
         }
+
 
         Random num=new Random();
         motherNaturePosition=num.nextInt(12);
@@ -104,6 +120,11 @@ public class GameModel {
 
     }
 
+    /**
+     *
+     * @param islandPos1
+     * @param islandPos2
+     */
     public void mergeIslands(int islandPos1, int islandPos2){
         Island deleteIsland,notDeleteIsland;
         int islandPosNotDelete;
@@ -126,12 +147,19 @@ public class GameModel {
         //fare i controlli sul noEntryCard.
 
     }
+
+
     public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
     {
         for (Color c: Color.values()) {
             this.islands.get(islandPosition).addStudents(c,students.get(c));
         }
     }
+
+    public void useCharacterCard(){
+        //MANCA QUESTA
+    }
+
     public void useAssistantCard(int player, int card){
         this.players.get(player).useAssistantCard(card); //DISCUTERE COSA AGGIUNGERE SUL PLAYER
     }
@@ -176,7 +204,7 @@ public class GameModel {
                     studentsOnClouds.put(col,studentsOnClouds.get(col)+1);
                 }
                 catch (IllegalArgumentException e){
-                    System.out.println("SONO FINITI GLI STUDENTI");
+                    System.out.println("There are no more students in the bag");
                 }
 
                 }
