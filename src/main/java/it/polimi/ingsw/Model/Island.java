@@ -71,6 +71,10 @@ public class Island {
 
     public void setStudents(EnumMap<Color, Integer> students) {
         this.students = students;
+        for(Color c : Color.values()){
+            if(!students.containsKey(c))
+                this.students.put(c,0);
+        }
     }
 
 
@@ -79,7 +83,7 @@ public class Island {
      * @param number number of students of the specified color that have to be placed on the island
      */
     public void addStudents(Color color, int number){
-        students.put(color, students.get(color)+1);
+        students.put(color, students.get(color)+number);
     }
 
     public void setNoEntryCard(boolean noEntryCard) {
