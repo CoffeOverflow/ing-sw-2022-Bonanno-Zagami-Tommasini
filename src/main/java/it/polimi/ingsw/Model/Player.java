@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 /**
  * Player class
@@ -17,6 +18,7 @@ public class Player {
     private int numberOfTower;
     private int money;
     private ArrayList<AssistantCard> assistantCard = new ArrayList<AssistantCard>();
+    private ArrayList<Color> professors = new ArrayList<Color>();
 
     /**
      * Create player and sets money to zero
@@ -103,6 +105,31 @@ public class Player {
      */
     public void addStudentOf(Color color){
         students.merge(color, 1, Integer::sum);
+    }
+
+    /**
+     * Add professor of specified color to player's school
+     * @param color
+     */
+    public void addProfessor(Color color){
+        professors.add(color);
+    }
+
+    /**
+     * Remove professor of specified color to player's school
+     * @param color
+     */
+    public void removeProfessor(Color color){
+        professors.remove(color);
+    }
+
+    /**
+     * Check if a professor of specified color is present in player's school
+     * @param color
+     * @return True if professor is present, false otherwise
+     */
+    public boolean isPresentProfessor(Color color){
+        return professors.contains(color);
     }
 
 }
