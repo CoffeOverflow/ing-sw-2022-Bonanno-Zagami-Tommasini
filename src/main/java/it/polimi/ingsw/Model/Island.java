@@ -18,6 +18,11 @@ public class Island {
      */
     public Island(){
         students= new EnumMap<>(Color.class);
+        students.put(Color.PINK,0);
+        students.put(Color.RED,0);
+        students.put(Color.YELLOW,0);
+        students.put(Color.BLUE,0);
+        students.put(Color.GREEN,0);
         numberOfTowers=0;
         noEntryCard=false;
     }
