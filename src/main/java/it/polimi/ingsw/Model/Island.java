@@ -77,6 +77,7 @@ public class Island {
         }
     }
 
+
     /**
      * @param color color of the students
      * @param number number of students of the specified color that have to be placed on the island
