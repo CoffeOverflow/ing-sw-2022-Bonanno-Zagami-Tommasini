@@ -1,8 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 /**
  * Professor class
  * @author Angelo Zagami
@@ -10,7 +7,7 @@ import java.util.Optional;
 public class Professor {
 
     private final Color color;
-    private Optional<Player> player;
+    private Player player;
 
     /**
      *
@@ -18,7 +15,6 @@ public class Professor {
      */
     public Professor(Color color){
         this.color = color;
-        this.player = Optional.empty();
     }
 
     /**
@@ -26,23 +22,11 @@ public class Professor {
      * @param player Indicates the player who owns the school where the teacher moves
      */
     public void goToSchool(Player player){
-        this.player.ifPresent(value -> value.removeProfessor(color));
-        this.player = Optional.of(player);
-        this.player.get().addProfessor(color);
+        this.player = player;
     }
 
-    /**
-     *
-     * @return Optional<Player>
-     * @throws NoSuchElementException
-     */
-    public Player getPlayer() throws NoSuchElementException {
-        if(player.isPresent())
-            return player.get();
-        else
-            throw new NoSuchElementException();
+    public Player getPlayer(){
+        return player;
     }
-
-    public Color getColor(){ return color; }
 
 }
