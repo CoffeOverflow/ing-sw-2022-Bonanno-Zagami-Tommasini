@@ -48,8 +48,8 @@ public class Island {
         else students.put(color, 0);
     }
 
-    public void setTower(Optional<Tower> tower) {
-        this.tower = tower;
+    public void setTower(Tower tower) {
+        this.tower.of(tower);
     }
 
     public void setNumberOfTowers(int numberOfTowers) {
