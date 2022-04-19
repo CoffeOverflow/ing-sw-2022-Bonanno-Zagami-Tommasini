@@ -61,8 +61,8 @@ public class Island {
         else students.put(color, 0);
     }
 
-    public void setTower(Tower tower) {
-        this.tower.of(tower);
+    public void setTower(Optional<Tower> tower) {
+        this.tower = tower;
     }
 
     public void setNumberOfTowers(int numberOfTowers) {
@@ -76,7 +76,6 @@ public class Island {
                 this.students.put(c,0);
         }
     }
-
 
     /**
      * @param color color of the students
