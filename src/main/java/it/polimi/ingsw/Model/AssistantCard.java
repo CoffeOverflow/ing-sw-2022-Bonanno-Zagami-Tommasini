@@ -7,20 +7,18 @@ package it.polimi.ingsw.Model;
 public class AssistantCard {
 
     private final int value;
-    private final int mothernaturesteps;
-    private final String name;
+    private final int movement;
     private final String asset;
 
     /**
      * Class constructor
      * @param value Value of card
-     * @param mothernaturesteps Number of possible steps of Mother nature
+     * @param movement Number of possible steps of Mother nature
      * @param asset Path of graphical asset
      */
-    public AssistantCard(int value, int mothernaturesteps, String name, String asset){
+    public AssistantCard(int value, int movement, String asset){
         this.value = value;
-        this.mothernaturesteps = mothernaturesteps;
-        this.name = name;
+        this.movement = movement;
         this.asset = asset;
     }
 
@@ -28,25 +26,11 @@ public class AssistantCard {
         return value;
     }
 
-    public int getMothernatureSteps() {
-        return mothernaturesteps;
-    }
-
-    public String getName() {
-        return name;
+    public int getMovement() {
+        return movement;
     }
 
     public String getAsset() {
         return asset;
-    }
-
-    @Override
-    public String toString() {
-        return "AssistantCard{" +
-                "value=" + value +
-                ", mothernatureSteps=" + mothernaturesteps +
-                ", name='" + name + '\'' +
-                ", asset='" + asset + '\'' +
-                '}' + '\n';
     }
 }

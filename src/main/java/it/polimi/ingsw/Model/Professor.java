@@ -25,7 +25,7 @@ public class Professor {
         this.player = player;
     }
 
-    public Player getPlayer(){
+    public player getPlayer(){
         return player;
     }
 
