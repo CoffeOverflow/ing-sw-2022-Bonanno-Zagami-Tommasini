@@ -42,12 +42,11 @@ public class Player {
         money = 0;
         //JSON Assistant card
         try {
-            JsonReader json = new JsonReader(new FileReader("resources/json/assistants.json"));
+            JsonReader json = new JsonReader(new FileReader("src/main/resources/json/assistants.json"));
             assistantCard = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(assistantCard);
     }
 
     public boolean isGui() {
