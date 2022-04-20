@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Turtle",
+    "value": 1,
+    "mothernaturesteps": 1,
+    "asset": "src/main/resources/graphics/assistants/turtle.png"
+  },
+  {
+    "name": "Elephant",
+    "value": 2,
+    "mothernaturesteps": 1,
+    "asset": "src/main/resources/graphics/assistants/elephant.png"
+  },
+  {
+    "name": "Dog",
+    "value": 3,
+    "mothernaturesteps": 2,
+    "asset": "src/main/resources/graphics/assistants/dog.png"
+  },
+  {
+    "name": "Octopus",
+    "value": 4,
+    "mothernaturesteps": 2,
+    "asset": "src/main/resources/graphics/assistants/octopus.png"
+  },
+  {
+    "name": "Lizard",
+    "value": 5,
+    "mothernaturesteps": 3,
+    "asset": "src/main/resources/graphics/assistants/lizard.png"
+  },
+  {
+    "name": "Fox",
+    "value": 6,
+    "mothernaturesteps": 3,
+    "asset": "src/main/resources/graphics/assistants/fox.png"
+  },
+  {
+    "name": "Eagle",
+    "value": 7,
+    "mothernaturesteps": 4,
+    "asset": "src/main/resources/graphics/assistants/eagle.png"
+  },
+  {
+    "name": "Cat",
+    "value": 8,
+    "mothernaturesteps": 4,
+    "asset": "src/main/resources/graphics/assistants/cat.png"
+  },
+  {
+    "name": "Turkey",
+    "value": 9,
+    "mothernaturesteps": 5,
+    "asset": "src/main/resources/graphics/assistants/turkey.png"
+  },
+  {
+    "name": "Lion",
+    "value": 10,
+    "mothernaturesteps": 5,
+    "asset": "src/main/resources/graphics/assistants/lion.png"
+  }
+]
