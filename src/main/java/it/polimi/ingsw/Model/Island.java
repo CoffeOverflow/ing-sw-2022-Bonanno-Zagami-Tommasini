@@ -14,15 +14,10 @@ public class Island {
     boolean noEntryCard;
 
     /**
-     * create an island
+     * class constructor
      */
     public Island(){
         students= new EnumMap<>(Color.class);
-        students.put(Color.PINK,0);
-        students.put(Color.RED,0);
-        students.put(Color.YELLOW,0);
-        students.put(Color.BLUE,0);
-        students.put(Color.GREEN,0);
         numberOfTowers=0;
         noEntryCard=false;
     }
@@ -39,10 +34,6 @@ public class Island {
         return students;
     }
 
-    /**
-     * @param color color of the students
-     * @return the number of students of the color specified present on the island
-     */
     public int getStudentsOf(Color color){
         return students.get(color);
     }
@@ -51,10 +42,6 @@ public class Island {
         return noEntryCard;
     }
 
-    /**
-     * @param color color of the students
-     * @param number number of students of the specified color that have to be removed from the island
-     */
     public void removeStudents(Color color, int number){
         if(number<=students.get(color))
             students.put(color, students.get(color)-number);
@@ -71,18 +58,10 @@ public class Island {
 
     public void setStudents(EnumMap<Color, Integer> students) {
         this.students = students;
-        for(Color c : Color.values()){
-            if(!students.containsKey(c))
-                this.students.put(c,0);
-        }
     }
 
-    /**
-     * @param color color of the students
-     * @param number number of students of the specified color that have to be placed on the island
-     */
     public void addStudents(Color color, int number){
-        students.put(color, students.get(color)+number);
+        students.put(color, students.get(color)+1);
     }
 
     public void setNoEntryCard(boolean noEntryCard) {
