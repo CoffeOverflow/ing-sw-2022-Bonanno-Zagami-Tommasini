@@ -3,6 +3,10 @@ package it.polimi.ingsw.Model;
 import java.util.EnumMap;
 import java.util.Optional;
 
+/**
+ * class CharacterCard
+ * @author Federica Tommasini
+ */
 public class CharacterCard {
     int cost;
     String asset;
@@ -10,7 +14,14 @@ public class CharacterCard {
     Optional<EnumMap<Color, Integer>> students;
     Optional<EnumMap<Color, Integer>> chosenStudents;
 
-    //costruttore per le carte personaggio che hanno degli studenti sopra
+    /**
+     * constructor for the character cards that have some students placed on them
+     * @param cost cost that has to be paid to use the card
+     * @param asset name of the file corresponding to the card
+     * @param students contains the student placed on the card, mapping their color with their quantity
+     * @throws IllegalArgumentException if the number of students is wrong
+     * @throws IllegalStateException if the card doesn't contain students
+     */
     public CharacterCard(int cost, String asset, EnumMap<Color, Integer> students) {
 
         this.cost = cost;
@@ -48,6 +59,15 @@ public class CharacterCard {
         }
     }
 
+    /**
+     * constructor for the character cards that don't have students on them
+     * @param cost cost cost that has to be paid to use the card
+     * @param asset name of the file corresponding to the card
+     */
+    public CharacterCard(int cost, String asset){
+        this.cost = cost;
+        this.asset = asset;
+    }
 
     public int getCost(){
         return cost;
@@ -57,10 +77,16 @@ public class CharacterCard {
         return asset;
     }
 
+
     public void setStudents(EnumMap<Color, Integer> students) {
         this.students.of(students);
     }
 
+    /**
+     * set the students that the player chose to take from the character card
+     * @param chosenStudents students taken from the character card
+     * @throws IllegalStateException if the card doesn't contain students or if the number of chosen student is wrong
+     */
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents) {
         if( (this.asset.equals("CarteTOT_front1") && chosenStudents.size()==1) ||
             (this.asset.equals("CarteTOT_front6") && chosenStudents.size()<=3) ||
@@ -72,6 +98,11 @@ public class CharacterCard {
         }
     }
 
+    /**
+     * execute the effect of the character card
+     * @param player player who uses the card
+     * @param island island on which the changes will be applied
+     */
     public void useCard(Player player, Island island){
         effect.effect(player,island, this);
         if(chosenStudents.isPresent()){
