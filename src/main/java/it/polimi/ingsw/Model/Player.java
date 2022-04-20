@@ -1,8 +1,15 @@
 package it.polimi.ingsw.Model;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Player class
@@ -17,7 +24,7 @@ public class Player {
     private Tower tower;
     private int numberOfTower;
     private int money;
-    private ArrayList<AssistantCard> assistantCard = new ArrayList<AssistantCard>();
+    private ArrayList<AssistantCard> assistantCard;
     private ArrayList<Color> professors = new ArrayList<Color>();
 
     /**
@@ -26,15 +33,21 @@ public class Player {
      * @param gui True is player has chosen gui mode, false otherwise
      * @param tower Color of towers of player
      * @param numberOfTower Number of towers that player can build
-     * @param assistantCard List of assistant cards assigned to player
      */
-    public Player(String nickname, boolean gui, Tower tower, int numberOfTower, ArrayList<AssistantCard> assistantCard){
+    public Player(String nickname, boolean gui, Tower tower, int numberOfTower){
         this.nickname = nickname;
         this.gui = gui;
         this.tower = tower;
         this.numberOfTower = numberOfTower;
-        this.assistantCard = assistantCard;
         money = 0;
+        //JSON Assistant card
+        try {
+            JsonReader json = new JsonReader(new FileReader("resources/json/assistants.json"));
+            assistantCard = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(assistantCard);
     }
 
     public boolean isGui() {
@@ -76,7 +89,7 @@ public class Player {
 
     /**
      *
-     * @param entryStudents EnumMap<Color, Integer> contais student that have to be set in the entry of player's school
+     * @param entryStudents EnumMap<Color, Integer> contains student that have to be set in the entry of player's school
      */
     public void setEntryStudents(EnumMap<Color, Integer> entryStudents) {
         this.entryStudents = entryStudents;
@@ -105,6 +118,9 @@ public class Player {
      */
     public void addStudentOf(Color color){
         students.merge(color, 1, Integer::sum);
+        if((students.get(color) % 3) == 0){
+            money++;
+        }
     }
 
     /**
@@ -132,4 +148,7 @@ public class Player {
         return professors.contains(color);
     }
 
+    public void useAssistantCard(int card) {
+        //Vedere come implementare
+    }
 }

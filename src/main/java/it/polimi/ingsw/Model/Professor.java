@@ -37,7 +37,10 @@ public class Professor {
      * @throws NoSuchElementException
      */
     public Player getPlayer() throws NoSuchElementException {
-        return player.get();
+        if(player.isPresent())
+            return player.get();
+        else
+            throw new NoSuchElementException();
     }
 
     public Color getColor(){ return color; }
