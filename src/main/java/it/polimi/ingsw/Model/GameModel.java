@@ -21,6 +21,9 @@ public class GameModel {
     private EnumMap<Color,Integer> studentsBag=new EnumMap<>(Color.class);
     private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
     private HashMap<String,Integer> characterCards=new HashMap<String,Integer>();
+
+
+
     private EnumMap <Color,Integer> studentsOnCard=new EnumMap<Color,Integer>(Color.class);
     /**
      * Initializes the whole game based on the number of players and expert mode
@@ -82,14 +85,14 @@ public class GameModel {
 
         Random rand=new Random();
 
-        for(int i=0;i<3;i++)
+      /*  for(int i=0;i<3;i++)
         {
             int randNum=rand.nextInt(charcacterName.size());
             characterCards.put(charcacterName.get(i),charcaterCost.get(i));
             CharacterCard chard=new CharacterCard(charcaterCost.get(i),charcacterName.get(i),studentsOnCard);
             charcacterName.remove(i);
             charcaterCost.remove(i);
-        }
+        }*/
         for(int i=0;i<12;i++)
         {
             if(islands.get(i)!=(islands.get(motherNaturePosition)) || islands.get(i)!=islands.get((motherNaturePosition+6)%11))
@@ -174,9 +177,9 @@ public class GameModel {
         //MANCA QUESTA
     }
 
-    public void useAssistantCard(int player, int card){
+   /* public void useAssistantCard(int player, int card){
         this.players.get(player).useAssistantCard(card);
-    }
+    }*/
 
     public void chooseCloud(int player, int cloud)
     {
@@ -242,4 +245,26 @@ public class GameModel {
     private void fillCloud(EnumMap<Color,Integer> students,int cloud){
         this.clouds.get(cloud).setStudents(students);
     }
+
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public int getNumberOfStudent() {
+        return numberOfStudent;
+    }
+
+    public int getNumberOfTowers() {
+        return numberOfTowers;
+    }
+
+    public int getNumberOfStudentBag() {
+        return numberOfStudentBag;
+    }
+
+    public boolean isExpertMode() {
+        return expertMode;
+    }
 }
+
