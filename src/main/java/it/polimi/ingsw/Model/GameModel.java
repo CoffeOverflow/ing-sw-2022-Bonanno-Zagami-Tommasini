@@ -258,7 +258,7 @@ public class GameModel {
         this.islands.get(island).setTower(players.get(player).getTower());
     }
 
-    private void fillCloud(EnumMap<Color,Integer> students,int cloud){
+    public void fillCloud(EnumMap<Color,Integer> students,int cloud){
         this.clouds.get(cloud).setStudents(students);
     }
 
