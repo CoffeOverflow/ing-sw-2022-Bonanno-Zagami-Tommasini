@@ -118,7 +118,6 @@ class Effect7 implements Effect{
 
 class Effect8 implements Effect{
 
-<<<<<<< HEAD
     /**
      * the player choose a color that is not considered in the computation of the influence
      * of the island in that turn
@@ -126,9 +125,6 @@ class Effect8 implements Effect{
      * @param island island to which the changes will be applied
      * @param card character card that is used
      */
-=======
-    //scegli un colore di studente che in quel turno non cointribuisce al calcolo dell'influenza
->>>>>>> 3671068 (added Effect class)
     public void effect(Player player, Island island, CharacterCard card){
 
     }

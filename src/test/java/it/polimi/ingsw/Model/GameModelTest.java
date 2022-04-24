@@ -17,19 +17,8 @@ class GameModelTest {
 
     @Test
     void Creation(){
-
-        for(int i=0;i<10;i++){
-            AssistantCard c;
-            if(i%2==0)
-                c=new AssistantCard(i,i/2,"Assistente("+i+")");
-            else
-                c=new AssistantCard(i,(i/2)+1,"Assistente("+i+")");
-            cardsAs.add(c);
-        }
-
-
-        Player play=new Player("aaa",true,tow,8, (ArrayList<AssistantCard>) cardsAs);
-        Player play2=new Player("bbb",true,tow2,8,(ArrayList<AssistantCard>) cardsAs);
+        Player play=new Player("aaa",true,tow,8);
+        Player play2=new Player("bbb",true,tow2,8);
         players.add(play);
         players.add(play2);
         GameModel gm=new GameModel(true, players);
