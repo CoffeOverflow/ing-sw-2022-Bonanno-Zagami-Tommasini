@@ -1,5 +1,11 @@
 package it.polimi.ingsw.Model;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.Array;
 import java.util.*;
 
@@ -21,10 +27,15 @@ public class GameModel {
     private EnumMap<Color,Integer> studentsBag=new EnumMap<>(Color.class);
     private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
     private HashMap<String,Integer> characterCards=new HashMap<String,Integer>();
-
-
-
     private EnumMap <Color,Integer> studentsOnCard=new EnumMap<Color,Integer>(Color.class);
+
+
+
+    private HashMap<Integer,AssistantCard> currentCardPlayers=new HashMap<>();
+    private int currentPlayer;
+
+
+
     /**
      * Initializes the whole game based on the number of players and expert mode
      * @param expertMode
@@ -97,13 +108,17 @@ public class GameModel {
         {
             if(islands.get(i)!=(islands.get(motherNaturePosition)) || islands.get(i)!=islands.get((motherNaturePosition+6)%11))
             {
-                Color col=colorValues.get(rand.nextInt(colorValues.size()));
-                if(colorToIsland.get(col)==1) {
-                    colorValues.remove(col);
-                }
-                else
-                    colorToIsland.put(col,1);
-                islands.get(i).addStudents(col,1);
+               try {
+                   Color col = colorValues.get(rand.nextInt(colorValues.size()));
+                   if (colorToIsland.get(col) == 1) {
+                       colorValues.remove(col);
+                   } else
+                       colorToIsland.put(col, 1);
+                   islands.get(i).addStudents(col, 1);
+               }
+               catch (IllegalArgumentException e){
+                   System.out.println("There are no more students in the bag");
+               }
             }
 
         }
@@ -122,6 +137,7 @@ public class GameModel {
                 entryStudentPerPlayer.put(c,0);
             for(int j=0;j<numberOfStudent;j++)
             {
+
                 Color col=colorValues.get(rand.nextInt(colorValues.size()));
                 if(studentsBag.get(col)==1)
                 {
@@ -177,9 +193,9 @@ public class GameModel {
         //MANCA QUESTA
     }
 
-   /* public void useAssistantCard(int player, int card){
+    public void useAssistantCard(int player, String card){
         this.players.get(player).useAssistantCard(card);
-    }*/
+    }
 
     public void chooseCloud(int player, int cloud)
     {
@@ -265,6 +281,21 @@ public class GameModel {
 
     public boolean isExpertMode() {
         return expertMode;
+    }
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public HashMap<Integer, AssistantCard> getCurrentCardPlayers() {
+        return currentCardPlayers;
+    }
+
+    public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
+        this.currentCardPlayers = currentCardPlayers;
     }
 }
 
