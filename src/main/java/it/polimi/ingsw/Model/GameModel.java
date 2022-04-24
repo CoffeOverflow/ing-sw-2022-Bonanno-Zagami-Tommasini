@@ -33,6 +33,8 @@ public class GameModel {
 
     private HashMap<Integer,AssistantCard> currentCardPlayers=new HashMap<>();
     private int currentPlayer;
+    List<Color> colorsOnBag = new ArrayList<Color>();
+
 
 
 
@@ -151,6 +153,9 @@ public class GameModel {
             this.players.get(i).setEntryStudents(entryStudentPerPlayer);
 
         }
+        for(Color c:Color.values())
+            colorsOnBag.add(c);
+
 
     }
 
@@ -189,6 +194,11 @@ public class GameModel {
         }
     }
 
+    public void moveStudentToIsland(int islandPosition, Color student )
+    {
+        this.islands.get(islandPosition).addStudents(student,1);
+    }
+
     public void useCharacterCard(){
         //MANCA QUESTA
     }
@@ -216,13 +226,11 @@ public class GameModel {
         this.players.get(player).addStudentOf(studentColor);
     }
 
-    public void getStudentsFromBag()  {
+    public boolean getStudentsFromBag()  {
         EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
-        List<Color> colorValues = new ArrayList<Color>();
+
         Random rand=new Random();
         Color col;
-        for(Color c:Color.values())
-            colorValues.add(c);
 
         for(int i=0;i<clouds.size();i++){
             for (Color c: Color.values())
@@ -230,20 +238,26 @@ public class GameModel {
             for(int j=0;j<numberOfStudentBag;j++)
             {
                 try {
-                    col = colorValues.get(rand.nextInt(colorValues.size()));
+                    col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
                     if(studentsBag.get(col)==1)
-                        colorValues.remove(col);
+                        colorsOnBag.remove(col);
                     studentsBag.put(col,studentsBag.get(col)-1);
                     studentsOnClouds.put(col,studentsOnClouds.get(col)+1);
                 }
                 catch (IllegalArgumentException e){
                     System.out.println("There are no more students in the bag");
+                    return false;
                 }
 
                 }
             fillCloud(studentsOnClouds,i);
             }
+        return true;
         }
+
+    public void fillCloud(EnumMap<Color,Integer> students,int cloud){
+        this.clouds.get(cloud).setStudents(students);
+    }
 
     public void moveMotherNature(int steps){
         this.motherNaturePosition+=steps;
@@ -256,10 +270,6 @@ public class GameModel {
     public void setTowerOnIsland(int island,int player)
     {
         this.islands.get(island).setTower(players.get(player).getTower());
-    }
-
-    public void fillCloud(EnumMap<Color,Integer> students,int cloud){
-        this.clouds.get(cloud).setStudents(students);
     }
 
 
@@ -296,6 +306,21 @@ public class GameModel {
 
     public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
         this.currentCardPlayers = currentCardPlayers;
+    }
+
+    public Optional<Tower> getTowerOnIsland(int islandPos)
+    {
+        return this.islands.get(islandPos).getTower();
+    }
+
+    public Tower getPlayerTower(int player){
+        return this.players.get(player).getTower();
+    }
+    public boolean isPresentEntryPlayer(Color c){
+        return this.players.get(currentPlayer).studentIsPresent(c);
+    }
+    public void reomveEntryStudents(Color c){
+        this.players.get(currentPlayer).removeEntryStudent(c);
     }
 }
 
