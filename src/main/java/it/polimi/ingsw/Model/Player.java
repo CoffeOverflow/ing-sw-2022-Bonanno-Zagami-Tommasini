@@ -23,7 +23,7 @@ public class Player {
     private Tower tower;
     private int numberOfTower;
     private int money;
-    private ArrayList<AssistantCard> assistantCard;
+    private ArrayList<AssistantCard> assistantCards;
     private ArrayList<Color> professors = new ArrayList<Color>();
 
     /**
@@ -42,7 +42,7 @@ public class Player {
         //JSON Assistant card
         try {
             JsonReader json = new JsonReader(new FileReader("src/main/resources/json/assistants.json"));
-            assistantCard = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
+            assistantCards = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -116,6 +116,43 @@ public class Player {
      */
     public void addStudentOf(Color color){
         students.merge(color, 1, Integer::sum);
+        if((students.get(color) % 3) == 0){
+            money++;
+        }
+    }
+
+    /**
+     * Add professor of specified color to player's school
+     * @param color
+     */
+    public void addProfessor(Color color){
+        professors.add(color);
+    }
+
+    /**
+     * Remove professor of specified color to player's school
+     * @param color
+     */
+    public void removeProfessor(Color color){
+        professors.remove(color);
+    }
+
+    /**
+     * Check if a professor of specified color is present in player's school
+     * @param color
+     * @return True if professor is present, false otherwise
+     */
+    public boolean isPresentProfessor(Color color){
+        return professors.contains(color);
+    }
+
+
+    public void useAssistantCard(String name){
+        for(AssistantCard card: assistantCards){
+            if (card.getName().equals(name)){
+                assistantCards.remove(card);
+            }
+        }
     }
 
 }
