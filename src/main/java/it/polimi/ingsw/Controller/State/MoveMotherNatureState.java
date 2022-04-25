@@ -4,7 +4,6 @@ import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Tower;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 

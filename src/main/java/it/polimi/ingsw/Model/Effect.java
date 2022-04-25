@@ -24,7 +24,7 @@ class Effect1 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, Island island, CharacterCard card){
-        island.addStudents(card.chosenStudents.get().keySet().iterator().next(),1);
+        island.addStudents(card.getChosenStudents().get().keySet().iterator().next(),1);
     }
 }
 

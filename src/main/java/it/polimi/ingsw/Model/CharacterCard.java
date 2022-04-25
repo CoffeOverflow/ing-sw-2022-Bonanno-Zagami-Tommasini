@@ -8,11 +8,11 @@ import java.util.Optional;
  * @author Federica Tommasini
  */
 public class CharacterCard {
-    int cost;
-    String asset;
-    Effect effect;
-    Optional<EnumMap<Color, Integer>> students;
-    Optional<EnumMap<Color, Integer>> chosenStudents;
+    private int cost;
+    private String asset;
+    private Effect effect;
+    private Optional<EnumMap<Color, Integer>> students;
+    private Optional<EnumMap<Color, Integer>> chosenStudents;
 
     /**
      * constructor for the character cards that have some students placed on them
@@ -31,7 +31,7 @@ public class CharacterCard {
         switch (asset) {
             case "CarteTOT_front":
                 if (students!=null && students.size() == 4) {
-                    this.students.of(students);
+                    this.students=Optional.of(students);
                 }else{
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
                 }
@@ -39,7 +39,7 @@ public class CharacterCard {
                 break;
             case "CarteTOT_front6":
                 if (students!=null && students.size() == 6){
-                    this.students.of(students);
+                    this.students=Optional.of(students);
                 }
                 else {
                     throw new IllegalArgumentException("the card must contain six students and the chosen students must be at most three");
@@ -48,7 +48,7 @@ public class CharacterCard {
                 break;
             case "CarteTOT_front10":
                 if (students!=null && students.size() == 4){
-                    this.students.of(students);
+                    this.students=Optional.of(students);
                 }
                 else {
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
@@ -60,6 +60,13 @@ public class CharacterCard {
         }
     }
 
+    public Optional<EnumMap<Color, Integer>> getChosenStudents() {
+        return chosenStudents;
+    }
+
+    public void setChosenStudents(Optional<EnumMap<Color, Integer>> chosenStudents) {
+        this.chosenStudents = chosenStudents;
+    }
 
     /**
      * constructor for the character cards that don't have students on them
@@ -80,7 +87,7 @@ public class CharacterCard {
     }
 
     public void setStudents(EnumMap<Color, Integer> students) {
-        this.students.of(students);
+        this.students=Optional.of(students);
     }
 
     /**
@@ -93,7 +100,7 @@ public class CharacterCard {
             (this.asset.equals("CarteTOT_front6") && chosenStudents.size()<=3) ||
             (this.asset.equals("CarteTOT_front10") && chosenStudents.size()==1)
         )
-        this.chosenStudents.of(chosenStudents);
+        this.chosenStudents=Optional.of(chosenStudents);
         else{
             throw new IllegalStateException("Unexpected number of chosen students: " + chosenStudents.size());
         }

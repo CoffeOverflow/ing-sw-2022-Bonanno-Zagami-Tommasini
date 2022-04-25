@@ -31,7 +31,7 @@ public class DecideFirstPlayerState implements GameControllerState {
         for(int i=0; i<values.length;i++){
             for(int j=i+1; j<values.length; j++){
                 if(values[i]==values[j]){
-                   Player p=gc.getModel().getPlayerById();
+                   Player p=gc.getModel().getPlayerByID();
                    ArrayList<AssistantCard> deck =p.getAssistantCards();
                    for(AssistantCard c : deck){
                        for(int k=0; k<values.length;k++) {
