@@ -50,7 +50,7 @@ public class MoveMotherNatureState implements GameControllerState {
                 int oldNumberOfTower=gc.getModel().getPlayerByTower(oldTower.get()).getNumberOfTower();
                 gc.getModel().getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
             }
-            gc.getModel().getPlayerByID(conqueror).buildTower();
+            gc.getModel().getPlayerByID(conqueror.get()).buildTower();
 
             checkMergeIsland(gc,gc.getModel().getMotherNaturePosition(),
                     gc.getModel().getPlayerTower(conqueror.get()));
