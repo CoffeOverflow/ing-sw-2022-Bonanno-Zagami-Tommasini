@@ -18,7 +18,7 @@ public class TakeStudentsState implements GameControllerState{
                 for(Color c:Color.values())
                     number+=entryStudents.get(c);
                 if((m.getNumberOfStudent()-number)==(m.getNumberOfStudent()-m.getNumberOfStudentBag())) {
-                    m.getPlayer(m.getCurrentPlayer()).addEntryStudents(m.takeStudentsFromCloud(action.getChooseCloud()));
+                    m.getPlayerById(m.getCurrentPlayer()).addEntryStudents(m.takeStudentsFromCloud(action.getChooseCloud()));
                 }
                 else
                     System.out.println("Hai troppi studenti all'ingresso");
