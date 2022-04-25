@@ -20,7 +20,7 @@ public class MoveStudentsState implements GameControllerState{
                 if(towerOnIsland.equals(m.getPlayerTower(m.getCurrentPlayer()))){
                     if(m.isPresentEntryPlayer(action.getColorStudent())){
                         m.moveStudentToIsland(action.getPosIsland(), action.getColorStudent());
-                        m.reomveEntryStudents(action.getColorStudent());
+                        m.removeEntryStudents(action.getColorStudent());
                     }
                     else
                         System.out.println("You don't have students of this color at the entrance ");

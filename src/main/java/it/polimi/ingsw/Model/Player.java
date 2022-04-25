@@ -80,6 +80,12 @@ public class Player {
     public int getNumberOfTower() {
         return numberOfTower;
     }
+    public void buildTower() {
+        numberOfTower--;
+    }
+    public void setNumberOfTower(int numberOfTower) {
+        this.numberOfTower = numberOfTower;
+    }
 
     public int getMoney() {
         return money;
@@ -153,6 +159,14 @@ public class Player {
                 assistantCards.remove(card);
             }
         }
+    }
+
+    public void removeEntryStudent(Color color){
+        entryStudents.merge(color, -1, Integer::sum);
+    }
+
+    public boolean studentIsPresent(Color color){
+        return this.entryStudents.get(color) >= 1;
     }
 
 }

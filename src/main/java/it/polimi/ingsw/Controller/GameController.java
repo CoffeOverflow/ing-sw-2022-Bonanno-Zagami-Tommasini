@@ -33,4 +33,16 @@ public class GameController {
     public void doAction(Action action){
         state.turnAction(this, action);
     }
+
+    public boolean checkEndGame(){
+        if(model.getIslandSize() == model.getNumberOfPlayers())
+            return true;
+        //Manca controllo torri
+        return false;
+    }
+
+    public boolean fillCloud(){
+        return model.getStudentsFromBag();
+        //Manca controllo per saltare lo stato
+    }
 }

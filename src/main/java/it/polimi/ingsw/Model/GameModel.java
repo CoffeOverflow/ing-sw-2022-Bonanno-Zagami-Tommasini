@@ -319,8 +319,12 @@ public class GameModel {
     public boolean isPresentEntryPlayer(Color c){
         return this.players.get(currentPlayer).studentIsPresent(c);
     }
-    public void reomveEntryStudents(Color c){
+    public void removeEntryStudents(Color c){
         this.players.get(currentPlayer).removeEntryStudent(c);
+    }
+
+    public int getIslandSize(){
+        return islands.size();
     }
 }
 
