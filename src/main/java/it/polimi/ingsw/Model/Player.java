@@ -18,6 +18,7 @@ public class Player {
 
     private boolean gui;
     private String nickname;
+    private int playerID;
     private EnumMap<Color, Integer> entryStudents = new EnumMap<>(Color.class);
     private EnumMap<Color, Integer> students = new EnumMap<>(Color.class);
     private Tower tower;
@@ -33,7 +34,8 @@ public class Player {
      * @param tower Color of towers of player
      * @param numberOfTower Number of towers that player can build
      */
-    public Player(String nickname, boolean gui, Tower tower, int numberOfTower){
+    public Player(int playerID ,String nickname, boolean gui, Tower tower, int numberOfTower){
+        this.playerID = playerID;
         this.nickname = nickname;
         this.gui = gui;
         this.tower = tower;
@@ -54,6 +56,10 @@ public class Player {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public int getPlayerID(){
+        return this.playerID;
     }
 
     public EnumMap<Color, Integer> getEntryStudents() {
@@ -167,6 +173,10 @@ public class Player {
 
     public boolean studentIsPresent(Color color){
         return this.entryStudents.get(color) >= 1;
+    }
+
+    public ArrayList<AssistantCard> getAssistantCards(){
+        return this.assistantCards;
     }
 
 }

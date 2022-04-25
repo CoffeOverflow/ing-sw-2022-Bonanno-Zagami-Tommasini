@@ -57,7 +57,8 @@ public class GameController {
     public boolean checkEndGame(){
         if(model.getIslandSize() == model.getNumberOfPlayers())
             return true;
-        //Manca controllo torri
+        if(model.getPlayerByID(model.getCurrentPlayer()).getNumberOfTower() == 0)
+            return true;
         return false;
     }
 

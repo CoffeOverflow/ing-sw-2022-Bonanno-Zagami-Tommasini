@@ -153,7 +153,8 @@ public class GameModel {
                 studentsBag.put(col,studentsBag.get(col)-1);
                 entryStudentPerPlayer.put(col,entryStudentPerPlayer.get(col)+1);
             }
-            this.players.get(i).setEntryStudents(entryStudentPerPlayer);
+
+            getPlayerByID(i).setEntryStudents(entryStudentPerPlayer);
 
         }
         for(Color c:Color.values())
@@ -221,8 +222,8 @@ public class GameModel {
      * @param player
      * @param card
      */
-    public void useAssistantCard(int player, String card){
-        this.players.get(player).useAssistantCard(card);
+    public void useAssistantCard(int player, String card)  {
+        getPlayerByID(player).useAssistantCard(card);
     }
 
     /**
@@ -232,7 +233,7 @@ public class GameModel {
      */
     public void chooseCloud(int player, int cloud)
     {
-        this.players.get(player).addEntryStudents(clouds.get(cloud).getStudents());
+        getPlayerByID(player).addEntryStudents(clouds.get(cloud).getStudents());
     }
 
     /**
@@ -243,13 +244,13 @@ public class GameModel {
      */
     public int getPlayerInfluence(int player,int island)
     {
-        int influence=0;
-        for(Color c: Color.values()){
-            if(this.players.get(player).equals(this.professors.get(c).getPlayer())){
-                   influence+=this.islands.get(island).getStudentsOf(c);
+            int influence = 0;
+            for (Color c : Color.values()) {
+                if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
+                    influence += this.islands.get(island).getStudentsOf(c);
+                 }
             }
-        }
-        return influence;
+            return influence;
     }
 
     /**
@@ -258,7 +259,7 @@ public class GameModel {
      * @param studentColor
      */
     public void moveToSchool (int player,Color studentColor){
-        this.players.get(player).addStudentOf(studentColor);
+        getPlayerByID(player).addStudentOf(studentColor);
     }
 
     /**
@@ -308,7 +309,7 @@ public class GameModel {
 
     public void setTowerOnIsland(int island,int player)
     {
-        this.islands.get(island).setTower(players.get(player).getTower());
+            this.islands.get(island).setTower(getPlayerByID(player).getTower());
     }
 
 
@@ -353,14 +354,17 @@ public class GameModel {
     }
 
     public Tower getPlayerTower(int player){
-        return this.players.get(player).getTower();
+
+           return getPlayerByID(player).getTower();
+
     }
 
     public boolean isPresentEntryPlayer(Color c){
-        return this.players.get(currentPlayer).studentIsPresent(c);
+        return getPlayerByID(currentPlayer).studentIsPresent(c);
     }
+
     public void removeEntryStudents(Color c){
-        this.players.get(currentPlayer).removeEntryStudent(c);
+        getPlayerByID(currentPlayer).removeEntryStudent(c);
     }
 
     public int getIslandSize(){
@@ -400,6 +404,13 @@ public class GameModel {
 
     public Island getIslandByPosition(int position){
         return this.islands.get(position);
+    }
+
+    public Player getPlayerByID(int id)  {
+        for(Player p:this.players)
+            if(p.getPlayerID()==id)
+                return p;
+        return null;
     }
 }
 
