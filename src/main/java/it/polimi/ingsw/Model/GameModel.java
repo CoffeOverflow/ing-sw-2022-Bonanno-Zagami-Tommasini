@@ -39,17 +39,21 @@ public class GameModel {
 
 
     /**
-     * Initializes the whole game based on the number of players and expert mode
+     * Initializes the whole game based on players and expert mode
      * @param expertMode
      * @param players
      */
     public GameModel(boolean expertMode,List<Player> players) {
 
-        //INIZIALIZZARE CHARACTER CARD PRENDENDO IL SUO VALORE TRAMITE UN HASHMAP <NOME,COSTO>
+        //INIZIALIZZARE CHARACTER CARD
 
         this.numberOfPlayers=players.size();
         this.players=players;
         this.expertMode=expertMode;
+
+        /**
+         * setting parameters based on the number of players
+         */
         if(numberOfPlayers==2 || numberOfPlayers==4){
             this.numberOfStudent=7;
             this.numberOfTowers=8;
@@ -61,8 +65,13 @@ public class GameModel {
             this.numberOfTowers=6;
             this.numberOfStudentBag=4;
         }
+
         if(expertMode)
             coins=Optional.of(20);
+
+        /**
+         * Initialize clouds, islands and professor
+         */
         for(int i=0;i<numberOfPlayers;i++)
         {
             Cloud c=new Cloud();
@@ -76,36 +85,26 @@ public class GameModel {
             Professor p=new Professor(c);
         }
 
-        List<String> charcacterName=new ArrayList<>();
-        charcacterName.add("CarteTOT_front");
+        /**
+         * Set a random position for mother nature
+         */
+        Random rand=new Random();
 
-        for(int i=2;i<13;i++){
-            charcacterName.add("CarteTOT_front"+i);
-        }
+        this.motherNaturePosition=rand.nextInt(12);
 
-        List<Integer> cost=Arrays.asList(1,3,1,2,3,1,2,3,1,2,3,2);
-        List<Integer> charcaterCost = new ArrayList<>(cost);
-
-        Random num=new Random();
-        this.motherNaturePosition=num.nextInt(12);
         EnumMap<Color,Integer> colorToIsland=new EnumMap<>(Color.class);
+
         for(Color c: Color.values()){
             colorToIsland.put(c,2);
         }
+
         List<Color> colorValues = new ArrayList<Color>();
         for(Color c:Color.values())
             colorValues.add(c);
 
-        Random rand=new Random();
-
-      /*  for(int i=0;i<3;i++)
-        {
-            int randNum=rand.nextInt(charcacterName.size());
-            characterCards.put(charcacterName.get(i),charcaterCost.get(i));
-            CharacterCard chard=new CharacterCard(charcaterCost.get(i),charcacterName.get(i),studentsOnCard);
-            charcacterName.remove(i);
-            charcaterCost.remove(i);
-        }*/
+        /**
+         * Put a random student on the islands except the one where mother nature is and the one opposite her
+         */
         for(int i=0;i<12;i++)
         {
             if(islands.get(i)!=(islands.get(motherNaturePosition)) || islands.get(i)!=islands.get((motherNaturePosition+6)%11))
@@ -125,29 +124,33 @@ public class GameModel {
 
         }
 
+        /**
+         * Fill the Bag of the game with the remaining students
+         */
         for(Color c: Color.values()){
             studentsBag.put(c,24);
         }
+
         for(Color c:Color.values())
             colorValues.add(c);
 
         EnumMap<Color,Integer> entryStudentPerPlayer=new EnumMap<Color, Integer>(Color.class);
 
+        /**
+         * Randomly assign students to each player
+         */
         for(int i=0; i<numberOfPlayers;i++)
         {
             for (Color c:Color.values())
                 entryStudentPerPlayer.put(c,0);
             for(int j=0;j<numberOfStudent;j++)
             {
-
                 Color col=colorValues.get(rand.nextInt(colorValues.size()));
                 if(studentsBag.get(col)==1)
                 {
                     colorValues.remove(col);
                 }
-
                 studentsBag.put(col,studentsBag.get(col)-1);
-
                 entryStudentPerPlayer.put(col,entryStudentPerPlayer.get(col)+1);
             }
             this.players.get(i).setEntryStudents(entryStudentPerPlayer);
@@ -156,11 +159,10 @@ public class GameModel {
         for(Color c:Color.values())
             colorsOnBag.add(c);
 
-
     }
 
     /**
-     *
+     * Unify the islands and delete the one with the lowest index from the array list
      * @param islandPos1
      * @param islandPos2
      */
@@ -187,12 +189,23 @@ public class GameModel {
 
     }
 
+    /**
+     * Move the students to the island by passing an enum map
+     * @param islandPosition
+     * @param students
+     */
     public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
     {
         for (Color c: Color.values()) {
             this.islands.get(islandPosition).addStudents(c,students.get(c));
         }
     }
+
+    /**
+     * ove the students to the island by passing the student's color
+     * @param islandPosition
+     * @param student
+     */
 
     public void moveStudentToIsland(int islandPosition, Color student )
     {
@@ -203,15 +216,31 @@ public class GameModel {
         //MANCA QUESTA
     }
 
+    /**
+     * Use the assistant card with the name inside the card parameter
+     * @param player
+     * @param card
+     */
     public void useAssistantCard(int player, String card){
         this.players.get(player).useAssistantCard(card);
     }
 
+    /**
+     * Choose the cloud once turn is over
+     * @param player
+     * @param cloud
+     */
     public void chooseCloud(int player, int cloud)
     {
         this.players.get(player).addEntryStudents(clouds.get(cloud).getStudents());
     }
 
+    /**
+     * Calculate and return the player influence
+     * @param player
+     * @param island
+     * @return
+     */
     public int getPlayerInfluence(int player,int island)
     {
         int influence=0;
@@ -222,10 +251,20 @@ public class GameModel {
         }
         return influence;
     }
+
+    /**
+     * Add
+     * @param player
+     * @param studentColor
+     */
     public void moveToSchool (int player,Color studentColor){
         this.players.get(player).addStudentOf(studentColor);
     }
 
+    /**
+     * Get random students from the Bag and fill clouds
+     * @return
+     */
     public boolean getStudentsFromBag()  {
         EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
 
@@ -316,6 +355,7 @@ public class GameModel {
     public Tower getPlayerTower(int player){
         return this.players.get(player).getTower();
     }
+
     public boolean isPresentEntryPlayer(Color c){
         return this.players.get(currentPlayer).studentIsPresent(c);
     }
@@ -325,6 +365,28 @@ public class GameModel {
 
     public int getIslandSize(){
         return islands.size();
+    }
+
+    /**
+     * Take and return students from cloud and clear it.
+     * @param cloud
+     * @return
+     */
+    public EnumMap<Color,Integer> takeStudentsFromCloud(int cloud){
+        EnumMap<Color,Integer> student= this.clouds.get(cloud).getStudents();
+        EnumMap<Color,Integer> empty=new EnumMap<Color, Integer>(Color.class);
+        for(Color c:Color.values())
+            empty.put(c,0);
+        this.clouds.get(cloud).setStudents(empty);
+        return student;
+    }
+
+    public boolean areStudentsOnCloud (int cloud){
+        EnumMap<Color,Integer> students=this.clouds.get(cloud).getStudents();
+        for(Color c:Color.values())
+            if(students.get(c)!=0)
+                return true;
+        return false;
     }
 }
 

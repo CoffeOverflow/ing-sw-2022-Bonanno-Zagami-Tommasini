@@ -33,7 +33,7 @@ public class MoveStudentsState implements GameControllerState{
                 System.out.println("You haven't conquered this island");
 
         }
-        if(action.getMove().equals(MoveTo.SCHOOL)){
+        else if(action.getMove().equals(MoveTo.SCHOOL)){
 
         }
     }

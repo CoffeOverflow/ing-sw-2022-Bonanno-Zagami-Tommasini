@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 
 import it.polimi.ingsw.Controller.State.MoveTo;
+import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Tower;
 
@@ -13,8 +14,16 @@ public class Action {
     private int posIsland;
     private Color colorStudent;
     private MoveTo move;
+    private int chooseCloud;
 
 
+    public int getChooseCloud() {
+        return chooseCloud;
+    }
+
+    public void setChooseCloud(int chooseCloud) {
+        this.chooseCloud = chooseCloud;
+    }
 
     public MoveTo getMove() {
         return move;
