@@ -26,6 +26,7 @@ public class Player {
     private int money;
     private ArrayList<AssistantCard> assistantCards;
     private ArrayList<Color> professors = new ArrayList<Color>();
+    private Wizards wizard;
 
     /**
      * Create player and sets money to zero
@@ -34,7 +35,7 @@ public class Player {
      * @param tower Color of towers of player
      * @param numberOfTower Number of towers that player can build
      */
-    public Player(int playerID ,String nickname, boolean gui, Tower tower, int numberOfTower){
+    public Player(int playerID,String nickname, boolean gui, Tower tower, int numberOfTower){
         this.playerID = playerID;
         this.nickname = nickname;
         this.gui = gui;
@@ -179,4 +180,11 @@ public class Player {
         return this.assistantCards;
     }
 
+    public Wizards getWizard() {
+        return wizard;
+    }
+
+    public void setWizard(Wizards wizard) {
+        this.wizard = wizard;
+    }
 }
