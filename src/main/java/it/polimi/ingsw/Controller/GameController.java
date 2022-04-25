@@ -9,9 +9,21 @@ public class GameController {
 
     private GameModel model;
 
+    private Integer[] turnOrder;
+
+    private Integer firstPlayer;
+
     public GameController(){
 
 
+    }
+
+    public Integer getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public void setFirstPlayer(Integer firstPlayer) {
+        this.firstPlayer = firstPlayer;
     }
 
     public GameControllerState getState() {
@@ -28,6 +40,14 @@ public class GameController {
 
     public void setModel(GameModel model) {
         this.model = model;
+    }
+
+    public Integer[] getTurnOrder() {
+        return turnOrder;
+    }
+
+    public void setTurnOrder(Integer[] turnOrder) {
+        this.turnOrder = turnOrder;
     }
 
     public void doAction(Action action){

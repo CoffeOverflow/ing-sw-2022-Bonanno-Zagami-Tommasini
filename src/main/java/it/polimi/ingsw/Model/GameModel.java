@@ -388,5 +388,18 @@ public class GameModel {
                 return true;
         return false;
     }
+
+    public Player getPlayerByTower(Tower tower){
+        Player ret=null;
+        for(Player p:players){
+            if(p.getTower().equals(tower))
+                ret=p;
+        }
+        return ret;
+    }
+
+    public Island getIslandByPosition(int position){
+        return this.islands.get(position);
+    }
 }
 

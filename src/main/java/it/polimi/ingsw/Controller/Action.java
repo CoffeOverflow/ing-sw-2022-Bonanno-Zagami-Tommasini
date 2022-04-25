@@ -2,11 +2,13 @@ package it.polimi.ingsw.Controller;
 
 
 import it.polimi.ingsw.Controller.State.MoveTo;
+import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Tower;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Action {
@@ -16,6 +18,7 @@ public class Action {
     private MoveTo move;
     private int chooseCloud;
 
+    private HashMap<Integer, AssistantCard> currentCardPlayers;
 
     public int getChooseCloud() {
         return chooseCloud;
@@ -23,6 +26,13 @@ public class Action {
 
     public void setChooseCloud(int chooseCloud) {
         this.chooseCloud = chooseCloud;
+    }
+    public HashMap<Integer, AssistantCard> getCurrentCardPlayers() {
+        return currentCardPlayers;
+    }
+
+    public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
+        this.currentCardPlayers = currentCardPlayers;
     }
 
     public MoveTo getMove() {

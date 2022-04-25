@@ -62,7 +62,7 @@ public class Island {
     }
 
     public void setTower(Tower tower) {
-        this.tower.of(tower);
+        this.tower=Optional.of(tower);
     }
 
     public void setNumberOfTowers(int numberOfTowers) {
