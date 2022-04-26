@@ -47,8 +47,8 @@ class Effect2 implements Effect{
                 position=i;
             }
         }
-        //TODO capire come posso vedere div'è il professore del colore massimo
-        //if(island.getTower())
+        //TODO capire come posso vedere dov'è il professore del colore massimo
+
     }
 }
 class Effect3 implements Effect{
