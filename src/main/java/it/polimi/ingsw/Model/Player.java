@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Player {
 
-    private boolean gui;
+    private boolean expertMode;
     private String nickname;
     private int playerID;
     private EnumMap<Color, Integer> entryStudents = new EnumMap<>(Color.class);
@@ -31,14 +31,14 @@ public class Player {
     /**
      * Create player and sets money to zero
      * @param nickname The nickname of the player
-     * @param gui True is player has chosen gui mode, false otherwise
+     * @param expertMode True is the game is expert mode
      * @param tower Color of towers of player
      * @param numberOfTower Number of towers that player can build
      */
-    public Player(int playerID,String nickname, boolean gui, Tower tower, int numberOfTower){
+    public Player(int playerID,String nickname, boolean expertMode, Tower tower, int numberOfTower){
         this.playerID = playerID;
         this.nickname = nickname;
-        this.gui = gui;
+        this.expertMode = expertMode;
         this.tower = tower;
         this.numberOfTower = numberOfTower;
         money = 0;
@@ -51,9 +51,7 @@ public class Player {
         }
     }
 
-    public boolean isGui() {
-        return gui;
-    }
+
 
     public String getNickname() {
         return nickname;
@@ -129,7 +127,7 @@ public class Player {
      */
     public void addStudentOf(Color color){
         students.merge(color, 1, Integer::sum);
-        if((students.get(color) % 3) == 0){
+        if((students.get(color) % 3) == 0 && expertMode){
             money++;
         }
     }
