@@ -1,2 +1,4 @@
-package it.polimi.ingsw.Server;public class Server {
+package it.polimi.ingsw.Server;
+
+public class Server {
 }
