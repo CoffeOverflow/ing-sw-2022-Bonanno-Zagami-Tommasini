@@ -1,17 +1,36 @@
 package it.polimi.ingsw;
 
 
+import it.polimi.ingsw.Server.Server;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Main class of Eriantys Game
+ * @author Angelo Zagami
+ */
 public class Eriantys
 {
     public static void main( String[] args )
     {
+        int choose = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.println( "Welcome to Eriantys!\n" +
-                "0. SERVER\n1. CLIENT (CLI INTERFACE)\n2. CLIENT (GUI INTERFACE)\n>"
+                "0. SERVER\n1. CLIENT (CLI INTERFACE)\n2. CLIENT (GUI INTERFACE)\n"
         );
-        int choose = scanner.nextInt();
-        switch (choose)
+        System.out.print("> ");
+        try {
+            choose = scanner.nextInt();
+        }
+        catch (InputMismatchException e){
+            System.err.println("Please insert a numeric argument! Application will now close.");
+            System.exit(-1);
+        }
+        if (choose == 0) {
+            Server.main(null);
+        } else {
+            System.err.println("Invalid argument");
+        }
     }
 }
