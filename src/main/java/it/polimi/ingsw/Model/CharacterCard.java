@@ -14,6 +14,8 @@ public class CharacterCard {
     private Optional<EnumMap<Color, Integer>> students;
     private Optional<EnumMap<Color, Integer>> chosenStudents;
 
+    private Optional<Island> islandSelected;
+
     /**
      * constructor for the character cards that have some students placed on them
      * @param cost cost that has to be paid to use the card

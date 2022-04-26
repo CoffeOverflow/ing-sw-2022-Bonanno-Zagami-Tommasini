@@ -50,6 +50,10 @@ public class DecideFirstPlayerState implements GameControllerState {
         }
 
         gc.getModel().setCurrentCardPlayers(action.getCurrentCardPlayers());
+        String[] cards ={"turtle","elephant","dog", "octopus","lizard", "fox", "eagle","cat","turkey","lion"};
+        for(int i=0; i<players.length;i++){
+            gc.getModel().useAssistantCard(i,cards[values[i]-1]);
+        }
 
         //determine order of action of the players in the turn
         for(int i=0; i<players.length; i++){//valore più basso, gioca prima
