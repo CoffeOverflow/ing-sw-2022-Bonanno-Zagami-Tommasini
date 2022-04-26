@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Constant;
+import it.polimi.ingsw.Constants;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -31,10 +31,10 @@ public class Server {
                 System.err.println("Error: ports accepted started from 1024! Please insert a new value.");
             }
         }while (port < 1024);
-        Constant.setPort(port);
-        System.out.println("Opening server on port "+Constant.getPort());
+        Constants.setPort(port);
+        System.out.println("Opening server on port "+ Constants.getPort());
         try{
-            server = new ServerSocket(Constant.getPort());
+            server = new ServerSocket(Constants.getPort());
         }
         catch (IOException e){
             System.err.println("Error opening server!");

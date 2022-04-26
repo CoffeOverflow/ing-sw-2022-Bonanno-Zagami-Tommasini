@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Server.Server;
 
 import java.util.InputMismatchException;
@@ -29,6 +30,10 @@ public class Eriantys
         }
         if (choose == 0) {
             Server.main(null);
+        } else if(choose == 1){
+            Client.main(null, "CLI");
+        } else if(choose == 2){
+            Client.main(null, "GUI");
         } else {
             System.err.println("Invalid argument");
         }
