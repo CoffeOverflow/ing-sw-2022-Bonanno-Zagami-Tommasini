@@ -260,6 +260,24 @@ public class GameModel {
      */
     public void moveToSchool (int player,Color studentColor){
         getPlayerByID(player).addStudentOf(studentColor);
+        int numOfColor=getPlayerByID(player).getStudentsOf(studentColor);
+        int max=0;
+        int idMax=-1;
+        for(Player p: players)
+        {
+            if(!p.equals(getPlayerByID(player))){
+                if(p.getStudentsOf(studentColor)>max)
+                {
+                    max=p.getStudentsOf(studentColor);
+                    idMax=p.getPlayerID();
+                }
+            }
+        }
+        if(numOfColor>max)
+        {
+            getPlayerByID(player).addProfessor(studentColor);
+            getPlayerByID(idMax).removeProfessor(studentColor);
+        }
     }
 
     /**
