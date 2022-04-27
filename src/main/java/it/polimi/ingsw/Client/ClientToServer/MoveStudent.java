@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
+import it.polimi.ingsw.Controller.Action;
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
 
@@ -32,5 +34,13 @@ public class MoveStudent implements ClientToServerMessage{
 
     public int getIslandPosition() {
         return islandPosition;
+    }
+
+    public void handleMessage(GameController controller){
+        Action action=new Action();
+        action.setMove(moveTo);
+        action.setColorStudent(studentColor);
+        action.setPosIsland(islandPosition);
+        controller.doAction(action);
     }
 }

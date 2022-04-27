@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.State.GameControllerState;
+import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.GameModel;
+
+import java.util.HashMap;
 
 public class GameController {
 
@@ -13,11 +16,19 @@ public class GameController {
 
     private Integer firstPlayer;
 
+    private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
+
     public GameController(){
 
 
     }
 
+    public HashMap<Integer, AssistantCard> getCurrentCardPlayers() {
+        return currentCardPlayers;
+    }
+    public void addCurrentAssistantCard(int player,AssistantCard card){
+        currentCardPlayers.put(player,card);
+    }
     public Integer getFirstPlayer() {
         return firstPlayer;
     }
