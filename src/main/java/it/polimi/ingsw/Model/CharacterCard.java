@@ -111,10 +111,10 @@ public class CharacterCard {
     /**
      * execute the effect of the character card
      * @param player player who uses the card
-     * @param island island on which the changes will be applied
+     * @param islandPosition island on which the changes will be applied
      */
-    public void useCard(Player player, Island island){
-        effect.effect(player,island, this);
+    public void useCard(Player player, int islandPosition, GameModel model){
+        effect.effect(player,islandPosition, model, this);
         if(chosenStudents.isPresent()){
             //TODO qua devo togliere gli studenti scelti dalla carta
             chosenStudents.empty();

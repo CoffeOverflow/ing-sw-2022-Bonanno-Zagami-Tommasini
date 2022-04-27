@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller.State;
 
 import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.GameController;
+import it.polimi.ingsw.Model.GameModel;
 import it.polimi.ingsw.Model.Tower;
 
 import java.util.HashMap;
@@ -10,9 +11,10 @@ import java.util.Optional;
 public class MoveMotherNatureState implements GameControllerState {
     @Override
     public void turnAction(GameController gc, Action action) {
-        int currentPlayer=gc.getModel().getCurrentPlayer();
-        if(action.getMotherNatureSteps()<=gc.getModel().getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()){
-            gc.getModel().moveMotherNature(action.getMotherNatureSteps());
+        GameModel m=gc.getModel();
+        int currentPlayer=m.getCurrentPlayer();
+        if(action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()){
+            m.moveMotherNature(action.getMotherNatureSteps());
         }else{
             System.out.println("the number of steps chosen is higher than the one indicated by the assistant card");
         }
@@ -20,22 +22,22 @@ public class MoveMotherNatureState implements GameControllerState {
         int key=0;
         HashMap<Integer, Integer> influences=new HashMap<>();
         Optional<Integer> conqueror=null;
-        for(Integer p : gc.getModel().getCurrentCardPlayers().keySet()){
-            if(gc.getModel().getTowerOnIsland(gc.getModel().getMotherNaturePosition()).isPresent() &&
-                    gc.getModel().getTowerOnIsland(gc.getModel().getMotherNaturePosition()).get().equals(gc.getModel().getPlayerTower(p))){
-                influences.put(p,gc.getModel().getPlayerInfluence(p,gc.getModel().getMotherNaturePosition())
-                        +gc.getModel().getIslandByPosition(gc.getModel().getMotherNaturePosition()).getNumberOfTowers());
+        for(Integer p : m.getCurrentCardPlayers().keySet()){
+            if(m.getTowerOnIsland(m.getMotherNaturePosition()).isPresent() &&
+                    m.getTowerOnIsland(m.getMotherNaturePosition()).get().equals(m.getPlayerTower(p))){
+                influences.put(p,m.getPlayerInfluence(p,m.getMotherNaturePosition())
+                        + m.getIslandByPosition(m.getMotherNaturePosition()).getNumberOfTowers());
             }else{
-                influences.put(p,gc.getModel().getPlayerInfluence(p,gc.getModel().getMotherNaturePosition()));
+                influences.put(p,m.getPlayerInfluence(p,m.getMotherNaturePosition()));
             }
             if(influences.get(p)>key){
-                key=gc.getModel().getPlayerInfluence(p,gc.getModel().getMotherNaturePosition());
+                key=m.getPlayerInfluence(p,m.getMotherNaturePosition());
                 conqueror=Optional.of(p);
             }
         }
         //check if the higher value of influence is unique
         if(conqueror.isPresent()){
-            for(Integer p : gc.getModel().getCurrentCardPlayers().keySet()){
+            for(Integer p : m.getCurrentCardPlayers().keySet()){
                 if(p!=conqueror.get() && influences.get(p)==influences.get(conqueror)){
                     conqueror=Optional.empty();
                 }
@@ -44,16 +46,16 @@ public class MoveMotherNatureState implements GameControllerState {
 
         //if the value is unique, conquer the island
         if(conqueror.isPresent()){
-            Optional<Tower> oldTower= gc.getModel().getTowerOnIsland(gc.getModel().getMotherNaturePosition());
-            gc.getModel().setTowerOnIsland(gc.getModel().getMotherNaturePosition(),conqueror.get());
+            Optional<Tower> oldTower= m.getTowerOnIsland(m.getMotherNaturePosition());
+            m.setTowerOnIsland(m.getMotherNaturePosition(),conqueror.get());
             if(oldTower.isPresent()){
-                int oldNumberOfTower=gc.getModel().getPlayerByTower(oldTower.get()).getNumberOfTower();
-                gc.getModel().getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
+                int oldNumberOfTower=m.getPlayerByTower(oldTower.get()).getNumberOfTower();
+                m.getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
             }
-            gc.getModel().getPlayerByID(conqueror.get()).buildTower();
+            m.getPlayerByID(conqueror.get()).buildTower();
 
-            checkMergeIsland(gc,gc.getModel().getMotherNaturePosition(),
-                    gc.getModel().getPlayerTower(conqueror.get()));
+            checkMergeIsland(gc,m.getMotherNaturePosition(),
+                    m.getPlayerTower(conqueror.get()));
         }
 
     }
