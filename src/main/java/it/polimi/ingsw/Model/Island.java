@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Optional;
 
@@ -8,10 +9,11 @@ import java.util.Optional;
  */
 public class Island {
 
-    Optional<Tower> tower;
-    int numberOfTowers;
-    EnumMap<Color,Integer> students;
-    boolean noEntryCard;
+    private Optional<Tower> tower;
+    private int numberOfTowers;
+    private EnumMap<Color,Integer> students;
+
+    private int noEntryCards;
 
     /**
      * create an island
@@ -24,7 +26,7 @@ public class Island {
         students.put(Color.BLUE,0);
         students.put(Color.GREEN,0);
         numberOfTowers=0;
-        noEntryCard=false;
+        noEntryCards=0;
     }
 
     public Optional<Tower> getTower() {
@@ -47,8 +49,8 @@ public class Island {
         return students.get(color);
     }
 
-    public boolean getNoEntryCard() {
-        return noEntryCard;
+    public int getNoEntryCard() {
+        return noEntryCards;
     }
 
     /**
@@ -86,8 +88,8 @@ public class Island {
         students.put(color, students.get(color)+number);
     }
 
-    public void setNoEntryCard(boolean noEntryCard) {
-        this.noEntryCard = noEntryCard;
+    public void setNoEntryCard(int noEntryCard) {
+        this.noEntryCards = noEntryCard;
     }
 
 

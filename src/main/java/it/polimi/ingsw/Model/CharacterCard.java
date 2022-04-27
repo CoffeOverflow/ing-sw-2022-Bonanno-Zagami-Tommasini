@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Controller.GameController;
+
 import java.util.EnumMap;
 import java.util.Optional;
 
@@ -14,7 +16,12 @@ public class CharacterCard {
     private Optional<EnumMap<Color, Integer>> students;
     private Optional<EnumMap<Color, Integer>> chosenStudents;
 
-    private Optional<Island> islandSelected;
+    private Optional<EnumMap<Color, Integer>> entranceStudents;
+
+    private Optional<Integer> chosenNumberOfSteps;
+    private Optional<Color> chosenColor;
+
+
 
     /**
      * constructor for the character cards that have some students placed on them
@@ -69,6 +76,13 @@ public class CharacterCard {
     public void setChosenStudents(Optional<EnumMap<Color, Integer>> chosenStudents) {
         this.chosenStudents = chosenStudents;
     }
+    public void setChosenNumberOfSteps(Optional<Integer> chosenNumberOfSteps) {
+        this.chosenNumberOfSteps = chosenNumberOfSteps;
+    }
+
+    public Optional<Integer> getChosenNumberOfSteps() {
+        return chosenNumberOfSteps;
+    }
 
     /**
      * constructor for the character cards that don't have students on them
@@ -78,6 +92,14 @@ public class CharacterCard {
     public CharacterCard(int cost, String asset){
         this.cost = cost;
         this.asset = asset;
+    }
+
+    public Optional<EnumMap<Color, Integer>> getEntranceStudents() {
+        return entranceStudents;
+    }
+
+    public void setEntranceStudents(Optional<EnumMap<Color, Integer>> entranceStudents) {
+        this.entranceStudents = entranceStudents;
     }
 
     public int getCost(){
@@ -90,6 +112,10 @@ public class CharacterCard {
 
     public void setStudents(EnumMap<Color, Integer> students) {
         this.students=Optional.of(students);
+    }
+
+    public Optional<EnumMap<Color, Integer>> getStudents() {
+        return students;
     }
 
     /**
@@ -106,6 +132,15 @@ public class CharacterCard {
         else{
             throw new IllegalStateException("Unexpected number of chosen students: " + chosenStudents.size());
         }
+        //TODO aggiungere per carte da swappare
+    }
+
+    public Optional<Color> getChosenColor() {
+        return chosenColor;
+    }
+
+    public void setChosenColor(Optional<Color> chosenColor) {
+        this.chosenColor = chosenColor;
     }
 
     /**
@@ -114,7 +149,7 @@ public class CharacterCard {
      * @param islandPosition island on which the changes will be applied
      */
     public void useCard(Player player, int islandPosition, GameModel model){
-        effect.effect(player,islandPosition, model, this);
+        effect.effect(player,islandPosition, model,this);
         if(chosenStudents.isPresent()){
             //TODO qua devo togliere gli studenti scelti dalla carta
             chosenStudents.empty();
