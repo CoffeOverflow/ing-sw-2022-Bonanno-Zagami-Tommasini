@@ -28,14 +28,15 @@ public class Eriantys
             System.err.println("Please insert a numeric argument! Application will now close.");
             System.exit(-1);
         }
-        if (choose == 0) {
-            Server.main(null);
-        } else if(choose == 1){
-            Client.main(null, "CLI");
-        } else if(choose == 2){
-            Client.main(null, "GUI");
-        } else {
-            System.err.println("Invalid argument");
+
+        switch (choose){
+            case 0: Server.main(null);
+                    break;
+            case 1: Client.main(null, "CLI");
+                    break;
+            case 2: Client.main(null, "GUI");
+                    break;
+            default:System.err.println("Invalid argument");
         }
     }
 }

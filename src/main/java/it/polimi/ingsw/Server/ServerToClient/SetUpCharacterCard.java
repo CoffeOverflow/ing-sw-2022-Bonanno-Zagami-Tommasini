@@ -6,7 +6,7 @@ import it.polimi.ingsw.Model.Color;
 import java.util.HashMap;
 import java.util.List;
 
-public class SetUpCharacterCard implements ClientToServerMessage{
+public class SetUpCharacterCard implements ServerToClientMessage{
 
     private String[] characterCards;
 

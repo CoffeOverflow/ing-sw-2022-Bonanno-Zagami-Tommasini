@@ -3,7 +3,8 @@ package it.polimi.ingsw;
 public class Constants {
     private static String ip;
     private static int port;
-    private static String eriantys = "███████╗██████╗ ██╗ █████╗ ███╗   ██╗████████╗██╗   ██╗███████╗\n"+
+    public static String ERIANTYS =
+                            "███████╗██████╗ ██╗ █████╗ ███╗   ██╗████████╗██╗   ██╗███████╗\n"+
                             "██╔════╝██╔══██╗██║██╔══██╗████╗  ██║╚══██╔══╝╚██╗ ██╔╝██╔════╝\n"+
                             "█████╗  ██████╔╝██║███████║██╔██╗ ██║   ██║    ╚████╔╝ ███████╗\n"+
                             "██╔══╝  ██╔══██╗██║██╔══██║██║╚██╗██║   ██║     ╚██╔╝  ╚════██║\n"+
@@ -28,7 +29,5 @@ public class Constants {
     }
 
 
-    public static String getEriantys() {
-        return eriantys;
-    }
+
 }

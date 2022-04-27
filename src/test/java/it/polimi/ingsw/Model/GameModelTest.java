@@ -17,8 +17,8 @@ class GameModelTest {
 
     @Test
     void Creation(){
-        Player play=new Player("aaa",true,tow,8);
-        Player play2=new Player("bbb",true,tow2,8);
+        Player play=new Player(0, "aaa",true,tow,8);
+        Player play2=new Player(1, "bbb",true,tow2,8);
         players.add(play);
         players.add(play2);
         GameModel gm=new GameModel(true, players);
