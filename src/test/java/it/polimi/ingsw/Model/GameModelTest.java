@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,27 +15,41 @@ class GameModelTest {
     private Tower tow=Tower.WHITE;
     private Tower tow2=Tower.BLACK;
     private List<AssistantCard> cardsAs=new ArrayList<AssistantCard>();
+    private List<Island> islands=new ArrayList<>();
+    private GameModel gm;
+
 
 
     @Test
     void Creation(){
-        Player play=new Player(1,"aaa",true,tow,8);
-        Player play2=new Player(2,"bbb",true,tow2,8);
-        players.add(play);
-        players.add(play2);
-        GameModel gm=new GameModel(true, players);
+
         assertEquals(gm.getNumberOfTowers(),8);
         assertEquals(gm.getNumberOfPlayers(),2);
         assertEquals(gm.getNumberOfStudent(),7);
         assertEquals(gm.getNumberOfStudentBag(),3);
     }
+    @BeforeEach
+    void setUp(){
+        Player play=new Player(1,"aaa",true,tow,8);
+        Player play2=new Player(2,"bbb",true,tow2,8);
+        players.add(play);
+        players.add(play2);
+        for(int i=0;i<12;i++) {
+            Island isl=new Island();
+            this.islands.add(isl);
+        }
+        gm=new GameModel(true,players);
+    }
     @Test
     void mergeIslands() {
-        // mi sa che devo mettere i getter per poter effettuare i test in caso metterli protected??
+        gm.mergeIslands(1,2);
+        int size=gm.getIslandSize();
+        assertEquals(size,11);
     }
 
     @Test
     void moveStudentsToIsland() {
+
     }
 
     @Test

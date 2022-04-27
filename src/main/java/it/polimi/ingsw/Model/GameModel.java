@@ -107,7 +107,7 @@ public class GameModel {
          */
         for(int i=0;i<12;i++)
         {
-            if(islands.get(i)!=(islands.get(motherNaturePosition)) || islands.get(i)!=islands.get((motherNaturePosition+6)%11))
+            if(islands.get(i)!=(islands.get(motherNaturePosition)) && islands.get(i)!=islands.get((motherNaturePosition+6)%11))
             {
                try {
                    Color col = colorValues.get(rand.nextInt(colorValues.size()));
@@ -154,7 +154,7 @@ public class GameModel {
                 entryStudentPerPlayer.put(col,entryStudentPerPlayer.get(col)+1);
             }
 
-            getPlayerByID(i).setEntryStudents(entryStudentPerPlayer);
+            players.get(i).setEntryStudents(entryStudentPerPlayer);
 
         }
         for(Color c:Color.values())
