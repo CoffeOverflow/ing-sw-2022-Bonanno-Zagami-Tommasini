@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.GameModel;
 
 import java.util.EnumMap;
 
+/**
+ * @author Giuseppe Bonanno
+ */
 public class TakeStudentsState implements GameControllerState{
     @Override
     public void turnAction(GameController gc, Action action){
