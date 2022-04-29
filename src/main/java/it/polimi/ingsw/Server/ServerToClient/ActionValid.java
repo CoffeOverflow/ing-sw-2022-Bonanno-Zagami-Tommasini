@@ -1,9 +1,17 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
 public class ActionValid implements ServerToClientMessage{
-    private static String msg="the action is valid";
+    private String msg;
 
-    public static String getMsg() {
+    public String getMsg() {
         return msg;
+    }
+
+    public ActionValid(String msg){
+        this.msg = msg;
+    }
+
+    public ActionValid(){
+        msg="The action is valid";
     }
 }

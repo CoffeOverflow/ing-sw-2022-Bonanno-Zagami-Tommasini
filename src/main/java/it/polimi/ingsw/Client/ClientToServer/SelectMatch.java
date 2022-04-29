@@ -1,13 +1,13 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 public class SelectMatch implements SetUpMessage{
-    private String match;
+    private int match;
 
-    public SelectMatch(String match) {
+    public SelectMatch(int match) {
         this.match = match;
     }
 
-    public String getMatch() {
+    public int getMatch() {
         return match;
     }
 }
