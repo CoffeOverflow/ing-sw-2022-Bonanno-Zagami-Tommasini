@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class CLI {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("\n"+Constants.ERIANTYS);
        /* Scanner scanner = new Scanner(System.in);
         System.out.print("\nInsert the server IP address > ");

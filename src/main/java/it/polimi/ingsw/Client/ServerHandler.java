@@ -14,10 +14,14 @@ public class ServerHandler {
     private ObjectOutputStream outputStream;
 
 
-    public ServerHandler() throws IOException {
-        this.server=new Socket(Constants.getIP(),Constants.getPort());
-        inputStream = new ObjectInputStream(server.getInputStream());
-        outputStream= new ObjectOutputStream(server.getOutputStream());
+    public ServerHandler() {
+        try{
+            this.server=new Socket(Constants.getIP(),Constants.getPort());
+            inputStream = new ObjectInputStream(server.getInputStream());
+            outputStream= new ObjectOutputStream(server.getOutputStream());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public Object read() throws IOException, ClassNotFoundException {

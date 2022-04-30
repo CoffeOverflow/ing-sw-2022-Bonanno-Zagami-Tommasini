@@ -4,6 +4,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Server.Server;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -13,8 +14,7 @@ import java.util.Scanner;
  */
 public class Eriantys
 {
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
         int choose = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.println( "Welcome to Eriantys!\n" +

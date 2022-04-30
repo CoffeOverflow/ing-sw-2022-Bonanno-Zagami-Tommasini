@@ -2,6 +2,8 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.CLI.CLI;
 
+import java.io.IOException;
+
 public class Client {
     public static void main(String[] args, String mode) {
         switch (mode){
