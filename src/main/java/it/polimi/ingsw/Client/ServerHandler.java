@@ -16,7 +16,8 @@ public class ServerHandler {
 
     public ServerHandler() {
         try{
-            this.server=new Socket(Constants.getIP(),Constants.getPort());
+            this.server=new Socket("127.0.0.1",2000);
+            //this.server=new Socket(Constants.getIP(),Constants.getPort());
             inputStream = new ObjectInputStream(server.getInputStream());
             outputStream= new ObjectOutputStream(server.getOutputStream());
         }catch (Exception e){
@@ -32,10 +33,9 @@ public class ServerHandler {
             return null;
         }
     }
-
     public void write(Object msg) throws IOException {
         outputStream.reset();
-        outputStream.write((byte[]) msg);
+        outputStream.writeObject(msg);
         outputStream.flush();
     }
 }
