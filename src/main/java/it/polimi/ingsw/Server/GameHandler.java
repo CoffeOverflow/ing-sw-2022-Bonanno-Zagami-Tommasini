@@ -24,6 +24,10 @@ public class GameHandler {
         player.send(new WaitForOtherPlayer());
     }
 
+    public int getGameID() {
+        return gameID;
+    }
+
     @Override
     public String toString() {
         return gameID + ". " + name;

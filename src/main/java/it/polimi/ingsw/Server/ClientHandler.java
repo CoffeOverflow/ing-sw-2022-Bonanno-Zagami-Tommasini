@@ -64,7 +64,7 @@ public class ClientHandler implements Runnable{
                         String nick = ((ChooseNickname) answer).getNickname();
                         try {
                             server.registerNickname(playerID, nick);
-                            send(new ActionValid("Nickname registrato con successo!"));
+                            send(new ActionValid("Nickname has been register successfully!"));
                             state = "Match";
                         } catch (DuplicateNicknameException e) {
                             System.out.println("Nickname duplicato");
@@ -76,10 +76,13 @@ public class ClientHandler implements Runnable{
                     }
                     break;
                 case "Match":
+                    ArrayList<Integer> availableIDs = new ArrayList<Integer>();
                     if(server.isAvailableGame()){
                         ArrayList<String> availableGames = new ArrayList<String>();
-                        for(GameHandler game : server.getAvailableGames())
+                        for(GameHandler game : server.getAvailableGames()){
                             availableGames.add(game.toString());
+                            availableIDs.add(game.getGameID());
+                        }
                         send(new ChooseMatch(availableGames));
                     }
                     else{
@@ -87,13 +90,20 @@ public class ClientHandler implements Runnable{
                     }
                     answer = answer();
                     if(answer instanceof SelectMatch){
+                        //Controllo sull'intero
                         if(((SelectMatch) answer).getMatch() == 0){
                             server.newGame(this);
+                            confirmation = true;
                         }
                         else{
-                            server.getGameByID(((SelectMatch) answer).getMatch()).addPlayer(this);
+                            if(availableIDs.contains(((SelectMatch) answer).getMatch())) {
+                                server.getGameByID(((SelectMatch) answer).getMatch()).addPlayer(this);
+                                confirmation = true;
+                            }
+                            else
+                                send(new Error(ErrorsType.CHOSENOTVALID, "Please enter a valid game id!"));
                         }
-                        confirmation = true;
+
                     }
                     break;
 
