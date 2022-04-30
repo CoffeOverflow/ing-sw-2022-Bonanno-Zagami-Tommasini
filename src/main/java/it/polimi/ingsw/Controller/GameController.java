@@ -13,7 +13,9 @@ public class GameController {
 
     private Integer firstPlayer;
 
-    public GameController(){
+    public GameController(boolean expertMode,int numberOfPlayers){
+        model=new GameModel(expertMode,numberOfPlayers);
+
 
 
     }

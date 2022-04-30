@@ -38,7 +38,7 @@ class GameModelTest {
             Island isl=new Island();
             this.islands.add(isl);
         }
-        gm=new GameModel(true,players);
+        gm=new GameModel(true,2);
     }
     @Test
     void mergeIslands() {

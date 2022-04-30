@@ -31,7 +31,6 @@ public class GameModel {
     private EnumMap <Color,Integer> studentsOnCard=new EnumMap<Color,Integer>(Color.class);
 
 
-
     private HashMap<Integer,AssistantCard> currentCardPlayers=new HashMap<>();
     private int currentPlayer;
     List<Color> colorsOnBag = new ArrayList<Color>();
@@ -42,14 +41,13 @@ public class GameModel {
     /**
      * Initializes the whole game based on players and expert mode
      * @param expertMode
-     * @param players
+     * @param numberOfPlayers
      */
-    public GameModel(boolean expertMode,List<Player> players) {
+    public GameModel(boolean expertMode,int numberOfPlayers) {
 
         //INIZIALIZZARE CHARACTER CARD
 
-        this.numberOfPlayers=players.size();
-        this.players=players;
+        this.numberOfPlayers=numberOfPlayers;
         this.expertMode=expertMode;
 
         /**
@@ -163,6 +161,11 @@ public class GameModel {
 
     }
 
+
+    public void addPlayer(int id,String nickname){
+        Tower towers=Tower.values()[this.players.size()];
+        this.players.add(new Player(id,nickname,this.expertMode,towers,numberOfTowers));
+    }
     /**
      * Unify the islands and delete the one with the lowest index from the array list
      * @param islandPos1
