@@ -9,8 +9,8 @@ public class SelectWizard implements ServerToClientMessage {
 
     private List<String> availableWizards;
 
-    public SelectWizard(List<String> wizards){
-        availableWizards=wizards;
+    public SelectWizard(List<String> availableWizards){
+        this.availableWizards=availableWizards;
     }
 
     public static String getMsg() {
