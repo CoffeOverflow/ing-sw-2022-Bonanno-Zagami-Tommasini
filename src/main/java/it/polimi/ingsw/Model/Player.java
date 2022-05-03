@@ -170,6 +170,19 @@ public class Player {
         entryStudents.merge(color, -1, Integer::sum);
     }
 
+    public int removeThreeStudentOf(Color color){
+        int res=0;
+        int n=getStudentsOf(color);
+        if(n>=3){
+            students.put(color,n-3);
+            res=3;
+        }else{
+            students.put(color,0);
+            res=n;
+        }
+        return res;
+    }
+
     public boolean studentIsPresent(Color color){
         return this.entryStudents.get(color) >= 1;
     }

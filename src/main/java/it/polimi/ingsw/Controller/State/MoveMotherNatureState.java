@@ -13,7 +13,11 @@ public class MoveMotherNatureState implements GameControllerState {
     public void turnAction(GameController gc, Action action) {
         GameModel m=gc.getModel();
         int currentPlayer=m.getCurrentPlayer();
-        if(action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()){
+        if(m.isTwoAdditionalSteps() &&
+                action.getMotherNatureSteps()<=(m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()+2)){
+            m.moveMotherNature(action.getMotherNatureSteps());
+        }
+        else if(!m.isTwoAdditionalSteps() && action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()){
             m.moveMotherNature(action.getMotherNatureSteps());
         }else{
             System.out.println("the number of steps chosen is higher than the one indicated by the assistant card");

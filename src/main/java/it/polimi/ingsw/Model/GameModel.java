@@ -30,6 +30,10 @@ public class GameModel {
     private HashMap<String,Integer> characterCards=new HashMap<String,Integer>();
     private EnumMap <Color,Integer> studentsOnCard=new EnumMap<Color,Integer>(Color.class);
 
+    private boolean twoAdditionalSteps=false;
+    private boolean twoAdditionalPoints=false;
+    private Color notCountedColor=null;
+    private boolean towersNotCounted=false;
 
     private HashMap<Integer,AssistantCard> currentCardPlayers=new HashMap<>();
     private int currentPlayer;
@@ -219,6 +223,9 @@ public class GameModel {
 
     public void useCharacterCard(){
         //MANCA QUESTA
+        //togliere studenti dalla carta e aggiungere altrettanti
+        //modificare prezzo carta dopo il primo utilizzo
+        //diminuire le monete del player
     }
 
     /**
@@ -250,9 +257,14 @@ public class GameModel {
     {
             int influence = 0;
             for (Color c : Color.values()) {
-                if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
-                    influence += this.islands.get(island).getStudentsOf(c);
-                 }
+                if(!c.equals(notCountedColor)){
+                    if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
+                        influence += this.islands.get(island).getStudentsOf(c);
+                        if(player==currentPlayer && twoAdditionalPoints){
+                            influence+=2;
+                        }
+                    }
+                }
             }
             return influence;
     }
@@ -263,7 +275,7 @@ public class GameModel {
         HashMap<Integer, Integer> influences=new HashMap<>();
         Optional<Integer> conqueror=null;
         for(Integer p : getCurrentCardPlayers().keySet()){
-            if(getTowerOnIsland(islandPosition).isPresent() &&
+            if(!towersNotCounted && getTowerOnIsland(islandPosition).isPresent() &&
                     getTowerOnIsland(islandPosition).get().equals(getPlayerTower(p))){
                 influences.put(p,getPlayerInfluence(p,islandPosition)
                         + getIslandByPosition(islandPosition).getNumberOfTowers());
@@ -498,6 +510,44 @@ public class GameModel {
 
     public EnumMap<Color, Professor> getProfessors() {
         return professors;
+    }
+
+    public boolean isTwoAdditionalSteps() {
+        return twoAdditionalSteps;
+    }
+
+    public void setTwoAdditionalSteps(boolean twoAdditionalSteps) {
+        this.twoAdditionalSteps = twoAdditionalSteps;
+    }
+
+    public boolean isTwoAdditionalPoints() {
+        return twoAdditionalPoints;
+    }
+
+    public void setTwoAdditionalPoints(boolean twoAdditionalPoints) {
+        this.twoAdditionalPoints = twoAdditionalPoints;
+    }
+
+    public Color getNotCountedColor() {
+        return notCountedColor;
+    }
+
+    public void setNotCountedColor(Color notCountedColor) {
+        this.notCountedColor = notCountedColor;
+    }
+
+    public boolean isTowersNotCounted() {
+        return towersNotCounted;
+    }
+
+    public void setTowersNotCounted(boolean towersNotCounted) {
+        this.towersNotCounted = towersNotCounted;
+    }
+
+    public void addStudentsBag(Color c, int n){
+        numberOfStudentBag+=n;
+        int numberBefore=studentsBag.get(c);
+        studentsBag.put(c,numberBefore+n);
     }
 }
 
