@@ -221,8 +221,9 @@ public class GameModel {
         this.islands.get(islandPosition).addStudents(student,1);
     }
 
-    public void useCharacterCard(){
-        //MANCA QUESTA
+    public void useCharacterCard(CharacterCard card){
+        //TODO
+        //alla fine del turno di un giocatore chiamare metodo endTurnOfPlayer() che mette a false i check booleani
         //togliere studenti dalla carta e aggiungere altrettanti
         //modificare prezzo carta dopo il primo utilizzo
         //diminuire le monete del player
@@ -398,6 +399,13 @@ public class GameModel {
         this.motherNaturePosition+=steps;
     }
 
+    public void endTurnOfPlayer(){
+        this.towersNotCounted=false;
+        this.notCountedColor=null;
+        this.twoAdditionalPoints=false;
+        this.twoAdditionalSteps=false;
+    }
+
     public int getMotherNaturePosition(){
         return this.motherNaturePosition;
     }
@@ -488,6 +496,12 @@ public class GameModel {
         return false;
     }
 
+    public void addStudentsBag(Color c, int n){
+        numberOfStudentBag+=n;
+        int numberBefore=studentsBag.get(c);
+        studentsBag.put(c,numberBefore+n);
+    }
+
     public Player getPlayerByTower(Tower tower){
         Player ret=null;
         for(Player p:players){
@@ -544,10 +558,6 @@ public class GameModel {
         this.towersNotCounted = towersNotCounted;
     }
 
-    public void addStudentsBag(Color c, int n){
-        numberOfStudentBag+=n;
-        int numberBefore=studentsBag.get(c);
-        studentsBag.put(c,numberBefore+n);
-    }
+
 }
 
