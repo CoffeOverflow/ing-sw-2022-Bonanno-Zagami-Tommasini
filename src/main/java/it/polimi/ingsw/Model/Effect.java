@@ -42,11 +42,13 @@ class Effect2 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
+
     public void effect(Player player, int islandPosition,  GameModel model, CharacterCard card){
         int noEntryCards=model.getIslandByPosition(islandPosition).getNoEntryCard();
         if(noEntryCards==0)
             model.computeInfluence(islandPosition);
         else model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards-1);
+
     }
 }
 class Effect3 implements Effect{

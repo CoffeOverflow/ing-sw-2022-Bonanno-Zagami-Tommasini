@@ -18,7 +18,6 @@ public class Action {
     private MoveTo move;
     private int chooseCloud;
 
-    private HashMap<Integer, AssistantCard> currentCardPlayers;
 
     public int getChooseCloud() {
         return chooseCloud;
@@ -27,13 +26,7 @@ public class Action {
     public void setChooseCloud(int chooseCloud) {
         this.chooseCloud = chooseCloud;
     }
-    public HashMap<Integer, AssistantCard> getCurrentCardPlayers() {
-        return currentCardPlayers;
-    }
 
-    public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
-        this.currentCardPlayers = currentCardPlayers;
-    }
 
     public MoveTo getMove() {
         return move;

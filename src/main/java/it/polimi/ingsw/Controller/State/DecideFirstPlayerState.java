@@ -18,11 +18,11 @@ public class DecideFirstPlayerState implements GameControllerState {
         //fill the array in order from the first player and then clockwise
         for(int i=gc.getFirstPlayer(); i<gc.getModel().getNumberOfPlayers();i++) {
             players[i] = i;
-            values[i]=action.getCurrentCardPlayers().get(players[i]).getValue();
+            values[i]=gc.getCurrentCardPlayers().get(players[i]).getValue();
         }
         for(int i=0; i<gc.getFirstPlayer(); i++) {
             players[i] = i;
-            values[i]=action.getCurrentCardPlayers().get(players[i]).getValue();
+            values[i]=gc.getCurrentCardPlayers().get(players[i]).getValue();
         }
 
         //Check if the assistant card played are different
@@ -49,7 +49,7 @@ public class DecideFirstPlayerState implements GameControllerState {
             }
         }
 
-        gc.getModel().setCurrentCardPlayers(action.getCurrentCardPlayers());
+        gc.getModel().setCurrentCardPlayers(gc.getCurrentCardPlayers());
         String[] cards ={"turtle","elephant","dog", "octopus","lizard", "fox", "eagle","cat","turkey","lion"};
         for(int i=0; i<players.length;i++){
             gc.getModel().useAssistantCard(i,cards[values[i]-1]);
@@ -71,6 +71,7 @@ public class DecideFirstPlayerState implements GameControllerState {
 
         gc.setFirstPlayer(players[0]);
         gc.setTurnOrder(players);
+        gc.getCurrentCardPlayers().clear();
     }
 
 
