@@ -16,9 +16,11 @@ public class GameController {
 
     private Integer firstPlayer;
 
+
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
 
-    public GameController(){
+    public GameController(boolean expertMode,int numberOfPlayers){
+        model=new GameModel(expertMode,numberOfPlayers);
 
 
     }

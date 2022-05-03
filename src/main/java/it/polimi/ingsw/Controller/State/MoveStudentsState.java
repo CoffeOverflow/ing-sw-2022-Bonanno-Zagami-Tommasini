@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.Tower;
 
 import java.util.Optional;
 
+/**
+ * @author Giuseppe Bonanno
+ */
 public class MoveStudentsState implements GameControllerState{
 
     private GameModel m;
@@ -34,7 +37,8 @@ public class MoveStudentsState implements GameControllerState{
 
         }
         else if(action.getMove().equals(MoveTo.SCHOOL)){
-
+            if(m.getPlayerByID(m.getCurrentPlayer()).studentIsPresent(action.getColorStudent()))
+                m.moveToSchool(m.getCurrentPlayer(),action.getColorStudent());
         }
     }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import it.polimi.ingsw.Controller.GameController;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -30,7 +31,6 @@ public class GameModel {
     private EnumMap <Color,Integer> studentsOnCard=new EnumMap<Color,Integer>(Color.class);
 
 
-
     private HashMap<Integer,AssistantCard> currentCardPlayers=new HashMap<>();
     private int currentPlayer;
     List<Color> colorsOnBag = new ArrayList<Color>();
@@ -41,14 +41,13 @@ public class GameModel {
     /**
      * Initializes the whole game based on players and expert mode
      * @param expertMode
-     * @param players
+     * @param numberOfPlayers
      */
-    public GameModel(boolean expertMode,List<Player> players) {
+    public GameModel(boolean expertMode,int numberOfPlayers) {
 
         //INIZIALIZZARE CHARACTER CARD
 
-        this.numberOfPlayers=players.size();
-        this.players=players;
+        this.numberOfPlayers=numberOfPlayers;
         this.expertMode=expertMode;
 
         /**
@@ -107,7 +106,7 @@ public class GameModel {
          */
         for(int i=0;i<12;i++)
         {
-            if(islands.get(i)!=(islands.get(motherNaturePosition)) || islands.get(i)!=islands.get((motherNaturePosition+6)%11))
+            if(islands.get(i)!=(islands.get(motherNaturePosition)) && islands.get(i)!=islands.get((motherNaturePosition+6)%11))
             {
                try {
                    Color col = colorValues.get(rand.nextInt(colorValues.size()));
@@ -154,7 +153,7 @@ public class GameModel {
                 entryStudentPerPlayer.put(col,entryStudentPerPlayer.get(col)+1);
             }
 
-            getPlayerByID(i).setEntryStudents(entryStudentPerPlayer);
+            players.get(i).setEntryStudents(entryStudentPerPlayer);
 
         }
         for(Color c:Color.values())
@@ -162,6 +161,11 @@ public class GameModel {
 
     }
 
+
+    public void addPlayer(int id,String nickname){
+        Tower towers=Tower.values()[this.players.size()];
+        this.players.add(new Player(id,nickname,this.expertMode,towers,numberOfTowers));
+    }
     /**
      * Unify the islands and delete the one with the lowest index from the array list
      * @param islandPos1
@@ -253,6 +257,67 @@ public class GameModel {
             return influence;
     }
 
+    public void computeInfluence(int islandPosition){
+        //take control of the island:
+        int key=0;
+        HashMap<Integer, Integer> influences=new HashMap<>();
+        Optional<Integer> conqueror=null;
+        for(Integer p : getCurrentCardPlayers().keySet()){
+            if(getTowerOnIsland(islandPosition).isPresent() &&
+                    getTowerOnIsland(islandPosition).get().equals(getPlayerTower(p))){
+                influences.put(p,getPlayerInfluence(p,islandPosition)
+                        + getIslandByPosition(islandPosition).getNumberOfTowers());
+            }else{
+                influences.put(p,getPlayerInfluence(p,islandPosition));
+            }
+            if(influences.get(p)>key){
+                key=getPlayerInfluence(p,islandPosition);
+                conqueror=Optional.of(p);
+            }
+        }
+        //check if the higher value of influence is unique
+        if(conqueror.isPresent()){
+            for(Integer p : getCurrentCardPlayers().keySet()){
+                if(p!=conqueror.get() && influences.get(p)==influences.get(conqueror)){
+                    conqueror=Optional.empty();
+                }
+            }
+        }
+
+        //if the value is unique, conquer the island
+        if(conqueror.isPresent()){
+            Optional<Tower> oldTower= getTowerOnIsland(islandPosition);
+            setTowerOnIsland(islandPosition,conqueror.get());
+            if(oldTower.isPresent()){
+                int oldNumberOfTower=getPlayerByTower(oldTower.get()).getNumberOfTower();
+                getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
+            }
+            getPlayerByID(conqueror.get()).buildTower();
+
+            checkMergeIsland(islandPosition,
+                    getPlayerTower(conqueror.get()));
+        }
+    }
+
+    public void checkMergeIsland( int island, Tower tower){
+        if(island==getIslandSize()-1 && getTowerOnIsland(island-1).equals(tower)){
+            mergeIslands(island-1,island);
+            checkMergeIsland( island-1,tower);
+        }else if(island==getIslandSize()-1 && getTowerOnIsland(0).equals(tower) ){
+            mergeIslands(0,island);
+            checkMergeIsland(0,tower);
+        }else if(island==0 && getTowerOnIsland(getIslandSize()-1).equals(tower)){
+            mergeIslands(island,getIslandSize()-1);
+            checkMergeIsland( island,tower);
+        }else if((island-1)>=0 && getTowerOnIsland(island-1).equals(tower)){
+            mergeIslands(island-1,island);
+            checkMergeIsland( island-1,tower);
+        }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).equals(tower)){
+            mergeIslands(island,island+1);
+            checkMergeIsland(island,tower);
+        }
+    }
+
     /**
      * Add
      * @param player
@@ -260,6 +325,24 @@ public class GameModel {
      */
     public void moveToSchool (int player,Color studentColor){
         getPlayerByID(player).addStudentOf(studentColor);
+        int numOfColor=getPlayerByID(player).getStudentsOf(studentColor);
+        int max=0;
+        int idMax=-1;
+        for(Player p: players)
+        {
+            if(!p.equals(getPlayerByID(player))){
+                if(p.getStudentsOf(studentColor)>max)
+                {
+                    max=p.getStudentsOf(studentColor);
+                    idMax=p.getPlayerID();
+                }
+            }
+        }
+        if(numOfColor>max)
+        {
+            getPlayerByID(player).addProfessor(studentColor);
+            getPlayerByID(idMax).removeProfessor(studentColor);
+        }
     }
 
     /**
@@ -411,6 +494,10 @@ public class GameModel {
             if(p.getPlayerID()==id)
                 return p;
         return null;
+    }
+
+    public EnumMap<Color, Professor> getProfessors() {
+        return professors;
     }
 }
 
