@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.View;
+
+import java.io.IOException;
 import java.util.List;
 
 public class SelectAssistantCard implements ServerToClientMessage{
@@ -18,5 +21,10 @@ public class SelectAssistantCard implements ServerToClientMessage{
 
     public List<String> getAvailableCards() {
         return availableCards;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }

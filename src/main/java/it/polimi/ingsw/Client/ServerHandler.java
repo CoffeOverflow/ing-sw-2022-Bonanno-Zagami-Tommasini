@@ -1,11 +1,10 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Constants;
+import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerHandler {
@@ -25,15 +24,15 @@ public class ServerHandler {
         }
     }
 
-    public Object read() throws IOException, ClassNotFoundException {
+    public ServerToClientMessage read() throws IOException, ClassNotFoundException {
         try{
-            return inputStream.readObject();
+            return (ServerToClientMessage) inputStream.readObject();
         }
         catch(Exception e){
             return null;
         }
     }
-    public void write(Object msg) throws IOException {
+    public void send(Object msg) throws IOException {
         outputStream.reset();
         outputStream.writeObject(msg);
         outputStream.flush();

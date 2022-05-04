@@ -104,9 +104,9 @@ public class Server implements Runnable{
         return availableGames.size() > 0;
     }
 
-    public synchronized void newGame(ClientHandler firstplayer){
+    public synchronized void newGame(ClientHandler firstplayer, int numberOfPlayer, boolean expertMode){
         int id = getNewGameID();
-        GameHandler newGame = new GameHandler(id, nicknameByID.get(firstplayer.getPlayerID())+"'s match");
+        GameHandler newGame = new GameHandler(id, nicknameByID.get(firstplayer.getPlayerID())+"'s match", numberOfPlayer, expertMode);
         newGame.addPlayer(firstplayer);
         availableGames.put(id, newGame);
     }

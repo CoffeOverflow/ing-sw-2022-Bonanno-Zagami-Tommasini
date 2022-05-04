@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.View;
+
+import java.io.IOException;
+
 public class OtherPlayerWins implements ServerToClientMessage{
     private String msg;
     private String winnerNickname;
@@ -15,5 +19,10 @@ public class OtherPlayerWins implements ServerToClientMessage{
 
     public String getMsg() {
         return msg;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }
