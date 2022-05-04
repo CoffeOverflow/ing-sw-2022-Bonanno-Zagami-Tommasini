@@ -21,21 +21,19 @@ public class GameModel {
     private int numberOfPlayers,numberOfStudent,numberOfTowers,motherNaturePosition,numberOfStudentBag;
     private boolean expertMode;
     private List<Player> players=new ArrayList<Player>();
-    private List<CharacterCard> characterCards=new ArrayList<CharacterCard>();
-
-    private HashMap<String,Integer> charactersPositions=new HashMap<>();
+    private List<CharacterCard> cards=new ArrayList<CharacterCard>();
     private List<Cloud> clouds=new ArrayList<Cloud>();
     private Optional<Integer> coins;
     private List<Island> islands=new ArrayList<Island>();
     private EnumMap<Color,Integer> studentsBag=new EnumMap<>(Color.class);
     private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
+    private HashMap<String,Integer> characterCards=new HashMap<String,Integer>();
+    private EnumMap <Color,Integer> studentsOnCard=new EnumMap<Color,Integer>(Color.class);
 
     private boolean twoAdditionalSteps=false;
     private boolean twoAdditionalPoints=false;
     private Color notCountedColor=null;
     private boolean towersNotCounted=false;
-
-    private boolean[] firstUseCharacters=new boolean[3];
 
     private HashMap<Integer,AssistantCard> currentCardPlayers=new HashMap<>();
     private int currentPlayer;
@@ -50,6 +48,8 @@ public class GameModel {
      * @param numberOfPlayers
      */
     public GameModel(boolean expertMode,int numberOfPlayers) {
+
+        //INIZIALIZZARE CHARACTER CARD
 
         this.numberOfPlayers=numberOfPlayers;
         this.expertMode=expertMode;
@@ -87,7 +87,6 @@ public class GameModel {
         for(Color c:Color.values()){
             Professor p=new Professor(c);
         }
-
 
         /**
          * Set a random position for mother nature
@@ -164,61 +163,6 @@ public class GameModel {
         for(Color c:Color.values())
             colorsOnBag.add(c);
 
-        /**
-         * Initialize character cards
-         */
-        String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
-                "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
-        if(expertMode){
-            for(int i=0; i<3;i++) {
-                int cardNumber=rand.nextInt(12);
-                EnumMap<Color, Integer> students=new EnumMap<>(Color.class);
-                if(cardNumber==0 || cardNumber==9){
-                    for(int j=0; j<4;j++){
-                        try {
-                            Color col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
-                            if(studentsBag.get(col)==1)
-                                colorsOnBag.remove(col);
-                            studentsBag.put(col,studentsBag.get(col)-1);
-                            if(students.containsKey(col))
-                                students.put(col,students.get(col)+1);
-                            students.put(col,1);
-                            characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
-                        }
-                        catch (IllegalArgumentException e){
-                            e.printStackTrace();
-                        }catch(IllegalStateException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                else if(cardNumber==5){
-                    for(int j=0; j<6;j++){
-                        try {
-                            Color col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
-                            if(studentsBag.get(col)==1)
-                                colorsOnBag.remove(col);
-                            studentsBag.put(col,studentsBag.get(col)-1);
-                            if(students.containsKey(col))
-                                students.put(col,students.get(col)+1);
-                            students.put(col,1);
-                            characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
-                        }
-                        catch (IllegalArgumentException e){
-                            e.printStackTrace();
-                        }catch(IllegalStateException e){
-                            e.printStackTrace();
-                        }
-                    }
-
-                }
-                else{
-                    characterCards.add(new CharacterCard(characterAssets[cardNumber]));
-                }
-                charactersPositions.put(characterAssets[cardNumber],i);
-            }
-        }
-
     }
 
 
@@ -275,6 +219,14 @@ public class GameModel {
     public void moveStudentToIsland(int islandPosition, Color student )
     {
         this.islands.get(islandPosition).addStudents(student,1);
+    }
+
+    public void useCharacterCard(CharacterCard card){
+        //TODO
+        //alla fine del turno di un giocatore chiamare metodo endTurnOfPlayer() che mette a false i check booleani
+        //togliere studenti dalla carta e aggiungere altrettanti
+        //modificare prezzo carta dopo il primo utilizzo
+        //diminuire le monete del player
     }
 
     /**
@@ -606,20 +558,6 @@ public class GameModel {
         this.towersNotCounted = towersNotCounted;
     }
 
-    public List<CharacterCard> getCharacterCards() {
-        return characterCards;
-    }
 
-    public HashMap<String, Integer> getCharactersPositions() {
-        return charactersPositions;
-    }
-
-    public boolean[] getFirstUseCharacters() {
-        return firstUseCharacters;
-    }
-
-    public void setFirstUseCharacters(int position){
-        firstUseCharacters[position]=true;
-    }
 }
 
