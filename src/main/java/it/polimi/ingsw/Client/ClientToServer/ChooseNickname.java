@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
+import it.polimi.ingsw.Server.ClientHandler;
+
 public class ChooseNickname implements SetUpMessage{
     private String nickname;
 

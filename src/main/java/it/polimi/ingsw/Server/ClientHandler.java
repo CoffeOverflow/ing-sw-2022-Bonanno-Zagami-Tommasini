@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
 import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
+import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Exceptions.DuplicateNicknameException;
 import it.polimi.ingsw.Exceptions.InvalidNicknameException;
 import it.polimi.ingsw.Server.ServerToClient.*;
@@ -67,11 +68,11 @@ public class ClientHandler implements Runnable{
                             send(new ActionValid("Nickname has been register successfully!"));
                             state = "Match";
                         } catch (DuplicateNicknameException e) {
-                            System.out.println("Nickname duplicato");
-                            send(new Error(ErrorsType.DUPLICATENICKNAME, "Nickname duplicato."));
+                            //System.out.println("The entered nickname has already been chosen by another player!");
+                            send(new Error(ErrorsType.DUPLICATENICKNAME, "The entered nickname has already been chosen by another player!"));
                         } catch (InvalidNicknameException e) {
-                            System.out.println("Nickname invalido");
-                            send(new Error(ErrorsType.INVALIDNICKNAME, "Nickname invalido."));
+                            //System.out.println("Nickname invalido");
+                            send(new Error(ErrorsType.INVALIDNICKNAME, "The entered nickname is invalid!"));
                         }
                     }
                     break;
@@ -92,8 +93,9 @@ public class ClientHandler implements Runnable{
                     if(answer instanceof SelectMatch){
                         //Controllo sull'intero
                         if(((SelectMatch) answer).getMatch() == 0){
-                            server.newGame(this);
-                            confirmation = true;
+                            state = "Setup";
+                            /*server.newGame(this);
+                            confirmation = true;*/
                         }
                         else{
                             if(availableIDs.contains(((SelectMatch) answer).getMatch())) {
@@ -105,6 +107,19 @@ public class ClientHandler implements Runnable{
                         }
 
                     }
+                    break;
+                case "Setup":
+                    send(new RequestSetUp());
+                    answer = answer();
+                    if (answer instanceof SelectModeAndPlayers){
+                        if(((SelectModeAndPlayers) answer).getNumberOfPlayers() == 2 || ((SelectModeAndPlayers) answer).getNumberOfPlayers() == 3){
+                            server.newGame(this, ((SelectModeAndPlayers) answer).getNumberOfPlayers(), ((SelectModeAndPlayers) answer).isExpertMode());
+                            confirmation = true;
+                        }
+                        else
+                            send(new Error(ErrorsType.CHOSENOTVALID, "Please enter a valid number of players and expert mode!"));
+                    }
+
                     break;
 
             }

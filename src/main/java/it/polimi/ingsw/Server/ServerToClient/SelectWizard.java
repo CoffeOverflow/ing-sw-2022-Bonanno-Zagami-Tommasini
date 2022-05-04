@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
-import java.io.Serializable;
+import it.polimi.ingsw.Client.View;
+
+import java.io.IOException;
 import java.util.List;
 
 public class SelectWizard implements ServerToClientMessage {
@@ -19,5 +21,10 @@ public class SelectWizard implements ServerToClientMessage {
 
     public List<String> getAvailableWizards() {
         return availableWizards;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }
