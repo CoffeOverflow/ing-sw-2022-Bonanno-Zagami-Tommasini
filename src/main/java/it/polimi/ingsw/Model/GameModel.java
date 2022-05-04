@@ -140,27 +140,6 @@ public class GameModel {
 
         EnumMap<Color,Integer> entryStudentPerPlayer=new EnumMap<Color, Integer>(Color.class);
 
-        /**
-         * Randomly assign students to each player
-         */
-        for(int i=0; i<numberOfPlayers;i++)
-        {
-            for (Color c:Color.values())
-                entryStudentPerPlayer.put(c,0);
-            for(int j=0;j<numberOfStudent;j++)
-            {
-                Color col=colorValues.get(rand.nextInt(colorValues.size()));
-                if(studentsBag.get(col)==1)
-                {
-                    colorValues.remove(col);
-                }
-                studentsBag.put(col,studentsBag.get(col)-1);
-                entryStudentPerPlayer.put(col,entryStudentPerPlayer.get(col)+1);
-            }
-
-            players.get(i).setEntryStudents(entryStudentPerPlayer);
-
-        }
         for(Color c:Color.values())
             colorsOnBag.add(c);
 
@@ -221,10 +200,10 @@ public class GameModel {
 
     }
 
-
     public void addPlayer(int id,String nickname){
         Tower towers=Tower.values()[this.players.size()];
         this.players.add(new Player(id,nickname,this.expertMode,towers,numberOfTowers));
+        getPlayerByID(id).setEntryStudents(getStudentsFromBag(numberOfStudent));
     }
     /**
      * Unify the islands and delete the one with the lowest index from the array list
@@ -620,6 +599,32 @@ public class GameModel {
 
     public void setFirstUseCharacters(int position){
         firstUseCharacters[position]=true;
+    }
+
+    public EnumMap<Color,Integer> getStudentsFromBag(int numStudent){
+        EnumMap<Color,Integer> studentsFromBag=new EnumMap<Color, Integer>(Color.class);
+
+        Random rand=new Random();
+        Color col;
+
+        for (Color c: Color.values())
+            studentsFromBag.put(c,0);
+
+        for(int j=0;j<numStudent;j++)
+            {
+                try {
+                    col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
+                    if(studentsBag.get(col)==1)
+                        colorsOnBag.remove(col);
+                    studentsBag.put(col,studentsBag.get(col)-1);
+                    studentsFromBag.put(col,studentsFromBag.get(col)+1);
+                }
+                catch (IllegalArgumentException e){
+                    System.out.println("There are no more students in the bag");
+                    return null;
+                }
+            }
+        return studentsFromBag;
     }
 }
 
