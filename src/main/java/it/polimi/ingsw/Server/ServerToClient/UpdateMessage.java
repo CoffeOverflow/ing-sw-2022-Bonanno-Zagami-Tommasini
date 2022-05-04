@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
-import it.polimi.ingsw.Controller.State.MoveTo;
-import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Client.View;
+
+import java.io.IOException;
 
 public class UpdateMessage implements ServerToClientMessage{
 
@@ -13,5 +14,10 @@ public class UpdateMessage implements ServerToClientMessage{
 
     public BoardChange getChange() {
         return change;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }

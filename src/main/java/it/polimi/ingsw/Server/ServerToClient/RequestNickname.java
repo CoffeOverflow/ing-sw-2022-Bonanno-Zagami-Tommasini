@@ -1,9 +1,16 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
-public class RequestNickname implements ServerToClientMessage{
-    private static String msg="Choose a nickname";
+import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
+import it.polimi.ingsw.Client.ServerHandler;
+import it.polimi.ingsw.Client.View;
+import it.polimi.ingsw.Server.Server;
 
-    public static String getMsg() {
-        return msg;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class RequestNickname implements ServerToClientMessage{
+    @Override
+    public void handle(View view) throws IOException {
+        view.requestNickname();
     }
 }

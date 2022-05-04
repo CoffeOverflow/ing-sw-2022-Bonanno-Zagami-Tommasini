@@ -67,11 +67,11 @@ public class ClientHandler implements Runnable{
                             send(new ActionValid("Nickname has been register successfully!"));
                             state = "Match";
                         } catch (DuplicateNicknameException e) {
-                            System.out.println("Nickname duplicato");
-                            send(new Error(ErrorsType.DUPLICATENICKNAME, "Nickname duplicato."));
+                            //System.out.println("The entered nickname has already been chosen by another player!");
+                            send(new Error(ErrorsType.DUPLICATENICKNAME, "The entered nickname has already been chosen by another player!"));
                         } catch (InvalidNicknameException e) {
-                            System.out.println("Nickname invalido");
-                            send(new Error(ErrorsType.INVALIDNICKNAME, "Nickname invalido."));
+                            //System.out.println("Nickname invalido");
+                            send(new Error(ErrorsType.INVALIDNICKNAME, "The entered nickname is invalid!"));
                         }
                     }
                     break;

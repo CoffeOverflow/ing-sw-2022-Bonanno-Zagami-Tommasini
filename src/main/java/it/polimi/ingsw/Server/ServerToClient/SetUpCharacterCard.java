@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
-import it.polimi.ingsw.Client.ClientToServer.ClientToServerMessage;
+import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Color;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 public class SetUpCharacterCard implements ServerToClientMessage{
 
@@ -46,5 +46,10 @@ public class SetUpCharacterCard implements ServerToClientMessage{
 
     public HashMap<Color, Integer> getThirdCardStudents() {
         return thirdCardStudents;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }

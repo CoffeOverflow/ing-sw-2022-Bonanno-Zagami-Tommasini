@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Constants;
+import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,9 +26,9 @@ public class ServerHandler {
         }
     }
 
-    public Object read() throws IOException, ClassNotFoundException {
+    public ServerToClientMessage read() throws IOException, ClassNotFoundException {
         try{
-            return inputStream.readObject();
+            return (ServerToClientMessage) inputStream.readObject();
         }
         catch(Exception e){
             return null;

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Tower;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,5 +46,10 @@ public class PlayersInfo implements ServerToClientMessage{
 
     public HashMap<String, Tower> getMapTowerToPlayer() {
         return mapTowerToPlayer;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }

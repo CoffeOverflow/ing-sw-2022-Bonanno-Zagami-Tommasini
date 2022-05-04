@@ -75,4 +75,9 @@ public class BoardChange implements Serializable{
     public boolean isConquered() {
         return isConquered;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

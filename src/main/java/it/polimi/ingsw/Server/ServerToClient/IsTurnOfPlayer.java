@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.View;
+
+import java.io.IOException;
+
 public class IsTurnOfPlayer implements ServerToClientMessage{
 
     private String msg;
@@ -10,5 +14,10 @@ public class IsTurnOfPlayer implements ServerToClientMessage{
 
     public String getMsg() {
         return msg;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }

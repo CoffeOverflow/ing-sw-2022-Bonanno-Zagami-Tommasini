@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Color;
-import it.polimi.ingsw.Model.Tower;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 public class MatchCreated implements ServerToClientMessage{
 
@@ -29,5 +29,10 @@ public class MatchCreated implements ServerToClientMessage{
 
     public HashMap<Integer, Color> getMapStudentIsland() {
         return mapStudentIsland;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }

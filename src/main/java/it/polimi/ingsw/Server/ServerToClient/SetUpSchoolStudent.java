@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Color;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class SetUpSchoolStudent implements ServerToClientMessage{
@@ -21,5 +23,10 @@ public class SetUpSchoolStudent implements ServerToClientMessage{
 
     public String getPlayerNickname() {
         return playerNickname;
+    }
+
+    @Override
+    public void handle(View view) throws IOException {
+
     }
 }
