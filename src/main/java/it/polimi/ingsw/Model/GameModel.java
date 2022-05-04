@@ -183,7 +183,6 @@ public class GameModel {
                             if(students.containsKey(col))
                                 students.put(col,students.get(col)+1);
                             students.put(col,1);
-                            characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
                         }
                         catch (IllegalArgumentException e){
                             e.printStackTrace();
@@ -191,6 +190,7 @@ public class GameModel {
                             e.printStackTrace();
                         }
                     }
+                    characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
                 }
                 else if(cardNumber==5){
                     for(int j=0; j<6;j++){
@@ -202,7 +202,6 @@ public class GameModel {
                             if(students.containsKey(col))
                                 students.put(col,students.get(col)+1);
                             students.put(col,1);
-                            characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
                         }
                         catch (IllegalArgumentException e){
                             e.printStackTrace();
@@ -210,6 +209,7 @@ public class GameModel {
                             e.printStackTrace();
                         }
                     }
+                    characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
 
                 }
                 else{
