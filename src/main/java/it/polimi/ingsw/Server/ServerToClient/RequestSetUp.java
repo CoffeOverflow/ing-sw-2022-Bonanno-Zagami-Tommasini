@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server.ServerToClient;
 import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class RequestSetUp implements ServerToClientMessage{
 
@@ -15,6 +16,6 @@ public class RequestSetUp implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.requestSetup();
     }
 }

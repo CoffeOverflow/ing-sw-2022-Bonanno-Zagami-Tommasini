@@ -11,6 +11,9 @@ public interface View {
 
     void chooseMatch(String message) throws IOException;
 
-    void printMessage(String message);
+    void showMessage(String message);
+
+    void requestSetup() throws IOException;
+
 
 }

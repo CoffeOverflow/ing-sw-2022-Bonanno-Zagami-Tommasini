@@ -17,6 +17,6 @@ public class GenericMessage implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-        view.printMessage(message);
+        view.showMessage(message + "\n");
     }
 }

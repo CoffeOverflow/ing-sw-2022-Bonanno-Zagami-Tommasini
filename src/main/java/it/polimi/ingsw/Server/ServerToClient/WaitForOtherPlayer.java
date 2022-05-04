@@ -4,8 +4,11 @@ import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
 
+import static it.polimi.ingsw.Constants.ANSI_RESET;
+import static it.polimi.ingsw.Constants.ANSI_YELLOW;
+
 public class WaitForOtherPlayer implements ServerToClientMessage {
-    private static String msg="Wait for other players...";
+    private static String msg= ANSI_YELLOW + "Wait for other players..." + ANSI_RESET;
 
     public static String getMsg() {
         return msg;
@@ -13,6 +16,6 @@ public class WaitForOtherPlayer implements ServerToClientMessage {
 
     @Override
     public void handle(View view) throws IOException {
-        view.printMessage(msg);
+        view.showMessage(msg + "\n");
     }
 }

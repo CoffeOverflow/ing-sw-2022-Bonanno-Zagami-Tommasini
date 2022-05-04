@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerHandler {
@@ -34,7 +32,7 @@ public class ServerHandler {
             return null;
         }
     }
-    public void write(Object msg) throws IOException {
+    public void send(Object msg) throws IOException {
         outputStream.reset();
         outputStream.writeObject(msg);
         outputStream.flush();

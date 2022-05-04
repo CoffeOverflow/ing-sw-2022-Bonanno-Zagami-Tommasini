@@ -2,18 +2,13 @@ package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
 import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
+import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Constants;
-import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.Server.ServerToClient.*;
-import it.polimi.ingsw.Server.ServerToClient.Error;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.Random;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.Constants.*;
@@ -96,7 +91,7 @@ public class CLI implements View, Runnable {
         System.out.print("Choose a nickname > ");
         Scanner scanner = new Scanner(System.in);
         String nickname = scanner.nextLine();
-        serverHandler.write(new ChooseNickname(nickname));
+        serverHandler.send(new ChooseNickname(nickname));
     }
 
     @Override
@@ -116,12 +111,35 @@ public class CLI implements View, Runnable {
         System.out.print("Select a match to join or type 0 for create new match > ");
         Scanner scanner = new Scanner(System.in);
         int game = scanner.nextInt();
-        serverHandler.write(new SelectMatch(game));
+        serverHandler.send(new SelectMatch(game));
     }
 
     @Override
-    public void printMessage(String message) {
-        System.out.println(message);
+    public void showMessage(String message) {
+        System.out.print(message);
+    }
+
+    @Override
+    public void requestSetup() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        int num = 0;
+        String expert = "";
+        do {
+            showMessage("Select the number of player (2 or 3) > ");
+            scanner = new Scanner(System.in);
+            num = scanner.nextInt();
+            if(num < 2 || num > 3){
+                showError("Please insert 2 or 3!");
+            }
+        }while(num < 2 || num>3);
+        do {
+            showMessage("Expert mode? [y/n] > ");
+            expert =  scanner.next();
+            if(!expert.equals("y") && !expert.equals("n")){
+                showError("Please insert y or n!");
+            }
+        }while(!expert.equals("y") && !expert.equals("n"));
+        serverHandler.send(new SelectModeAndPlayers(num, expert.equals("y")));
     }
 
     @Override
