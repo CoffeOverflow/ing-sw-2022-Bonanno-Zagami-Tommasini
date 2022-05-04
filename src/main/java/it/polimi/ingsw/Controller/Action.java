@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.Tower;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Action {
     private int motherNatureSteps;
@@ -18,6 +19,23 @@ public class Action {
     private MoveTo move;
     private int chooseCloud;
 
+    /**
+     * attributes for the use of character cards
+     */
+    private String asset;
+    private EnumMap<Color, Integer> chosenStudents;
+    private EnumMap<Color, Integer> entranceStudents;
+    private int chosenNumberOfSteps;
+    private Color chosenColor;
+
+
+    public String getAsset() {
+        return asset;
+    }
+
+    public void setAsset(String asset) {
+        this.asset = asset;
+    }
 
     public int getChooseCloud() {
         return chooseCloud;
@@ -62,7 +80,35 @@ public class Action {
         this.motherNatureSteps = motherNatureSteps;
     }
 
+    public EnumMap<Color, Integer> getChosenStudents() {
+        return chosenStudents;
+    }
 
+    public void setChosenStudents(EnumMap<Color, Integer> chosenStudents) {
+        this.chosenStudents = chosenStudents;
+    }
 
+    public EnumMap<Color, Integer> getEntranceStudents() {
+        return entranceStudents;
+    }
 
+    public void setEntranceStudents(EnumMap<Color, Integer> entranceStudents) {
+        this.entranceStudents = entranceStudents;
+    }
+
+    public int getChosenNumberOfSteps() {
+        return chosenNumberOfSteps;
+    }
+
+    public void setChosenNumberOfSteps(int chosenNumberOfSteps) {
+        this.chosenNumberOfSteps = chosenNumberOfSteps;
+    }
+
+    public Color getChosenColor() {
+        return chosenColor;
+    }
+
+    public void setChosenColor(Color chosenColor) {
+        this.chosenColor = chosenColor;
+    }
 }
