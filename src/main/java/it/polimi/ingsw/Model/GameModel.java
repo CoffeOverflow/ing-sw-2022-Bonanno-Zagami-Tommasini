@@ -86,6 +86,7 @@ public class GameModel {
         }
         for(Color c:Color.values()){
             Professor p=new Professor(c);
+            professors.put(c,p);
         }
 
 
@@ -378,10 +379,12 @@ public class GameModel {
                 }
             }
         }
-        if(numOfColor>max)
+        //SISTEMARE QUESTO CONTROLLO!!!!!!!!
+        if(numOfColor>max && (!getProfessors().get(studentColor).getPlayer().equals(getPlayerByID(player)) || getProfessors().get(studentColor).equals(null)))
         {
             getPlayerByID(player).addProfessor(studentColor);
-            getPlayerByID(idMax).removeProfessor(studentColor);
+            if(idMax!=-1)
+             getPlayerByID(idMax).removeProfessor(studentColor);
         }
     }
 

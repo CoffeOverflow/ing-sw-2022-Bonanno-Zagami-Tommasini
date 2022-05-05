@@ -49,6 +49,8 @@ public class Player {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        for(Color c:Color.values())
+            students.put(c,0);
     }
 
 

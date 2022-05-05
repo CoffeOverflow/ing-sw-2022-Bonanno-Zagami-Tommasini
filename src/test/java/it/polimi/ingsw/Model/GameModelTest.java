@@ -41,8 +41,8 @@ class GameModelTest {
         }
 
         gm=new GameModel(expertMode,2);
-        gm.addPlayer(0,"aaa");
-        gm.addPlayer(1,"bbb");
+        gm.addPlayer(1,"aaa");
+        gm.addPlayer(2,"bbb");
 
     }
     @Test
@@ -72,12 +72,36 @@ class GameModelTest {
         studentsOnCloud.put(Color.BLUE,2);
         studentsOnCloud.put(Color.GREEN,1);
         gm.fillCloud(studentsOnCloud,1);
-        //DA FINIRE
+
 
     }
 
     @Test
     void getPlayerInfluence() {
+        EnumMap<Color,Integer> students=new EnumMap<Color, Integer>(Color.class);
+        EnumMap<Color,Integer> students2=new EnumMap<Color, Integer>(Color.class);
+        gm.moveToSchool(1,Color.BLUE);
+        gm.moveToSchool(1,Color.BLUE);
+        gm.moveToSchool(1,Color.BLUE);
+        gm.moveToSchool(2,Color.PINK);
+        gm.moveToSchool(2,Color.PINK);
+        gm.moveToSchool(2,Color.PINK);
+        students.put(Color.BLUE,2);
+        students.put(Color.GREEN,0);
+        students.put(Color.PINK,0);
+        students.put(Color.RED,0);
+        students.put(Color.YELLOW,0);
+        students2.put(Color.BLUE,0);
+        students2.put(Color.GREEN,0);
+        students2.put(Color.PINK,4);
+        students2.put(Color.RED,0);
+        students2.put(Color.YELLOW,0);
+
+        gm.moveStudentsToIsland(1,students);
+        System.out.println(gm.getProfessors().get(Color.BLUE).getPlayer().getPlayerID());
+        assertEquals(gm.getPlayerByID(1),gm.getProfessors().get(Color.BLUE).getPlayer());
+        assertEquals(gm.getPlayerByID(2),gm.getProfessors().get(Color.PINK).getPlayer());
+
     }
 
     @Test

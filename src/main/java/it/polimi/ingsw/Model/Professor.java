@@ -40,7 +40,8 @@ public class Professor {
         if(player.isPresent())
             return player.get();
         else
-            throw new NoSuchElementException();
+            return null;
+           // throw new NoSuchElementException(); SISTEMARE QUAS
     }
 
     public Color getColor(){ return color; }
