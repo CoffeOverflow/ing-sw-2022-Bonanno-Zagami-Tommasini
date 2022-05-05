@@ -368,23 +368,18 @@ public class GameModel {
         getPlayerByID(player).addStudentOf(studentColor);
         int numOfColor=getPlayerByID(player).getStudentsOf(studentColor);
         int max=0;
-        int idMax=-1;
         for(Player p: players)
         {
             if(!p.equals(getPlayerByID(player))){
                 if(p.getStudentsOf(studentColor)>max)
                 {
                     max=p.getStudentsOf(studentColor);
-                    idMax=p.getPlayerID();
                 }
             }
         }
-        //SISTEMARE QUESTO CONTROLLO!!!!!!!!
-        if(numOfColor>max && (!getProfessors().get(studentColor).getPlayer().equals(getPlayerByID(player)) || getProfessors().get(studentColor).equals(null)))
+        if(numOfColor>max)
         {
-            getPlayerByID(player).addProfessor(studentColor);
-            if(idMax!=-1)
-             getPlayerByID(idMax).removeProfessor(studentColor);
+            this.professors.get(studentColor).goToSchool(getPlayerByID(player));
         }
     }
 

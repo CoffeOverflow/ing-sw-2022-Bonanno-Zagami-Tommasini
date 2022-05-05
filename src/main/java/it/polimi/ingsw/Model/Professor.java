@@ -41,7 +41,7 @@ public class Professor {
             return player.get();
         else
             return null;
-           // throw new NoSuchElementException(); SISTEMARE QUAS
+            //throw new NoSuchElementException();
     }
 
     public Color getColor(){ return color; }

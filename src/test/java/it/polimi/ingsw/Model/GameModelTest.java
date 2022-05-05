@@ -77,7 +77,7 @@ class GameModelTest {
     }
 
     @Test
-    void getPlayerInfluence() {
+    void getPlayerInfluenceAndMoveToSchool() {
         EnumMap<Color,Integer> students=new EnumMap<Color, Integer>(Color.class);
         EnumMap<Color,Integer> students2=new EnumMap<Color, Integer>(Color.class);
         gm.moveToSchool(1,Color.BLUE);
@@ -96,31 +96,24 @@ class GameModelTest {
         students2.put(Color.PINK,4);
         students2.put(Color.RED,0);
         students2.put(Color.YELLOW,0);
-
         gm.moveStudentsToIsland(1,students);
-        System.out.println(gm.getProfessors().get(Color.BLUE).getPlayer().getPlayerID());
+        gm.moveStudentsToIsland(1,students2);
         assertEquals(gm.getPlayerByID(1),gm.getProfessors().get(Color.BLUE).getPlayer());
         assertEquals(gm.getPlayerByID(2),gm.getProfessors().get(Color.PINK).getPlayer());
-
+        assertEquals(gm.getPlayerInfluence(1,1),gm.getIslandByPosition(1).getStudentsOf(Color.BLUE));
+        assertEquals(gm.getPlayerInfluence(2,1),gm.getIslandByPosition(1).getStudentsOf(Color.PINK));
     }
 
+
+    /**
+     * The number of students in the bag after creating a game is equal to 130-(gm.getNumberOfStudent()*gm.getNumberOfPlayers()+10)
+     * If we add 1 to these we will have null because the students will be finished from the bag
+     */
     @Test
-    void moveToSchool() {
+    void getStudentsFromBagIntero() {
+        assertNotEquals(gm.getStudentsFromBag(130-(gm.getNumberOfStudent()*gm.getNumberOfPlayers()+10)),null);;
+        assertEquals(gm.getStudentsFromBag(130-(gm.getNumberOfStudent()*gm.getNumberOfPlayers()+10)+1),null);
+
     }
 
-    @Test
-    void getStudentsFromBag() {
-    }
-
-    @Test
-    void moveMotherNature() {
-    }
-
-    @Test
-    void getMotherNaturePosition() {
-    }
-
-    @Test
-    void setTowerOnIsland() {
-    }
 }
