@@ -150,45 +150,16 @@ public class GameModel {
         String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
                 "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
         if(expertMode){
+            try{
             for(int i=0; i<3;i++) {
                 int cardNumber=rand.nextInt(12);
                 EnumMap<Color, Integer> students=new EnumMap<>(Color.class);
                 if(cardNumber==0 || cardNumber==9){
-                    for(int j=0; j<4;j++){
-                        try {
-                            Color col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
-                            if(studentsBag.get(col)==1)
-                                colorsOnBag.remove(col);
-                            studentsBag.put(col,studentsBag.get(col)-1);
-                            if(students.containsKey(col))
-                                students.put(col,students.get(col)+1);
-                            students.put(col,1);
-                        }
-                        catch (IllegalArgumentException e){
-                            e.printStackTrace();
-                        }catch(IllegalStateException e){
-                            e.printStackTrace();
-                        }
-                    }
+                    students=getStudentsFromBag(4);
                     characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
                 }
                 else if(cardNumber==5){
-                    for(int j=0; j<6;j++){
-                        try {
-                            Color col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
-                            if(studentsBag.get(col)==1)
-                                colorsOnBag.remove(col);
-                            studentsBag.put(col,studentsBag.get(col)-1);
-                            if(students.containsKey(col))
-                                students.put(col,students.get(col)+1);
-                            students.put(col,1);
-                        }
-                        catch (IllegalArgumentException e){
-                            e.printStackTrace();
-                        }catch(IllegalStateException e){
-                            e.printStackTrace();
-                        }
-                    }
+                    students=getStudentsFromBag(6);
                     characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
 
                 }
@@ -196,6 +167,8 @@ public class GameModel {
                     characterCards.add(new CharacterCard(characterAssets[cardNumber]));
                 }
                 charactersPositions.put(characterAssets[cardNumber],i);
+            }}catch(Exception e){
+                e.printStackTrace();
             }
         }
 

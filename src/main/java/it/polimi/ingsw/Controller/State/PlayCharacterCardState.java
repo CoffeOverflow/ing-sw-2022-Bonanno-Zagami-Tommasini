@@ -18,11 +18,11 @@ public class PlayCharacterCardState implements GameControllerState{
             if (action.getChosenColor() != null) {
                 card.setChosenColor(Optional.of(action.getChosenColor()));
             }
-            if (action.getChosenStudents() != null) {
-                card.setChosenStudents(Optional.of(action.getChosenStudents()));
+            if (action.getChosenStudents() != null && action.getEntranceStudents() == null) {
+                card.setChosenStudents(action.getChosenStudents());
             }
-            if (action.getEntranceStudents() != null) {
-                card.setChosenStudents(Optional.of(action.getEntranceStudents()));
+            if (action.getEntranceStudents() != null && action.getChosenStudents() != null ) {
+                card.setChosenStudents(action.getChosenStudents(),action.getEntranceStudents());
             }
             if (action.getChosenNumberOfSteps() != 0) {
                 card.setChosenNumberOfSteps(Optional.of(action.getChosenNumberOfSteps()));

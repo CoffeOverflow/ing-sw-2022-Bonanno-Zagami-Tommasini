@@ -25,7 +25,11 @@ public class MoveMotherNatureState implements GameControllerState {
         int noEntryCards=m.getIslandByPosition(m.getMotherNaturePosition()).getNoEntryCard();
         if(noEntryCards==0)
             m.computeInfluence(m.getMotherNaturePosition());
-        else m.getIslandByPosition(m.getMotherNaturePosition()).setNoEntryCard(noEntryCards-1);
+        else{
+            m.getIslandByPosition(m.getMotherNaturePosition()).setNoEntryCard(noEntryCards-1);
+            int n=m.getCharactersPositions().get("herbalist.jpg");
+            m.getCharacterCards().get(n).setNoEntryTiles(Optional.of(m.getCharacterCards().get(n).getNoEntryTiles().get()+1));
+        }
 
     }
 

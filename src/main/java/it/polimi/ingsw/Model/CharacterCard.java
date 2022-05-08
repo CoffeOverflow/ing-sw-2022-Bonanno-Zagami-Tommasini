@@ -167,15 +167,25 @@ public class CharacterCard {
      * @throws IllegalStateException if the card doesn't contain students or if the number of chosen student is wrong
      */
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents) throws IllegalStateException{
-        if( (this.asset.equals("CarteTOT_front1") && chosenStudents.size()==1) ||
-            (this.asset.equals("CarteTOT_front6") && chosenStudents.size()<=3) ||
-            (this.asset.equals("CarteTOT_front10") && chosenStudents.size()==1)
+        if( (this.asset.equals("innkeeper.jpg") && chosenStudents.size()==1) ||
+            (this.asset.equals("princess.jpg") && chosenStudents.size()==1)
         )
         this.chosenStudents=Optional.of(chosenStudents);
         else{
             throw new IllegalStateException("Unexpected number of chosen students: " + chosenStudents.size());
         }
-        //TODO aggiungere per carte da swappare
+    }
+
+    public void setChosenStudents(EnumMap<Color, Integer> chosenStudents,EnumMap<Color, Integer> entranceStudents)throws IllegalStateException{
+        if( ((this.asset.equals("clown.jpg") && chosenStudents.size()<=3)
+                || (this.asset.equals("storyteller.jpg") && chosenStudents.size()<=2))
+                && entranceStudents.size()==chosenStudents.size()) {
+            this.chosenStudents = Optional.of(chosenStudents);
+            this.entranceStudents=Optional.of(entranceStudents);
+        }else{
+            throw new IllegalStateException("Unexpected number of chosen students");
+        }
+
     }
 
     public Optional<Color> getChosenColor() {
@@ -194,15 +204,18 @@ public class CharacterCard {
     public void useCard(int islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
-        if(chosenStudents.isPresent()){
-            for(Color c: chosenStudents.get().keySet()){
-                students.get().put(c,students.get().get(c)-chosenStudents.get().get(c));
-                if(students.get().get(c)==0)
-                    students.get().remove(c);
-            }
+        int count=0;
+        if(chosenStudents.isPresent() && entranceStudents==null)
             chosenStudents=null;
-            //TODO trovare un modo per estrarne altri dalla bag (probabilmente va spostato nel metodo useCharacterCard del model
-        }
+        if(entranceStudents.isPresent())
+            entranceStudents=null;
+        if( chosenNumberOfSteps.isPresent())
+            chosenNumberOfSteps=null;
+        if(chosenColor.isPresent())
+            chosenColor=null;
+        if(noEntryTiles.isPresent())
+            noEntryTiles=Optional.of(noEntryTiles.get());
+
         player.decreaseMoney(this.cost);
     }
 
@@ -210,6 +223,11 @@ public class CharacterCard {
         cost++;
     }
 
+    public Optional<Integer> getNoEntryTiles() {
+        return noEntryTiles;
+    }
 
-
+    public void setNoEntryTiles(Optional<Integer> noEntryTiles) {
+        this.noEntryTiles = noEntryTiles;
+    }
 }

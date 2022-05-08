@@ -32,6 +32,8 @@ class Effect1 implements Effect{
      */
     public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
         model.moveStudentsToIsland(islandPosition,card.getChosenStudents().get());
+        EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
+        card.getStudents().get().forEach((k, v) -> newStudents.merge(k, v, Integer::sum));
     }
 }
 
@@ -48,7 +50,11 @@ class Effect2 implements Effect{
         int noEntryCards=model.getIslandByPosition(islandPosition).getNoEntryCard();
         if(noEntryCards==0)
             model.computeInfluence(islandPosition);
-        else model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards-1);
+        else{
+            model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards-1);
+            int n=model.getCharactersPositions().get("herbalist.jpg");
+            model.getCharacterCards().get(n).setNoEntryTiles(Optional.of(model.getCharacterCards().get(n).getNoEntryTiles().get()+1));
+        }
 
     }
 }
@@ -79,6 +85,8 @@ class Effect4 implements Effect{
     public void effect(Player player, int islandPosition, GameModel model,  CharacterCard card){
         int noEntryCards=model.getIslandByPosition(model.getMotherNaturePosition()).getNoEntryCard();
         model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards+1);
+        int n=model.getCharactersPositions().get("herbalist.jpg");
+        model.getCharacterCards().get(n).setNoEntryTiles(Optional.of(model.getCharacterCards().get(n).getNoEntryTiles().get()-1));
     }
 }
 
@@ -96,7 +104,6 @@ class Effect5 implements Effect{
 }
 
 class Effect6 implements Effect{
-
     /**
      * switch at most three students, among the six of the card, with students in the school entrance
      * @param player player who uses the character card
@@ -175,6 +182,8 @@ class Effect10 implements Effect{
      */
     public void effect(Player player, int islandPosition, GameModel model,  CharacterCard card){
         player.addStudentOf((Color)card.getChosenStudents().get().keySet().toArray()[0]);
+        EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
+        card.getStudents().get().forEach((k, v) -> newStudents.merge(k, v, Integer::sum));
     }
 }
 
@@ -191,7 +200,7 @@ class Effect11 implements Effect{
         int count=0;
         for(int i=0; i<model.getNumberOfPlayers(); i++){
               count+=model.getPlayerByID(i).removeThreeStudentOf(card.getChosenColor().get());
-          }
+        }
         model.addStudentsBag(card.getChosenColor().get(),count);
 
     }
