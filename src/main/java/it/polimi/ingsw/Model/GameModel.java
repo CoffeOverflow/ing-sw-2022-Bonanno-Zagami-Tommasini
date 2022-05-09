@@ -302,24 +302,24 @@ public class GameModel {
         //take control of the island:
         int key=0;
         HashMap<Integer, Integer> influences=new HashMap<>();
-        Optional<Integer> conqueror=null;
-        for(Integer p : getCurrentCardPlayers().keySet()){
+        Optional<Integer> conqueror=Optional.empty();
+        for(Player p:players){
             if(!towersNotCounted && getTowerOnIsland(islandPosition).isPresent() &&
-                    getTowerOnIsland(islandPosition).get().equals(getPlayerTower(p))){
-                influences.put(p,getPlayerInfluence(p,islandPosition)
+                    getTowerOnIsland(islandPosition).get().equals(getPlayerTower(p.getPlayerID()))){
+                influences.put(p.getPlayerID(),getPlayerInfluence(p.getPlayerID(),islandPosition)
                         + getIslandByPosition(islandPosition).getNumberOfTowers());
             }else{
-                influences.put(p,getPlayerInfluence(p,islandPosition));
+                influences.put(p.getPlayerID(),getPlayerInfluence(p.getPlayerID(),islandPosition));
             }
-            if(influences.get(p)>key){
-                key=getPlayerInfluence(p,islandPosition);
-                conqueror=Optional.of(p);
+            if(influences.get(p.getPlayerID())>key){
+                key=getPlayerInfluence(p.getPlayerID(),islandPosition);
+                conqueror=Optional.of(p.getPlayerID());
             }
         }
         //check if the higher value of influence is unique
         if(conqueror.isPresent()){
-            for(Integer p : getCurrentCardPlayers().keySet()){
-                if(p!=conqueror.get() && influences.get(p)==influences.get(conqueror)){
+            for(Player p:players){
+                if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID())==influences.get(conqueror)){
                     conqueror=Optional.empty();
                 }
             }

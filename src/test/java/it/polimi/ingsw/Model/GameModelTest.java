@@ -134,4 +134,28 @@ class GameModelTest {
 
     }
 
+    @Test
+    void testComputeInfluence(){
+        int islandPosition=2;
+        gm.getPlayerByID(1).setStudents(Color.BLUE,2);
+        gm.getPlayerByID(2).setStudents(Color.BLUE,1);
+        gm.getPlayerByID(2).setStudents(Color.PINK,2);
+        gm.moveToSchool(1,Color.BLUE);
+        gm.moveToSchool(2,Color.PINK);
+        for (Color c: Color.values()) {
+            studentOnIsland.put(c,0);
+        }
+        studentOnIsland.put(Color.BLUE,3);
+        gm.moveStudentsToIsland(2,studentOnIsland);
+        gm.computeInfluence(2);
+        assertEquals(gm.getTowerOnIsland(2).get(),gm.getPlayerByID(1).getTower());
+        studentOnIsland.put(Color.BLUE,0);
+        studentOnIsland.put(Color.PINK,5);
+        gm.moveStudentsToIsland(2,studentOnIsland);
+        gm.computeInfluence(2);
+        assertEquals(gm.getTowerOnIsland(2).get(),gm.getPlayerByID(2).getTower());
+    }
+
+    
+
 }
