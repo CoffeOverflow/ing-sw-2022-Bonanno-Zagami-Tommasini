@@ -32,8 +32,6 @@ class GameModelTest {
         assertEquals(gm.getNumberOfPlayers(),2);
         assertEquals(gm.getNumberOfStudent(),7);
         assertEquals(gm.getNumberOfStudentBag(),3);
-        for(int i=0;i<12;i++)
-            System.out.println("Isola "+i+" studente colore "+gm.getIslandByPosition(i).getStudents());
     }
     @BeforeEach
     void setUp(){
@@ -131,6 +129,19 @@ class GameModelTest {
     void getStudentsFromBagIntero() {
         assertNotEquals(gm.getStudentsFromBag(130-(gm.getNumberOfStudent()*gm.getNumberOfPlayers()+10)),null);;
         assertEquals(gm.getStudentsFromBag(130-(gm.getNumberOfStudent()*gm.getNumberOfPlayers()+10)+1),null);
+
+    }
+
+    /**
+     * Check if there are students on Clouds.
+     *
+     */
+    @Test
+    void getStudentsFromBag() {
+        gm.chooseCloud(1,1);
+        assertFalse(gm.areStudentsOnCloud(1));
+        gm.getStudentsFromBag();
+        assertTrue(gm.areStudentsOnCloud(1));
 
     }
 

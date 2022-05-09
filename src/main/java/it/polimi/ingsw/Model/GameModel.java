@@ -366,6 +366,7 @@ public class GameModel {
      */
     public void moveToSchool (int player,Color studentColor){
         getPlayerByID(player).addStudentOf(studentColor);
+        getPlayerByID(player).removeEntryStudent(studentColor);
         int numOfColor=getPlayerByID(player).getStudentsOf(studentColor);
         int max=0;
         for(Player p: players)
