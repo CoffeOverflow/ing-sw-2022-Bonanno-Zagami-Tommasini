@@ -32,6 +32,8 @@ class GameModelTest {
         assertEquals(gm.getNumberOfPlayers(),2);
         assertEquals(gm.getNumberOfStudent(),7);
         assertEquals(gm.getNumberOfStudentBag(),3);
+        for(int i=0;i<12;i++)
+            System.out.println("Isola "+i+" studente colore "+gm.getIslandByPosition(i).getStudents());
     }
     @BeforeEach
     void setUp(){
@@ -44,25 +46,41 @@ class GameModelTest {
         gm.addPlayer(1,"aaa");
         gm.addPlayer(2,"bbb");
 
+
     }
+    @AfterEach
+    void clean(){
+        for(Color c:Color.values())
+            studentOnIsland.put(c,0);
+        gm=null;
+
+    }
+
     @Test
     void mergeAndMoveOnIslands() {
         int blueStudentisland1=gm.getIslandByPosition(1).getStudentsOf(Color.BLUE);
         int pinkStudentisland1=gm.getIslandByPosition(1).getStudentsOf(Color.PINK);
         int greenStudentisland1=gm.getIslandByPosition(1).getStudentsOf(Color.GREEN);
+        int blueStudentisland2=gm.getIslandByPosition(2).getStudentsOf(Color.BLUE);
+        int pinkStudentisland2=gm.getIslandByPosition(2).getStudentsOf(Color.PINK);
+        int greenStudentisland2=gm.getIslandByPosition(2).getStudentsOf(Color.GREEN);
         for(Color c:Color.values())
             studentOnIsland.put(c,0);
         studentOnIsland.put(Color.BLUE,1);
         studentOnIsland.put(Color.PINK,2);
         studentOnIsland.put(Color.GREEN,1);
+
         gm.moveStudentsToIsland(1,studentOnIsland);
         gm.moveStudentsToIsland(2,studentOnIsland);
+        gm.getIslandByPosition(1).setTower(Tower.BLACK);
+        assertEquals(gm.getIslandByPosition(1).getNumberOfTowers(),1);
         gm.mergeIslands(1,2);
         int size=gm.getIslandSize();
         assertEquals(size,11);
-        assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.BLUE),blueStudentisland1+2);
-        assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.PINK),pinkStudentisland1+4);
-        assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.GREEN),greenStudentisland1+2);
+        assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.BLUE),blueStudentisland1+2+blueStudentisland2);
+        assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.PINK),pinkStudentisland1+4+pinkStudentisland2);
+        assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.GREEN),greenStudentisland1+2+greenStudentisland2);
+        assertEquals(gm.getIslandByPosition(1).getNumberOfTowers(),2);
     }
 
     @Test
