@@ -147,7 +147,7 @@ class GameModelTest {
 
     @Test
     void testComputeInfluence(){
-        int islandPosition=2;
+        //int islandPosition=2;
         gm.getPlayerByID(1).setStudents(Color.BLUE,2);
         gm.getPlayerByID(2).setStudents(Color.BLUE,1);
         gm.getPlayerByID(2).setStudents(Color.PINK,2);

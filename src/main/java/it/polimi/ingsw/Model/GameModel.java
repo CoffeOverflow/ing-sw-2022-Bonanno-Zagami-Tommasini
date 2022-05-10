@@ -341,19 +341,19 @@ public class GameModel {
     }
 
     public void checkMergeIsland( int island, Tower tower){
-        if(island==getIslandSize()-1 && getTowerOnIsland(island-1).equals(tower)){
+        if(island==getIslandSize()-1 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island);
             checkMergeIsland( island-1,tower);
-        }else if(island==getIslandSize()-1 && getTowerOnIsland(0).equals(tower) ){
+        }else if(island==getIslandSize()-1 && getTowerOnIsland(0).isPresent() && getTowerOnIsland(0).get().equals(tower) ){
             mergeIslands(0,island);
             checkMergeIsland(0,tower);
-        }else if(island==0 && getTowerOnIsland(getIslandSize()-1).equals(tower)){
+        }else if(island==0 && getTowerOnIsland(getIslandSize()-1).isPresent() && getTowerOnIsland(getIslandSize()-1).get().equals(tower)){
             mergeIslands(island,getIslandSize()-1);
             checkMergeIsland( island,tower);
-        }else if((island-1)>=0 && getTowerOnIsland(island-1).equals(tower)){
+        }else if((island-1)>=0 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island);
             checkMergeIsland( island-1,tower);
-        }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).equals(tower)){
+        }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).isPresent() && getTowerOnIsland(island+1).get().equals(tower)){
             mergeIslands(island,island+1);
             checkMergeIsland(island,tower);
         }
