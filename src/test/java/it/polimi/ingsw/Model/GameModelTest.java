@@ -165,6 +165,10 @@ class GameModelTest {
         gm.moveStudentsToIsland(2,studentOnIsland);
         gm.computeInfluence(2);
         assertEquals(gm.getTowerOnIsland(2).get(),gm.getPlayerByID(2).getTower());
+        gm.moveStudentsToIsland(1,studentOnIsland);
+        gm.computeInfluence(1);
+        assertEquals(gm.getTowerOnIsland(1).get(),gm.getPlayerByID(2).getTower());
+        assertEquals(gm.getIslandByPosition(1).getNumberOfTowers(),2);
     }
 
     
