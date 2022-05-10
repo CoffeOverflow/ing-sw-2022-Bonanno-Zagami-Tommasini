@@ -175,9 +175,9 @@ public class CharacterCard {
         for(Color c: chosenStudents.keySet()){
             studentNumber+=chosenStudents.get(c);
         }
-        if( (this.asset.equals("CarteTOT_front1") && studentNumber==1) ||
-            (this.asset.equals("CarteTOT_front6") && studentNumber<=3) ||
-            (this.asset.equals("CarteTOT_front10") && studentNumber==1)
+        if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
+            (this.asset.equals("clown.jpg") && studentNumber<=3) ||
+            (this.asset.equals("princess.jpg") && studentNumber==1)
         )
         this.chosenStudents=Optional.of(chosenStudents);
         else{
