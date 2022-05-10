@@ -14,13 +14,13 @@ public class TakeStudentsState implements GameControllerState{
     @Override
     public void turnAction(GameController gc, Action action){
         GameModel m=gc.getModel();
-        EnumMap<Color,Integer> entryStudents=new EnumMap<Color, Integer>(Color.class);
+        EnumMap<Color,Integer> entryStudents=m.getPlayerByID(m.getCurrentPlayer()).getEntryStudents();
         int number=0;
             if(m.areStudentsOnCloud(action.getChooseCloud()))
             {
                 for(Color c:Color.values())
                     number+=entryStudents.get(c);
-                if((m.getNumberOfStudent()-number)==(m.getNumberOfStudent()-m.getNumberOfStudentBag())) {
+                if((m.getNumberOfStudent()-number)==m.getNumberOfStudentBag()) {
                     m.getPlayerByID(m.getCurrentPlayer()).addEntryStudents(m.takeStudentsFromCloud(action.getChooseCloud()));
                 }
                 else

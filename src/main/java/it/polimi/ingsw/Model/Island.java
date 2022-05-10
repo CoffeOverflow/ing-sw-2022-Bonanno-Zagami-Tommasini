@@ -9,7 +9,7 @@ import java.util.Optional;
  */
 public class Island {
 
-    private Optional<Tower> tower;
+    private Optional<Tower> tower=Optional.empty();
     private int numberOfTowers;
     private EnumMap<Color,Integer> students;
 
@@ -65,6 +65,7 @@ public class Island {
 
     public void setTower(Tower tower) {
         this.tower=Optional.of(tower);
+        numberOfTowers++;
     }
 
     public void setNumberOfTowers(int numberOfTowers) {

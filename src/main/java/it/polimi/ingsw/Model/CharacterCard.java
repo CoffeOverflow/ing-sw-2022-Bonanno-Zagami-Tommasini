@@ -35,10 +35,14 @@ public class CharacterCard {
             throws IllegalArgumentException, IllegalStateException{
 
         this.asset = asset;
+        int studentNumber=0;
+        for(Color c: students.keySet()){
+            studentNumber+=students.get(c);
+        }
 
         switch (asset) {
             case "innkeeper.jpg":
-                if (students!=null && students.size() == 4) {
+                if (students!=null && studentNumber == 4) {
                     this.students=Optional.of(students);
                 }else{
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
@@ -47,7 +51,7 @@ public class CharacterCard {
                 cost=1;
                 break;
             case "clown.jpg":
-                if (students!=null && students.size() == 6){
+                if (students!=null && studentNumber == 6){
                     this.students=Optional.of(students);
                 }
                 else {
@@ -57,7 +61,7 @@ public class CharacterCard {
                 cost=1;
                 break;
             case "princess.jpg":
-                if (students!=null && students.size() == 4){
+                if (students!=null && studentNumber == 4){
                     this.students=Optional.of(students);
                 }
                 else {
@@ -167,12 +171,16 @@ public class CharacterCard {
      * @throws IllegalStateException if the card doesn't contain students or if the number of chosen student is wrong
      */
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents) throws IllegalStateException{
-        if( (this.asset.equals("innkeeper.jpg") && chosenStudents.size()==1) ||
-            (this.asset.equals("princess.jpg") && chosenStudents.size()==1)
+        int studentNumber=0;
+        for(Color c: chosenStudents.keySet()){
+            studentNumber+=chosenStudents.get(c);
+        }
+        if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
+            (this.asset.equals("princess.jpg") && studentNumber==1)
         )
         this.chosenStudents=Optional.of(chosenStudents);
         else{
-            throw new IllegalStateException("Unexpected number of chosen students: " + chosenStudents.size());
+            throw new IllegalStateException("Unexpected number of chosen students: " + studentNumber);
         }
     }
 
