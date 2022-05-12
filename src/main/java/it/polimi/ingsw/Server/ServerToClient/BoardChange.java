@@ -23,25 +23,33 @@ public class BoardChange implements Serializable{
 
     private boolean isConquered=false;
 
+
+
+    private Change change;
+
     public BoardChange(MoveTo moveTo, Color studentColor, int islandPosition) {
         this.moveTo = moveTo;
         this.studentColor = studentColor;
         this.islandPosition = islandPosition;
+        this.change=Change.STUDENTONISLAND;
     }
 
     public BoardChange(int motherNatureSteps) {
         this.motherNatureSteps = motherNatureSteps;
+        this.change=Change.MOTHERNATURE;
     }
 
     public BoardChange(Tower conquerorTower) {
         this.isConquered = true;
         this.conquerorTower = conquerorTower;
+        this.change=Change.CONQUER;
     }
 
     public BoardChange(int mergedIsland1, int mergedIsland2) {
         this.mergedIsland1 = mergedIsland1;
         this.mergedIsland2 = mergedIsland2;
         this.isConquered = true;
+        this.change=Change.MERGE;
     }
 
     public MoveTo getMoveTo() {
@@ -75,6 +83,7 @@ public class BoardChange implements Serializable{
     public boolean isConquered() {
         return isConquered;
     }
+    public Change getChange() { return change; }
 
     @Override
     public int hashCode() {

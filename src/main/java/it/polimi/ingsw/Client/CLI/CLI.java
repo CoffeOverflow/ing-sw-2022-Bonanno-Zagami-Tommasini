@@ -135,10 +135,10 @@ public class CLI implements View, Runnable {
         do {
             showMessage("Expert mode? [y/n] > ");
             expert =  scanner.next();
-            if(!expert.equals("y") && !expert.equals("n")){
+            if(!expert.equalsIgnoreCase("y") && !expert.equalsIgnoreCase("n")){
                 showError("Please insert y or n!");
             }
-        }while(!expert.equals("y") && !expert.equals("n"));
+        }while(!expert.equalsIgnoreCase("y") && !expert.equalsIgnoreCase("n"));
         serverHandler.send(new SelectModeAndPlayers(num, expert.equals("y")));
     }
 
@@ -152,7 +152,6 @@ public class CLI implements View, Runnable {
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-
         }
 
     }
