@@ -162,7 +162,9 @@ public class GameModel {
                             studentsBag.put(col,studentsBag.get(col)-1);
                             if(students.containsKey(col))
                                 students.put(col,students.get(col)+1);
-                            students.put(col,1);
+                            else{
+                                students.put(col,1);
+                            }
                         }
                         catch (IllegalArgumentException e){
                             e.printStackTrace();
@@ -181,7 +183,9 @@ public class GameModel {
                             studentsBag.put(col,studentsBag.get(col)-1);
                             if(students.containsKey(col))
                                 students.put(col,students.get(col)+1);
-                            students.put(col,1);
+                            else{
+                                students.put(col,1);
+                            }
                         }
                         catch (IllegalArgumentException e){
                             e.printStackTrace();
@@ -241,7 +245,7 @@ public class GameModel {
      */
     public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
     {
-        for (Color c: Color.values()) {
+        for (Color c: students.keySet()) {
             this.islands.get(islandPosition).addStudents(c,students.get(c));
         }
     }
@@ -624,6 +628,10 @@ public class GameModel {
                 }
             }
         return studentsFromBag;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }
 

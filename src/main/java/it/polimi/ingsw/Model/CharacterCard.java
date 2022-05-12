@@ -40,6 +40,7 @@ public class CharacterCard {
             studentNumber+=students.get(c);
         }
 
+
         switch (asset) {
             case "innkeeper.jpg":
                 if (students!=null && studentNumber == 4) {
@@ -129,9 +130,6 @@ public class CharacterCard {
         return chosenStudents;
     }
 
-    public void setChosenStudents(Optional<EnumMap<Color, Integer>> chosenStudents) {
-        this.chosenStudents = chosenStudents;
-    }
     public void setChosenNumberOfSteps(Optional<Integer> chosenNumberOfSteps) {
         this.chosenNumberOfSteps = chosenNumberOfSteps;
     }
@@ -143,10 +141,6 @@ public class CharacterCard {
 
     public Optional<EnumMap<Color, Integer>> getEntranceStudents() {
         return entranceStudents;
-    }
-
-    public void setEntranceStudents(Optional<EnumMap<Color, Integer>> entranceStudents) {
-        this.entranceStudents = entranceStudents;
     }
 
     public int getCost(){
@@ -176,14 +170,32 @@ public class CharacterCard {
             studentNumber+=chosenStudents.get(c);
         }
         if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
-            (this.asset.equals("clown.jpg") && studentNumber<=3) ||
-            (this.asset.equals("princess.jpg") && studentNumber==1)
+                (this.asset.equals("princess.jpg") && studentNumber==1)
         )
-        this.chosenStudents=Optional.of(chosenStudents);
+            this.chosenStudents=Optional.of(chosenStudents);
         else{
             throw new IllegalStateException("Unexpected number of chosen students: " + studentNumber);
         }
-        //TODO aggiungere per carte da swappare
+    }
+
+    public void setChosenStudents(EnumMap<Color, Integer> chosenStudents,EnumMap<Color, Integer> entranceStudents)throws IllegalStateException{
+        int studentNumber=0;
+        int entranceNumber=0;
+        for(Color c: chosenStudents.keySet()){
+            studentNumber+=chosenStudents.get(c);
+        }
+        for(Color c: entranceStudents.keySet()){
+            entranceNumber+=entranceStudents.get(c);
+        }
+        if( ((this.asset.equals("clown.jpg") && studentNumber<=3)
+                || (this.asset.equals("storyteller.jpg") && studentNumber<=2))
+                && entranceNumber==studentNumber) {
+            this.chosenStudents = Optional.of(chosenStudents);
+            this.entranceStudents=Optional.of(entranceStudents);
+        }else{
+            throw new IllegalStateException("Unexpected number of chosen students");
+        }
+
     }
 
     public Optional<Color> getChosenColor() {
@@ -202,15 +214,18 @@ public class CharacterCard {
     public void useCard(int islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
-        if(chosenStudents.isPresent()){
-            for(Color c: chosenStudents.get().keySet()){
-                students.get().put(c,students.get().get(c)-chosenStudents.get().get(c));
-                if(students.get().get(c)==0)
-                    students.get().remove(c);
-            }
+        int count=0;
+        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null)
             chosenStudents=null;
-            //TODO trovare un modo per estrarne altri dalla bag (probabilmente va spostato nel metodo useCharacterCard del model
-        }
+        if(entranceStudents!=null && entranceStudents.isPresent())
+            entranceStudents=null;
+        if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())
+            chosenNumberOfSteps=null;
+        if(chosenColor!=null && chosenColor.isPresent())
+            chosenColor=null;
+        if(noEntryTiles!=null && noEntryTiles.isPresent())
+            noEntryTiles=Optional.of(noEntryTiles.get());
+
         player.decreaseMoney(this.cost);
     }
 
@@ -218,6 +233,11 @@ public class CharacterCard {
         cost++;
     }
 
+    public Optional<Integer> getNoEntryTiles() {
+        return noEntryTiles;
+    }
 
-
+    public void setNoEntryTiles(Optional<Integer> noEntryTiles) {
+        this.noEntryTiles = noEntryTiles;
+    }
 }
