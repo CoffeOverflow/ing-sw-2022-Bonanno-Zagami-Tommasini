@@ -13,7 +13,7 @@ class CloudTest {
     Cloud cloud;
     @BeforeEach
     public void testClassCreation() {
-        Cloud cloud = new Cloud();
+        cloud = new Cloud();
         for(Color color : Color.values()){
             assertEquals(cloud.getStudents().get(color), 0);
         }
