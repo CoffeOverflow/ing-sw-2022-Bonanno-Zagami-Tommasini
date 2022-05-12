@@ -1,7 +1,11 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Exceptions.MatchFullException;
+import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.GenericMessage;
+import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 import it.polimi.ingsw.Server.ServerToClient.WaitForOtherPlayer;
 
@@ -17,6 +21,9 @@ public class GameHandler {
     private final boolean expertMode;
     private final List<ClientHandler> players;
     private final Server server;
+    private final GameController controller;
+    private ArrayList<Wizards> wizards = new ArrayList<>(List.of(Wizards.values()));
+    private int ready = 0;
 
     public GameHandler(int gameID, String name, int numberOfPlayers, boolean expertMode, Server server){
         this.gameID = gameID;
@@ -25,16 +32,27 @@ public class GameHandler {
         this.expertMode = expertMode;
         this.players = new ArrayList<>();
         this.server = server;
+        this.controller = new GameController(expertMode, numberOfPlayers);
+    }
+
+    public GameController getController() {
+        return controller;
     }
 
     public synchronized void addPlayer(ClientHandler player) throws MatchFullException {
         if(players.size() >= numberOfPlayers)
             throw new MatchFullException();
         this.players.add(player);
-        if(players.size() == numberOfPlayers)
-            server.removeAvailableGame(gameID);
+        this.controller.getModel().addPlayer(player.getPlayerID(), player.getNickname());
         player.send(new GenericMessage(ANSI_BLUE + "\nWelcome to "+this.name+"!\n" + ANSI_RESET));
-        player.send(new WaitForOtherPlayer());
+        if(players.size() == numberOfPlayers){
+            server.removeAvailableGame(gameID);
+            setup();
+        }
+        else{
+            player.send(new WaitForOtherPlayer());
+        }
+
     }
 
     public int getGameID() {
@@ -58,6 +76,24 @@ public class GameHandler {
         for(ClientHandler client: players){
             if(client.equals(player))
                 client.send(message);
+        }
+    }
+
+    public synchronized void playerChooseWizard(Wizards wizard, ClientHandler player){
+        if(wizards.contains(wizard)){
+
+        }
+        else{}
+    }
+
+    public void setup(){
+        sendAll(new GenericMessage("The game is starting..."));
+        sendAll(new SelectWizard(wizards));
+        while(ready < numberOfPlayers){
+
+        }
+        while(true){
+
         }
     }
 

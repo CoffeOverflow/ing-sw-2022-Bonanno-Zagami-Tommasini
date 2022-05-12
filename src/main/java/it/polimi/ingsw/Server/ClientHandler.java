@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
+import it.polimi.ingsw.Client.ClientToServer.ClientToServerMessage;
 import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
 import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Exceptions.DuplicateNicknameException;
@@ -38,6 +39,10 @@ public class ClientHandler implements Runnable{
 
     public int getPlayerID(){
         return playerID;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public void send(ServerToClientMessage message){
@@ -143,8 +148,10 @@ public class ClientHandler implements Runnable{
         System.out.println("Client "+getPlayerID()+ " handler started!");
         setup();
         System.out.println("Client "+getPlayerID()+" select game setup complete!");
+        ClientToServerMessage answer = null;
         while (true){
-
+            answer = (ClientToServerMessage) answer();
+            answer.handleMessage(game, this);
         }
 
 

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
-import it.polimi.ingsw.Controller.GameController;
+import it.polimi.ingsw.Server.ClientHandler;
+import it.polimi.ingsw.Server.GameHandler;
 
 public class UseCharacterCard implements ClientToServerMessage{
 
@@ -16,9 +17,9 @@ public class UseCharacterCard implements ClientToServerMessage{
         return asset;
     }
 
-    public void handleMessage(GameController controller){
+    public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
         //TODO settare attributi(da creare) in action per le carte personaggio
-        controller.doAction(action);
+        game.getController().doAction(action);
     }
 }
