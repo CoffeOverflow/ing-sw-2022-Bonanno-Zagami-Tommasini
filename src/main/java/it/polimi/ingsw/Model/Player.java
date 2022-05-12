@@ -185,4 +185,8 @@ public class Player {
     public void setWizard(Wizards wizard) {
         this.wizard = wizard;
     }
+
+    public void decreaseMoney(int n){
+        money-=n;
+    }
 }

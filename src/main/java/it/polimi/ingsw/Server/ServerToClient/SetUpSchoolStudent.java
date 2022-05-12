@@ -4,25 +4,26 @@ import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Color;
 
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.HashMap;
 
 public class SetUpSchoolStudent implements ServerToClientMessage{
 
-    private HashMap<Color, Integer> entranceStudents;
+    private EnumMap<Color, Integer> entranceStudents;
 
-    private String playerNickname;
+    private Integer playerID;
 
-    public SetUpSchoolStudent(HashMap<Color, Integer> entranceStudents, String playerNickname) {
+    public SetUpSchoolStudent(EnumMap<Color, Integer> entranceStudents, Integer playerID) {
         this.entranceStudents = entranceStudents;
-        this.playerNickname = playerNickname;
+        this.playerID = playerID;
     }
 
-    public HashMap<Color, Integer> getEntranceStudents() {
+    public EnumMap<Color, Integer> getEntranceStudents() {
         return entranceStudents;
     }
 
-    public String getPlayerNickname() {
-        return playerNickname;
+    public Integer getPlayerID() {
+        return playerID;
     }
 
     @Override

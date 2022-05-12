@@ -20,54 +20,110 @@ public class CharacterCard {
 
     private Optional<Integer> chosenNumberOfSteps;
     private Optional<Color> chosenColor;
+    private Optional<Integer> noEntryTiles;
 
 
 
     /**
      * constructor for the character cards that have some students placed on them
-     * @param cost cost that has to be paid to use the card
      * @param asset name of the file corresponding to the card
      * @param students contains the student placed on the card, mapping their color with their quantity
      * @throws IllegalArgumentException if the number of students is wrong
      * @throws IllegalStateException if the card doesn't contain students
      */
-    public CharacterCard(int cost, String asset, EnumMap<Color, Integer> students)
+    public CharacterCard( String asset, EnumMap<Color, Integer> students)
             throws IllegalArgumentException, IllegalStateException{
 
-        this.cost = cost;
         this.asset = asset;
+        int studentNumber=0;
+        for(Color c: students.keySet()){
+            studentNumber+=students.get(c);
+        }
 
         switch (asset) {
-            case "CarteTOT_front":
-                if (students!=null && students.size() == 4) {
+            case "innkeeper.jpg":
+                if (students!=null && studentNumber == 4) {
                     this.students=Optional.of(students);
                 }else{
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
                 }
                 effect = new Effect1();
+                cost=1;
                 break;
-            case "CarteTOT_front6":
-                if (students!=null && students.size() == 6){
+            case "clown.jpg":
+                if (students!=null && studentNumber == 6){
                     this.students=Optional.of(students);
                 }
                 else {
                     throw new IllegalArgumentException("the card must contain six students and the chosen students must be at most three");
                 }
                 effect = new Effect6();
+                cost=1;
                 break;
-            case "CarteTOT_front10":
-                if (students!=null && students.size() == 4){
+            case "princess.jpg":
+                if (students!=null && studentNumber == 4){
                     this.students=Optional.of(students);
                 }
                 else {
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
                 }
                 effect = new Effect10();
+                cost=2;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + asset);
         }
     }
+
+    /**
+     * constructor for the character cards that don't have students on them
+     * @param asset name of the file corresponding to the card
+     */
+    public CharacterCard(String asset){
+        this.asset = asset;
+        switch(asset){
+            case "auctioneer.jpg":
+                cost=3;
+                effect=new Effect2();
+                break;
+            case "postman.jpg":
+                cost=1;
+                effect=new Effect3();
+                break;
+            case "herbalist.jpg":
+                noEntryTiles=Optional.of(4);
+                cost=2;
+                effect=new Effect4();
+                break;
+            case "centaur.jpg":
+                cost=3;
+                effect=new Effect5();
+                break;
+            case "infantryman.jpg":
+                cost=2;
+                effect=new Effect7();
+                break;
+            case "lumberjack.jpg":
+                cost=3;
+                effect=new Effect8();
+                break;
+            case "storyteller.jpg":
+                cost=1;
+                effect=new Effect9();
+                break;
+            case "thief.jpg":
+                cost=3;
+                effect=new Effect11();
+                break;
+            case "merchant.jpg":
+                cost=2;
+                effect=new Effect12();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + asset);
+        }
+    }
+
 
     public Optional<EnumMap<Color, Integer>> getChosenStudents() {
         return chosenStudents;
@@ -84,15 +140,6 @@ public class CharacterCard {
         return chosenNumberOfSteps;
     }
 
-    /**
-     * constructor for the character cards that don't have students on them
-     * @param cost cost cost that has to be paid to use the card
-     * @param asset name of the file corresponding to the card
-     */
-    public CharacterCard(int cost, String asset){
-        this.cost = cost;
-        this.asset = asset;
-    }
 
     public Optional<EnumMap<Color, Integer>> getEntranceStudents() {
         return entranceStudents;
@@ -124,13 +171,17 @@ public class CharacterCard {
      * @throws IllegalStateException if the card doesn't contain students or if the number of chosen student is wrong
      */
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents) throws IllegalStateException{
-        if( (this.asset.equals("CarteTOT_front1") && chosenStudents.size()==1) ||
-            (this.asset.equals("CarteTOT_front6") && chosenStudents.size()<=3) ||
-            (this.asset.equals("CarteTOT_front10") && chosenStudents.size()==1)
+        int studentNumber=0;
+        for(Color c: chosenStudents.keySet()){
+            studentNumber+=chosenStudents.get(c);
+        }
+        if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
+                (this.asset.equals("clown.jpg") && studentNumber<=3) ||
+                (this.asset.equals("princess.jpg") && studentNumber==1)
         )
-        this.chosenStudents=Optional.of(chosenStudents);
+            this.chosenStudents=Optional.of(chosenStudents);
         else{
-            throw new IllegalStateException("Unexpected number of chosen students: " + chosenStudents.size());
+            throw new IllegalStateException("Unexpected number of chosen students: " + studentNumber);
         }
         //TODO aggiungere per carte da swappare
     }
@@ -145,16 +196,26 @@ public class CharacterCard {
 
     /**
      * execute the effect of the character card
-     * @param player player who uses the card
      * @param islandPosition island on which the changes will be applied
+     * @param model instance of the game model
      */
-    public void useCard(Player player, int islandPosition, GameModel model){
+    public void useCard(int islandPosition, GameModel model){
+        Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
         if(chosenStudents.isPresent()){
-            //TODO qua devo togliere gli studenti scelti dalla carta
-            chosenStudents.empty();
+            for(Color c: chosenStudents.get().keySet()){
+                students.get().put(c,students.get().get(c)-chosenStudents.get().get(c));
+                if(students.get().get(c)==0)
+                    students.get().remove(c);
+            }
+            chosenStudents=null;
             //TODO trovare un modo per estrarne altri dalla bag (probabilmente va spostato nel metodo useCharacterCard del model
         }
+        player.decreaseMoney(this.cost);
+    }
+
+    public void increaseCost(){
+        cost++;
     }
 
 
