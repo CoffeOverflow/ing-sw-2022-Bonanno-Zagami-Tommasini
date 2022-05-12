@@ -5,6 +5,7 @@ import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
 import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Exceptions.DuplicateNicknameException;
 import it.polimi.ingsw.Exceptions.InvalidNicknameException;
+import it.polimi.ingsw.Exceptions.MatchFullException;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
 
@@ -103,8 +104,14 @@ public class ClientHandler implements Runnable{
                         }
                         else{
                             if(availableIDs.contains(((SelectMatch) answer).getMatch())) {
-                                server.getGameByID(((SelectMatch) answer).getMatch()).addPlayer(this);
-                                confirmation = true;
+                                try {
+                                    server.getAvailableGameByID(((SelectMatch) answer).getMatch()).addPlayer(this);
+                                    confirmation = true;
+                                }
+                                catch (MatchFullException e){
+                                    send(new Error(ErrorsType.CHOSENOTVALID, "The selected match is full, please select another match!"));
+                                }
+
                             }
                             else
                                 send(new Error(ErrorsType.CHOSENOTVALID, "Please enter a valid game id!"));

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Exceptions.MatchFullException;
 import it.polimi.ingsw.Server.ServerToClient.GenericMessage;
 import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 import it.polimi.ingsw.Server.ServerToClient.WaitForOtherPlayer;
@@ -15,17 +16,23 @@ public class GameHandler {
     private final int numberOfPlayers;
     private final boolean expertMode;
     private final List<ClientHandler> players;
+    private final Server server;
 
-    public GameHandler(int gameID, String name, int numberOfPlayers, boolean expertMode){
+    public GameHandler(int gameID, String name, int numberOfPlayers, boolean expertMode, Server server){
         this.gameID = gameID;
         this.name = name;
         this.numberOfPlayers = numberOfPlayers;
         this.expertMode = expertMode;
         this.players = new ArrayList<>();
+        this.server = server;
     }
 
-    public void addPlayer(ClientHandler player){
+    public synchronized void addPlayer(ClientHandler player) throws MatchFullException {
+        if(players.size() >= numberOfPlayers)
+            throw new MatchFullException();
         this.players.add(player);
+        if(players.size() == numberOfPlayers)
+            server.removeAvailableGame(gameID);
         player.send(new GenericMessage(ANSI_BLUE + "\nWelcome to "+this.name+"!\n" + ANSI_RESET));
         player.send(new WaitForOtherPlayer());
     }
