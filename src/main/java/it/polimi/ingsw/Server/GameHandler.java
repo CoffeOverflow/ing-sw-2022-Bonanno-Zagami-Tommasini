@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Server.ServerToClient.GenericMessage;
 import it.polimi.ingsw.Server.ServerToClient.WaitForOtherPlayer;
 
@@ -14,6 +15,7 @@ public class GameHandler {
     private int numberOfPlayers;
     private boolean expertMode;
     private List<ClientHandler> players;
+    private GameController controller;
 
     public GameHandler(int gameID, String name, int numberOfPlayers, boolean expertMode){
         this.gameID = gameID;
@@ -21,6 +23,7 @@ public class GameHandler {
         this.numberOfPlayers = numberOfPlayers;
         this.expertMode = expertMode;
         this.players = new ArrayList<ClientHandler>();
+        this.controller=new GameController(expertMode, numberOfPlayers);
     }
 
     public void addPlayer(ClientHandler player){
@@ -37,4 +40,5 @@ public class GameHandler {
     public String toString() {
         return gameID + ". " + name + " " + players.size() + "/" + numberOfPlayers + " players " + (expertMode ? ANSI_RED + "Expert mode" + ANSI_RESET : ANSI_GREEN + "Base mode" + ANSI_RESET);
     }
+
 }
