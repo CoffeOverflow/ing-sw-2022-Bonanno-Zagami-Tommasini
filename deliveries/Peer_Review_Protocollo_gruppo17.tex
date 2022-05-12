@@ -1,0 +1,42 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\title{Peer-Review 2: Protocollo di Comunicazione}
+\author{Giuseppe Bonanno, Federica Tommasini, Angelo Zagami\\Gruppo 18}
+
+\begin{document}
+
+\maketitle
+
+Valutazione della documentazione del protocollo di comunicazione del gruppo 17.
+
+\section{Lati positivi}
+
+%Indicare in questa sezione quali sono secondo voi i lati positivi del protocollo dell'altro gruppo. Concentratevi sui sequence diagram, cercando di capire se qualche caso è stato dimenticato o se ci sono problemi che complicano l'implementazione di CLI o GUI.
+\begin{itemize}
+    \item Sequence diagram ben strutturati: in generale la struttura dei messaggi scambiata è ben strutturata e non presenta lacune;
+    \item Contollo endgame quando viene conquistata un'isola: buona l'idea di effettuare il controllo, e l'eventuale invio del messaggio, nella fase azione, subito dopo la conquista dell'isola.
+    
+\end{itemize}
+Fatta eccezione per la mancanza di messaggi di errori, non vi sono particolari problemi che influiscono sull'implementazione della CLI o della GUI.
+\section{Lati negativi}
+
+%Come nella sezione precedente, indicare quali sono secondo voi i lati negativi.
+\begin{itemize}
+    \item Messaggi d'errore: non vengono considerati eventuali messaggi d'errore quando il client risponde al server, ad esempio quando con il messaggio RequestCharacterIndex viene richiesto di scegliere la carta da giocare, non è previsto un messaggio d'errore nel caso in cui l'intero restituito non corrisponda ad una carta.
+    \item Messaggi da client a server: le risposte del client ai messaggi del server sono implementate con oggetti serializzati, senza implementare un'interfaccia che rappresenta i messaggi. Ciò comporta che tutti gli oggetti del model debbano implementare l'interfaccia serializable e, inoltre, non risulta possibile gestire i messaggi che arrivano al server con un unico metodo implementato diversamente in base al tipo di messaggio.
+    
+\end{itemize}
+
+
+\section{Confronto}
+
+%Individuate i punti di forza del protocollo dell’altro gruppo rispetto alla vostra, quali sono le modifiche che potete fare al vostro protocollo per migliorarlo, e quali miglioramenti può fare l'altro gruppo.
+\begin{itemize}
+    \item Messaggi da client a server: nel nostro caso tali messaggi implementano un'interfaccia apposita "ClientToServerMessage" che permette di gestire i messaggi che arrivano utilizzando metodi generici dell'interfaccia, piuttosto che utilizzare degli oggetti serializzati che devono essere gestiti ogni volta in modo diverso.
+    \item Controlli lato client: nel nostro caso tutti i controlli sono implementati lato server, ciò implica la presenza di messaggi di errore da gestire ma anche una maggior sicurezza, evitando la presenza "malicious client".
+\end{itemize}
+
+\end{document}

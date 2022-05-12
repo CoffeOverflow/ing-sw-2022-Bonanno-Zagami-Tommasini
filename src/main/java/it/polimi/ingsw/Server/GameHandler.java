@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Server.ServerToClient.GenericMessage;
+import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 import it.polimi.ingsw.Server.ServerToClient.WaitForOtherPlayer;
 
 import java.util.ArrayList;
@@ -36,9 +37,28 @@ public class GameHandler {
         return gameID;
     }
 
+    public void sendAll(ServerToClientMessage message){
+        for(ClientHandler client: players){
+            client.send(message);
+        }
+    }
+
+    public void sendAllExcept(ServerToClientMessage message, ClientHandler player){
+        for(ClientHandler client: players){
+            if(!client.equals(player))
+                client.send(message);
+        }
+    }
+
+    public void sendTo(ServerToClientMessage message, ClientHandler player){
+        for(ClientHandler client: players){
+            if(client.equals(player))
+                client.send(message);
+        }
+    }
+
     @Override
     public String toString() {
         return gameID + ". " + name + " " + players.size() + "/" + numberOfPlayers + " players " + (expertMode ? ANSI_RED + "Expert mode" + ANSI_RESET : ANSI_GREEN + "Base mode" + ANSI_RESET);
     }
-
 }

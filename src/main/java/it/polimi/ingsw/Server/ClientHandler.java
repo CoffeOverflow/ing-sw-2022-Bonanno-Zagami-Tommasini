@@ -19,6 +19,8 @@ public class ClientHandler implements Runnable{
     private Server server;
     private int playerID;
     private String nickname;
+    private GameHandler game;
+
 
     public ClientHandler(Socket clientSocket, Server server, int playerID) throws IOException {
         this.clientSocket = clientSocket;
@@ -27,6 +29,10 @@ public class ClientHandler implements Runnable{
         this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
 
+    }
+
+    public void setGame(GameHandler game){
+        this.game = game;
     }
 
     public int getPlayerID(){
@@ -94,8 +100,6 @@ public class ClientHandler implements Runnable{
                         //Controllo sull'intero
                         if(((SelectMatch) answer).getMatch() == 0){
                             state = "Setup";
-                            /*server.newGame(this);
-                            confirmation = true;*/
                         }
                         else{
                             if(availableIDs.contains(((SelectMatch) answer).getMatch())) {

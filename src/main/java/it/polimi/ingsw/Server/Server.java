@@ -108,6 +108,7 @@ public class Server implements Runnable{
         int id = getNewGameID();
         GameHandler newGame = new GameHandler(id, nicknameByID.get(firstplayer.getPlayerID())+"'s match", numberOfPlayer, expertMode);
         newGame.addPlayer(firstplayer);
+        firstplayer.setGame(newGame);
         availableGames.put(id, newGame);
     }
 
