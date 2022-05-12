@@ -164,6 +164,7 @@ public class Player {
         for(AssistantCard card: assistantCards){
             if (card.getName().equals(name)){
                 assistantCards.remove(card);
+                break;
             }
         }
     }
