@@ -13,6 +13,6 @@ public class ActionNonValid implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.showMessage(msg);
     }
 }

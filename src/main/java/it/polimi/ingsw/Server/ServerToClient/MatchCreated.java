@@ -34,6 +34,6 @@ public class MatchCreated implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-        //view.matchCreated(this);
+        view.matchCreated(this);
     }
 }

@@ -12,7 +12,9 @@ import java.util.List;
 
 public class VirtualModel {
 
-    private List<Island> islands=new ArrayList<>();
+
+
+    private List<Island> islands =new ArrayList<>();
 
     private int motherNaturePosition;
 
@@ -71,5 +73,29 @@ public class VirtualModel {
             characterCards.add(card);
         }
 
+    }
+
+    public List<Island> getIslands() {
+
+        return islands;
+    }
+
+    public int getMotherNaturePosition() {
+
+        return motherNaturePosition;
+    }
+
+    public List<CharacterCard> getCharacterCards() {
+
+        return characterCards;
+    }
+
+    public List<Player> getPlayers() {
+
+        return players;
+    }
+
+    public void moveMotherNature(int stpes){
+        this.motherNaturePosition=(motherNaturePosition+stpes)%12;
     }
 }

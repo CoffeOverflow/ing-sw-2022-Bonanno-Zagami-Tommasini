@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Server.ServerToClient.*;
+
 import java.io.IOException;
 
 public interface View {
@@ -16,28 +18,22 @@ public interface View {
 
     void requestSetup() throws IOException;
 
-    /*
-    void actionNonValid(String message);
+    void matchCreated(MatchCreated msg);
 
-    void update(ServerToClientMessage msg);
+    void playersInfo(PlayersInfo msg);
 
-    void matchCreated(ServerToClientMessage msg);
+    void setUpCharacterCard(SetUpCharacterCard msg);
 
-    void isTurnOfPlayer(ServerToClientMessage msg);
+    void setUpSchoolStudent(SetUpSchoolStudent msg);
 
-    void otherPlayerWins(ServerToClientMessage msg);
+    void isTurnOfPlayer(String msg);
 
-    void playersInfo(ServerToClientMessage msg);
+    void youWin();
 
-    void selectAssistantCard(ServerToClientMessage msg);
+    void otherPlayerWins(OtherPlayerWins msg);
 
-    void setUpCharacterCard(ServerToClientMessage msg);
+    void selectAssistantCard(SelectAssistantCard msg);
 
-    void setUpSchoolStudent(ServerToClientMessage msg);
+    void update(UpdateMessage msg);
 
-    void youWin(ServerToClientMessage msg);
-
-
-
-     */
 }

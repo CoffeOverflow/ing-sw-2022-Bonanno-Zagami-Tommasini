@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Tower;
 
 import java.io.Serializable;
@@ -13,6 +14,8 @@ public class BoardChange implements Serializable{
 
     private int islandPosition;
 
+    private int conquerIsland;
+
     private int motherNatureSteps;
 
     private Tower conquerorTower;
@@ -21,16 +24,18 @@ public class BoardChange implements Serializable{
 
     private int mergedIsland2;
 
+
+    private Player player;
+
     private boolean isConquered=false;
-
-
 
     private Change change;
 
-    public BoardChange(MoveTo moveTo, Color studentColor, int islandPosition) {
+    public BoardChange(MoveTo moveTo, Color studentColor, int islandPosition,Player player) {
         this.moveTo = moveTo;
         this.studentColor = studentColor;
         this.islandPosition = islandPosition;
+        this.player=player;
         this.change=Change.STUDENTONISLAND;
     }
 
@@ -39,9 +44,10 @@ public class BoardChange implements Serializable{
         this.change=Change.MOTHERNATURE;
     }
 
-    public BoardChange(Tower conquerorTower) {
+    public BoardChange(Tower conquerorTower,int conquerIsland) {
         this.isConquered = true;
         this.conquerorTower = conquerorTower;
+        this.conquerIsland=conquerIsland;
         this.change=Change.CONQUER;
     }
 
@@ -83,7 +89,12 @@ public class BoardChange implements Serializable{
     public boolean isConquered() {
         return isConquered;
     }
+
     public Change getChange() { return change; }
+
+    public Player getPlayer() {return player;}
+
+    public int getConquerIsland() {return conquerIsland;}
 
     @Override
     public int hashCode() {
