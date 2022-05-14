@@ -18,6 +18,6 @@ public class IsTurnOfPlayer implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.isTurnOfPlayer(msg);
     }
 }

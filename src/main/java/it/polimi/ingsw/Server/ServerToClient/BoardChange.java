@@ -36,7 +36,7 @@ public class BoardChange implements Serializable{
         this.studentColor = studentColor;
         this.islandPosition = islandPosition;
         this.player=player;
-        this.change=Change.STUDENTONISLAND;
+        this.change=Change.MOVESTUDENT;
     }
 
     public BoardChange(int motherNatureSteps) {

@@ -9,6 +9,7 @@ import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
@@ -198,9 +199,9 @@ public class CLI implements View, Runnable {
         BoardChange bchange=msg.getChange();
         switch(bchange.getChange()){
             case CONQUER:
-
+                this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 break;
-            case STUDENTONISLAND:
+            case MOVESTUDENT:
                 if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
                     this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(bchange.getStudentColor(),1);
                 }
@@ -214,9 +215,10 @@ public class CLI implements View, Runnable {
                 }
                 break;
             case MERGE:
+                this.vmodel.mergeIslands(bchange.getMergedIsland1(), bchange.getMergedIsland2());
                 break;
             case MOTHERNATURE:
-                    this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
+                this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
                 break;
         }
     }
