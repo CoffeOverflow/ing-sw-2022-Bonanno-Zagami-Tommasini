@@ -4,10 +4,8 @@ import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Exceptions.MatchFullException;
 import it.polimi.ingsw.Model.Wizards;
-import it.polimi.ingsw.Server.ServerToClient.GenericMessage;
-import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
-import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
-import it.polimi.ingsw.Server.ServerToClient.WaitForOtherPlayer;
+import it.polimi.ingsw.Server.ServerToClient.*;
+import it.polimi.ingsw.Server.ServerToClient.Error;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +79,14 @@ public class GameHandler {
 
     public synchronized void playerChooseWizard(Wizards wizard, ClientHandler player){
         if(wizards.contains(wizard)){
-
+            wizards.remove(wizard);
+            controller.getModel().getPlayerByID(player.getPlayerID()).setWizard(wizard);
+            ready++;
         }
-        else{}
+        else{
+            player.send(new Error(ErrorsType.CHOSENOTVALID, "Scelta non valida"));
+            player.send(new SelectWizard(wizards));
+        }
     }
 
     public void setup(){
@@ -92,6 +95,7 @@ public class GameHandler {
         while(ready < numberOfPlayers){
 
         }
+        sendAll(new GenericMessage("Match is starting..."));
         while(true){
 
         }
