@@ -21,15 +21,21 @@ public class GameModel {
     private int numberOfPlayers,numberOfStudent,numberOfTowers,motherNaturePosition,numberOfStudentBag;
     private boolean expertMode;
     private List<Player> players=new ArrayList<Player>();
-    private List<CharacterCard> cards=new ArrayList<CharacterCard>();
+    private List<CharacterCard> characterCards=new ArrayList<CharacterCard>();
+
+    private HashMap<String,Integer> charactersPositions=new HashMap<>();
     private List<Cloud> clouds=new ArrayList<Cloud>();
     private Optional<Integer> coins;
     private List<Island> islands=new ArrayList<Island>();
     private EnumMap<Color,Integer> studentsBag=new EnumMap<>(Color.class);
     private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
-    private HashMap<String,Integer> characterCards=new HashMap<String,Integer>();
-    private EnumMap <Color,Integer> studentsOnCard=new EnumMap<Color,Integer>(Color.class);
 
+    private boolean twoAdditionalSteps=false;
+    private boolean twoAdditionalPoints=false;
+    private Color notCountedColor=null;
+    private boolean towersNotCounted=false;
+
+    private boolean[] firstUseCharacters=new boolean[3];
 
     private HashMap<Integer,AssistantCard> currentCardPlayers=new HashMap<>();
     private int currentPlayer;
@@ -44,8 +50,6 @@ public class GameModel {
      * @param numberOfPlayers
      */
     public GameModel(boolean expertMode,int numberOfPlayers) {
-
-        //INIZIALIZZARE CHARACTER CARD
 
         this.numberOfPlayers=numberOfPlayers;
         this.expertMode=expertMode;
@@ -82,7 +86,9 @@ public class GameModel {
         }
         for(Color c:Color.values()){
             Professor p=new Professor(c);
+            professors.put(c,p);
         }
+
 
         /**
          * Set a random position for mother nature
@@ -135,36 +141,43 @@ public class GameModel {
 
         EnumMap<Color,Integer> entryStudentPerPlayer=new EnumMap<Color, Integer>(Color.class);
 
-        /**
-         * Randomly assign students to each player
-         */
-        for(int i=0; i<numberOfPlayers;i++)
-        {
-            for (Color c:Color.values())
-                entryStudentPerPlayer.put(c,0);
-            for(int j=0;j<numberOfStudent;j++)
-            {
-                Color col=colorValues.get(rand.nextInt(colorValues.size()));
-                if(studentsBag.get(col)==1)
-                {
-                    colorValues.remove(col);
-                }
-                studentsBag.put(col,studentsBag.get(col)-1);
-                entryStudentPerPlayer.put(col,entryStudentPerPlayer.get(col)+1);
-            }
-
-            players.get(i).setEntryStudents(entryStudentPerPlayer);
-
-        }
         for(Color c:Color.values())
             colorsOnBag.add(c);
 
-    }
+        /**
+         * Initialize character cards
+         */
+        String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
+                "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
+        if(expertMode){
+            try{
+            for(int i=0; i<3;i++) {
+                int cardNumber=rand.nextInt(12);
+                EnumMap<Color, Integer> students=new EnumMap<>(Color.class);
+                if(cardNumber==0 || cardNumber==9){
+                    students=getStudentsFromBag(4);
+                    characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
+                }
+                else if(cardNumber==5){
+                    students=getStudentsFromBag(6);
+                    characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
 
+                }
+                else{
+                    characterCards.add(new CharacterCard(characterAssets[cardNumber]));
+                }
+                charactersPositions.put(characterAssets[cardNumber],i);
+            }}catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
+    }
 
     public void addPlayer(int id,String nickname){
         Tower towers=Tower.values()[this.players.size()];
         this.players.add(new Player(id,nickname,this.expertMode,towers,numberOfTowers));
+        getPlayerByID(id).setEntryStudents(getStudentsFromBag(numberOfStudent));
     }
     /**
      * Unify the islands and delete the one with the lowest index from the array list
@@ -217,10 +230,6 @@ public class GameModel {
         this.islands.get(islandPosition).addStudents(student,1);
     }
 
-    public void useCharacterCard(){
-        //MANCA QUESTA
-    }
-
     /**
      * Use the assistant card with the name inside the card parameter
      * @param player
@@ -250,9 +259,14 @@ public class GameModel {
     {
             int influence = 0;
             for (Color c : Color.values()) {
-                if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
-                    influence += this.islands.get(island).getStudentsOf(c);
-                 }
+                if(!c.equals(notCountedColor)){
+                    if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
+                        influence += this.islands.get(island).getStudentsOf(c);
+                        if(player==currentPlayer && twoAdditionalPoints){
+                            influence+=2;
+                        }
+                    }
+                }
             }
             return influence;
     }
@@ -263,7 +277,7 @@ public class GameModel {
         HashMap<Integer, Integer> influences=new HashMap<>();
         Optional<Integer> conqueror=null;
         for(Integer p : getCurrentCardPlayers().keySet()){
-            if(getTowerOnIsland(islandPosition).isPresent() &&
+            if(!towersNotCounted && getTowerOnIsland(islandPosition).isPresent() &&
                     getTowerOnIsland(islandPosition).get().equals(getPlayerTower(p))){
                 influences.put(p,getPlayerInfluence(p,islandPosition)
                         + getIslandByPosition(islandPosition).getNumberOfTowers());
@@ -338,10 +352,12 @@ public class GameModel {
                 }
             }
         }
-        if(numOfColor>max)
+        //SISTEMARE QUESTO CONTROLLO!!!!!!!!
+        if(numOfColor>max && (!getProfessors().get(studentColor).getPlayer().equals(getPlayerByID(player)) || getProfessors().get(studentColor).equals(null)))
         {
             getPlayerByID(player).addProfessor(studentColor);
-            getPlayerByID(idMax).removeProfessor(studentColor);
+            if(idMax!=-1)
+             getPlayerByID(idMax).removeProfessor(studentColor);
         }
     }
 
@@ -384,6 +400,13 @@ public class GameModel {
 
     public void moveMotherNature(int steps){
         this.motherNaturePosition=(motherNaturePosition+steps)%12;}
+
+    public void endTurnOfPlayer(){
+        this.towersNotCounted=false;
+        this.notCountedColor=null;
+        this.twoAdditionalPoints=false;
+        this.twoAdditionalSteps=false;
+    }
 
     public int getMotherNaturePosition(){
         return this.motherNaturePosition;
@@ -475,6 +498,12 @@ public class GameModel {
         return false;
     }
 
+    public void addStudentsBag(Color c, int n){
+        numberOfStudentBag+=n;
+        int numberBefore=studentsBag.get(c);
+        studentsBag.put(c,numberBefore+n);
+    }
+
     public Player getPlayerByTower(Tower tower){
         Player ret=null;
         for(Player p:players){
@@ -497,6 +526,80 @@ public class GameModel {
 
     public EnumMap<Color, Professor> getProfessors() {
         return professors;
+    }
+
+    public boolean isTwoAdditionalSteps() {
+        return twoAdditionalSteps;
+    }
+
+    public void setTwoAdditionalSteps(boolean twoAdditionalSteps) {
+        this.twoAdditionalSteps = twoAdditionalSteps;
+    }
+
+    public boolean isTwoAdditionalPoints() {
+        return twoAdditionalPoints;
+    }
+
+    public void setTwoAdditionalPoints(boolean twoAdditionalPoints) {
+        this.twoAdditionalPoints = twoAdditionalPoints;
+    }
+
+    public Color getNotCountedColor() {
+        return notCountedColor;
+    }
+
+    public void setNotCountedColor(Color notCountedColor) {
+        this.notCountedColor = notCountedColor;
+    }
+
+    public boolean isTowersNotCounted() {
+        return towersNotCounted;
+    }
+
+    public void setTowersNotCounted(boolean towersNotCounted) {
+        this.towersNotCounted = towersNotCounted;
+    }
+
+    public List<CharacterCard> getCharacterCards() {
+        return characterCards;
+    }
+
+    public HashMap<String, Integer> getCharactersPositions() {
+        return charactersPositions;
+    }
+
+    public boolean[] getFirstUseCharacters() {
+        return firstUseCharacters;
+    }
+
+    public void setFirstUseCharacters(int position){
+        firstUseCharacters[position]=true;
+    }
+
+    public EnumMap<Color,Integer> getStudentsFromBag(int numStudent){
+        EnumMap<Color,Integer> studentsFromBag=new EnumMap<Color, Integer>(Color.class);
+
+        Random rand=new Random();
+        Color col;
+
+        for (Color c: Color.values())
+            studentsFromBag.put(c,0);
+
+        for(int j=0;j<numStudent;j++)
+            {
+                try {
+                    col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
+                    if(studentsBag.get(col)==1)
+                        colorsOnBag.remove(col);
+                    studentsBag.put(col,studentsBag.get(col)-1);
+                    studentsFromBag.put(col,studentsFromBag.get(col)+1);
+                }
+                catch (IllegalArgumentException e){
+                    System.out.println("There are no more students in the bag");
+                    return null;
+                }
+            }
+        return studentsFromBag;
     }
 }
 

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
-import it.polimi.ingsw.Controller.GameController;
+import it.polimi.ingsw.Server.ClientHandler;
+import it.polimi.ingsw.Server.GameHandler;
 
 public class ChooseCloud implements ClientToServerMessage{
 
@@ -15,9 +16,9 @@ public class ChooseCloud implements ClientToServerMessage{
         return cloud;
     }
 
-    public void handleMessage(GameController controller){
+    public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
         action.setChooseCloud(cloud);
-        controller.doAction(action);
+        game.getController().doAction(action);
     }
 }

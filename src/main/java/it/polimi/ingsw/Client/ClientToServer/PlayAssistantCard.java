@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
-import it.polimi.ingsw.Controller.Action;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.AssistantCard;
-
-import java.util.HashMap;
+import it.polimi.ingsw.Server.ClientHandler;
+import it.polimi.ingsw.Server.GameHandler;
 
 public class PlayAssistantCard implements ClientToServerMessage{
 
@@ -18,12 +16,12 @@ public class PlayAssistantCard implements ClientToServerMessage{
         return cardValue;
     }
 
-    public void handleMessage(GameController controller){
-        int playerId=controller.getModel().getCurrentPlayer();
-        AssistantCard card= controller.getModel().getPlayerByID(playerId).getAssistantCards().get(cardValue);
-        controller.addCurrentAssistantCard(playerId,card);
-        if(controller.getCurrentCardPlayers().size()==4)
-            controller.doAction(null);
+    public void handleMessage(GameHandler game, ClientHandler player){
+        int playerId= game.getController().getModel().getCurrentPlayer();
+        AssistantCard card= game.getController().getModel().getPlayerByID(playerId).getAssistantCards().get(cardValue);
+        game.getController().addCurrentAssistantCard(playerId,card);
+        if(game.getController().getCurrentCardPlayers().size()==4)
+            game.getController().doAction(null);
 
     }
 }

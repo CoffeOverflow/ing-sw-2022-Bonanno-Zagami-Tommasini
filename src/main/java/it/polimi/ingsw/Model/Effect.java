@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.GameController;
 
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -31,6 +32,8 @@ class Effect1 implements Effect{
      */
     public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
         model.moveStudentsToIsland(islandPosition,card.getChosenStudents().get());
+        EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
+        card.getStudents().get().forEach((k, v) -> newStudents.merge(k, v, Integer::sum));
     }
 }
 
@@ -47,7 +50,11 @@ class Effect2 implements Effect{
         int noEntryCards=model.getIslandByPosition(islandPosition).getNoEntryCard();
         if(noEntryCards==0)
             model.computeInfluence(islandPosition);
-        else model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards-1);
+        else{
+            model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards-1);
+            int n=model.getCharactersPositions().get("herbalist.jpg");
+            model.getCharacterCards().get(n).setNoEntryTiles(Optional.of(model.getCharacterCards().get(n).getNoEntryTiles().get()+1));
+        }
 
     }
 }
@@ -60,15 +67,8 @@ class Effect3 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
-        if(card.getChosenNumberOfSteps().get()<=model.getCurrentCardPlayers().get(model.getCurrentPlayer()).getMothernatureSteps()+2){
-            model.moveMotherNature(card.getChosenNumberOfSteps().get());
-        }else{
-            System.out.println("the number of steps chosen is higher than the one indicated by the assistant card");
-        }
-        int noEntryCards=model.getIslandByPosition(islandPosition).getNoEntryCard();
-        if(noEntryCards==0)
-            model.computeInfluence(model.getMotherNaturePosition());
-        else model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards-1);
+
+        model.setTwoAdditionalSteps(true);
 
     }
 }
@@ -85,6 +85,8 @@ class Effect4 implements Effect{
     public void effect(Player player, int islandPosition, GameModel model,  CharacterCard card){
         int noEntryCards=model.getIslandByPosition(model.getMotherNaturePosition()).getNoEntryCard();
         model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards+1);
+        int n=model.getCharactersPositions().get("herbalist.jpg");
+        model.getCharacterCards().get(n).setNoEntryTiles(Optional.of(model.getCharacterCards().get(n).getNoEntryTiles().get()-1));
     }
 }
 
@@ -97,44 +99,11 @@ class Effect5 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, int islandPosition, GameModel model,CharacterCard card){
-        //take control of the island:
-        int key=0;
-        HashMap<Integer, Integer> influences=new HashMap<>();
-        Optional<Integer> conqueror=null;
-        for(Integer p : model.getCurrentCardPlayers().keySet()){
-            influences.put(p,model.getPlayerInfluence(p,islandPosition));
-            if(influences.get(p)>key){
-                key=model.getPlayerInfluence(p,islandPosition);
-                conqueror=Optional.of(p);
-            }
-        }
-        //check if the higher value of influence is unique
-        if(conqueror.isPresent()){
-            for(Integer p : model.getCurrentCardPlayers().keySet()){
-                if(p!=conqueror.get() && influences.get(p)==influences.get(conqueror)){
-                    conqueror=Optional.empty();
-                }
-            }
-        }
-
-        //if the value is unique, conquer the island
-        if(conqueror.isPresent()){
-            Optional<Tower> oldTower= model.getTowerOnIsland(islandPosition);
-            model.setTowerOnIsland(islandPosition,conqueror.get());
-            if(oldTower.isPresent()){
-                int oldNumberOfTower=model.getPlayerByTower(oldTower.get()).getNumberOfTower();
-                model.getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
-            }
-            model.getPlayerByID(conqueror.get()).buildTower();
-
-            model.checkMergeIsland(islandPosition,
-                    model.getPlayerTower(conqueror.get()));
-        }
+        model.setTowersNotCounted(true);
     }
 }
 
 class Effect6 implements Effect{
-
     /**
      * switch at most three students, among the six of the card, with students in the school entrance
      * @param player player who uses the character card
@@ -161,48 +130,7 @@ class Effect7 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
-        //take control of the island:
-        int key=0;
-        HashMap<Integer, Integer> influences=new HashMap<>();
-        Optional<Integer> conqueror=null;
-        for(Integer p : model.getCurrentCardPlayers().keySet()){
-            if(model.getTowerOnIsland(islandPosition).isPresent() &&
-                    model.getTowerOnIsland(islandPosition).get().equals(model.getPlayerTower(p))){
-                influences.put(p,model.getPlayerInfluence(p,islandPosition)
-                        + model.getIslandByPosition(islandPosition).getNumberOfTowers());
-            }else{
-                influences.put(p,model.getPlayerInfluence(p,islandPosition));
-            }
-            if(p.equals(player)){
-                influences.put(p,influences.get(p)+2);
-            }
-            if(influences.get(p)>key){
-                key=model.getPlayerInfluence(p,islandPosition);
-                conqueror=Optional.of(p);
-            }
-        }
-        //check if the higher value of influence is unique
-        if(conqueror.isPresent()){
-            for(Integer p : model.getCurrentCardPlayers().keySet()){
-                if(p!=conqueror.get() && influences.get(p)==influences.get(conqueror)){
-                    conqueror=Optional.empty();
-                }
-            }
-        }
-
-        //if the value is unique, conquer the island
-        if(conqueror.isPresent()){
-            Optional<Tower> oldTower= model.getTowerOnIsland(islandPosition);
-            model.setTowerOnIsland(islandPosition,conqueror.get());
-            if(oldTower.isPresent()){
-                int oldNumberOfTower=model.getPlayerByTower(oldTower.get()).getNumberOfTower();
-                model.getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
-            }
-            model.getPlayerByID(conqueror.get()).buildTower();
-
-            model.checkMergeIsland(islandPosition,
-                    model.getPlayerTower(conqueror.get()));
-        }
+        model.setTwoAdditionalPoints(true);
 
     }
 }
@@ -217,53 +145,7 @@ class Effect8 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, int islandPosition,GameModel model, CharacterCard card){
-        //take control of the island:
-        int key=0;
-        HashMap<Integer, Integer> influences=new HashMap<>();
-        Optional<Integer> conqueror=null;
-        for(Integer p : model.getCurrentCardPlayers().keySet()){
-            int influence = 0;
-            for (Color c : Color.values()) {
-                if(!c.equals(card.getChosenColor().get())){
-                    if (model.getPlayerByID(p).equals(model.getProfessors().get(c).getPlayer())) {
-                        influence += model.getIslandByPosition(islandPosition).getStudentsOf(c);
-                    }
-                }
-            }
-            if(model.getTowerOnIsland(islandPosition).isPresent() &&
-                    model.getTowerOnIsland(islandPosition).get().equals(model.getPlayerTower(p))){
-                influences.put(p,influence + model.getIslandByPosition(islandPosition).getNumberOfTowers());
-            }else{
-                influences.put(p,influence);
-            }
-
-            if(influences.get(p)>key){
-                key=model.getPlayerInfluence(p,islandPosition);
-                conqueror=Optional.of(p);
-            }
-        }
-        //check if the higher value of influence is unique
-        if(conqueror.isPresent()){
-            for(Integer p : model.getCurrentCardPlayers().keySet()){
-                if(p!=conqueror.get() && influences.get(p)==influences.get(conqueror)){
-                    conqueror=Optional.empty();
-                }
-            }
-        }
-
-        //if the value is unique, conquer the island
-        if(conqueror.isPresent()){
-            Optional<Tower> oldTower= model.getTowerOnIsland(islandPosition);
-            model.setTowerOnIsland(islandPosition,conqueror.get());
-            if(oldTower.isPresent()){
-                int oldNumberOfTower=model.getPlayerByTower(oldTower.get()).getNumberOfTower();
-                model.getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
-            }
-            model.getPlayerByID(conqueror.get()).buildTower();
-
-            model.checkMergeIsland(islandPosition,
-                    model.getPlayerTower(conqueror.get()));
-        }
+        model.setNotCountedColor(card.getChosenColor().get());
     }
 }
 
@@ -299,9 +181,9 @@ class Effect10 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, int islandPosition, GameModel model,  CharacterCard card){
-        //int n=player.getStudentsOf(card.chosenStudents.get().keySet().iterator().next());
-        //player.setStudents(card.chosenStudents.get().keySet().iterator().next(),n+1);
-        //TODO
+        player.addStudentOf((Color)card.getChosenStudents().get().keySet().toArray()[0]);
+        EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
+        card.getStudents().get().forEach((k, v) -> newStudents.merge(k, v, Integer::sum));
     }
 }
 
@@ -315,7 +197,12 @@ class Effect11 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, int islandPosition, GameModel model,CharacterCard card){
-          //TODO
+        int count=0;
+        for(int i=0; i<model.getNumberOfPlayers(); i++){
+              count+=model.getPlayerByID(i).removeThreeStudentOf(card.getChosenColor().get());
+        }
+        model.addStudentsBag(card.getChosenColor().get(),count);
+
     }
 }
 
@@ -330,6 +217,16 @@ class Effect12 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, int islandPosition, GameModel model,CharacterCard card){
-         //TODO
+         for(Professor p:model.getProfessors().values()){
+             try{
+                if(p.getPlayer().getStudentsOf(p.getColor())==
+                        player.getStudentsOf(p.getColor())){
+                    p.goToSchool(player);
+                 }
+             }catch(NoSuchElementException e){
+
+             }
+         }
+
     }
 }

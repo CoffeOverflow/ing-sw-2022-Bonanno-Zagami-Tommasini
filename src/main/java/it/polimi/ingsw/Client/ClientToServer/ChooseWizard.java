@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Wizards;
+import it.polimi.ingsw.Server.ClientHandler;
+import it.polimi.ingsw.Server.GameHandler;
 
 public class ChooseWizard implements ClientToServerMessage{
     private Wizards wizard;
@@ -14,9 +15,8 @@ public class ChooseWizard implements ClientToServerMessage{
         return wizard;
     }
 
-    public void handleMessage(GameController controller){
-        int playerId=controller.getModel().getCurrentPlayer();
-        controller.getModel().getPlayerByID(playerId).setWizard(wizard);
+    public void handleMessage(GameHandler game, ClientHandler player){
+        game.playerChooseWizard(wizard, player);
     }
 
 }

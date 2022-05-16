@@ -49,6 +49,8 @@ public class Player {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        for(Color c:Color.values())
+            students.put(c,0);
     }
 
 
@@ -168,6 +170,19 @@ public class Player {
 
     public void removeEntryStudent(Color color){
         entryStudents.merge(color, -1, Integer::sum);
+    }
+
+    public int removeThreeStudentOf(Color color){
+        int res=0;
+        int n=getStudentsOf(color);
+        if(n>=3){
+            students.put(color,n-3);
+            res=3;
+        }else{
+            students.put(color,0);
+            res=n;
+        }
+        return res;
     }
 
     public boolean studentIsPresent(Color color){
