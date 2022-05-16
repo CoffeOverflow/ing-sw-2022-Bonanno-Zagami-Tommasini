@@ -5,10 +5,16 @@ import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
 import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
+import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Constants;
+import it.polimi.ingsw.Controller.State.MoveTo;
+import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Island;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.Constants.*;
@@ -16,9 +22,11 @@ import static it.polimi.ingsw.Constants.*;
 public class CLI implements View, Runnable {
 
     private ServerHandler serverHandler;
+    private VirtualModel vmodel;
 
     public CLI(ServerHandler serverHandler){
         this.serverHandler = serverHandler;
+
     }
     public static void main(String[] args) {
         System.out.println("\n"+Constants.ERIANTYS);
@@ -135,12 +143,88 @@ public class CLI implements View, Runnable {
         do {
             showMessage("Expert mode? [y/n] > ");
             expert =  scanner.next();
-            if(!expert.equals("y") && !expert.equals("n")){
+            if(!expert.equalsIgnoreCase("y") && !expert.equalsIgnoreCase("n")){
                 showError("Please insert y or n!");
             }
-        }while(!expert.equals("y") && !expert.equals("n"));
+        }while(!expert.equalsIgnoreCase("y") && !expert.equalsIgnoreCase("n"));
         serverHandler.send(new SelectModeAndPlayers(num, expert.equals("y")));
     }
+
+    @Override
+    public void matchCreated(MatchCreated msg) {
+        this.vmodel.setIslandsAndMotherNature(msg);
+    }
+
+    @Override
+    public void playersInfo(PlayersInfo msg){
+        this.vmodel.setPlayersInfo(msg);
+
+    }
+
+    @Override
+    public void setUpCharacterCard(SetUpCharacterCard msg){
+        this.vmodel.setCharacterCards(msg);
+    }
+
+    @Override
+    public void setUpSchoolStudent(SetUpSchoolStudent msg){
+        this.vmodel.setSchoolStudents(msg);
+    }
+
+    @Override
+    public void isTurnOfPlayer(String msg){
+        this.showMessage(msg);
+    }
+
+    @Override
+    public void youWin() {
+        this.showMessage(YouWin.getMsg());
+    }
+
+    @Override
+    public void otherPlayerWins(OtherPlayerWins msg){
+        this.showMessage(msg.getMsg());
+    }
+
+    @Override
+    public void selectAssistantCard(SelectAssistantCard msg){
+        this.showMessage(SelectAssistantCard.getMsg());
+        for(int i=0;i<msg.getAvailableCards().size();i++)
+            this.showMessage(msg.getAvailableCards().get(i));
+    }
+
+    @Override
+    public void update(UpdateMessage msg){
+
+        BoardChange bchange=msg.getChange();
+        switch(bchange.getChange()){
+            case CONQUER:
+                this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
+                break;
+            case MOVESTUDENT:
+                if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
+                    this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(bchange.getStudentColor(),1);
+                }
+                else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
+                    for(Player p: this.vmodel.getPlayers())
+                    {
+                        if(p.equals(bchange.getPlayer())){
+                            p.addStudentOf(bchange.getStudentColor());
+                        }
+                    }
+                }
+                break;
+            case MERGE:
+                this.vmodel.mergeIslands(bchange.getMergedIsland1(), bchange.getMergedIsland2());
+                break;
+            case MOTHERNATURE:
+                this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
+                break;
+        }
+    }
+
+
+
 
     @Override
     public void run() {
@@ -152,7 +236,6 @@ public class CLI implements View, Runnable {
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-
         }
 
     }

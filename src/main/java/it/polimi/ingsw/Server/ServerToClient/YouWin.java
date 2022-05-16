@@ -14,6 +14,6 @@ public class YouWin implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.youWin();
     }
 }
