@@ -25,6 +25,6 @@ public class SelectAssistantCard implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.selectAssistantCard(this);
     }
 }

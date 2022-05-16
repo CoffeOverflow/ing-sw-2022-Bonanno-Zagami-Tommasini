@@ -5,51 +5,52 @@ import it.polimi.ingsw.Model.Tower;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 public class PlayersInfo implements ServerToClientMessage{
-    private List<String> playerNicknames;
 
-    private int numberOfPlayers;
+    private HashMap<Integer,String> mapIDNickname;
+
+    private int numberOfTowers;
 
     private boolean expertMode;
 
-    private HashMap<String,String> mapPlayerWizard;
+    private HashMap<Integer,String> mapPlayerWizard;
 
-    private HashMap<String, Tower> mapTowerToPlayer;
+    private HashMap<Integer, Tower> mapTowerToPlayer;
 
 
-    public PlayersInfo(List<String> playerNicknames, int numberOfPlayers, boolean expertMode, HashMap<String, String> mapPlayerWizard,
-                       HashMap<String, Tower> mapTowerToPlayer) {
-        this.playerNicknames = playerNicknames;
-        this.numberOfPlayers = numberOfPlayers;
+    public PlayersInfo( int numberOfPlayers, boolean expertMode, HashMap<Integer, String> mapPlayerWizard,
+                       HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname) {
+
         this.expertMode = expertMode;
         this.mapPlayerWizard = mapPlayerWizard;
         this.mapTowerToPlayer=mapTowerToPlayer;
+        this.mapIDNickname=mapIDNickname;
     }
 
-    public List<String> getPlayerNicknames() {
-        return playerNicknames;
-    }
 
-    public int getNumberOfPlayers() {
-        return numberOfPlayers;
+    public int getNumberOfTowers() {
+        return numberOfTowers;
     }
 
     public boolean isExpertMode() {
         return expertMode;
     }
 
-    public HashMap<String, String> getMapPlayerWizard() {
+    public HashMap<Integer, String> getMapPlayerWizard() {
         return mapPlayerWizard;
     }
 
-    public HashMap<String, Tower> getMapTowerToPlayer() {
+    public HashMap<Integer, Tower> getMapTowerToPlayer() {
         return mapTowerToPlayer;
+    }
+
+    public HashMap<Integer, String> getMapIDNickname() {
+        return mapIDNickname;
     }
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.playersInfo(this);
     }
 }

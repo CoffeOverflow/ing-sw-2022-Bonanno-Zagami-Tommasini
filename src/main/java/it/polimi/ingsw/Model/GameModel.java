@@ -399,8 +399,7 @@ public class GameModel {
     }
 
     public void moveMotherNature(int steps){
-        this.motherNaturePosition+=steps;
-    }
+        this.motherNaturePosition=(motherNaturePosition+steps)%12;}
 
     public void endTurnOfPlayer(){
         this.towersNotCounted=false;

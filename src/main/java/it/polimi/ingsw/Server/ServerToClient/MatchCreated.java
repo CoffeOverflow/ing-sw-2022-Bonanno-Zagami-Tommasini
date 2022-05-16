@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Color;
 
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.HashMap;
 
 public class MatchCreated implements ServerToClientMessage{
@@ -33,6 +34,6 @@ public class MatchCreated implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.matchCreated(this);
     }
 }
