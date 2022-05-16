@@ -35,10 +35,15 @@ public class CharacterCard {
             throws IllegalArgumentException, IllegalStateException{
 
         this.asset = asset;
+        int studentNumber=0;
+        for(Color c: students.keySet()){
+            studentNumber+=students.get(c);
+        }
+
 
         switch (asset) {
             case "innkeeper.jpg":
-                if (students!=null && students.size() == 4) {
+                if (students!=null && studentNumber == 4) {
                     this.students=Optional.of(students);
                 }else{
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
@@ -47,7 +52,7 @@ public class CharacterCard {
                 cost=1;
                 break;
             case "clown.jpg":
-                if (students!=null && students.size() == 6){
+                if (students!=null && studentNumber == 6){
                     this.students=Optional.of(students);
                 }
                 else {
@@ -57,7 +62,7 @@ public class CharacterCard {
                 cost=1;
                 break;
             case "princess.jpg":
-                if (students!=null && students.size() == 4){
+                if (students!=null && studentNumber == 4){
                     this.students=Optional.of(students);
                 }
                 else {
@@ -125,9 +130,6 @@ public class CharacterCard {
         return chosenStudents;
     }
 
-    public void setChosenStudents(Optional<EnumMap<Color, Integer>> chosenStudents) {
-        this.chosenStudents = chosenStudents;
-    }
     public void setChosenNumberOfSteps(Optional<Integer> chosenNumberOfSteps) {
         this.chosenNumberOfSteps = chosenNumberOfSteps;
     }
@@ -139,10 +141,6 @@ public class CharacterCard {
 
     public Optional<EnumMap<Color, Integer>> getEntranceStudents() {
         return entranceStudents;
-    }
-
-    public void setEntranceStudents(Optional<EnumMap<Color, Integer>> entranceStudents) {
-        this.entranceStudents = entranceStudents;
     }
 
     public int getCost(){
@@ -167,19 +165,31 @@ public class CharacterCard {
      * @throws IllegalStateException if the card doesn't contain students or if the number of chosen student is wrong
      */
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents) throws IllegalStateException{
-        if( (this.asset.equals("innkeeper.jpg") && chosenStudents.size()==1) ||
-            (this.asset.equals("princess.jpg") && chosenStudents.size()==1)
+        int studentNumber=0;
+        for(Color c: chosenStudents.keySet()){
+            studentNumber+=chosenStudents.get(c);
+        }
+        if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
+                (this.asset.equals("princess.jpg") && studentNumber==1)
         )
-        this.chosenStudents=Optional.of(chosenStudents);
+            this.chosenStudents=Optional.of(chosenStudents);
         else{
-            throw new IllegalStateException("Unexpected number of chosen students: " + chosenStudents.size());
+            throw new IllegalStateException("Unexpected number of chosen students: " + studentNumber);
         }
     }
 
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents,EnumMap<Color, Integer> entranceStudents)throws IllegalStateException{
-        if( ((this.asset.equals("clown.jpg") && chosenStudents.size()<=3)
-                || (this.asset.equals("storyteller.jpg") && chosenStudents.size()<=2))
-                && entranceStudents.size()==chosenStudents.size()) {
+        int studentNumber=0;
+        int entranceNumber=0;
+        for(Color c: chosenStudents.keySet()){
+            studentNumber+=chosenStudents.get(c);
+        }
+        for(Color c: entranceStudents.keySet()){
+            entranceNumber+=entranceStudents.get(c);
+        }
+        if( ((this.asset.equals("clown.jpg") && studentNumber<=3)
+                || (this.asset.equals("storyteller.jpg") && studentNumber<=2))
+                && entranceNumber==studentNumber) {
             this.chosenStudents = Optional.of(chosenStudents);
             this.entranceStudents=Optional.of(entranceStudents);
         }else{
@@ -205,15 +215,15 @@ public class CharacterCard {
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
         int count=0;
-        if(chosenStudents.isPresent() && entranceStudents==null)
+        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null)
             chosenStudents=null;
-        if(entranceStudents.isPresent())
+        if(entranceStudents!=null && entranceStudents.isPresent())
             entranceStudents=null;
-        if( chosenNumberOfSteps.isPresent())
+        if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())
             chosenNumberOfSteps=null;
-        if(chosenColor.isPresent())
+        if(chosenColor!=null && chosenColor.isPresent())
             chosenColor=null;
-        if(noEntryTiles.isPresent())
+        if(noEntryTiles!=null && noEntryTiles.isPresent())
             noEntryTiles=Optional.of(noEntryTiles.get());
 
         player.decreaseMoney(this.cost);
