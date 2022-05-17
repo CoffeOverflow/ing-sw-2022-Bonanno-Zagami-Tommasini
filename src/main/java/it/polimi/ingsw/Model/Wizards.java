@@ -9,6 +9,10 @@ public enum Wizards {
 
     private String name;
 
+    public String getName() {
+        return name;
+    }
+
     private Wizards(String name){
         this.name = name;
     }

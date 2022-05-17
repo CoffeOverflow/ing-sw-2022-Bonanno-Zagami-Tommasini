@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
+import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
 import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Client.ServerHandler;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.io.IOException;
@@ -147,7 +149,7 @@ public class CLI implements View, Runnable {
                 showError("Please insert y or n!");
             }
         }while(!expert.equalsIgnoreCase("y") && !expert.equalsIgnoreCase("n"));
-        serverHandler.send(new SelectModeAndPlayers(num, expert.equals("y")));
+        serverHandler.send(new SelectModeAndPlayers(num, expert.equalsIgnoreCase("y")));
     }
 
     @Override
@@ -226,8 +228,19 @@ public class CLI implements View, Runnable {
         }
     }
 
+    @Override
+    public void chooseWizard(SelectWizard message) throws IOException {
+        showMessage(message.getMsg());
+        for(Wizards wizard: message.getAvailableWizards()){
+            showMessage("> "+wizard.getName()+"\n");
+        }
+        System.out.print("> ");
+        Scanner scanner = new Scanner(System.in);
+        String wizard = scanner.nextLine();
+        wizard = wizard.replaceAll(" ", "").toUpperCase();
+        serverHandler.send(new ChooseWizard(wizard));
 
-
+    }
 
     @Override
     public void run() {

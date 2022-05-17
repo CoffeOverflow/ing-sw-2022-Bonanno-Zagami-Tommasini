@@ -47,7 +47,7 @@ public class GameController {
         this.state = state;
     }
 
-    public GameModel getModel() {
+    public synchronized GameModel getModel() {
         return model;
     }
 

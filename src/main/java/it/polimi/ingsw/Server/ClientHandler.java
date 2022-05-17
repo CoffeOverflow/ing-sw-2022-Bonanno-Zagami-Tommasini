@@ -78,6 +78,7 @@ public class ClientHandler implements Runnable{
                         try {
                             server.registerNickname(playerID, nick);
                             send(new ActionValid("Nickname has been register successfully!"));
+                            this.nickname = nick;
                             state = "Match";
                         } catch (DuplicateNicknameException e) {
                             //System.out.println("The entered nickname has already been chosen by another player!");
