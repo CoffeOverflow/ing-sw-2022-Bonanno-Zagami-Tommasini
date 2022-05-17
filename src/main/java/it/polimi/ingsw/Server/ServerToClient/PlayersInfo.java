@@ -19,7 +19,7 @@ public class PlayersInfo implements ServerToClientMessage{
     private HashMap<Integer, Tower> mapTowerToPlayer;
 
 
-    public PlayersInfo( int numberOfPlayers, boolean expertMode, HashMap<Integer, String> mapPlayerWizard,
+    public PlayersInfo( boolean expertMode, HashMap<Integer, String> mapPlayerWizard,
                        HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname) {
 
         this.expertMode = expertMode;

@@ -3,11 +3,13 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Exceptions.MatchFullException;
+import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static it.polimi.ingsw.Constants.*;
@@ -103,6 +105,18 @@ public class GameHandler implements Runnable{
             }
         }
         sendAll(new GenericMessage("Match is starting..."));
+        HashMap<Integer, Color> mapStudentIsland=new HashMap<>();
+        for(int i=0; i<12; i++){
+            for(Color c: controller.getModel().getIslandByPosition(i).getStudents().keySet()){
+                if(controller.getModel().getIslandByPosition(i).getStudents().get(c)!=0)
+                    mapStudentIsland.put(i,c);
+            }
+        }
+        sendAll(new MatchCreated(controller.getModel().getMotherNaturePosition(),mapStudentIsland) );
+        HashMap<Integer, String> mapPlayerWizard=new HashMap<>();
+        //for(Player p: controller.getModel().getPl)
+        //sendAll(new PlayersInfo(expertMode, ) );
+
         while(true){
 
         }
