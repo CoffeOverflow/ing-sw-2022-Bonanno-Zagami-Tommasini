@@ -189,8 +189,11 @@ public class CLI implements View, Runnable {
     @Override
     public void selectAssistantCard(SelectAssistantCard msg){
         this.showMessage(SelectAssistantCard.getMsg());
-        for(int i=0;i<msg.getAvailableCards().size();i++)
-            this.showMessage(msg.getAvailableCards().get(i));
+        for(String s: msg.getAvailableCards().keySet()){
+            int value=msg.getAvailableCards().get(s)[0];
+            int steps=msg.getAvailableCards().get(s)[1];
+            this.showMessage("Card: "+ s + "\n " + "value: " + value + "steps: "+ steps);
+        }
     }
 
     @Override
