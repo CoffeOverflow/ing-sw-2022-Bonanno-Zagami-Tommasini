@@ -17,6 +17,7 @@ import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.io.IOException;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.Constants.*;
@@ -240,6 +241,57 @@ public class CLI implements View, Runnable {
         wizard = wizard.replaceAll(" ", "").toUpperCase();
         serverHandler.send(new ChooseWizard(wizard));
 
+    }
+
+    @Override
+    public void showBoard(){
+        for(int i=0;i<12;i++){
+            showIsland();
+
+        }
+    }
+
+
+
+    @Override
+    public void showIsland(){
+
+        EnumMap<Color,Integer> students;
+        StringBuilder studentOnIsland=new StringBuilder();
+        int num=0;
+        for(int i=0;i<12;i++)
+        {
+            students=this.vmodel.getIslands().get(i).getStudents();
+            for(Color c: Color.values())
+            {
+                num=students.get(c);
+                for(int j=0;j<num;j++){
+                    switch(c){
+                        case BLUE:
+                            studentOnIsland.append(ANSI_BLUE+"*"+ANSI_RESET);
+                            break;
+                        case PINK:
+                            studentOnIsland.append(ANSI_PINK+"*"+ANSI_RESET);
+                            break;
+                        case GREEN:
+                            studentOnIsland.append(ANSI_GREEN+"*"+ANSI_RESET);
+                            break;
+                        case RED:
+                            studentOnIsland.append(ANSI_RED+"*"+ANSI_RESET);
+                            break;
+                        case YELLOW:
+                            studentOnIsland.append(ANSI_YELLOW+"*"+ANSI_RESET);
+                            break;
+                    }
+                }
+
+            }
+            if(i==9 || i==10 ||i==11)
+                this.showMessage("Island "+(i+1)+": "+studentOnIsland);
+            else
+                this.showMessage("Island "+(i+1)+":  "+studentOnIsland);
+            studentOnIsland.setLength(0);
+        }
     }
 
     @Override
