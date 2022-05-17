@@ -276,24 +276,24 @@ public class GameModel {
         //take control of the island:
         int key=0;
         HashMap<Integer, Integer> influences=new HashMap<>();
-        Optional<Integer> conqueror=null;
-        for(Integer p : getCurrentCardPlayers().keySet()){
+        Optional<Integer> conqueror=Optional.empty();
+        for(Player p:players){
             if(!towersNotCounted && getTowerOnIsland(islandPosition).isPresent() &&
-                    getTowerOnIsland(islandPosition).get().equals(getPlayerTower(p))){
-                influences.put(p,getPlayerInfluence(p,islandPosition)
+                    getTowerOnIsland(islandPosition).get().equals(getPlayerTower(p.getPlayerID()))){
+                influences.put(p.getPlayerID(),getPlayerInfluence(p.getPlayerID(),islandPosition)
                         + getIslandByPosition(islandPosition).getNumberOfTowers());
             }else{
-                influences.put(p,getPlayerInfluence(p,islandPosition));
+                influences.put(p.getPlayerID(),getPlayerInfluence(p.getPlayerID(),islandPosition));
             }
-            if(influences.get(p)>key){
-                key=getPlayerInfluence(p,islandPosition);
-                conqueror=Optional.of(p);
+            if(influences.get(p.getPlayerID())>key){
+                key=getPlayerInfluence(p.getPlayerID(),islandPosition);
+                conqueror=Optional.of(p.getPlayerID());
             }
         }
         //check if the higher value of influence is unique
         if(conqueror.isPresent()){
-            for(Integer p : getCurrentCardPlayers().keySet()){
-                if(p!=conqueror.get() && influences.get(p)==influences.get(conqueror)){
+            for(Player p:players){
+                if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID())==influences.get(conqueror)){
                     conqueror=Optional.empty();
                 }
             }
@@ -315,19 +315,19 @@ public class GameModel {
     }
 
     public void checkMergeIsland( int island, Tower tower){
-        if(island==getIslandSize()-1 && getTowerOnIsland(island-1).equals(tower)){
+        if(island==getIslandSize()-1 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island);
             checkMergeIsland( island-1,tower);
-        }else if(island==getIslandSize()-1 && getTowerOnIsland(0).equals(tower) ){
+        }else if(island==getIslandSize()-1 && getTowerOnIsland(0).isPresent() && getTowerOnIsland(0).get().equals(tower) ){
             mergeIslands(0,island);
             checkMergeIsland(0,tower);
-        }else if(island==0 && getTowerOnIsland(getIslandSize()-1).equals(tower)){
+        }else if(island==0 && getTowerOnIsland(getIslandSize()-1).isPresent() && getTowerOnIsland(getIslandSize()-1).get().equals(tower)){
             mergeIslands(island,getIslandSize()-1);
             checkMergeIsland( island,tower);
-        }else if((island-1)>=0 && getTowerOnIsland(island-1).equals(tower)){
+        }else if((island-1)>=0 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island);
             checkMergeIsland( island-1,tower);
-        }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).equals(tower)){
+        }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).isPresent() && getTowerOnIsland(island+1).get().equals(tower)){
             mergeIslands(island,island+1);
             checkMergeIsland(island,tower);
         }
@@ -340,25 +340,21 @@ public class GameModel {
      */
     public void moveToSchool (int player,Color studentColor){
         getPlayerByID(player).addStudentOf(studentColor);
+        getPlayerByID(player).removeEntryStudent(studentColor);
         int numOfColor=getPlayerByID(player).getStudentsOf(studentColor);
         int max=0;
-        int idMax=-1;
         for(Player p: players)
         {
             if(!p.equals(getPlayerByID(player))){
                 if(p.getStudentsOf(studentColor)>max)
                 {
                     max=p.getStudentsOf(studentColor);
-                    idMax=p.getPlayerID();
                 }
             }
         }
-        //SISTEMARE QUESTO CONTROLLO!!!!!!!!
-        if(numOfColor>max && (!getProfessors().get(studentColor).getPlayer().equals(getPlayerByID(player)) || getProfessors().get(studentColor).equals(null)))
+        if(numOfColor>max)
         {
-            getPlayerByID(player).addProfessor(studentColor);
-            if(idMax!=-1)
-             getPlayerByID(idMax).removeProfessor(studentColor);
+            this.professors.get(studentColor).goToSchool(getPlayerByID(player));
         }
     }
 
