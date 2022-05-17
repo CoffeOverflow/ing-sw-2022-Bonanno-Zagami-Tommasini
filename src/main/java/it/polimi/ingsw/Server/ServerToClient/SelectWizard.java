@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SelectWizard implements ServerToClientMessage {
 
-    private String msg="Select a wizard among the ones available";
+    private String msg="Select a wizard among the ones available:\n";
 
     private List<Wizards> availableWizards;
 
@@ -26,6 +26,6 @@ public class SelectWizard implements ServerToClientMessage {
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.chooseWizard(this);
     }
 }

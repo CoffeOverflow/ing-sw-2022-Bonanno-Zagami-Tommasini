@@ -12,7 +12,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.Constants.*;
 
-public class GameHandler {
+public class GameHandler implements Runnable{
     private final int gameID;
     private final String name;
     private final int numberOfPlayers;
@@ -40,12 +40,14 @@ public class GameHandler {
     public synchronized void addPlayer(ClientHandler player) throws MatchFullException {
         if(players.size() >= numberOfPlayers)
             throw new MatchFullException();
+        player.send(new GenericMessage(ANSI_BLUE + "\nWelcome to "+this.name+"!\n" + ANSI_RESET));
         this.players.add(player);
         this.controller.getModel().addPlayer(player.getPlayerID(), player.getNickname());
-        player.send(new GenericMessage(ANSI_BLUE + "\nWelcome to "+this.name+"!\n" + ANSI_RESET));
+        player.setGame(this);
         if(players.size() == numberOfPlayers){
             server.removeAvailableGame(gameID);
-            setup();
+            Thread gameThread = new Thread(this);
+            gameThread.start();
         }
         else{
             player.send(new WaitForOtherPlayer());
@@ -82,6 +84,7 @@ public class GameHandler {
             wizards.remove(wizard);
             controller.getModel().getPlayerByID(player.getPlayerID()).setWizard(wizard);
             ready++;
+            player.send(new ActionValid());
         }
         else{
             player.send(new Error(ErrorsType.CHOSENOTVALID, "Scelta non valida"));
@@ -93,12 +96,21 @@ public class GameHandler {
         sendAll(new GenericMessage("The game is starting..."));
         sendAll(new SelectWizard(wizards));
         while(ready < numberOfPlayers){
-
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         sendAll(new GenericMessage("Match is starting..."));
         while(true){
 
         }
+    }
+
+    @Override
+    public void run() {
+        setup();
     }
 
     @Override

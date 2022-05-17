@@ -36,4 +36,6 @@ public interface View {
 
     void update(UpdateMessage msg);
 
+    void chooseWizard(SelectWizard message) throws IOException;
+
 }

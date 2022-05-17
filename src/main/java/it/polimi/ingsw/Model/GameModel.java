@@ -174,9 +174,10 @@ public class GameModel {
 
     }
 
-    public void addPlayer(int id,String nickname){
+    public synchronized void addPlayer(int id,String nickname){
         Tower towers=Tower.values()[this.players.size()];
-        this.players.add(new Player(id,nickname,this.expertMode,towers,numberOfTowers));
+        Player player = new Player(id,nickname,this.expertMode,towers,this.numberOfTowers);
+        this.players.add(player);
         getPlayerByID(id).setEntryStudents(getStudentsFromBag(numberOfStudent));
     }
     /**

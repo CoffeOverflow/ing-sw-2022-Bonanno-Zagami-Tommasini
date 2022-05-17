@@ -118,7 +118,6 @@ public class Server implements Runnable{
         catch (MatchFullException e){
 
         }
-        firstplayer.setGame(newGame);
         availableGames.put(id, newGame);
     }
 
