@@ -89,6 +89,8 @@ public class GameHandler {
         }
     }
 
+
+
     public void setup(){
         sendAll(new GenericMessage("The game is starting..."));
         sendAll(new SelectWizard(wizards));
