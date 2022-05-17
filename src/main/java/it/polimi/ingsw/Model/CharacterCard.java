@@ -124,6 +124,7 @@ public class CharacterCard {
         }
     }
 
+
     public Optional<EnumMap<Color, Integer>> getChosenStudents() {
         return chosenStudents;
     }
@@ -170,7 +171,7 @@ public class CharacterCard {
         if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
                 (this.asset.equals("princess.jpg") && studentNumber==1)
         )
-        this.chosenStudents=Optional.of(chosenStudents);
+            this.chosenStudents=Optional.of(chosenStudents);
         else{
             throw new IllegalStateException("Unexpected number of chosen students: " + studentNumber);
         }

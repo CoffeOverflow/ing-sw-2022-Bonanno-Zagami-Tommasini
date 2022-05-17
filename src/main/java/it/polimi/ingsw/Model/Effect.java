@@ -198,9 +198,9 @@ class Effect11 implements Effect{
      */
     public void effect(Player player, int islandPosition, GameModel model,CharacterCard card){
         int count=0;
-        for(int i=0; i<model.getNumberOfPlayers(); i++){
-              count+=model.getPlayerByID(i).removeThreeStudentOf(card.getChosenColor().get());
-        }
+        for(Player p:model.getPlayers()){
+              count+=p.removeThreeStudentOf(card.getChosenColor().get());
+          }
         model.addStudentsBag(card.getChosenColor().get(),count);
 
     }

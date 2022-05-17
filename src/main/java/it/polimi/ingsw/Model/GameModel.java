@@ -215,7 +215,7 @@ public class GameModel {
      */
     public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
     {
-        for (Color c: Color.values()) {
+        for (Color c: students.keySet()) {
             this.islands.get(islandPosition).addStudents(c,students.get(c));
         }
     }
@@ -597,6 +597,10 @@ public class GameModel {
                 }
             }
         return studentsFromBag;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }
 
