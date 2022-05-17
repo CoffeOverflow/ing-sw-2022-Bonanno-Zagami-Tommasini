@@ -1,10 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Server.ServerToClient.MatchCreated;
-import it.polimi.ingsw.Server.ServerToClient.PlayersInfo;
-import it.polimi.ingsw.Server.ServerToClient.SetUpCharacterCard;
-import it.polimi.ingsw.Server.ServerToClient.SetUpSchoolStudent;
+import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -21,12 +18,17 @@ public class VirtualModel {
 
     private List<Player> players=new ArrayList<>();
 
-    public void setIslandsAndMotherNature(MatchCreated msg){
-        HashMap<Integer, Color> mapStudentIsland= msg.getMapStudentIsland();
-        for(Integer i: mapStudentIsland.keySet()){
-            islands.add(new Island());
-            islands.get(i).addStudents(mapStudentIsland.get(i),1);
+    private List<Cloud> clouds=new ArrayList<>();
+
+    public void setIslandsAndMotherNature(MatchCreated msg)  {
+        HashMap<Integer, Color> mapStudentIsland = msg.getMapStudentIsland();
+        for(int i=0; i<12; i++) {
+            Island isl=new Island();
+            if(mapStudentIsland.get(i)!=null)
+                isl.addStudents(mapStudentIsland.get(i), 1);
+            islands.add(isl);
         }
+
         motherNaturePosition=msg.getMotherNaturePosition();
     }
 
@@ -35,7 +37,7 @@ public class VirtualModel {
         for(Integer i: msg.getMapIDNickname().keySet()){
             players.add(new Player(i,msg.getMapIDNickname().get(i), msg.isExpertMode(),
                     msg.getMapTowerToPlayer().get(i),msg.getNumberOfTowers()));
-            players.get(j).setWizard(Wizards.valueOf(msg.getMapPlayerWizard().get(i).toUpperCase()));
+            players.get(j).setWizard(msg.getMapPlayerWizard().get(i));
             j++;
         }
     }
@@ -103,6 +105,25 @@ public class VirtualModel {
         }
     }
 
+    public void fillClouds(BoardChange bChange){
+        if(players.size()==2){
+            for(int i=0; i<2; i++){
+                clouds.add(new Cloud());
+            }
+            clouds.get(0).setStudents(bChange.getStudents1());
+            clouds.get(1).setStudents(bChange.getStudents2());
+
+        }else if(players.size()==3){
+            for(int i=0; i<3; i++){
+                clouds.add(new Cloud());
+            }
+            clouds.get(0).setStudents(bChange.getStudents1());
+            clouds.get(1).setStudents(bChange.getStudents2());
+            clouds.get(2).setStudents(bChange.getStudents3());
+        }
+
+    }
+
     public List<Island> getIslands() {
 
         return islands;
@@ -123,7 +144,7 @@ public class VirtualModel {
         return players;
     }
 
-    public void moveMotherNature(int stpes){
-        this.motherNaturePosition=(motherNaturePosition+stpes)%12;
+    public void moveMotherNature(int steps){
+        this.motherNaturePosition=(motherNaturePosition+steps)%12;
     }
 }

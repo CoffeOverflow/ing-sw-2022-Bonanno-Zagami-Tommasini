@@ -28,7 +28,7 @@ public class CLI implements View, Runnable {
 
     public CLI(ServerHandler serverHandler){
         this.serverHandler = serverHandler;
-
+        this.vmodel=new VirtualModel();
     }
     public static void main(String[] args) {
         System.out.println("\n"+Constants.ERIANTYS);
@@ -155,12 +155,13 @@ public class CLI implements View, Runnable {
     @Override
     public void matchCreated(MatchCreated msg) {
         this.vmodel.setIslandsAndMotherNature(msg);
+        System.out.println("mother nature position: "+ vmodel.getMotherNaturePosition());
+        //this.showBoard();
     }
 
     @Override
     public void playersInfo(PlayersInfo msg){
         this.vmodel.setPlayersInfo(msg);
-
     }
 
     @Override
@@ -224,6 +225,9 @@ public class CLI implements View, Runnable {
                 break;
             case MOTHERNATURE:
                 this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
+                break;
+            case CLOUD:
+                this.vmodel.fillClouds(bchange);
                 break;
         }
     }

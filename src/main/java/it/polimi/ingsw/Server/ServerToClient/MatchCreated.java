@@ -13,7 +13,7 @@ public class MatchCreated implements ServerToClientMessage{
 
     private int motherNaturePosition;
 
-    private HashMap<Integer, Color> mapStudentIsland; //at the beginning one student put on each island
+    private HashMap<Integer, Color> mapStudentIsland=new HashMap<>(); //at the beginning one student put on each island
 
 
 

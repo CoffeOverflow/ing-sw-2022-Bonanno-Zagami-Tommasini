@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Tower;
 
 import java.io.Serializable;
+import java.util.EnumMap;
 
 public class BoardChange implements Serializable{
     private MoveTo moveTo;
@@ -25,17 +26,21 @@ public class BoardChange implements Serializable{
     private int mergedIsland2;
 
 
-    private Player player;
+    private int playerID;
+
+    private EnumMap<Color, Integer> students1 = new EnumMap<Color, Integer>(Color.class);
+    private EnumMap<Color, Integer> students2= new EnumMap<Color, Integer>(Color.class);
+    private EnumMap<Color, Integer> students3 = new EnumMap<Color, Integer>(Color.class); //null if only two players
 
     private boolean isConquered=false;
 
     private Change change;
 
-    public BoardChange(MoveTo moveTo, Color studentColor, int islandPosition,Player player) {
+    public BoardChange(MoveTo moveTo, Color studentColor, int islandPosition,int playerID) {
         this.moveTo = moveTo;
         this.studentColor = studentColor;
         this.islandPosition = islandPosition;
-        this.player=player;
+        this.playerID=playerID;
         this.change=Change.MOVESTUDENT;
     }
 
@@ -57,6 +62,20 @@ public class BoardChange implements Serializable{
         this.isConquered = true;
         this.change=Change.MERGE;
     }
+
+    public BoardChange(EnumMap<Color, Integer> students1,EnumMap<Color, Integer> students2,EnumMap<Color, Integer> students3){
+        this.students1=students1;
+        this.students2=students2;
+        this.students3=students3;
+        this.change=Change.CLOUD;
+    }
+
+    public BoardChange(EnumMap<Color, Integer> students1,EnumMap<Color, Integer> students2){
+        this.students1=students1;
+        this.students2=students2;
+        this.change=Change.CLOUD;
+    }
+
 
     public MoveTo getMoveTo() {
         return moveTo;
@@ -92,9 +111,21 @@ public class BoardChange implements Serializable{
 
     public Change getChange() { return change; }
 
-    public Player getPlayer() {return player;}
+    public int getPlayer() {return playerID;}
 
     public int getConquerIsland() {return conquerIsland;}
+
+    public EnumMap<Color, Integer> getStudents1() {
+        return students1;
+    }
+
+    public EnumMap<Color, Integer> getStudents2() {
+        return students2;
+    }
+
+    public EnumMap<Color, Integer> getStudents3() {
+        return students3;
+    }
 
     @Override
     public int hashCode() {

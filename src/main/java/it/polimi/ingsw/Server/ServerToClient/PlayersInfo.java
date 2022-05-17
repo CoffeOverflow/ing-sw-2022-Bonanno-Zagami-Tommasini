@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Tower;
+import it.polimi.ingsw.Model.Wizards;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,12 +15,12 @@ public class PlayersInfo implements ServerToClientMessage{
 
     private boolean expertMode;
 
-    private HashMap<Integer,String> mapPlayerWizard;
+    private HashMap<Integer, Wizards> mapPlayerWizard;
 
     private HashMap<Integer, Tower> mapTowerToPlayer;
 
 
-    public PlayersInfo( int numberOfPlayers, boolean expertMode, HashMap<Integer, String> mapPlayerWizard,
+    public PlayersInfo(boolean expertMode, HashMap<Integer, Wizards> mapPlayerWizard,
                        HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname) {
 
         this.expertMode = expertMode;
@@ -37,7 +38,7 @@ public class PlayersInfo implements ServerToClientMessage{
         return expertMode;
     }
 
-    public HashMap<Integer, String> getMapPlayerWizard() {
+    public HashMap<Integer, Wizards> getMapPlayerWizard() {
         return mapPlayerWizard;
     }
 

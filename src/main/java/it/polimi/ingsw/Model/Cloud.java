@@ -24,14 +24,14 @@ public class Cloud {
     /**
      * @param students EnumMap<Color, Integer> that contains students to assign to cloud
      */
-    void setStudents(EnumMap<Color, Integer> students){
+    public void setStudents(EnumMap<Color, Integer> students){
         this.students = students;
     }
 
     /**
      * @return EnumMap<Color, Integer> Return students that are on cloud
      */
-    EnumMap<Color, Integer> getStudents(){
+    public EnumMap<Color, Integer> getStudents(){
         return students; //Non so se dovrebbe ritornare una copia della variabile
     }
 }

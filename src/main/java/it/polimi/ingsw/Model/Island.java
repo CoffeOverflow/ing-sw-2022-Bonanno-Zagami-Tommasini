@@ -11,7 +11,7 @@ public class Island {
 
     private Optional<Tower> tower=Optional.empty();
     private int numberOfTowers;
-    private EnumMap<Color,Integer> students;
+    private EnumMap<Color,Integer> students=new EnumMap<>(Color.class);
 
     private int noEntryCards;
 
@@ -19,7 +19,6 @@ public class Island {
      * create an island
      */
     public Island(){
-        students= new EnumMap<>(Color.class);
         students.put(Color.PINK,0);
         students.put(Color.RED,0);
         students.put(Color.YELLOW,0);
