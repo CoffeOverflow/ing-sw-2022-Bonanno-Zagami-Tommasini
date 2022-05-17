@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Exceptions.MatchFullException;
 import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
@@ -113,9 +114,6 @@ public class GameHandler implements Runnable{
             }
         }
         sendAll(new MatchCreated(controller.getModel().getMotherNaturePosition(),mapStudentIsland) );
-        HashMap<Integer, String> mapPlayerWizard=new HashMap<>();
-        //for(Player p: controller.getModel().getPl)
-        //sendAll(new PlayersInfo(expertMode, ) );
 
         while(true){
 
