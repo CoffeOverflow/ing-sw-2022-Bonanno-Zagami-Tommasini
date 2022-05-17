@@ -124,56 +124,6 @@ public class CharacterCard {
         }
     }
 
-    /**
-     * constructor for the character cards that don't have students on them
-     * @param asset name of the file corresponding to the card
-     */
-    public CharacterCard(String asset){
-        this.asset = asset;
-        switch(asset){
-            case "auctioneer.jpg":
-                cost=3;
-                effect=new Effect2();
-                break;
-            case "postman.jpg":
-                cost=1;
-                effect=new Effect3();
-                break;
-            case "herbalist.jpg":
-                noEntryTiles=Optional.of(4);
-                cost=2;
-                effect=new Effect4();
-                break;
-            case "centaur.jpg":
-                cost=3;
-                effect=new Effect5();
-                break;
-            case "infantryman.jpg":
-                cost=2;
-                effect=new Effect7();
-                break;
-            case "lumberjack.jpg":
-                cost=3;
-                effect=new Effect8();
-                break;
-            case "storyteller.jpg":
-                cost=1;
-                effect=new Effect9();
-                break;
-            case "thief.jpg":
-                cost=3;
-                effect=new Effect11();
-                break;
-            case "merchant.jpg":
-                cost=2;
-                effect=new Effect12();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + asset);
-        }
-    }
-
-
     public Optional<EnumMap<Color, Integer>> getChosenStudents() {
         return chosenStudents;
     }
