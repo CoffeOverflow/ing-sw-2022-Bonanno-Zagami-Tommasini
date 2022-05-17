@@ -51,6 +51,6 @@ public class PlayersInfo implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.playersInfo(this);
     }
 }

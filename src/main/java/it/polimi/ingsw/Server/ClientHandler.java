@@ -1,10 +1,12 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
+import it.polimi.ingsw.Client.ClientToServer.ClientToServerMessage;
 import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
 import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Exceptions.DuplicateNicknameException;
 import it.polimi.ingsw.Exceptions.InvalidNicknameException;
+import it.polimi.ingsw.Exceptions.MatchFullException;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
 
@@ -37,6 +39,10 @@ public class ClientHandler implements Runnable{
 
     public int getPlayerID(){
         return playerID;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public void send(ServerToClientMessage message){
@@ -72,6 +78,7 @@ public class ClientHandler implements Runnable{
                         try {
                             server.registerNickname(playerID, nick);
                             send(new ActionValid("Nickname has been register successfully!"));
+                            this.nickname = nick;
                             state = "Match";
                         } catch (DuplicateNicknameException e) {
                             //System.out.println("The entered nickname has already been chosen by another player!");
@@ -103,8 +110,14 @@ public class ClientHandler implements Runnable{
                         }
                         else{
                             if(availableIDs.contains(((SelectMatch) answer).getMatch())) {
-                                server.getGameByID(((SelectMatch) answer).getMatch()).addPlayer(this);
-                                confirmation = true;
+                                try {
+                                    server.getAvailableGameByID(((SelectMatch) answer).getMatch()).addPlayer(this);
+                                    confirmation = true;
+                                }
+                                catch (MatchFullException e){
+                                    send(new Error(ErrorsType.CHOSENOTVALID, "The selected match is full, please select another match!"));
+                                }
+
                             }
                             else
                                 send(new Error(ErrorsType.CHOSENOTVALID, "Please enter a valid game id!"));
@@ -136,8 +149,10 @@ public class ClientHandler implements Runnable{
         System.out.println("Client "+getPlayerID()+ " handler started!");
         setup();
         System.out.println("Client "+getPlayerID()+" select game setup complete!");
+        ClientToServerMessage answer = null;
         while (true){
-
+            answer = (ClientToServerMessage) answer();
+            answer.handleMessage(game, this);
         }
 
 

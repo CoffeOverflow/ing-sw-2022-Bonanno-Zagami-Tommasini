@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
-import it.polimi.ingsw.Controller.GameController;
+import it.polimi.ingsw.Server.ClientHandler;
+import it.polimi.ingsw.Server.GameHandler;
 
 public class MoveMotherNature implements ClientToServerMessage{
     private int steps;
@@ -14,10 +15,10 @@ public class MoveMotherNature implements ClientToServerMessage{
         return steps;
     }
 
-    public void handleMessage(GameController controller){
+    public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
         action.setMotherNatureSteps(steps);
-        controller.doAction(action);
+        game.getController().doAction(action);
 
     }
 }

@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -43,12 +44,9 @@ public class Player {
         this.numberOfTower = numberOfTower;
         money = 0;
         //JSON Assistant card
-        try {
-            JsonReader json = new JsonReader(new FileReader("src/main/resources/json/assistants.json"));
-            assistantCards = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/json/assistants.json"));
+        JsonReader json = new JsonReader(reader);
+        assistantCards = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
         for(Color c:Color.values())
             students.put(c,0);
     }

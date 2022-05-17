@@ -7,12 +7,13 @@ import it.polimi.ingsw.Server.ServerToClient.SetUpCharacterCard;
 import it.polimi.ingsw.Server.ServerToClient.SetUpSchoolStudent;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
 public class VirtualModel {
 
-    private List<Island> islands=new ArrayList<>();
+    private List<Island> islands =new ArrayList<>();
 
     private int motherNaturePosition;
 
@@ -71,5 +72,58 @@ public class VirtualModel {
             characterCards.add(card);
         }
 
+    }
+
+    public void mergeIslands(int islandPos1, int islandPos2){
+        Island deleteIsland,notDeleteIsland;
+        int islandPosNotDelete;
+        if(islandPos1<islandPos2){
+            deleteIsland=this.islands.get(islandPos2);
+            notDeleteIsland=this.islands.get(islandPos1);
+            this.islands.remove(islandPos2);
+            islandPosNotDelete=islandPos1;
+
+        }
+        else {
+            deleteIsland = this.islands.get(islandPos1);
+            notDeleteIsland=this.islands.get(islandPos2);
+            this.islands.remove(islandPos1);
+            islandPosNotDelete=islandPos2;
+        }
+
+        moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
+        notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
+        //fare i controlli sul noEntryCard.
+
+    }
+    public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
+    {
+        for (Color c: Color.values()) {
+            this.islands.get(islandPosition).addStudents(c,students.get(c));
+        }
+    }
+
+    public List<Island> getIslands() {
+
+        return islands;
+    }
+
+    public int getMotherNaturePosition() {
+
+        return motherNaturePosition;
+    }
+
+    public List<CharacterCard> getCharacterCards() {
+
+        return characterCards;
+    }
+
+    public List<Player> getPlayers() {
+
+        return players;
+    }
+
+    public void moveMotherNature(int stpes){
+        this.motherNaturePosition=(motherNaturePosition+stpes)%12;
     }
 }

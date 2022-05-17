@@ -124,14 +124,60 @@ public class CharacterCard {
         }
     }
 
+    /**
+     * constructor for the character cards that don't have students on them
+     * @param asset name of the file corresponding to the card
+     */
+    public CharacterCard(String asset){
+        this.asset = asset;
+        switch(asset){
+            case "auctioneer.jpg":
+                cost=3;
+                effect=new Effect2();
+                break;
+            case "postman.jpg":
+                cost=1;
+                effect=new Effect3();
+                break;
+            case "herbalist.jpg":
+                noEntryTiles=Optional.of(4);
+                cost=2;
+                effect=new Effect4();
+                break;
+            case "centaur.jpg":
+                cost=3;
+                effect=new Effect5();
+                break;
+            case "infantryman.jpg":
+                cost=2;
+                effect=new Effect7();
+                break;
+            case "lumberjack.jpg":
+                cost=3;
+                effect=new Effect8();
+                break;
+            case "storyteller.jpg":
+                cost=1;
+                effect=new Effect9();
+                break;
+            case "thief.jpg":
+                cost=3;
+                effect=new Effect11();
+                break;
+            case "merchant.jpg":
+                cost=2;
+                effect=new Effect12();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + asset);
+        }
+    }
+
 
     public Optional<EnumMap<Color, Integer>> getChosenStudents() {
         return chosenStudents;
     }
 
-    public void setChosenStudents(Optional<EnumMap<Color, Integer>> chosenStudents) {
-        this.chosenStudents = chosenStudents;
-    }
     public void setChosenNumberOfSteps(Optional<Integer> chosenNumberOfSteps) {
         this.chosenNumberOfSteps = chosenNumberOfSteps;
     }
@@ -143,10 +189,6 @@ public class CharacterCard {
 
     public Optional<EnumMap<Color, Integer>> getEntranceStudents() {
         return entranceStudents;
-    }
-
-    public void setEntranceStudents(Optional<EnumMap<Color, Integer>> entranceStudents) {
-        this.entranceStudents = entranceStudents;
     }
 
     public int getCost(){
@@ -176,7 +218,7 @@ public class CharacterCard {
             studentNumber+=chosenStudents.get(c);
         }
         if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
-            (this.asset.equals("princess.jpg") && studentNumber==1)
+                (this.asset.equals("princess.jpg") && studentNumber==1)
         )
         this.chosenStudents=Optional.of(chosenStudents);
         else{
@@ -185,9 +227,17 @@ public class CharacterCard {
     }
 
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents,EnumMap<Color, Integer> entranceStudents)throws IllegalStateException{
-        if( ((this.asset.equals("clown.jpg") && chosenStudents.size()<=3)
-                || (this.asset.equals("storyteller.jpg") && chosenStudents.size()<=2))
-                && entranceStudents.size()==chosenStudents.size()) {
+        int studentNumber=0;
+        int entranceNumber=0;
+        for(Color c: chosenStudents.keySet()){
+            studentNumber+=chosenStudents.get(c);
+        }
+        for(Color c: entranceStudents.keySet()){
+            entranceNumber+=entranceStudents.get(c);
+        }
+        if( ((this.asset.equals("clown.jpg") && studentNumber<=3)
+                || (this.asset.equals("storyteller.jpg") && studentNumber<=2))
+                && entranceNumber==studentNumber) {
             this.chosenStudents = Optional.of(chosenStudents);
             this.entranceStudents=Optional.of(entranceStudents);
         }else{
@@ -213,15 +263,15 @@ public class CharacterCard {
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
         int count=0;
-        if(chosenStudents.isPresent() && entranceStudents==null)
+        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null)
             chosenStudents=null;
-        if(entranceStudents.isPresent())
+        if(entranceStudents!=null && entranceStudents.isPresent())
             entranceStudents=null;
-        if( chosenNumberOfSteps.isPresent())
+        if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())
             chosenNumberOfSteps=null;
-        if(chosenColor.isPresent())
+        if(chosenColor!=null && chosenColor.isPresent())
             chosenColor=null;
-        if(noEntryTiles.isPresent())
+        if(noEntryTiles!=null && noEntryTiles.isPresent())
             noEntryTiles=Optional.of(noEntryTiles.get());
 
         player.decreaseMoney(this.cost);

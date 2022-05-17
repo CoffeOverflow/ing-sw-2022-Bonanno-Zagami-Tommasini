@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Server.ClientHandler;
+import it.polimi.ingsw.Server.GameHandler;
 
 public class MoveStudent implements ClientToServerMessage{
 
@@ -36,11 +37,11 @@ public class MoveStudent implements ClientToServerMessage{
         return islandPosition;
     }
 
-    public void handleMessage(GameController controller){
+    public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
         action.setMove(moveTo);
         action.setColorStudent(studentColor);
         action.setPosIsland(islandPosition);
-        controller.doAction(action);
+        game.getController().doAction(action);
     }
 }

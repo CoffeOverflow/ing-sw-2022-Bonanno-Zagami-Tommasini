@@ -1,30 +1,31 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
+import it.polimi.ingsw.Model.Wizards;
 
 import java.io.IOException;
 import java.util.List;
 
 public class SelectWizard implements ServerToClientMessage {
 
-    private static String msg="Select a wizard among the ones available";
+    private String msg="Select a wizard among the ones available:\n";
 
-    private List<String> availableWizards;
+    private List<Wizards> availableWizards;
 
-    public SelectWizard(List<String> availableWizards){
+    public SelectWizard(List<Wizards> availableWizards){
         this.availableWizards=availableWizards;
     }
 
-    public static String getMsg() {
+    public String getMsg() {
         return msg;
     }
 
-    public List<String> getAvailableWizards() {
+    public List<Wizards> getAvailableWizards() {
         return availableWizards;
     }
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.chooseWizard(this);
     }
 }

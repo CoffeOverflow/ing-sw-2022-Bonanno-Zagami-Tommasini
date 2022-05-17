@@ -23,6 +23,6 @@ public class OtherPlayerWins implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-
+        view.otherPlayerWins(this);
     }
 }

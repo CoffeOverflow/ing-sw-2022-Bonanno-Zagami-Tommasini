@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Exceptions.DuplicateNicknameException;
 import it.polimi.ingsw.Exceptions.InvalidNicknameException;
+import it.polimi.ingsw.Exceptions.MatchFullException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -104,16 +105,27 @@ public class Server implements Runnable{
         return availableGames.size() > 0;
     }
 
+    public synchronized void removeAvailableGame(int game){
+        availableGames.remove(game);
+    }
+
     public synchronized void newGame(ClientHandler firstplayer, int numberOfPlayer, boolean expertMode){
         int id = getNewGameID();
-        GameHandler newGame = new GameHandler(id, nicknameByID.get(firstplayer.getPlayerID())+"'s match", numberOfPlayer, expertMode);
-        newGame.addPlayer(firstplayer);
-        firstplayer.setGame(newGame);
+        GameHandler newGame = new GameHandler(id, nicknameByID.get(firstplayer.getPlayerID())+"'s match", numberOfPlayer, expertMode, this);
+        try {
+            newGame.addPlayer(firstplayer);
+        }
+        catch (MatchFullException e){
+
+        }
         availableGames.put(id, newGame);
     }
 
-    public GameHandler getGameByID(int id){
+    public GameHandler getAvailableGameByID(int id) throws MatchFullException {
         //Da fare mappa gamesByID
-        return availableGames.get(id);
+        if(availableGames.containsKey(id))
+            return availableGames.get(id);
+        else
+            throw new MatchFullException();
     }
 }
