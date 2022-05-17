@@ -38,4 +38,7 @@ public interface View {
 
     void chooseWizard(SelectWizard message) throws IOException;
 
+    void showBoard();
+
+    void showIsland();
 }

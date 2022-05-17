@@ -24,6 +24,7 @@ public class Constants {
     public static final String ANSI_WHITE = "\033[37m";
     public static final String ANSI_BACKGROUND_BLACK = "\033[40m";
     public static final String ANSI_BACKGROUND_PURPLE = "\033[45m";
+    public static final String ANSI_PINK="\033[38;5;206m";
     public static void setIP(String ip) {
         Constants.ip = ip;
     }
