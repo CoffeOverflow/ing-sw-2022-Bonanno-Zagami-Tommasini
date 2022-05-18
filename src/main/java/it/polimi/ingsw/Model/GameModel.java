@@ -149,24 +149,41 @@ public class GameModel {
          */
         String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
                 "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
+        int[] cardNumbers=new int[3];
+        for(int i=0; i<3; i++){
+            switch(i){
+                case 0:
+                    cardNumbers[i]=rand.nextInt(12);
+                    break;
+                case 1:
+                    do{
+                        cardNumbers[i]=rand.nextInt(12);
+                    }while(cardNumbers[i]==0);
+                    break;
+                case 2:
+                    do{
+                        cardNumbers[i]=rand.nextInt(12);
+                    }while(cardNumbers[i]==0 || cardNumbers[i]==1);
+                    break;
+            }
+        }
         if(expertMode){
             try{
             for(int i=0; i<3;i++) {
-                int cardNumber=rand.nextInt(12);
                 EnumMap<Color, Integer> students=new EnumMap<>(Color.class);
-                if(cardNumber==0 || cardNumber==9){
+                if(cardNumbers[i]==0 || cardNumbers[i]==9){
                     students=getStudentsFromBag(4);
-                    characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
+                    characterCards.add(new CharacterCard(characterAssets[cardNumbers[i]],students));
                 }
-                else if(cardNumber==5){
+                else if(cardNumbers[i]==5){
                     students=getStudentsFromBag(6);
-                    characterCards.add(new CharacterCard(characterAssets[cardNumber],students));
+                    characterCards.add(new CharacterCard(characterAssets[cardNumbers[i]],students));
 
                 }
                 else{
-                    characterCards.add(new CharacterCard(characterAssets[cardNumber]));
+                    characterCards.add(new CharacterCard(characterAssets[cardNumbers[i]]));
                 }
-                charactersPositions.put(characterAssets[cardNumber],i);
+                charactersPositions.put(characterAssets[cardNumbers[i]],i);
             }}catch(Exception e){
                 e.printStackTrace();
             }
