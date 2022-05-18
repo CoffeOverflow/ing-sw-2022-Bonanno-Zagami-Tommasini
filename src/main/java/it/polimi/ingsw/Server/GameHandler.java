@@ -5,10 +5,7 @@ import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Controller.State.DecideFirstPlayerState;
 import it.polimi.ingsw.Controller.State.GameControllerState;
 import it.polimi.ingsw.Exceptions.MatchFullException;
-import it.polimi.ingsw.Model.Color;
-import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Model.Tower;
-import it.polimi.ingsw.Model.Wizards;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
 
@@ -113,13 +110,15 @@ public class GameHandler implements Runnable{
         sendAll(new GenericMessage("Match is starting..."));
         HashMap<Integer, Color> mapStudentIsland=new HashMap<>();
         for(int i=0; i<12; i++){
-            for(Color c: Color.values()){
-                if(controller.getModel().getIslandByPosition(i).getStudents().get(c)!=0)
-                    mapStudentIsland.put(i,c);
-                else{
-                    mapStudentIsland.put(i,null);
+            boolean check=false;
+            for(Color c: Color.values()) {
+                if (controller.getModel().getIslandByPosition(i).getStudents().get(c) != 0){
+                    mapStudentIsland.put(i, c);
+                    check = true;
                 }
             }
+            if(check==false)
+                mapStudentIsland.put(i,null);
         }
         sendAll(new MatchCreated(controller.getModel().getMotherNaturePosition(),mapStudentIsland) );
         HashMap<Integer, Wizards> mapPlayerWizard=new HashMap<>();
@@ -160,6 +159,20 @@ public class GameHandler implements Runnable{
 
             }
             sendAll(msg);
+            controller.fillCloud();
+            BoardChange change=null;
+            if(numberOfPlayers==2){
+                change=new BoardChange(controller.getModel().getClouds().get(0).getStudents(),
+                        controller.getModel().getClouds().get(1).getStudents());
+
+            }else if(numberOfPlayers==3){
+                change=new BoardChange(controller.getModel().getClouds().get(0).getStudents(),
+                        controller.getModel().getClouds().get(1).getStudents(),
+                        controller.getModel().getClouds().get(2).getStudents());
+            }
+
+            sendAll(new UpdateMessage(change));
+
         }
 
 
@@ -171,13 +184,14 @@ public class GameHandler implements Runnable{
     @Override
     public void run() {
         setup();
-        controller.fillCloud();
         controller.setFirstPlayer(players.get(0).getPlayerID());
-        /*do{
-            controller.setState(new DecideFirstPlayerState());
-
+        sendTo(new YourTurn(),players.get(0));
+        sendAllExcept(new IsTurnOfPlayer(players.get(0).getNickname()),players.get(0));
+        String[] cards=new String[10];
+        for(int i=0; i<10;i++){
+            cards[i]=controller.getModel().getPlayerByID(players.get(0).getPlayerID()).getAssistantCards().get(i).getName();
         }
-        while(controller.fillCloud());*/
+        sendTo(new SelectAssistantCard(cards),players.get(0));
 
     }
 

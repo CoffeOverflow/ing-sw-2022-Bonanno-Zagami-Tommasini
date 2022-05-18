@@ -602,5 +602,9 @@ public class GameModel {
     public List<Player> getPlayers() {
         return players;
     }
+
+    public List<Cloud> getClouds() {
+        return clouds;
+    }
 }
 

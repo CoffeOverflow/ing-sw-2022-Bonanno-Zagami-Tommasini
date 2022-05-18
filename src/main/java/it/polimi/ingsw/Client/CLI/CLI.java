@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
-import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
-import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
-import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
+import it.polimi.ingsw.Client.ClientToServer.*;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Client.VirtualModel;
@@ -193,11 +190,14 @@ public class CLI implements View, Runnable {
     @Override
     public void selectAssistantCard(SelectAssistantCard msg){
         this.showMessage(SelectAssistantCard.getMsg());
-        for(String s: msg.getAvailableCards().keySet()){
-            int value=msg.getAvailableCards().get(s)[0];
-            int steps=msg.getAvailableCards().get(s)[1];
-            this.showMessage("Card: "+ s + "\n " + "value: " + value + "steps: "+ steps);
+        for(String s: msg.getAvailableCards()){
+            //vmodel.getPlayers().get()
+            this.showMessage("Card: "+ s + "\n " );
         }
+        Scanner scanner = new Scanner(System.in);
+        String card = scanner.next();
+        //serverHandler.send(new PlayAssistantCard(card));
+
     }
 
     @Override
@@ -231,6 +231,7 @@ public class CLI implements View, Runnable {
                 this.vmodel.fillClouds(bchange);
                 break;
         }
+        this.showBoard();
     }
 
     @Override
@@ -249,10 +250,8 @@ public class CLI implements View, Runnable {
 
     @Override
     public void showBoard(){
-        for(int i=0;i<12;i++){
             showIsland();
 
-        }
     }
 
 
@@ -291,9 +290,9 @@ public class CLI implements View, Runnable {
 
             }
             if(i==9 || i==10 ||i==11)
-                this.showMessage("Island "+(i+1)+": "+studentOnIsland);
+                this.showMessage("Island "+(i+1)+": "+studentOnIsland +'\n');
             else
-                this.showMessage("Island "+(i+1)+":  "+studentOnIsland);
+                this.showMessage("Island "+(i+1)+":  "+studentOnIsland+'\n');
             studentOnIsland.setLength(0);
         }
     }

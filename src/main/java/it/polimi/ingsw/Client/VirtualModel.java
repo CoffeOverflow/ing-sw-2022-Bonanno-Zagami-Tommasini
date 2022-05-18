@@ -18,6 +18,8 @@ public class VirtualModel {
 
     private List<Player> players=new ArrayList<>();
 
+
+
     private List<Cloud> clouds=new ArrayList<>();
 
     public void setIslandsAndMotherNature(MatchCreated msg)  {
