@@ -249,10 +249,9 @@ public class CLI implements View, Runnable {
 
     @Override
     public void showBoard(){
-        for(int i=0;i<12;i++){
             showIsland();
-
-        }
+            for(Player p:this.vmodel.getPlayers())
+                showSchool(p);
     }
 
 
@@ -272,19 +271,19 @@ public class CLI implements View, Runnable {
                 for(int j=0;j<num;j++){
                     switch(c){
                         case BLUE:
-                            studentOnIsland.append(ANSI_BLUE+"*"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_BLUE+"○"+ANSI_RESET);
                             break;
                         case PINK:
-                            studentOnIsland.append(ANSI_PINK+"*"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_PINK+"○"+ANSI_RESET);
                             break;
                         case GREEN:
-                            studentOnIsland.append(ANSI_GREEN+"*"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_GREEN+"○"+ANSI_RESET);
                             break;
                         case RED:
-                            studentOnIsland.append(ANSI_RED+"*"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_RED+"○"+ANSI_RESET);
                             break;
                         case YELLOW:
-                            studentOnIsland.append(ANSI_YELLOW+"*"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_YELLOW+"○"+ANSI_RESET);
                             break;
                     }
                 }
@@ -296,6 +295,93 @@ public class CLI implements View, Runnable {
                 this.showMessage("Island "+(i+1)+":  "+studentOnIsland);
             studentOnIsland.setLength(0);
         }
+    }
+
+    @Override
+    public void showSchool(Player p){
+        char emptyCircle ='⚪';
+        char filledCircle='⚫';
+
+        char[][] boardElement = new char[5][14];
+        String[] titleElement = new String[4];
+
+        EnumMap<Color,Integer> students=p.getStudents();
+        EnumMap<Color,Integer> entryStudents=p.getEntryStudents();
+
+        int numColorStudents[]=new int[5];
+        int numColorEntryStudents[]=new int[5];
+
+        numColorStudents[0]=students.get(Color.GREEN);
+        numColorStudents[1]=students.get(Color.RED);
+        numColorStudents[2]=students.get(Color.YELLOW);
+        numColorStudents[3]=students.get(Color.PINK);
+        numColorStudents[4]=students.get(Color.BLUE);
+
+        numColorEntryStudents[0]=entryStudents.get(Color.GREEN);
+        numColorEntryStudents[1]=entryStudents.get(Color.RED);
+        numColorEntryStudents[2]=entryStudents.get(Color.YELLOW);
+        numColorEntryStudents[3]=entryStudents.get(Color.PINK);
+        numColorEntryStudents[4]=entryStudents.get(Color.BLUE);
+
+        StringBuilder color=new StringBuilder();
+        int num=0;
+        for(int i=0;i<5;i++)
+            num+=numColorEntryStudents[i];
+        String[] ansiColor={ANSI_GREEN,ANSI_RED,ANSI_YELLOW,ANSI_PINK,ANSI_BLUE};
+
+        for (int i = 0; i < 5; i++) {
+
+            for (int j = 0; j < 14; j++) {
+                if (i == 0 && j == 0) boardElement[i][j] = '⦵';
+                else if (j == 12 || j == 13) boardElement[i][j] = '▯';
+                else {
+                    if(j>1 && j<12)
+                        if (numColorStudents[i] > 0) {
+                            boardElement[i][j] = filledCircle;
+                            numColorStudents[i]--;
+                        }
+                        else boardElement[i][j] = emptyCircle;
+                    else
+                        boardElement[i][j]=emptyCircle;
+
+                }
+            }
+
+        }
+        int k=0;
+        for(int i=0;i<5;i++) {
+            for (int j = 0; j < 14; j++) {
+                if(j>1 && j<12) {
+                    color.append(ansiColor[i]);
+                    color.append(boardElement[i][j]);
+                }
+                else if(j<=1){
+                    if(i==0 && j==0)boardElement[i][j]='⦵';
+                    else if(num>0){
+                        if(numColorEntryStudents[k]>1)
+                        {
+                            color.append(ansiColor[k]);
+                            numColorEntryStudents[k]--;
+                        }
+                        else
+                        {color.append(ansiColor[k]);numColorEntryStudents[k]--;
+                            k++;}
+                        boardElement[i][j]=filledCircle;
+                        num--;
+
+                    }else boardElement[i][j]=emptyCircle;
+
+                    color.append(boardElement[i][j]);
+                    if(num==0)color.append(ANSI_RESET);
+                }
+                else color.append(boardElement[i][j]);
+                if (j == 1 || j == 10 || j == 11 || j == 13) color.append(ANSI_RESET + "|");
+            }
+            color.append("\n");
+        }
+        this.showMessage(color.toString());
+        this.showMessage("________________\n");
+
     }
 
     @Override
