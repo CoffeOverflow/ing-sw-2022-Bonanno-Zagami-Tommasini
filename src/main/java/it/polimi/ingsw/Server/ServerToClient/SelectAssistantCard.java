@@ -8,16 +8,11 @@ import java.util.List;
 
 public class SelectAssistantCard implements ServerToClientMessage{
 
-    private static String msg="select a card to play";
+    private static String msg="select a card to play \n";
 
-    /**
-     * name of the cards mapped to an array of two elements
-     * containing in the 0 position the value of the card and
-     * in position 1 the steps of mother nature
-     * */
-    private HashMap<String, Integer[]> availableCards;
+    private String[] availableCards;
 
-    public SelectAssistantCard(HashMap<String, Integer[]> cards){
+    public SelectAssistantCard(String[] cards){
         availableCards=cards;
     }
 
@@ -25,7 +20,7 @@ public class SelectAssistantCard implements ServerToClientMessage{
         return msg;
     }
 
-    public HashMap<String, Integer[]> getAvailableCards() {
+    public String[] getAvailableCards() {
         return availableCards;
     }
 

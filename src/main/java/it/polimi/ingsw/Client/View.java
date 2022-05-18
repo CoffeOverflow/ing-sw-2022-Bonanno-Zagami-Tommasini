@@ -44,4 +44,6 @@ public interface View {
     void showIsland();
 
     void showSchool(Player p);
+
+    void showClouds();
 }

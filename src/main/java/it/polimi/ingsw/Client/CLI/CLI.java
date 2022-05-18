@@ -1,24 +1,16 @@
 package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
-import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
-import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
-import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
+import it.polimi.ingsw.Client.ClientToServer.*;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Controller.State.MoveTo;
-import it.polimi.ingsw.Model.Color;
-import it.polimi.ingsw.Model.Island;
-import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Model.Wizards;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.io.IOException;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 import static it.polimi.ingsw.Constants.*;
 
@@ -193,11 +185,30 @@ public class CLI implements View, Runnable {
     @Override
     public void selectAssistantCard(SelectAssistantCard msg){
         this.showMessage(SelectAssistantCard.getMsg());
-        for(String s: msg.getAvailableCards().keySet()){
-            int value=msg.getAvailableCards().get(s)[0];
-            int steps=msg.getAvailableCards().get(s)[1];
-            this.showMessage("Card: "+ s + "\n " + "value: " + value + "steps: "+ steps);
+        int value=0;
+        int steps=0;
+        for(String s: msg.getAvailableCards()){
+            for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
+                if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equals(s)) {
+                    value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
+                    steps = vmodel.getClientPlayer().getAssistantCards().get(i).getMothernatureSteps();
+                    break;
+                }
+            }
+            this.showMessage("Card: "+ s + " value: " + value + " steps: " + steps+ "\n" );
         }
+        System.out.print("> ");
+        Scanner scanner = new Scanner(System.in);
+        String card = scanner.next();
+        for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
+            if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equals(card)) {
+                value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
+                break;
+            }
+        }
+        serverHandler.send(new PlayAssistantCard(value));
+        System.out.print("Wait for the other players to play the assistant card..\n");
+
     }
 
     @Override
@@ -231,6 +242,7 @@ public class CLI implements View, Runnable {
                 this.vmodel.fillClouds(bchange);
                 break;
         }
+        this.showBoard();
     }
 
     @Override
@@ -250,6 +262,8 @@ public class CLI implements View, Runnable {
     @Override
     public void showBoard(){
             showIsland();
+            showClouds();
+
             for(Player p:this.vmodel.getPlayers())
                 showSchool(p);
     }
@@ -290,9 +304,9 @@ public class CLI implements View, Runnable {
 
             }
             if(i==9 || i==10 ||i==11)
-                this.showMessage("Island "+(i+1)+": "+studentOnIsland);
+                this.showMessage("Island "+(i+1)+": "+studentOnIsland +'\n');
             else
-                this.showMessage("Island "+(i+1)+":  "+studentOnIsland);
+                this.showMessage("Island "+(i+1)+":  "+studentOnIsland+'\n');
             studentOnIsland.setLength(0);
         }
     }
@@ -382,6 +396,55 @@ public class CLI implements View, Runnable {
         this.showMessage(color.toString());
         this.showMessage("________________\n");
 
+    }
+
+    @Override
+    public void showClouds() {
+        List<Cloud> clouds = this.vmodel.getClouds();
+        EnumMap<Color, Integer> students;
+        StringBuilder studentOnClouds = new StringBuilder();
+        StringBuilder cloudsStrings = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < clouds.size(); j++) {
+                //cloudsStrings.append(cloud[i]);
+                if (i == 2) {
+                    //cloudsStrings.append(cloud[i]);
+                    students = clouds.get(j).getStudents();
+                    for (Color c : Color.values()) {
+                        for (int y = 0; y < students.get(c); y++) {
+                            switch (c) {
+                                case BLUE:
+                                    studentOnClouds.append(ANSI_BLUE + "*" + ANSI_RESET);
+                                    break;
+                                case PINK:
+                                    studentOnClouds.append(ANSI_PINK + "*" + ANSI_RESET);
+                                    break;
+                                case GREEN:
+                                    studentOnClouds.append(ANSI_GREEN + "*" + ANSI_RESET);
+                                    break;
+                                case RED:
+                                    studentOnClouds.append(ANSI_RED + "*" + ANSI_RESET);
+                                    break;
+                                case YELLOW:
+                                    studentOnClouds.append(ANSI_YELLOW + "*" + ANSI_RESET);
+                                    break;
+                            }
+                        }
+                    }
+                    cloudsStrings.append(cloud[i]+studentOnClouds+cloud[i+1]);
+                    studentOnClouds.setLength(0);
+
+
+                }
+                else{
+                    cloudsStrings.append(cloud[i]);
+                }
+            }
+            cloudsStrings.append("\n");
+            if(i == 2)
+                i++;
+        }
+        this.showMessage("\n"+cloudsStrings+"\n\n");
     }
 
     @Override

@@ -19,14 +19,17 @@ public class PlayersInfo implements ServerToClientMessage{
 
     private HashMap<Integer, Tower> mapTowerToPlayer;
 
+    private int yourPlayerID;
+
 
     public PlayersInfo(boolean expertMode, HashMap<Integer, Wizards> mapPlayerWizard,
-                       HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname) {
+                       HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname, int yourPlayerID) {
 
         this.expertMode = expertMode;
         this.mapPlayerWizard = mapPlayerWizard;
         this.mapTowerToPlayer=mapTowerToPlayer;
         this.mapIDNickname=mapIDNickname;
+        this.yourPlayerID=yourPlayerID;
     }
 
 
@@ -48,6 +51,10 @@ public class PlayersInfo implements ServerToClientMessage{
 
     public HashMap<Integer, String> getMapIDNickname() {
         return mapIDNickname;
+    }
+
+    public int getYourPlayerID() {
+        return yourPlayerID;
     }
 
     @Override
