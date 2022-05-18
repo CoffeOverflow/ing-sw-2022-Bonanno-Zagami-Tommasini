@@ -21,6 +21,8 @@ public class GameHandler implements Runnable{
     private final int numberOfPlayers;
     private final boolean expertMode;
     private final List<ClientHandler> players;
+
+    private int currentPlayerPosition;
     private final Server server;
     private final GameController controller;
     private ArrayList<Wizards> wizards = new ArrayList<>(List.of(Wizards.values()));
@@ -129,7 +131,9 @@ public class GameHandler implements Runnable{
             mapTowerToPlayer.put(p.getPlayerID(),p.getTower());
             mapIDNickname.put(p.getPlayerID(),p.getNickname());
         }
-        sendAll(new PlayersInfo(expertMode, mapPlayerWizard,mapTowerToPlayer,mapIDNickname));
+        for(int i=0; i<players.size(); i++) {
+            sendTo(new PlayersInfo(expertMode, mapPlayerWizard, mapTowerToPlayer, mapIDNickname, players.get(i).getPlayerID()), players.get(i));
+        }
         for(Player p: controller.getModel().getPlayers()){
             sendAll(new SetUpSchoolStudent(p.getEntryStudents(),p.getPlayerID()));
         }
@@ -181,10 +185,28 @@ public class GameHandler implements Runnable{
         }*/
     }
 
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public int getCurrentPlayerPosition() {
+        return currentPlayerPosition;
+    }
+
+    public void setCurrentPlayerPosition(int currentPlayerPosition) {
+        this.currentPlayerPosition = currentPlayerPosition;
+    }
+
+    public List<ClientHandler> getPlayers() {
+        return players;
+    }
+
     @Override
     public void run() {
         setup();
         controller.setFirstPlayer(players.get(0).getPlayerID());
+        controller.getModel().setCurrentPlayer(players.get(0).getPlayerID());
+        setCurrentPlayerPosition(0);
         sendTo(new YourTurn(),players.get(0));
         sendAllExcept(new IsTurnOfPlayer(players.get(0).getNickname()),players.get(0));
         String[] cards=new String[10];

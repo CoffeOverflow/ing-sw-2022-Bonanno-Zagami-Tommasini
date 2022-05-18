@@ -190,13 +190,29 @@ public class CLI implements View, Runnable {
     @Override
     public void selectAssistantCard(SelectAssistantCard msg){
         this.showMessage(SelectAssistantCard.getMsg());
+        int value=0;
+        int steps=0;
         for(String s: msg.getAvailableCards()){
-            //vmodel.getPlayers().get()
-            this.showMessage("Card: "+ s + "\n " );
+            for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
+                if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equals(s)) {
+                    value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
+                    steps = vmodel.getClientPlayer().getAssistantCards().get(i).getMothernatureSteps();
+                    break;
+                }
+            }
+            this.showMessage("Card: "+ s + " value: " + value + " steps: " + steps+ "\n" );
         }
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         String card = scanner.next();
-        //serverHandler.send(new PlayAssistantCard(card));
+        for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
+            if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equals(card)) {
+                value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
+                break;
+            }
+        }
+        serverHandler.send(new PlayAssistantCard(value));
+        System.out.print("Wait for the other players to play the assistant card..\n");
 
     }
 

@@ -32,9 +32,13 @@ public class ServerHandler {
             return null;
         }
     }
-    public void send(Object msg) throws IOException {
-        outputStream.reset();
-        outputStream.writeObject(msg);
-        outputStream.flush();
+    public void send(Object msg){
+        try {
+            outputStream.reset();
+            outputStream.writeObject(msg);
+            outputStream.flush();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

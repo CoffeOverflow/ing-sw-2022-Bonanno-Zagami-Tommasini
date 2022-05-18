@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SelectAssistantCard implements ServerToClientMessage{
 
-    private static String msg="select a card to play";
+    private static String msg="select a card to play \n";
 
     private String[] availableCards;
 

@@ -18,7 +18,7 @@ public class VirtualModel {
 
     private List<Player> players=new ArrayList<>();
 
-
+    private Player clientPlayer;
 
     private List<Cloud> clouds=new ArrayList<>();
 
@@ -40,6 +40,8 @@ public class VirtualModel {
             players.add(new Player(i,msg.getMapIDNickname().get(i), msg.isExpertMode(),
                     msg.getMapTowerToPlayer().get(i),msg.getNumberOfTowers()));
             players.get(j).setWizard(msg.getMapPlayerWizard().get(i));
+            if(players.get(j).getPlayerID()==msg.getYourPlayerID())
+                clientPlayer=players.get(j);
             j++;
         }
     }
@@ -144,6 +146,10 @@ public class VirtualModel {
     public List<Player> getPlayers() {
 
         return players;
+    }
+
+    public Player getClientPlayer() {
+        return clientPlayer;
     }
 
     public void moveMotherNature(int steps){

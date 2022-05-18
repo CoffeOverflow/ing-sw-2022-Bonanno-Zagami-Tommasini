@@ -38,6 +38,7 @@ public class AssistantCard {
         return asset;
     }
 
+
     @Override
     public String toString() {
         return "AssistantCard{" +
