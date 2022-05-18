@@ -41,4 +41,6 @@ public interface View {
     void showBoard();
 
     void showIsland();
+
+    void showClouds();
 }

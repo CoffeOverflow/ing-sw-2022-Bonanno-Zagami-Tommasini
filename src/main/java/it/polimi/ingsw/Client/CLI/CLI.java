@@ -6,16 +6,11 @@ import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Controller.State.MoveTo;
-import it.polimi.ingsw.Model.Color;
-import it.polimi.ingsw.Model.Island;
-import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Model.Wizards;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.io.IOException;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 import static it.polimi.ingsw.Constants.*;
 
@@ -267,6 +262,7 @@ public class CLI implements View, Runnable {
     @Override
     public void showBoard(){
             showIsland();
+            showClouds();
 
     }
 
@@ -311,6 +307,55 @@ public class CLI implements View, Runnable {
                 this.showMessage("Island "+(i+1)+":  "+studentOnIsland+'\n');
             studentOnIsland.setLength(0);
         }
+    }
+
+    @Override
+    public void showClouds() {
+        List<Cloud> clouds = this.vmodel.getClouds();
+        EnumMap<Color, Integer> students;
+        StringBuilder studentOnClouds = new StringBuilder();
+        StringBuilder cloudsStrings = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < clouds.size(); j++) {
+                //cloudsStrings.append(cloud[i]);
+                if (i == 2) {
+                    //cloudsStrings.append(cloud[i]);
+                    students = clouds.get(j).getStudents();
+                    for (Color c : Color.values()) {
+                        for (int y = 0; y < students.get(c); y++) {
+                            switch (c) {
+                                case BLUE:
+                                    studentOnClouds.append(ANSI_BLUE + "*" + ANSI_RESET);
+                                    break;
+                                case PINK:
+                                    studentOnClouds.append(ANSI_PINK + "*" + ANSI_RESET);
+                                    break;
+                                case GREEN:
+                                    studentOnClouds.append(ANSI_GREEN + "*" + ANSI_RESET);
+                                    break;
+                                case RED:
+                                    studentOnClouds.append(ANSI_RED + "*" + ANSI_RESET);
+                                    break;
+                                case YELLOW:
+                                    studentOnClouds.append(ANSI_YELLOW + "*" + ANSI_RESET);
+                                    break;
+                            }
+                        }
+                    }
+                    cloudsStrings.append(cloud[i]+studentOnClouds+cloud[i+1]);
+                    studentOnClouds.setLength(0);
+
+
+                }
+                else{
+                    cloudsStrings.append(cloud[i]);
+                }
+            }
+            cloudsStrings.append("\n");
+            if(i == 2)
+                i++;
+        }
+        this.showMessage("\n"+cloudsStrings+"\n\n");
     }
 
     @Override

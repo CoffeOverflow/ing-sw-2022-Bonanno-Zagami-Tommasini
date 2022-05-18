@@ -22,6 +22,10 @@ public class VirtualModel {
 
     private List<Cloud> clouds=new ArrayList<>();
 
+    public List<Cloud> getClouds() {
+        return clouds;
+    }
+
     public void setIslandsAndMotherNature(MatchCreated msg)  {
         HashMap<Integer, Color> mapStudentIsland = msg.getMapStudentIsland();
         for(int i=0; i<12; i++) {
