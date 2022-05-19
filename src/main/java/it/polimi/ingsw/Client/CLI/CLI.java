@@ -473,6 +473,50 @@ public class CLI implements View, Runnable {
         this.showMessage("\n"+cloudsStrings+"\n\n");
     }
 
+    public void chooseOption(ChooseOption message){
+        showMessage(message.getMsg());
+        System.out.print("> ");
+        Scanner scanner = new Scanner(System.in);
+        int n=0;
+        do {
+            n = scanner.nextInt();
+            switch (n) {
+                case 1:
+                    if (message.getType() == OptionType.MOVESTUDENTS) {
+                        for (int i = 0; i < 3; i++) {
+                            System.out.print("Choose where to move the student: \n1.school\n2.island \n> ");
+                            int n2 = 0;
+                            String col=null;
+                            do {
+                                n2 = scanner.nextInt();
+                                System.out.print("Choose the color of the student: \n> ");
+                                do{
+                                col=scanner.next();}while(!(Arrays.asList(Color.values()).contains(Color.valueOf(col.toUpperCase()))));
+                                if (n2 == 1) {
+                                    serverHandler.send(new MoveStudent(MoveTo.SCHOOL,Color.valueOf(col.toUpperCase())));
+                                } else if (n2 == 2) {
+                                    serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase())));
+                                } else {
+                                    System.out.print("Option not valid, retry!");
+                                }
+                            } while (n2 != 1 && n2 != 2);
+                        }
+                    } else if (message.getType() == OptionType.MOVENATURE) {
+
+                        //TODO mandare messaggio per muovere madre natura
+
+                    }
+                    break;
+                case 2:
+                    //TODO mandare messaggio per giocare carta personaggio
+                    break;
+                default:
+                    System.out.print("Option not valid, retry!");
+                    break;
+            }
+        }while(n!=1 && n!=2);
+    }
+
     @Override
     public void run() {
         while(true){

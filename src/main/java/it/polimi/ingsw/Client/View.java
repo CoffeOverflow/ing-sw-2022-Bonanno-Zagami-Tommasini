@@ -46,4 +46,6 @@ public interface View {
     void showSchool(Player p);
 
     void showClouds();
+
+    void chooseOption(ChooseOption msg);
 }
