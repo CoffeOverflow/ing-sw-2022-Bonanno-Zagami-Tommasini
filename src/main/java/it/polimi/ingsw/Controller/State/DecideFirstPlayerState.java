@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class DecideFirstPlayerState implements GameControllerState {
     @Override
-    public void turnAction(GameController gc, Action action){
+    public void turnAction(GameController gc, Action action) throws IllegalArgumentException{
 
         Integer[] players=new Integer[gc.getModel().getNumberOfPlayers()];
         Integer[] values= new Integer[players.length];
@@ -36,10 +36,7 @@ public class DecideFirstPlayerState implements GameControllerState {
                    for(AssistantCard c : deck){
                        for(int k=0; k<values.length;k++) {
                            if (k != j && values[k] != c.getValue()) {
-                               //DEVE RIGIOCARE LA CARTA
-                               System.out.println("the player must use another assistant card");
-                               //throw new IllegalArgumentException("the player must use another assistant card");
-                               break;
+                               throw new IllegalArgumentException("the player must use another assistant card");
                            }
 
                        }

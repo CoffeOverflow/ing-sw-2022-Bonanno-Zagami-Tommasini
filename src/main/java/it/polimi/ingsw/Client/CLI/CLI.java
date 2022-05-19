@@ -207,7 +207,7 @@ public class CLI implements View, Runnable {
             }
         }
         serverHandler.send(new PlayAssistantCard(value));
-        System.out.print("Wait for the other players to play the assistant card..\n");
+        
 
     }
 

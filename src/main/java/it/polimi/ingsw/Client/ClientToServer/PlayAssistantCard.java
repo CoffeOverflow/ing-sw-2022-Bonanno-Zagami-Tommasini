@@ -4,10 +4,7 @@ import it.polimi.ingsw.Controller.State.DecideFirstPlayerState;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
-import it.polimi.ingsw.Server.ServerToClient.GenericMessage;
-import it.polimi.ingsw.Server.ServerToClient.IsTurnOfPlayer;
-import it.polimi.ingsw.Server.ServerToClient.SelectAssistantCard;
-import it.polimi.ingsw.Server.ServerToClient.YourTurn;
+import it.polimi.ingsw.Server.ServerToClient.*;
 
 public class PlayAssistantCard implements ClientToServerMessage{
 
@@ -28,8 +25,22 @@ public class PlayAssistantCard implements ClientToServerMessage{
 
         if(game.getController().getCurrentCardPlayers().size()==game.getNumberOfPlayers()) {
             game.getController().setState(new DecideFirstPlayerState());
-            game.getController().doAction(null);
-            //TODO send update message
+            try {
+                game.getController().doAction(null);
+                game.sendTo(new YourTurn(),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
+                game.setCurrentPlayerPosition(game.getController().getTurnOrder()[1]);
+            }catch(IllegalArgumentException e){
+                //e.printStackTrace();
+                String[] cards=new String[game.getController().getModel().getPlayerByID(playerId).getAssistantCards().size()];
+                for(int i=0; i<10;i++){
+                    cards[i]=game.getController().getModel().getPlayerByID(game.getPlayers().get(game.getCurrentPlayerPosition()).getPlayerID()).getAssistantCards().get(i).getName();
+                }
+                game.sendTo(new ActionNonValid(), game.getPlayers().get(game.getCurrentPlayerPosition()));
+                game.sendTo(new SelectAssistantCard(cards),game.getPlayers().get(game.getCurrentPlayerPosition()));
+                game.getController().getCurrentCardPlayers().remove(playerId);
+            }
+
+
         }else{
 
             if(game.getCurrentPlayerPosition()==game.getPlayers().size()-1){

@@ -201,6 +201,15 @@ public class GameHandler implements Runnable{
         return players;
     }
 
+    public ClientHandler getClientByPlayerID(int playerID){
+        ClientHandler ret=null;
+        for(ClientHandler c: players){
+            if(c.getPlayerID()==playerID)
+                ret=c;
+        }
+        return ret;
+    }
+
     @Override
     public void run() {
         setup();
