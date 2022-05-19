@@ -22,9 +22,10 @@ public class PlayersInfo implements ServerToClientMessage{
     private int yourPlayerID;
 
 
-    public PlayersInfo(boolean expertMode, HashMap<Integer, Wizards> mapPlayerWizard,
-                       HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname, int yourPlayerID) {
 
+    public PlayersInfo(boolean expertMode, int numberOfTowers, HashMap<Integer, Wizards> mapPlayerWizard,
+                       HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname, int yourPlayerID) {
+        this.numberOfTowers=numberOfTowers;
         this.expertMode = expertMode;
         this.mapPlayerWizard = mapPlayerWizard;
         this.mapTowerToPlayer=mapTowerToPlayer;

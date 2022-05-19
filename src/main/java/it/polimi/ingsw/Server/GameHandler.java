@@ -132,7 +132,7 @@ public class GameHandler implements Runnable{
             mapIDNickname.put(p.getPlayerID(),p.getNickname());
         }
         for(int i=0; i<players.size(); i++) {
-            sendTo(new PlayersInfo(expertMode, mapPlayerWizard, mapTowerToPlayer, mapIDNickname, players.get(i).getPlayerID()), players.get(i));
+            sendTo(new PlayersInfo(expertMode, controller.getModel().getNumberOfTowers(), mapPlayerWizard, mapTowerToPlayer, mapIDNickname, players.get(i).getPlayerID()), players.get(i));
         }
         for(Player p: controller.getModel().getPlayers()){
             sendAll(new SetUpSchoolStudent(p.getEntryStudents(),p.getPlayerID()));
