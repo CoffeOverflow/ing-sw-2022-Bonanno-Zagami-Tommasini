@@ -315,6 +315,8 @@ public class CLI implements View, Runnable {
     public void showSchool(Player p){
         char emptyCircle ='⚪';
         char filledCircle='⚫';
+        char emptyRect='▯';
+        char filledRect='▮';
 
         char[][] boardElement = new char[5][14];
         String[] titleElement = new String[4];
@@ -324,6 +326,9 @@ public class CLI implements View, Runnable {
 
         int numColorStudents[]=new int[5];
         int numColorEntryStudents[]=new int[5];
+        boolean[] professor={p.isPresentProfessor(Color.GREEN),p.isPresentProfessor(Color.RED),p.isPresentProfessor(Color.YELLOW),p.isPresentProfessor(Color.PINK),p.isPresentProfessor(Color.BLUE)};
+        int numberOfTower=p.getNumberOfTower();
+
 
         numColorStudents[0]=students.get(Color.GREEN);
         numColorStudents[1]=students.get(Color.RED);
@@ -366,8 +371,20 @@ public class CLI implements View, Runnable {
         for(int i=0;i<5;i++) {
             for (int j = 0; j < 14; j++) {
                 if(j>1 && j<12) {
-                    color.append(ansiColor[i]);
-                    color.append(boardElement[i][j]);
+                    if(j!=11)
+                    {
+                        color.append(ansiColor[i]);
+                        color.append(boardElement[i][j]);
+                    }
+                    else
+                    {
+                        if(professor[i])
+                            boardElement[i][j]=filledCircle;
+                        else
+                            boardElement[i][j]=emptyCircle;
+                        color.append(ansiColor[i]);
+                        color.append(boardElement[i][j]);
+                    }
                 }
                 else if(j<=1){
                     if(i==0 && j==0)boardElement[i][j]='⦵';
@@ -388,7 +405,16 @@ public class CLI implements View, Runnable {
                     color.append(boardElement[i][j]);
                     if(num==0)color.append(ANSI_RESET);
                 }
-                else color.append(boardElement[i][j]);
+                else{
+                    if(numberOfTower>0)
+                    {
+                        boardElement[i][j]=filledRect;
+                        numberOfTower--;
+                    }
+                    else
+                        boardElement[i][j]=emptyRect;
+                    color.append(boardElement[i][j]);
+                }
                 if (j == 1 || j == 10 || j == 11 || j == 13) color.append(ANSI_RESET + "|");
             }
             color.append("\n");
