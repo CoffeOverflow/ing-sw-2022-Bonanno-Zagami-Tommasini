@@ -458,6 +458,8 @@ public class CLI implements View, Runnable {
                             }
                         }
                     }
+                    if(clouds.size() == 2)
+                        studentOnClouds.append(" ");
                     cloudsStrings.append(cloud[i]+studentOnClouds+cloud[i+1]);
                     studentOnClouds.setLength(0);
 
