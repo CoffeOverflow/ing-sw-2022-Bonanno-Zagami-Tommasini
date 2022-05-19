@@ -142,6 +142,9 @@ class GameModelTest {
         assertFalse(gm.areStudentsOnCloud(1));
         gm.getStudentsFromBag();
         assertTrue(gm.areStudentsOnCloud(1));
+        System.out.println(gm.getClouds().get(0).getStudents());
+        System.out.println(gm.getClouds().get(1).getStudents());
+        //System.out.println(gm.getClouds().get(2).getStudents());
 
     }
 

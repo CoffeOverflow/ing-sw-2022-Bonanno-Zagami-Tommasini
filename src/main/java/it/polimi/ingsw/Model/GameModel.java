@@ -380,14 +380,14 @@ public class GameModel {
      * @return
      */
     public boolean getStudentsFromBag()  {
-        EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
 
-        Random rand=new Random();
-        Color col;
 
         for(int i=0;i<clouds.size();i++){
+            EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
             for (Color c: Color.values())
                 studentsOnClouds.put(c,0);
+            Random rand=new Random();
+            Color col;
             for(int j=0;j<numberOfStudentBag;j++)
             {
                 try {
@@ -401,8 +401,7 @@ public class GameModel {
                     System.out.println("There are no more students in the bag");
                     return false;
                 }
-
-                }
+            }
             fillCloud(studentsOnClouds,i);
             }
         return true;

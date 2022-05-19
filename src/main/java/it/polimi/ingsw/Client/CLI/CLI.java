@@ -277,10 +277,14 @@ public class CLI implements View, Runnable {
 
         EnumMap<Color,Integer> students;
         StringBuilder studentOnIsland=new StringBuilder();
+        char filledRect='■';
+        int numberOfTower=0;
+        Optional<Tower> tower;
         int num=0;
         for(int i=0;i<12;i++)
         {
             students=this.vmodel.getIslands().get(i).getStudents();
+            tower=this.vmodel.getIslands().get(i).getTower();
             for(Color c: Color.values())
             {
                 num=students.get(c);
@@ -305,6 +309,26 @@ public class CLI implements View, Runnable {
                 }
 
             }
+            if(tower.isPresent()) {
+                numberOfTower=this.vmodel.getIslands().get(i).getNumberOfTowers();
+                for(int k=0;k<numberOfTower;k++)
+                {
+                    switch (tower.get()){
+                        case BLACK:
+                            studentOnIsland.append(ANSI_BLACK);
+                            break;
+                        case GRAY:
+                            studentOnIsland.append(ANSI_GRAY);
+                            break;
+                        case WHITE:
+                            studentOnIsland.append(ANSI_WHITE);
+                            break;
+
+                    }
+                    studentOnIsland.append(filledRect);
+                 }
+            }
+
             if(i==9 || i==10 ||i==11)
                 this.showMessage("Island "+(i+1)+": "+studentOnIsland +'\n');
             else
@@ -343,6 +367,7 @@ public class CLI implements View, Runnable {
         numColorEntryStudents[3]=entryStudents.get(Color.PINK);
         numColorEntryStudents[4]=entryStudents.get(Color.BLUE);
 
+        this.showMessage(p.getNickname()+"'s board \n");
         StringBuilder color=new StringBuilder();
         int num=0;
         for(int i=0;i<5;i++)
@@ -350,7 +375,6 @@ public class CLI implements View, Runnable {
         String[] ansiColor={ANSI_GREEN,ANSI_RED,ANSI_YELLOW,ANSI_PINK,ANSI_BLUE};
         String[] ansiTower={ANSI_WHITE,ANSI_BLACK,ANSI_GRAY};
         for (int i = 0; i < 5; i++) {
-
             for (int j = 0; j < 14; j++) {
                 if (i == 0 && j == 0) boardElement[i][j] = '◌';
                 else if (j == 12 || j == 13) boardElement[i][j] = emptyRect;
@@ -462,7 +486,6 @@ public class CLI implements View, Runnable {
                         studentOnClouds.append(" ");
                     cloudsStrings.append(cloud[i]+studentOnClouds+cloud[i+1]);
                     studentOnClouds.setLength(0);
-
 
                 }
                 else{
