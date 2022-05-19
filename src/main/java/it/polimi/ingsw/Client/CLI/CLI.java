@@ -10,6 +10,8 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static it.polimi.ingsw.Constants.*;
@@ -263,9 +265,9 @@ public class CLI implements View, Runnable {
     public void showBoard(){
             showIsland();
             showClouds();
-
+            int i=0;
             for(Player p:this.vmodel.getPlayers())
-                showSchool(p);
+                showSchool(p,i++);
     }
 
 
@@ -312,11 +314,11 @@ public class CLI implements View, Runnable {
     }
 
     @Override
-    public void showSchool(Player p){
-        char emptyCircle ='⚪';
-        char filledCircle='⚫';
-        char emptyRect='▯';
-        char filledRect='▮';
+    public void showSchool(Player p,int numColor){
+        char emptyCircle ='○';
+        char filledCircle='●';
+        char emptyRect='□';
+        char filledRect='■';
 
         char[][] boardElement = new char[5][14];
         String[] titleElement = new String[4];
@@ -328,7 +330,6 @@ public class CLI implements View, Runnable {
         int numColorEntryStudents[]=new int[5];
         boolean[] professor={p.isPresentProfessor(Color.GREEN),p.isPresentProfessor(Color.RED),p.isPresentProfessor(Color.YELLOW),p.isPresentProfessor(Color.PINK),p.isPresentProfessor(Color.BLUE)};
         int numberOfTower=p.getNumberOfTower();
-
 
         numColorStudents[0]=students.get(Color.GREEN);
         numColorStudents[1]=students.get(Color.RED);
@@ -347,12 +348,12 @@ public class CLI implements View, Runnable {
         for(int i=0;i<5;i++)
             num+=numColorEntryStudents[i];
         String[] ansiColor={ANSI_GREEN,ANSI_RED,ANSI_YELLOW,ANSI_PINK,ANSI_BLUE};
-
+        String[] ansiTower={ANSI_WHITE,ANSI_BLACK,ANSI_GRAY};
         for (int i = 0; i < 5; i++) {
 
             for (int j = 0; j < 14; j++) {
-                if (i == 0 && j == 0) boardElement[i][j] = '⦵';
-                else if (j == 12 || j == 13) boardElement[i][j] = '▯';
+                if (i == 0 && j == 0) boardElement[i][j] = '◌';
+                else if (j == 12 || j == 13) boardElement[i][j] = emptyRect;
                 else {
                     if(j>1 && j<12)
                         if (numColorStudents[i] > 0) {
@@ -387,7 +388,7 @@ public class CLI implements View, Runnable {
                     }
                 }
                 else if(j<=1){
-                    if(i==0 && j==0)boardElement[i][j]='⦵';
+                    if(i==0 && j==0)boardElement[i][j]='◌';
                     else if(num>0){
                         if(numColorEntryStudents[k]>1)
                         {
@@ -406,14 +407,14 @@ public class CLI implements View, Runnable {
                     if(num==0)color.append(ANSI_RESET);
                 }
                 else{
-                    if(numberOfTower>0)
-                    {
-                        boardElement[i][j]=filledRect;
-                        numberOfTower--;
-                    }
-                    else
-                        boardElement[i][j]=emptyRect;
-                    color.append(boardElement[i][j]);
+                        if (numberOfTower > 0) {
+                            boardElement[i][j] = filledRect;
+                            numberOfTower--;
+                        } else boardElement[i][j] = emptyRect;
+                        color.append(ansiTower[numColor]);
+                        color.append(boardElement[i][j]);
+                        if(j!=13)
+                        color.append(" ");
                 }
                 if (j == 1 || j == 10 || j == 11 || j == 13) color.append(ANSI_RESET + "|");
             }
@@ -440,19 +441,19 @@ public class CLI implements View, Runnable {
                         for (int y = 0; y < students.get(c); y++) {
                             switch (c) {
                                 case BLUE:
-                                    studentOnClouds.append(ANSI_BLUE + "*" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_BLUE + "○" + ANSI_RESET);
                                     break;
                                 case PINK:
-                                    studentOnClouds.append(ANSI_PINK + "*" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_PINK + "○" + ANSI_RESET);
                                     break;
                                 case GREEN:
-                                    studentOnClouds.append(ANSI_GREEN + "*" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_GREEN + "○" + ANSI_RESET);
                                     break;
                                 case RED:
-                                    studentOnClouds.append(ANSI_RED + "*" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_RED + "○" + ANSI_RESET);
                                     break;
                                 case YELLOW:
-                                    studentOnClouds.append(ANSI_YELLOW + "*" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_YELLOW + "○" + ANSI_RESET);
                                     break;
                             }
                         }
