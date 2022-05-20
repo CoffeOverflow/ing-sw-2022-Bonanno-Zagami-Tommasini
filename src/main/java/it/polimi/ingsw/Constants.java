@@ -29,6 +29,12 @@ public class Constants {
     public static final String ANSI_BACKGROUND_BLACK = "\033[40m";
     public static final String ANSI_BACKGROUND_PURPLE = "\033[45m";
     public static final String ANSI_PINK="\033[38;5;206m";
+    public static final char emptyCircle ='○';
+    public static final char filledCircle='●';
+    public static final char dashedCircle='◌';
+    public static final char emptyRect='□';
+    public static final char filledRect='■';
+
     public static final String[] cloud = {"   __   _    ", " _(  )_( )_  ", "(_   _", "_) ", "  (_) (__)   "};
     public static void setIP(String ip) {
         Constants.ip = ip;

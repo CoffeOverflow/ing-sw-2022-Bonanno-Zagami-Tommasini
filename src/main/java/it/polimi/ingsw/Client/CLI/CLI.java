@@ -277,7 +277,6 @@ public class CLI implements View, Runnable {
 
         EnumMap<Color,Integer> students;
         StringBuilder studentOnIsland=new StringBuilder();
-        char filledRect='■';
         int numberOfTower=0;
         Optional<Tower> tower;
         int num=0;
@@ -291,19 +290,19 @@ public class CLI implements View, Runnable {
                 for(int j=0;j<num;j++){
                     switch(c){
                         case BLUE:
-                            studentOnIsland.append(ANSI_BLUE+"○"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_BLUE+filledCircle+ANSI_RESET);
                             break;
                         case PINK:
-                            studentOnIsland.append(ANSI_PINK+"○"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_PINK+filledCircle+ANSI_RESET);
                             break;
                         case GREEN:
-                            studentOnIsland.append(ANSI_GREEN+"○"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_GREEN+filledCircle+ANSI_RESET);
                             break;
                         case RED:
-                            studentOnIsland.append(ANSI_RED+"○"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_RED+filledCircle+ANSI_RESET);
                             break;
                         case YELLOW:
-                            studentOnIsland.append(ANSI_YELLOW+"○"+ANSI_RESET);
+                            studentOnIsland.append(ANSI_YELLOW+filledCircle+ANSI_RESET);
                             break;
                     }
                 }
@@ -339,10 +338,6 @@ public class CLI implements View, Runnable {
 
     @Override
     public void showSchool(Player p,int numColor){
-        char emptyCircle ='○';
-        char filledCircle='●';
-        char emptyRect='□';
-        char filledRect='■';
 
         char[][] boardElement = new char[5][14];
         String[] titleElement = new String[4];
@@ -376,7 +371,7 @@ public class CLI implements View, Runnable {
         String[] ansiTower={ANSI_WHITE,ANSI_BLACK,ANSI_GRAY};
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 14; j++) {
-                if (i == 0 && j == 0) boardElement[i][j] = '◌';
+                if (i == 0 && j == 0) boardElement[i][j] = dashedCircle;
                 else if (j == 12 || j == 13) boardElement[i][j] = emptyRect;
                 else {
                     if(j>1 && j<12)
@@ -465,19 +460,19 @@ public class CLI implements View, Runnable {
                         for (int y = 0; y < students.get(c); y++) {
                             switch (c) {
                                 case BLUE:
-                                    studentOnClouds.append(ANSI_BLUE + "○" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_BLUE + filledCircle + ANSI_RESET);
                                     break;
                                 case PINK:
-                                    studentOnClouds.append(ANSI_PINK + "○" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_PINK + filledCircle + ANSI_RESET);
                                     break;
                                 case GREEN:
-                                    studentOnClouds.append(ANSI_GREEN + "○" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_GREEN + filledCircle + ANSI_RESET);
                                     break;
                                 case RED:
-                                    studentOnClouds.append(ANSI_RED + "○" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_RED + filledCircle + ANSI_RESET);
                                     break;
                                 case YELLOW:
-                                    studentOnClouds.append(ANSI_YELLOW + "○" + ANSI_RESET);
+                                    studentOnClouds.append(ANSI_YELLOW + filledCircle + ANSI_RESET);
                                     break;
                             }
                         }
