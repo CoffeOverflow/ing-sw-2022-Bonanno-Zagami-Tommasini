@@ -368,7 +368,7 @@ public class CLI implements View, Runnable {
         for(int i=0;i<5;i++)
             num+=numColorEntryStudents[i];
         String[] ansiColor={ANSI_GREEN,ANSI_RED,ANSI_YELLOW,ANSI_PINK,ANSI_BLUE};
-        String[] ansiTower={ANSI_WHITE,ANSI_BLACK,ANSI_GRAY};
+        String[] ansiTower={WHITE_BRIGHT,ANSI_BLACK,ANSI_GRAY};
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 14; j++) {
                 if (i == 0 && j == 0) boardElement[i][j] = dashedCircle;
@@ -407,7 +407,7 @@ public class CLI implements View, Runnable {
                     }
                 }
                 else if(j<=1){
-                    if(i==0 && j==0)boardElement[i][j]='◌';
+                    if(i==0 && j==0)boardElement[i][j]=dashedCircle;
                     else if(num>0){
                         if(numColorEntryStudents[k]>1)
                         {
@@ -430,7 +430,7 @@ public class CLI implements View, Runnable {
                             boardElement[i][j] = filledRect;
                             numberOfTower--;
                         } else boardElement[i][j] = emptyRect;
-                        color.append(ansiTower[numColor]);
+                        color.append(WHITE_BACKGROUND + ansiTower[numColor]);
                         color.append(boardElement[i][j]);
                         if(j!=13)
                         color.append(" ");
