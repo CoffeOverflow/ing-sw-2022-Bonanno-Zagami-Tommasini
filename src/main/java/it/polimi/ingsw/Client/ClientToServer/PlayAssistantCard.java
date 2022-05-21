@@ -29,15 +29,16 @@ public class PlayAssistantCard implements ClientToServerMessage{
                 game.getController().doAction(null);
                 game.sendTo(new YourTurn(),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
                 game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
-                game.setCurrentPlayerPosition(game.getController().getTurnOrder()[1]);
+                game.getController().getModel().setCurrentPlayer(game.getController().getTurnOrder()[0]);
+                //game.setCurrentPlayerPosition(game.getController().getTurnOrder()[1]);
             }catch(IllegalArgumentException e){
                 //e.printStackTrace();
                 String[] cards=new String[game.getController().getModel().getPlayerByID(playerId).getAssistantCards().size()];
                 for(int i=0; i<10;i++){
                     cards[i]=game.getController().getModel().getPlayerByID(game.getPlayers().get(game.getCurrentPlayerPosition()).getPlayerID()).getAssistantCards().get(i).getName();
                 }
-                game.sendTo(new ActionNonValid(), player); //game.getPlayers().get(game.getCurrentPlayerPosition())
-                game.sendTo(new SelectAssistantCard(cards),player); //game.getPlayers().get(game.getCurrentPlayerPosition())
+                game.sendTo(new ActionNonValid(), player);
+                game.sendTo(new SelectAssistantCard(cards),player);
                 game.getController().getCurrentCardPlayers().remove(playerId);
             }
 

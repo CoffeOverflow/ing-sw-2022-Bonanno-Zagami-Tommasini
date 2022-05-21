@@ -6,7 +6,7 @@ import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
-import it.polimi.ingsw.Server.ServerToClient.ActionNonValid;
+import it.polimi.ingsw.Server.ServerToClient.*;
 
 public class MoveStudent implements ClientToServerMessage{
 
@@ -49,6 +49,10 @@ public class MoveStudent implements ClientToServerMessage{
         }
         try{
             game.getController().doAction(action);
+            game.sendTo(new ChooseOption(OptionType.MOVENATURE),game.getClientByPlayerID(game.getCurrentPlayerPosition()));
+            BoardChange change=new BoardChange(moveTo,studentColor,islandPosition,game.getController().getModel().getCurrentPlayer());
+            game.sendAllExcept(new UpdateMessage(change),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+
         }catch(IllegalArgumentException e){
             game.sendTo(new ActionNonValid(), player);
         }

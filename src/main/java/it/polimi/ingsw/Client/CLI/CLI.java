@@ -513,22 +513,23 @@ public class CLI implements View, Runnable {
                             System.out.print("Choose where to move the student: \n1.school\n2.island \n> ");
                             int n2 = 0;
                             String col=null;
+                            Color color=null;
                             do {
                                 n2 = scanner.nextInt();
-                                System.out.print("Choose the color of the student: \n> ");
                                 do{
+                                    System.out.print("Choose the color of the student: \n> ");
                                     System.out.println(this.vmodel.getClientPlayer().getEntryStudents().toString());
                                     col=scanner.next();
-                                }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(Color.valueOf(col.toUpperCase())) ||
-                                        (vmodel.getClientPlayer().getEntryStudents().containsKey(Color.valueOf(col.toUpperCase())) &&
-                                        vmodel.getClientPlayer().getEntryStudents().get(Color.valueOf(col.toUpperCase()))==0));
+                                    color=Color.valueOf(col.toUpperCase());
+                                }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(color) ||
+                                        vmodel.getClientPlayer().getEntryStudents().get(color)==0);
                                 //while(!(Arrays.asList(vmodel.getClientPlayer().getEntryStudents().).contains(Color.valueOf(col.toUpperCase()))));
                                 if (n2 == 1) {
-                                    serverHandler.send(new MoveStudent(MoveTo.SCHOOL,Color.valueOf(col.toUpperCase())));
-                                    vmodel.getClientPlayer().getEntryStudents().put(Color.valueOf(col.toUpperCase()),vmodel.getClientPlayer().getEntryStudents().get(col)-1);
+                                    serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color));
+                                    vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                 } else if (n2 == 2) {
                                     serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase())));
-                                    vmodel.getClientPlayer().getEntryStudents().put(Color.valueOf(col.toUpperCase()),vmodel.getClientPlayer().getEntryStudents().get(col)-1);
+                                    vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                 } else {
                                     System.out.print("Option not valid, retry!");
                                 }

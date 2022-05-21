@@ -16,10 +16,6 @@ public class ChooseOption implements ServerToClientMessage{
             case MOVENATURE:
                 msg="Choose an option: \n1.Move mother nature \n2.Play a character card \n";
                 break;
-            case RETRYSTUDENT:
-                msg="You don't have a student of that color in your entrance, choose another color!\n";
-                break;
-            //case RETRYNATURE:
 
         }
     }
