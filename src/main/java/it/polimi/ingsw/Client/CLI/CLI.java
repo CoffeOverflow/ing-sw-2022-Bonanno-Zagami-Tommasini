@@ -263,11 +263,11 @@ public class CLI implements View, Runnable {
 
     @Override
     public void showBoard(){
-            showIsland();
-            showClouds();
-            int i=0;
-            for(Player p:this.vmodel.getPlayers())
-                showSchool(p,i++);
+        showIsland();
+        showClouds();
+        int i=0;
+        for(Player p:this.vmodel.getPlayers())
+            showSchool(p,i++);
     }
 
 
@@ -342,9 +342,12 @@ public class CLI implements View, Runnable {
         char[][] boardElement = new char[5][14];
         String[] titleElement = new String[4];
 
-        EnumMap<Color,Integer> students=p.getStudents();
-        EnumMap<Color,Integer> entryStudents=p.getEntryStudents();
-
+        EnumMap<Color,Integer> students=new EnumMap<Color, Integer>(Color.class);
+        EnumMap<Color,Integer> entryStudents=new EnumMap<Color, Integer>(Color.class);
+        entryStudents=p.getEntryStudents();
+        students=p.getStudents();
+        System.out.println(entryStudents);
+        System.out.println(students);
         int numColorStudents[]=new int[5];
         int numColorEntryStudents[]=new int[5];
         boolean[] professor={p.isPresentProfessor(Color.GREEN),p.isPresentProfessor(Color.RED),p.isPresentProfessor(Color.YELLOW),p.isPresentProfessor(Color.PINK),p.isPresentProfessor(Color.BLUE)};
@@ -409,14 +412,10 @@ public class CLI implements View, Runnable {
                 else if(j<=1){
                     if(i==0 && j==0)boardElement[i][j]=dashedCircle;
                     else if(num>0){
-                        if(numColorEntryStudents[k]>1)
-                        {
-                            color.append(ansiColor[k]);
-                            numColorEntryStudents[k]--;
-                        }
-                        else
-                        {color.append(ansiColor[k]);numColorEntryStudents[k]--;
-                            k++;}
+                        while (numColorEntryStudents[k]==0)
+                                k++;
+                        color.append(ansiColor[k]);
+                        numColorEntryStudents[k]--;
                         boardElement[i][j]=filledCircle;
                         num--;
 
@@ -440,6 +439,7 @@ public class CLI implements View, Runnable {
             color.append("\n");
         }
         this.showMessage(color.toString());
+        color.setLength(0);
         this.showMessage("________________\n");
 
     }
