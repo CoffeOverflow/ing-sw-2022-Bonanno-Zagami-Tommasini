@@ -1,10 +1,12 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
+import it.polimi.ingsw.Controller.State.MoveStudentsState;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
+import it.polimi.ingsw.Server.ServerToClient.ActionNonValid;
 
 public class MoveStudent implements ClientToServerMessage{
 
@@ -42,6 +44,14 @@ public class MoveStudent implements ClientToServerMessage{
         action.setMove(moveTo);
         action.setColorStudent(studentColor);
         action.setPosIsland(islandPosition);
-        game.getController().doAction(action);
+        if(!(game.getController().getState() instanceof MoveStudentsState)){
+            game.getController().setState(new MoveStudentsState());
+        }
+        try{
+            game.getController().doAction(action);
+        }catch(IllegalArgumentException e){
+            game.sendTo(new ActionNonValid(), player);
+        }
+
     }
 }

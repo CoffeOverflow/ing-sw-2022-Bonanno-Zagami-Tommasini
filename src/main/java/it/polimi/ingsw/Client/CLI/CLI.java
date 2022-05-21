@@ -497,13 +497,18 @@ public class CLI implements View, Runnable {
     public void chooseOption(ChooseOption message){
         showMessage(message.getMsg());
         System.out.print("> ");
-        Scanner scanner = new Scanner(System.in);
+        //List<Color> availableColors=newArrayList;
+        /*for(Color c: vmodel.getClientPlayer().getEntryStudents().keySet()){
+            if(vmodel.getClientPlayer().getEntryStudents().get(c)>0)
+
+        }*/
         int n=0;
         do {
+            Scanner scanner = new Scanner(System.in);
             n = scanner.nextInt();
             switch (n) {
                 case 1:
-                    if (message.getType() == OptionType.MOVESTUDENTS) {
+                    if (message.getType()==OptionType.MOVESTUDENTS) {
                         for (int i = 0; i < 3; i++) {
                             System.out.print("Choose where to move the student: \n1.school\n2.island \n> ");
                             int n2 = 0;
@@ -512,17 +517,23 @@ public class CLI implements View, Runnable {
                                 n2 = scanner.nextInt();
                                 System.out.print("Choose the color of the student: \n> ");
                                 do{
-                                col=scanner.next();}while(!(Arrays.asList(Color.values()).contains(Color.valueOf(col.toUpperCase()))));
+                                    col=scanner.next();
+                                }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(Color.valueOf(col.toUpperCase())) ||
+                                        (vmodel.getClientPlayer().getEntryStudents().containsKey(Color.valueOf(col.toUpperCase())) &&
+                                        vmodel.getClientPlayer().getEntryStudents().get(Color.valueOf(col.toUpperCase()))==0));
+                                //while(!(Arrays.asList(vmodel.getClientPlayer().getEntryStudents().).contains(Color.valueOf(col.toUpperCase()))));
                                 if (n2 == 1) {
                                     serverHandler.send(new MoveStudent(MoveTo.SCHOOL,Color.valueOf(col.toUpperCase())));
+                                    vmodel.getClientPlayer().getEntryStudents().put(Color.valueOf(col.toUpperCase()),vmodel.getClientPlayer().getEntryStudents().get(col)-1);
                                 } else if (n2 == 2) {
                                     serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase())));
+                                    vmodel.getClientPlayer().getEntryStudents().put(Color.valueOf(col.toUpperCase()),vmodel.getClientPlayer().getEntryStudents().get(col)-1);
                                 } else {
                                     System.out.print("Option not valid, retry!");
                                 }
                             } while (n2 != 1 && n2 != 2);
                         }
-                    } else if (message.getType() == OptionType.MOVENATURE) {
+                    } else if (message.getType()==OptionType.MOVENATURE) {
 
                         //TODO mandare messaggio per muovere madre natura
 
