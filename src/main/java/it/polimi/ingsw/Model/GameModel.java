@@ -210,7 +210,6 @@ public class GameModel {
             notDeleteIsland=this.islands.get(islandPos1);
             this.islands.remove(islandPos2);
             islandPosNotDelete=islandPos1;
-
         }
         else {
             deleteIsland = this.islands.get(islandPos1);
@@ -218,11 +217,8 @@ public class GameModel {
             this.islands.remove(islandPos1);
             islandPosNotDelete=islandPos2;
         }
-
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
-        //fare i controlli sul noEntryCard.
-
     }
 
     /**

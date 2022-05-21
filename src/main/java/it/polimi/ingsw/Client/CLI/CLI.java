@@ -517,6 +517,7 @@ public class CLI implements View, Runnable {
                                 n2 = scanner.nextInt();
                                 System.out.print("Choose the color of the student: \n> ");
                                 do{
+                                    System.out.println(this.vmodel.getClientPlayer().getEntryStudents().toString());
                                     col=scanner.next();
                                 }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(Color.valueOf(col.toUpperCase())) ||
                                         (vmodel.getClientPlayer().getEntryStudents().containsKey(Color.valueOf(col.toUpperCase())) &&
@@ -534,9 +535,10 @@ public class CLI implements View, Runnable {
                             } while (n2 != 1 && n2 != 2);
                         }
                     } else if (message.getType()==OptionType.MOVENATURE) {
-
-                        //TODO mandare messaggio per muovere madre natura
-
+                        int steps;
+                        System.out.println("Choose the step of mother nature");
+                        steps = scanner.nextInt();
+                        serverHandler.send(new MoveMotherNature(steps));
                     }
                     break;
                 case 2:

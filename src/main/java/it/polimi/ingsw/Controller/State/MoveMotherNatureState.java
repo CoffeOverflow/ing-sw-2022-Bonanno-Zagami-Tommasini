@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class MoveMotherNatureState implements GameControllerState {
     @Override
-    public void turnAction(GameController gc, Action action) {
+    public void turnAction(GameController gc, Action action)throws IllegalArgumentException {
         GameModel m=gc.getModel();
         int currentPlayer=m.getCurrentPlayer();
         if(m.isTwoAdditionalSteps() &&
@@ -20,7 +20,7 @@ public class MoveMotherNatureState implements GameControllerState {
         else if(!m.isTwoAdditionalSteps() && action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()){
             m.moveMotherNature(action.getMotherNatureSteps());
         }else{
-            System.out.println("the number of steps chosen is higher than the one indicated by the assistant card");
+            throw new IllegalArgumentException("the number of steps chosen is higher than the one indicated by the assistant card");
         }
         int noEntryCards=m.getIslandByPosition(m.getMotherNaturePosition()).getNoEntryCard();
         if(noEntryCards==0)
