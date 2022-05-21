@@ -49,7 +49,7 @@ public class MoveStudent implements ClientToServerMessage{
         }
         try{
             game.getController().doAction(action);
-            game.sendTo(new ChooseOption(OptionType.MOVENATURE),game.getClientByPlayerID(game.getCurrentPlayerPosition()));
+            game.sendTo(new ChooseOption(OptionType.MOVENATURE),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
             BoardChange change=new BoardChange(moveTo,studentColor,islandPosition,game.getController().getModel().getCurrentPlayer());
             game.sendAllExcept(new UpdateMessage(change),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
 

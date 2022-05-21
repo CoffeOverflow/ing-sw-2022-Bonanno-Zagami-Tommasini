@@ -497,11 +497,6 @@ public class CLI implements View, Runnable {
     public void chooseOption(ChooseOption message){
         showMessage(message.getMsg());
         System.out.print("> ");
-        //List<Color> availableColors=newArrayList;
-        /*for(Color c: vmodel.getClientPlayer().getEntryStudents().keySet()){
-            if(vmodel.getClientPlayer().getEntryStudents().get(c)>0)
-
-        }*/
         int n=0;
         do {
             Scanner scanner = new Scanner(System.in);
@@ -537,7 +532,7 @@ public class CLI implements View, Runnable {
                         }
                     } else if (message.getType()==OptionType.MOVENATURE) {
                         int steps;
-                        System.out.println("Choose the step of mother nature");
+                        System.out.println("Choose the steps of mother nature");
                         steps = scanner.nextInt();
                         serverHandler.send(new MoveMotherNature(steps));
                     }
