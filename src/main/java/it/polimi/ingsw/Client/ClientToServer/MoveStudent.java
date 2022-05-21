@@ -10,21 +10,24 @@ import it.polimi.ingsw.Server.ServerToClient.*;
 
 public class MoveStudent implements ClientToServerMessage{
 
+    private int numOfInstances;
     private MoveTo moveTo;
 
     private Color studentColor;
 
     private int islandPosition;
 
-    public MoveStudent(MoveTo move, Color color, int position){
+    public MoveStudent(MoveTo move, Color color, int position,int n){
         moveTo=move;
         studentColor=color;
         islandPosition=position;
+        numOfInstances=n;
     }
 
-    public MoveStudent(MoveTo move, Color color){
+    public MoveStudent(MoveTo move, Color color, int n){
         moveTo=move;
         studentColor=color;
+        numOfInstances=n;
     }
 
     public MoveTo getMoveTo() {
@@ -49,10 +52,14 @@ public class MoveStudent implements ClientToServerMessage{
         }
         try{
             game.getController().doAction(action);
-            game.sendTo(new ChooseOption(OptionType.MOVENATURE),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
             BoardChange change=new BoardChange(moveTo,studentColor,islandPosition,game.getController().getModel().getCurrentPlayer());
-            game.sendAllExcept(new UpdateMessage(change),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
-
+            game.sendAll(new UpdateMessage(change));
+            //game.sendAll(new UpdateMessage(change));//,game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+            if(numOfInstances==2) {
+                game.sendTo(new GenericMessage(""+numOfInstances),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+                game.sendTo(new ChooseOption(OptionType.MOVENATURE), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+                //,game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+            }
         }catch(IllegalArgumentException e){
             game.sendTo(new ActionNonValid(), player);
         }

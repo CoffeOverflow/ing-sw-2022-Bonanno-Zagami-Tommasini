@@ -228,8 +228,9 @@ public class CLI implements View, Runnable {
                 else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
                     for(Player p: this.vmodel.getPlayers())
                     {
-                        if(p.equals(bchange.getPlayer())){
+                        if(p.getPlayerID()==bchange.getPlayer()){
                             p.addStudentOf(bchange.getStudentColor());
+                            p.removeEntryStudent(bchange.getStudentColor());
                         }
                     }
                 }
@@ -518,12 +519,12 @@ public class CLI implements View, Runnable {
                                     color=Color.valueOf(col.toUpperCase());
                                 }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(color) ||
                                         vmodel.getClientPlayer().getEntryStudents().get(color)==0);
-                                //while(!(Arrays.asList(vmodel.getClientPlayer().getEntryStudents().).contains(Color.valueOf(col.toUpperCase()))));
+                                //while(!(Arrays.asList());
                                 if (n2 == 1) {
-                                    serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color));
+                                    serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color,i));
                                     vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                 } else if (n2 == 2) {
-                                    serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase())));
+                                    serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),i));
                                     vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                 } else {
                                     System.out.print("Option not valid, retry!");
@@ -545,6 +546,7 @@ public class CLI implements View, Runnable {
                     break;
             }
         }while(n!=1 && n!=2);
+        System.out.println("ok");
     }
 
     @Override

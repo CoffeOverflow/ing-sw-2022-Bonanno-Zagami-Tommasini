@@ -27,8 +27,9 @@ public class MoveMotherNature implements ClientToServerMessage{
             game.getController().setState(new MoveMotherNatureState());
             game.getController().doAction(action);
         }catch(IllegalArgumentException e){
-            game.sendTo(new ActionNonValid(),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
-            game.sendTo(new ChooseOption(OptionType.MOVENATURE),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+            e.printStackTrace();
+            game.sendTo(new ActionNonValid(),player);
+            game.sendTo(new ChooseOption(OptionType.MOVENATURE),player);
         }
 
     }
