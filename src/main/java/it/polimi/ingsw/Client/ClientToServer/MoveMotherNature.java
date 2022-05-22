@@ -28,8 +28,9 @@ public class MoveMotherNature implements ClientToServerMessage{
             game.sendAll(new UpdateMessage(new BoardChange(steps)));
             if(game.getController().getConquest()!=null && game.getController().getConquest().getMergedIsland1()==null
                 && game.getController().getConquest().getMergedIsland2()==null){
-                game.sendAll(new UpdateMessage(new BoardChange(game.getController().getConquest().getConqueror(),
-                        game.getController().getConquest().getConqueredIsland())));
+                game.sendAllExcept(new UpdateMessage(new BoardChange(game.getController().getConquest().getConqueror(),
+                        game.getController().getConquest().getConqueredIsland())),player);
+                //try{Thread.sleep(1000);}catch(InterruptedException e){}
             }else if(game.getController().getConquest()!=null && (game.getController().getConquest().getMergedIsland1()!=null
                     || game.getController().getConquest().getMergedIsland2()!=null)){
                 game.sendAll(new UpdateMessage((new BoardChange(game.getController().getConquest().getConqueror(),

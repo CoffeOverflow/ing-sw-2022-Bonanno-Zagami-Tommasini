@@ -235,6 +235,7 @@ public class CLI implements View, Runnable {
                 }
                 break;
             case MERGE:
+                this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 this.vmodel.mergeIslands(bchange.getMergedIsland1(), bchange.getMergedIsland2());
                 break;
             case MOTHERNATURE:

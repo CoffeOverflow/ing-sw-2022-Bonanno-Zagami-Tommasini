@@ -4,8 +4,11 @@ import it.polimi.ingsw.Controller.State.GameControllerState;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Conquest;
 import it.polimi.ingsw.Model.GameModel;
+import it.polimi.ingsw.Model.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class GameController {
 
@@ -21,6 +24,8 @@ public class GameController {
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
 
     private Conquest conquest=null;
+
+    private List<Player> winners=new ArrayList<Player>();
 
     public GameController(boolean expertMode,int numberOfPlayers){
         model=new GameModel(expertMode,numberOfPlayers);
@@ -95,5 +100,13 @@ public class GameController {
     public boolean fillCloud(){
         return model.getStudentsFromBag();
         //Manca controllo per saltare lo stato
+    }
+
+    public List<Player> getWinners() {
+        return winners;
+    }
+
+    public void setWinners(List<Player> winners) {
+        this.winners = winners;
     }
 }

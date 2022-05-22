@@ -162,12 +162,12 @@ public class GameModel {
                 case 1:
                     do{
                         cardNumbers[i]=rand.nextInt(12);
-                    }while(cardNumbers[i]==0);
+                    }while(cardNumbers[i]==cardNumbers[0]);
                     break;
                 case 2:
                     do{
                         cardNumbers[i]=rand.nextInt(12);
-                    }while(cardNumbers[i]==0 || cardNumbers[i]==1);
+                    }while(cardNumbers[i]==cardNumbers[0] || cardNumbers[i]==cardNumbers[1]);
                     break;
             }
         }
@@ -439,7 +439,6 @@ public class GameModel {
                     System.out.println("There are no more students in the bag");
                     lastRound=true;
                     return false;
-
                 }
             }
             fillCloud(studentsOnClouds,i);
@@ -667,6 +666,49 @@ public class GameModel {
 
     public List<Cloud> getClouds() {
         return clouds;
+    }
+
+    public List<Player> getWinner(){
+        Player winner=null;
+        Player winner2=null;
+        ArrayList<Player> winners=new ArrayList<>();
+        HashMap<Player,Integer> mapPlayerNumTowers=new HashMap<>();
+        for(Player p: players){
+            mapPlayerNumTowers.put(p,0);
+        }
+        for(Island i: islands){
+            if(i.getTower().isPresent()){
+                Player p=getPlayerByTower(i.getTower().get());
+                mapPlayerNumTowers.put(p,mapPlayerNumTowers.get(p)+i.getNumberOfTowers());
+            }
+        }
+        int key=0;
+        for(Player p: mapPlayerNumTowers.keySet()){
+            if(mapPlayerNumTowers.get(p)>key){
+                winner=p;
+                if(winner2!=null) winner2=null;
+                key=mapPlayerNumTowers.get(p);
+            }
+            else if(mapPlayerNumTowers.get(p)==key){
+                int numProfWinner=0;
+                int numProfP=0;
+                for(Professor pr: professors.values()){
+                    if(pr.getPlayer().equals(p))
+                        numProfP++;
+                    else if(pr.getPlayer().equals(winner))
+                        numProfWinner++;
+                }
+                if(numProfP>numProfWinner) {
+                    winner = p;
+                    if(winner2!=null) winner2=null;
+                }else if(numProfP==numProfWinner){
+                    winner2=p;
+                }
+            }
+        }
+        winners.add(winner);
+        if(winner2!=null) winners.add(winner2);
+        return winners;
     }
     public boolean isLastRound() {return lastRound;}
 }
