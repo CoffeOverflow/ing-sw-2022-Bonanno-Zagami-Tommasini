@@ -7,7 +7,7 @@ public class Conquest {
     private Integer mergedIsland1;
     private Integer mergedIsland2;
 
-    public Conquest(Tower conqueror, Integer conqueredIsland1, Integer mergedIsland1, Integer mergedIsland2) {
+    public Conquest(Tower conqueror, Integer conqueredIsland, Integer mergedIsland1, Integer mergedIsland2) {
         this.conqueror = conqueror;
         this.conqueredIsland = conqueredIsland;
         this.mergedIsland1 = mergedIsland1;

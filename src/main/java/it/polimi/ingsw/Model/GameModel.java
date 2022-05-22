@@ -336,7 +336,7 @@ public class GameModel {
         int mergeIsland1=0;
         int mergeIsland2=0;
         if(conqueror.isPresent() && mergeResult==0)
-            return new Conquest(getPlayerTower(conqueror.get()),null,null,null);
+            return new Conquest(getPlayerTower(conqueror.get()),islandPosition,null,null);
         else if(conqueror.isPresent() && mergeResult==-1){
             if(islandPosition==0)
                 mergeIsland1=islands.size()-1;

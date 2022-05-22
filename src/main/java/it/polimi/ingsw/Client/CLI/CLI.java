@@ -219,6 +219,7 @@ public class CLI implements View, Runnable {
         BoardChange bchange=msg.getChange();
         switch(bchange.getChange()){
             case CONQUER:
+                System.out.println("conquer");
                 this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 break;
             case MOVESTUDENT:
@@ -235,8 +236,9 @@ public class CLI implements View, Runnable {
                 }
                 break;
             case MERGE:
+                System.out.println("merge");
                 this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
-                this.vmodel.mergeIslands(bchange.getMergedIsland1(), bchange.getMergedIsland2());
+                //this.vmodel.mergeIslands(bchange.getMergedIsland1(), bchange.getMergedIsland2());
                 break;
             case MOTHERNATURE:
                 this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
@@ -589,7 +591,7 @@ public class CLI implements View, Runnable {
                                     int islandPosition;
                                     do{
                                     System.out.print("Choose the number of the island: \n> ");
-                                    islandPosition= scanner.nextInt();}while(islandPosition<0 || islandPosition>=vmodel.getIslands().size()-1);
+                                    islandPosition= scanner.nextInt();}while(islandPosition<=0 || islandPosition>vmodel.getIslands().size());
                                     serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,i));
                                     vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                     vmodel.getIslands().get(islandPosition-1).addStudents(color,1);

@@ -15,15 +15,15 @@ public class BoardChange implements Serializable{
 
     private int islandPosition;
 
-    private int conquerIsland;
+    private Integer conquerIsland;
 
     private int motherNatureSteps;
 
     private Tower conquerorTower;
 
-    private int mergedIsland1;
+    private Integer mergedIsland1;
 
-    private int mergedIsland2;
+    private Integer mergedIsland2;
 
 
     private int playerID;
@@ -48,13 +48,13 @@ public class BoardChange implements Serializable{
         this.change=Change.MOTHERNATURE;
     }
 
-    public BoardChange(Tower conquerorTower,int conquerIsland) {
+    public BoardChange(Tower conquerorTower,Integer conquerIsland) {
         this.conquerorTower = conquerorTower;
         this.conquerIsland=conquerIsland;
         this.change=Change.CONQUER;
     }
 
-    public BoardChange(Tower conquerorTower,int conquerIsland,int mergedIsland1, int mergedIsland2) {
+    public BoardChange(Tower conquerorTower,Integer conquerIsland,Integer mergedIsland1, Integer mergedIsland2) {
         this.conquerorTower = conquerorTower;
         this.conquerIsland=conquerIsland;
         this.mergedIsland1 = mergedIsland1;
@@ -96,11 +96,11 @@ public class BoardChange implements Serializable{
         return conquerorTower;
     }
 
-    public int getMergedIsland1() {
+    public Integer getMergedIsland1() {
         return mergedIsland1;
     }
 
-    public int getMergedIsland2() {
+    public Integer getMergedIsland2() {
         return mergedIsland2;
     }
 
@@ -108,7 +108,7 @@ public class BoardChange implements Serializable{
 
     public int getPlayer() {return playerID;}
 
-    public int getConquerIsland() {return conquerIsland;}
+    public Integer getConquerIsland() {return conquerIsland;}
 
     public EnumMap<Color, Integer> getStudents1() {
         return students1;
