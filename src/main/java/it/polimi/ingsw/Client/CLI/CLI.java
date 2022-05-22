@@ -264,11 +264,55 @@ public class CLI implements View, Runnable {
 
     @Override
     public void showBoard(){
+        System.out.println("");
+        System.out.println("___________ISLANDS___________");
         showIsland();
+        System.out.println("");
+        System.out.println("___________CLOUDS___________");
         showClouds();
+        System.out.println("");
+        System.out.println("___________CHARACTER CARDS___________");
+        System.out.println("");
+        List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
+        if(!characterCards.equals(null)) {
+            String[] characterCardsName;
+            for (int i = 0; i < 3; i++) {
+                characterCardsName = characterCards.get(i).getAsset().split("\\.");
+                System.out.print("Card: " + characterCardsName[0]);
+                System.out.print(" cost: " + characterCards.get(i).getCost());
+                int k = 0;
+                int numStudentsColor = 0;
+                String[] ansiColor = { ANSI_PINK, ANSI_RED, ANSI_YELLOW, ANSI_BLUE, ANSI_GREEN };
+                List<String> characterStudentName = new ArrayList<>();
+                characterStudentName.add("innkeeper.jpg");
+                characterStudentName.add("clown.jpg");
+                characterStudentName.add("princess.jpg");
+                if (characterStudentName.contains(characterCards.get(i).getAsset())) {
+                    System.out.print(" students:");
+                    for (Color c : Color.values()) {
+                        if (characterCards.get(i).getStudents().get().get(c) != 0) {
+                            numStudentsColor = characterCards.get(i).getStudents().get().get(c);
+                            while (numStudentsColor > 0) {
+                                System.out.print(ansiColor[k] + filledCircle + ANSI_RESET);
+                                numStudentsColor--;
+                            }
+                        }
+                        k++;
+                    }
+                }
+                if (characterCards.get(i).getAsset().equals("herbalist.jpg")) {
+                    System.out.print(" no entry titles: " + characterCards.get(i).getNoEntryTiles().get());
+                }
+                System.out.println("");
+            }
+        }
+        System.out.println("");
+        System.out.println("___________BOARDS___________");
+        System.out.println("");
         int i=0;
         for(Player p:this.vmodel.getPlayers())
             showSchool(p,i++);
+
     }
 
 
@@ -330,7 +374,7 @@ public class CLI implements View, Runnable {
             }
             if(i==this.vmodel.getMotherNaturePosition())
             {
-                studentOnIsland.append(ANSI_YELLOW+filledRect);
+                studentOnIsland.append(ANSI_YELLOW+filledRect+ANSI_RESET);
             }
 
             if(i==9 || i==10 ||i==11)
@@ -345,14 +389,11 @@ public class CLI implements View, Runnable {
     public void showSchool(Player p,int numColor){
 
         char[][] boardElement = new char[5][14];
-        String[] titleElement = new String[4];
 
         EnumMap<Color,Integer> students=new EnumMap<Color, Integer>(Color.class);
         EnumMap<Color,Integer> entryStudents=new EnumMap<Color, Integer>(Color.class);
         entryStudents=p.getEntryStudents();
         students=p.getStudents();
-        System.out.println(entryStudents);
-        System.out.println(students);
         int numColorStudents[]=new int[5];
         int numColorEntryStudents[]=new int[5];
         boolean[] professor={p.isPresentProfessor(Color.GREEN),p.isPresentProfessor(Color.RED),p.isPresentProfessor(Color.YELLOW),p.isPresentProfessor(Color.PINK),p.isPresentProfessor(Color.BLUE)};
@@ -567,38 +608,27 @@ public class CLI implements View, Runnable {
                 case 2:
                     List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
                     String[] characterCardsName;
-                    for(int i=0;i<3;i++)
-                    {
+                    List<String> charcaterName=new ArrayList<>();
+                    String card;
+                    boolean choose;
+
+                    for(int i=0;i<3;i++) {
                         characterCardsName=characterCards.get(i).getAsset().split("\\.");
-                       System.out.print("Card: "+characterCardsName[0]);
-                       System.out.print(" cost: "+characterCards.get(i).getCost());
-                       int k=0;
-                       int numStudentsColor=0;
-                       String[] ansiColor={ANSI_PINK,ANSI_RED,ANSI_YELLOW,ANSI_BLUE,ANSI_GREEN};
-                       List<String> characterStudentName=new ArrayList<>();
-                       characterStudentName.add("innkeeper.jpg");
-                       characterStudentName.add("clown.jpg");
-                       characterStudentName.add("princess.jpg");
-                       if(characterStudentName.contains(characterCards.get(i).getAsset())){
-                           System.out.print(" students:");
-                           for(Color c: Color.values()){
-                               if(characterCards.get(i).getStudents().get().get(c)!=0)
-                               {
-                                   numStudentsColor=characterCards.get(i).getStudents().get().get(c);
-                                   while (numStudentsColor>0)
-                                   {
-                                       System.out.print(ansiColor[k]+filledCircle+ANSI_RESET);
-                                       numStudentsColor--;
-                                   }
-                               }
-                               k++;
-                           }
-                       }
-                       if(characterCards.get(i).getAsset().equals("herbalist.jpg")){
-                           System.out.print(" no entry titles: "+characterCards.get(i).getNoEntryTiles().get());
-                       }
-                       System.out.println("");
+                        System.out.println("Card: "+characterCardsName[0]);
+                        charcaterName.add(characterCardsName[0]);
                     }
+                    do{
+                        System.out.println("Choose a card ");
+                        System.out.print(">");
+                        card= scanner.next();
+                        if(!charcaterName.contains(card)){
+                            choose=false;
+                            System.out.println("Choose a valid card");
+                        }
+                        else
+                            choose=true;
+                    } while (!choose);
+                    serverHandler.send(new UseCharacterCard(card));
                     break;
                 default:
                     System.out.print("Option not valid, retry!");
