@@ -524,8 +524,13 @@ public class CLI implements View, Runnable {
                                     serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color,i));
                                     vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                 } else if (n2 == 2) {
-                                    serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),i));
+                                    int islandPosition;
+                                    do{
+                                    System.out.print("Choose the number of the island: \n> ");
+                                    islandPosition= scanner.nextInt();}while(islandPosition<0 || islandPosition>=vmodel.getIslands().size()-1);
+                                    serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,i));
                                     vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
+                                    vmodel.getIslands().get(islandPosition-1).addStudents(color,1);
                                 } else {
                                     System.out.print("Option not valid, retry!");
                                 }
@@ -546,7 +551,6 @@ public class CLI implements View, Runnable {
                     break;
             }
         }while(n!=1 && n!=2);
-        System.out.println("ok");
     }
 
     @Override

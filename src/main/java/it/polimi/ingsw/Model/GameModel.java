@@ -285,7 +285,7 @@ public class GameModel {
             return influence;
     }
 
-    public void computeInfluence(int islandPosition){
+    public Conquest computeInfluence(int islandPosition){
         //take control of the island:
         int key=0;
         HashMap<Integer, Integer> influences=new HashMap<>();
@@ -312,6 +312,8 @@ public class GameModel {
             }
         }
 
+        int mergeResult=0;
+        int oldIslandsSize=islands.size();
         //if the value is unique, conquer the island
         if(conqueror.isPresent()){
             Optional<Tower> oldTower= getTowerOnIsland(islandPosition);
@@ -322,28 +324,65 @@ public class GameModel {
             }
             getPlayerByID(conqueror.get()).buildTower();
 
-            checkMergeIsland(islandPosition,
+           mergeResult= checkMergeIsland(islandPosition,
                     getPlayerTower(conqueror.get()));
         }
+
+        Conquest conquest;
+        int mergeIsland1=0;
+        int mergeIsland2=0;
+        if(conqueror.isPresent() && mergeResult==0)
+            return new Conquest(getPlayerTower(conqueror.get()),null,null,null);
+        else if(conqueror.isPresent() && mergeResult==-1){
+            if(islandPosition==0)
+                mergeIsland1=islands.size()-1;
+            else mergeIsland1=islandPosition-1;
+            if(islands.size()==oldIslandsSize-1){
+                return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,null);
+            }else if(islands.size()==oldIslandsSize-2){
+                if(islandPosition==oldIslandsSize-1)
+                    mergeIsland2=0;
+                else mergeIsland2=islandPosition+1;
+                return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,mergeIsland2);
+            }
+        }else if(conqueror.isPresent() && mergeResult==+1){
+            if(islandPosition==oldIslandsSize-1)
+                mergeIsland1=0;
+            else mergeIsland1=islandPosition+1;
+            if(islands.size()==oldIslandsSize-1){
+                return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,null);
+            }else if(islands.size()==oldIslandsSize-2){
+                if(islandPosition==0)
+                    mergeIsland2=oldIslandsSize-1;
+                else mergeIsland2=islandPosition-1;
+                return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,mergeIsland2);
+            }
+        }else return null;
+    return null;
     }
 
-    public void checkMergeIsland( int island, Tower tower){
+    public int checkMergeIsland( int island, Tower tower){
         if(island==getIslandSize()-1 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island);
             checkMergeIsland( island-1,tower);
+            return -1;
         }else if(island==getIslandSize()-1 && getTowerOnIsland(0).isPresent() && getTowerOnIsland(0).get().equals(tower) ){
             mergeIslands(0,island);
             checkMergeIsland(0,tower);
+            return +1;
         }else if(island==0 && getTowerOnIsland(getIslandSize()-1).isPresent() && getTowerOnIsland(getIslandSize()-1).get().equals(tower)){
             mergeIslands(island,getIslandSize()-1);
             checkMergeIsland( island,tower);
+            return -1;
         }else if((island-1)>=0 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island);
             checkMergeIsland( island-1,tower);
+            return +1;
         }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).isPresent() && getTowerOnIsland(island+1).get().equals(tower)){
             mergeIslands(island,island+1);
             checkMergeIsland(island,tower);
-        }
+            return -1;
+        }else{return 0;}
     }
 
     /**
@@ -376,8 +415,6 @@ public class GameModel {
      * @return
      */
     public boolean getStudentsFromBag()  {
-
-
         for(int i=0;i<clouds.size();i++){
             EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
             for (Color c: Color.values())
@@ -421,8 +458,7 @@ public class GameModel {
         return this.motherNaturePosition;
     }
 
-    public void setTowerOnIsland(int island,int player)
-    {
+    public void setTowerOnIsland(int island,int player) {
             this.islands.get(island).setTower(getPlayerByID(player).getTower());
     }
 

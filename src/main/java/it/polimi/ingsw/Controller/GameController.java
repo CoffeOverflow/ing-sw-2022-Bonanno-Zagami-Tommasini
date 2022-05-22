@@ -30,6 +30,8 @@ public class GameController {
     }
     public void addCurrentAssistantCard(int player,AssistantCard card){
         currentCardPlayers.put(player,card);
+        if(currentCardPlayers.size()== model.getNumberOfPlayers())
+            model.setCurrentCardPlayers(currentCardPlayers);
     }
     public Integer getFirstPlayer() {
         return firstPlayer;

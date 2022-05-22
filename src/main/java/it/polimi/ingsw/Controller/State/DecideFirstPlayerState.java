@@ -46,7 +46,7 @@ public class DecideFirstPlayerState implements GameControllerState {
             }
         }
 
-        gc.getModel().setCurrentCardPlayers(gc.getCurrentCardPlayers());
+        gc.getModel().setCurrentCardPlayers((HashMap<Integer, AssistantCard>)gc.getCurrentCardPlayers().clone());
         String[] cards ={"turtle","elephant","dog", "octopus","lizard", "fox", "eagle","cat","turkey","lion"};
         for(int i=0; i<players.length;i++){
             gc.getModel().useAssistantCard(i,cards[values[i]-1]);
