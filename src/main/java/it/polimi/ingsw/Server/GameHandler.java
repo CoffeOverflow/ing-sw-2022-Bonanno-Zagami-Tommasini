@@ -19,7 +19,13 @@ public class GameHandler implements Runnable{
     private final int gameID;
     private final String name;
     private final int numberOfPlayers;
-    private final boolean expertMode;
+
+    public boolean isExpertMode() {
+
+        return expertMode;
+    }
+
+    private final boolean             expertMode;
     private final List<ClientHandler> players;
 
     private int currentPlayerPosition;

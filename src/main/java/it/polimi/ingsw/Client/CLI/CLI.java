@@ -228,9 +228,10 @@ public class CLI implements View, Runnable {
                 else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
                     for(Player p: this.vmodel.getPlayers())
                     {
+                        System.out.println("Player id "+bchange.getPlayer());
+                        System.out.println("Controllo i vari id dei player "+p.getPlayerID());
                         if(p.getPlayerID()==bchange.getPlayer()){
-                            p.addStudentOf(bchange.getStudentColor());
-                            p.removeEntryStudent(bchange.getStudentColor());
+                            this.vmodel.moveToSchool(p.getPlayerID(),bchange.getStudentColor());
                         }
                     }
                 }
@@ -327,6 +328,10 @@ public class CLI implements View, Runnable {
                     }
                     studentOnIsland.append(filledRect);
                  }
+            }
+            if(i==this.vmodel.getMotherNaturePosition())
+            {
+                studentOnIsland.append(ANSI_YELLOW+filledRect);
             }
 
             if(i==9 || i==10 ||i==11)
@@ -510,19 +515,26 @@ public class CLI implements View, Runnable {
                             int n2 = 0;
                             String col=null;
                             Color color=null;
+                            boolean boolWhile;
                             do {
                                 n2 = scanner.nextInt();
                                 do{
-                                    System.out.print("Choose the color of the student: \n> ");
-                                    System.out.println(this.vmodel.getClientPlayer().getEntryStudents().toString());
-                                    col=scanner.next();
+                                    do{
+                                        System.out.print("Choose the color of the student: \n> ");
+                                        col=scanner.next();
+                                        try{
+                                            Color color2=Color.valueOf(col.toUpperCase());
+                                            boolWhile=Arrays.asList(Color.values()).contains(color2);
+                                        }catch(Exception e){
+                                            boolWhile=false;
+                                            System.out.print("Choose a valid color");
+                                        }
+                                    }while (!boolWhile);
                                     color=Color.valueOf(col.toUpperCase());
                                 }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(color) ||
                                         vmodel.getClientPlayer().getEntryStudents().get(color)==0);
-                                //while(!(Arrays.asList());
                                 if (n2 == 1) {
                                     serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color,i));
-                                    vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                 } else if (n2 == 2) {
                                     int islandPosition;
                                     do{

@@ -57,7 +57,7 @@ public class MoveStudent implements ClientToServerMessage{
             //game.sendAll(new UpdateMessage(change));//,game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
             if(numOfInstances==2) {
                 game.sendTo(new GenericMessage(""+numOfInstances),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
-                game.sendTo(new ChooseOption(OptionType.MOVENATURE), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+                game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
                 //,game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
             }
         }catch(IllegalArgumentException e){

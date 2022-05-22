@@ -21,6 +21,14 @@ public class VirtualModel {
     private Player clientPlayer;
 
     private List<Cloud> clouds=new ArrayList<>();
+    private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
+
+    public VirtualModel() {
+        for(Color c:Color.values()){
+            Professor p=new Professor(c);
+            professors.put(c,p);
+        }
+    }
 
     public List<Cloud> getClouds() {
         return clouds;
@@ -111,6 +119,30 @@ public class VirtualModel {
         for (Color c: Color.values()) {
             this.islands.get(islandPosition).addStudents(c,students.get(c));
         }
+    }
+
+    public void moveToSchool (int player,Color studentColor){
+        for(Player p:this.players)
+            if(p.getPlayerID()==player)
+            {
+                p.addStudentOf(studentColor);
+                p.removeEntryStudent(studentColor);
+                int numOfColor=p.getStudentsOf(studentColor);
+                int max=0;
+                for(Player play: players)
+                {
+                    if(play.getPlayerID()!=p.getPlayerID()){
+                        if(play.getStudentsOf(studentColor)>max)
+                        {
+                            max=play.getStudentsOf(studentColor);
+                        }
+                    }
+                }
+                if(numOfColor>max)
+                {
+                    this.professors.get(studentColor).goToSchool(p);
+                }
+            }
     }
 
     public void fillClouds(BoardChange bChange){

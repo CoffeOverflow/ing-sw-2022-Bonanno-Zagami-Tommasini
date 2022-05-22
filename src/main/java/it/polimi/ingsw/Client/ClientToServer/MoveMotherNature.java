@@ -33,7 +33,7 @@ public class MoveMotherNature implements ClientToServerMessage{
         }catch(IllegalArgumentException e){
             e.printStackTrace();
             game.sendTo(new ActionNonValid(),player);
-            game.sendTo(new ChooseOption(OptionType.MOVENATURE),player);
+            game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()),player);
         }
 
     }

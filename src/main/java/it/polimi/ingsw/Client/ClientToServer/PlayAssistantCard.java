@@ -28,7 +28,7 @@ public class PlayAssistantCard implements ClientToServerMessage{
             try {
                 game.getController().doAction(null);
                 game.sendTo(new YourTurn(),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
-                game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
+                game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
                 game.getController().getModel().setCurrentPlayer(game.getController().getTurnOrder()[0]);
                 game.setCurrentPlayerPosition(game.getController().getTurnOrder()[1]);
             }catch(IllegalArgumentException e){
