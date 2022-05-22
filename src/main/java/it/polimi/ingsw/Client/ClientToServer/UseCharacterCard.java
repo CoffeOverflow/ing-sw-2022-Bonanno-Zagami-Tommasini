@@ -20,6 +20,7 @@ public class UseCharacterCard implements ClientToServerMessage{
     public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
         //TODO settare attributi(da creare) in action per le carte personaggio
-        game.getController().doAction(action);
+       game.getController().doAction(action);
+
     }
 }

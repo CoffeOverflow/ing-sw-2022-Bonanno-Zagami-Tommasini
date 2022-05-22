@@ -14,7 +14,7 @@ public class VirtualModel {
 
     private int motherNaturePosition;
 
-    private List<CharacterCard> characterCards=new ArrayList<>();
+    private List<CharacterCard> characterCards=null;
 
     private List<Player> players=new ArrayList<>();
 
@@ -66,6 +66,7 @@ public class VirtualModel {
     }
 
     public void setCharacterCards(SetUpCharacterCard msg){
+        characterCards=new ArrayList<>();
         int numberOfCard;
         for(int i=0; i<msg.getCharacterCards().length;i++){
             CharacterCard card=null;
