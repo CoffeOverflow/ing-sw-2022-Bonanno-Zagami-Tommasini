@@ -23,6 +23,10 @@ public class GameModel {
     private List<Player> players=new ArrayList<Player>();
     private List<CharacterCard> characterCards=new ArrayList<CharacterCard>();
 
+
+
+    private boolean lastRound =false;
+
     private HashMap<String,Integer> charactersPositions=new HashMap<>();
     private List<Cloud> clouds=new ArrayList<Cloud>();
     private Optional<Integer> coins;
@@ -415,6 +419,7 @@ public class GameModel {
      * @return
      */
     public boolean getStudentsFromBag()  {
+        int numStudents=0;
         for(int i=0;i<clouds.size();i++){
             EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
             for (Color c: Color.values())
@@ -432,11 +437,20 @@ public class GameModel {
                 }
                 catch (IllegalArgumentException e){
                     System.out.println("There are no more students in the bag");
+                    lastRound=true;
                     return false;
+
                 }
             }
             fillCloud(studentsOnClouds,i);
             }
+
+        for(Color color:Color.values())
+            numStudents+=studentsBag.get(color);
+        if(numStudents==0)
+            lastRound=true;
+        else
+            lastRound=false;
         return true;
         }
 
@@ -654,5 +668,6 @@ public class GameModel {
     public List<Cloud> getClouds() {
         return clouds;
     }
+    public boolean isLastRound() {return lastRound;}
 }
 

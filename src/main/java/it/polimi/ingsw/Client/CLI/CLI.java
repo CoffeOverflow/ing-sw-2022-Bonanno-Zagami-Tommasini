@@ -498,6 +498,7 @@ public class CLI implements View, Runnable {
         this.showMessage("\n"+cloudsStrings+"\n\n");
     }
 
+    @Override
     public void chooseOption(ChooseOption message){
         showMessage(message.getMsg());
         System.out.print("> ");
@@ -563,7 +564,40 @@ public class CLI implements View, Runnable {
                     }
                     break;
                 case 2:
-                    //TODO mandare messaggio per giocare carta personaggio
+                    List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
+                    String[] characterCardsName;
+                    for(int i=0;i<3;i++)
+                    {
+                        characterCardsName=characterCards.get(i).getAsset().split("\\.");
+                       System.out.print("Card: "+characterCardsName[0]);
+                       System.out.print(" cost: "+characterCards.get(i).getCost());
+                       int k=0;
+                       int numStudentsColor=0;
+                       String[] ansiColor={ANSI_PINK,ANSI_RED,ANSI_YELLOW,ANSI_BLUE,ANSI_GREEN};
+                       List<String> characterStudentName=new ArrayList<>();
+                       characterStudentName.add("innkeeper.jpg");
+                       characterStudentName.add("clown.jpg");
+                       characterStudentName.add("princess.jpg");
+                       if(characterStudentName.contains(characterCards.get(i).getAsset())){
+                           System.out.print(" students:");
+                           for(Color c: Color.values()){
+                               if(characterCards.get(i).getStudents().get().get(c)!=0)
+                               {
+                                   numStudentsColor=characterCards.get(i).getStudents().get().get(c);
+                                   while (numStudentsColor>0)
+                                   {
+                                       System.out.print(ansiColor[k]+filledCircle+ANSI_RESET);
+                                       numStudentsColor--;
+                                   }
+                               }
+                               k++;
+                           }
+                       }
+                       if(characterCards.get(i).getAsset().equals("herbalist.jpg")){
+                           System.out.print(" no entry titles: "+characterCards.get(i).getNoEntryTiles().get());
+                       }
+                       System.out.println("");
+                    }
                     break;
                 default:
                     System.out.print("Option not valid, retry!");
