@@ -1,4 +1,4 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
-public enum OptionType {MOVESTUDENTS,MOVENATURE, RETRYSTUDENT
+public enum OptionType {MOVESTUDENTS,MOVENATURE,CHOOSECLOUD
 }

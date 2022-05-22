@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller.State;
 
 import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.GameController;
+import it.polimi.ingsw.Model.Conquest;
 import it.polimi.ingsw.Model.GameModel;
 import it.polimi.ingsw.Model.Tower;
 
@@ -23,8 +24,10 @@ public class MoveMotherNatureState implements GameControllerState {
             throw new IllegalArgumentException("the number of steps chosen is higher than the one indicated by the assistant card");
         }
         int noEntryCards=m.getIslandByPosition(m.getMotherNaturePosition()).getNoEntryCard();
-        if(noEntryCards==0)
-            m.computeInfluence(m.getMotherNaturePosition());
+        if(noEntryCards==0){
+            Conquest c=m.computeInfluence(m.getMotherNaturePosition());
+            gc.setConquest(c);
+        }
         else{
             m.getIslandByPosition(m.getMotherNaturePosition()).setNoEntryCard(noEntryCards-1);
             int n=m.getCharactersPositions().get("herbalist.jpg");

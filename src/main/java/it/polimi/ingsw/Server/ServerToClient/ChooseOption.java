@@ -24,6 +24,9 @@ public class ChooseOption implements ServerToClientMessage{
                     else
                         msg="Move mother nature \n";
                 break;
+            case CHOOSECLOUD:
+                msg="Choose the number of the cloud to take the students: \n";
+                break;
 
         }
     }

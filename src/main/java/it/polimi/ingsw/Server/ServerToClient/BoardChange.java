@@ -32,7 +32,6 @@ public class BoardChange implements Serializable{
     private EnumMap<Color, Integer> students2= new EnumMap<Color, Integer>(Color.class);
     private EnumMap<Color, Integer> students3 = new EnumMap<Color, Integer>(Color.class); //null if only two players
 
-    private boolean isConquered=false;
 
     private Change change;
 
@@ -50,16 +49,16 @@ public class BoardChange implements Serializable{
     }
 
     public BoardChange(Tower conquerorTower,int conquerIsland) {
-        this.isConquered = true;
         this.conquerorTower = conquerorTower;
         this.conquerIsland=conquerIsland;
         this.change=Change.CONQUER;
     }
 
-    public BoardChange(int mergedIsland1, int mergedIsland2) {
+    public BoardChange(Tower conquerorTower,int conquerIsland,int mergedIsland1, int mergedIsland2) {
+        this.conquerorTower = conquerorTower;
+        this.conquerIsland=conquerIsland;
         this.mergedIsland1 = mergedIsland1;
         this.mergedIsland2 = mergedIsland2;
-        this.isConquered = true;
         this.change=Change.MERGE;
     }
 
@@ -103,10 +102,6 @@ public class BoardChange implements Serializable{
 
     public int getMergedIsland2() {
         return mergedIsland2;
-    }
-
-    public boolean isConquered() {
-        return isConquered;
     }
 
     public Change getChange() { return change; }

@@ -26,10 +26,18 @@ public class MoveMotherNature implements ClientToServerMessage{
             game.getController().setState(new MoveMotherNatureState());
             game.getController().doAction(action);
             game.sendAll(new UpdateMessage(new BoardChange(steps)));
-            //TODO cambiamenti nel model
-            //check if there are merged islands
-            if(game.getController().getModel().getIslandSize()!=previousIslandSize){}
-           //BoardChange c=new BoardChange();
+            if(game.getController().getConquest()!=null && game.getController().getConquest().getMergedIsland1()==null
+                && game.getController().getConquest().getMergedIsland2()==null){
+                game.sendAll(new UpdateMessage(new BoardChange(game.getController().getConquest().getConqueror(),
+                        game.getController().getConquest().getConqueredIsland())));
+            }else if(game.getController().getConquest()!=null && (game.getController().getConquest().getMergedIsland1()!=null
+                    || game.getController().getConquest().getMergedIsland2()!=null)){
+                game.sendAll(new UpdateMessage((new BoardChange(game.getController().getConquest().getConqueror(),
+                        game.getController().getConquest().getConqueredIsland(),game.getController().getConquest().getMergedIsland1(),
+                        game.getController().getConquest().getMergedIsland2()))));
+            }
+            game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
+
         }catch(IllegalArgumentException e){
             e.printStackTrace();
             game.sendTo(new ActionNonValid(),player);

@@ -184,6 +184,7 @@ public class VirtualModel {
         return players;
     }
 
+
     public Player getClientPlayer() {
         return clientPlayer;
     }

@@ -228,8 +228,6 @@ public class CLI implements View, Runnable {
                 else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
                     for(Player p: this.vmodel.getPlayers())
                     {
-                        System.out.println("Player id "+bchange.getPlayer());
-                        System.out.println("Controllo i vari id dei player "+p.getPlayerID());
                         if(p.getPlayerID()==bchange.getPlayer()){
                             this.vmodel.moveToSchool(p.getPlayerID(),bchange.getStudentColor());
                         }
@@ -504,9 +502,18 @@ public class CLI implements View, Runnable {
         showMessage(message.getMsg());
         System.out.print("> ");
         int n=0;
+        if(message.getType()==OptionType.CHOOSECLOUD){
+            Scanner scanner = new Scanner(System.in);
+            do{
+                n = scanner.nextInt();
+            }while(n<=0 || n>vmodel.getClouds().size());
+            serverHandler.send(new ChooseCloud(n-1));
+        }else{
         do {
             Scanner scanner = new Scanner(System.in);
-            n = scanner.nextInt();
+            if(message.isExpertMode()){
+                n = scanner.nextInt();
+            }else n=1;
             switch (n) {
                 case 1:
                     if (message.getType()==OptionType.MOVESTUDENTS) {
@@ -544,7 +551,7 @@ public class CLI implements View, Runnable {
                                     vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                     vmodel.getIslands().get(islandPosition-1).addStudents(color,1);
                                 } else {
-                                    System.out.print("Option not valid, retry!");
+                                    System.out.print("Option not valid, retry!\n");
                                 }
                             } while (n2 != 1 && n2 != 2);
                         }
@@ -563,6 +570,7 @@ public class CLI implements View, Runnable {
                     break;
             }
         }while(n!=1 && n!=2);
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.State.GameControllerState;
 import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Model.Conquest;
 import it.polimi.ingsw.Model.GameModel;
 
 import java.util.HashMap;
@@ -18,6 +19,8 @@ public class GameController {
 
 
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
+
+    private Conquest conquest=null;
 
     public GameController(boolean expertMode,int numberOfPlayers){
         model=new GameModel(expertMode,numberOfPlayers);
@@ -67,6 +70,18 @@ public class GameController {
 
     public void doAction(Action action){
         state.turnAction(this, action);
+    }
+
+    public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
+        this.currentCardPlayers = currentCardPlayers;
+    }
+
+    public Conquest getConquest() {
+        return conquest;
+    }
+
+    public void setConquest(Conquest conquest) {
+        this.conquest = conquest;
     }
 
     public boolean checkEndGame(){
