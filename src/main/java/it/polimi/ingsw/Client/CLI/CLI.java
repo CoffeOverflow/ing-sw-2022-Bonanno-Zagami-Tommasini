@@ -225,6 +225,11 @@ public class CLI implements View, Runnable {
             case MOVESTUDENT:
                 if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
                     this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(bchange.getStudentColor(),1);
+                    for(Player p: vmodel.getPlayers()){
+                        if(p.getPlayerID() == bchange.getPlayer()){
+                            p.getEntryStudents().put(bchange.getStudentColor(),p.getEntryStudents().get(bchange.getStudentColor())-1);
+                        }
+                    }
                 }
                 else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
                     for(Player p: this.vmodel.getPlayers())
@@ -593,7 +598,7 @@ public class CLI implements View, Runnable {
                                     System.out.print("Choose the number of the island: \n> ");
                                     islandPosition= scanner.nextInt();}while(islandPosition<=0 || islandPosition>vmodel.getIslands().size());
                                     serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,i));
-                                    vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
+                                    //vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                     vmodel.getIslands().get(islandPosition-1).addStudents(color,1);
                                 } else {
                                     System.out.print("Option not valid, retry!\n");
