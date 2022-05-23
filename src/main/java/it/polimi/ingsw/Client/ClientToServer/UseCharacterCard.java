@@ -1,26 +1,36 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
+import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
+
+import java.util.EnumMap;
 
 public class UseCharacterCard implements ClientToServerMessage{
 
     private String asset;
-    //TODO capire che attributi aggiungere in base alla carta
+    private Color color;
+    private Integer posIsland;
+    private EnumMap<Color,Integer> choosenStudents;
+    private EnumMap<Color,Integer> entranceStudents;
 
-    public UseCharacterCard(String asset){
+    public UseCharacterCard(String asset,Integer posIsland, EnumMap<Color,Integer> choosenStudents,EnumMap<Color,Integer> entranceStudents,Color color){
         this.asset=asset;
-    }
-
-    public String getAsset() {
-        return asset;
+        this.choosenStudents=choosenStudents;
+        this.entranceStudents=entranceStudents;
+        this.posIsland=posIsland;
+        this.color=color;
     }
 
     public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
-        //TODO settare attributi(da creare) in action per le carte personaggio
-       game.getController().doAction(action);
+        action.setChosenStudents(choosenStudents);
+        action.setChosenColor(color);
+        action.setEntranceStudents(entranceStudents);
+        action.setAsset(asset);
+        action.setPosIsland(posIsland);
+        game.getController().doAction(action);
 
     }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Constants;
+import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
@@ -376,12 +377,12 @@ public class CLI implements View, Runnable {
                             break;
 
                     }
-                    studentOnIsland.append(filledRect);
+                    studentOnIsland.append(" "+filledRect);
                  }
             }
             if(i==this.vmodel.getMotherNaturePosition())
             {
-                studentOnIsland.append(ANSI_YELLOW+filledRect+ANSI_RESET);
+                studentOnIsland.append(" "+ANSI_YELLOW+filledRect+ANSI_RESET);
             }
 
             if(i==9 || i==10 ||i==11)
@@ -635,7 +636,18 @@ public class CLI implements View, Runnable {
                         else
                             choose=true;
                     } while (!choose);
-                    serverHandler.send(new UseCharacterCard(card));
+
+                    List<String> characterStudentName = new ArrayList<>();
+                    characterStudentName.add("innkeeper.jpg");//posizione isola e choosen student (un solo studente)
+                    characterStudentName.add("thief.jpg");//choosen color (prendere 3 studenti dalla scuola e rimetterli nel sacchetto)
+                    characterStudentName.add("clown.jpg");//2 mappe (choosen<=3 studenti dalla carta, entrance==choosen dall'ingresso)
+                    characterStudentName.add("princess.jpg"); //choosen con un solo studente (preso da quelli sulla carta)
+                    characterStudentName.add("storyteller.jpg");//choosen dalla scuola e scambia con entrance (<=2)
+                    characterStudentName.add("lumberjack.jpg");//choosen color (da non considerare nell'influenza)
+                    characterStudentName.add("auctioneer.jpg");//posizione isola
+                    characterStudentName.add("herbalist.jpg");//posizione isola
+
+                    sendCard(characterStudentName,card.toLowerCase()+".jpg");
                     break;
                 default:
                     System.out.print("Option not valid, retry!");
@@ -643,6 +655,93 @@ public class CLI implements View, Runnable {
             }
         }while(n!=1 && n!=2);
         }
+    }
+
+    public void sendCard(List<String> characterStudentName, String card){
+        String asset=card;
+        Integer posIsland=null;
+        EnumMap<Color,Integer> choosenStudent=null;
+        EnumMap<Color,Integer> entranceStudent=null;
+        Color color=null;
+        boolean boolWhile;
+        Scanner scanner = new Scanner(System.in);
+
+        List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
+        for(CharacterCard c:characterCards){
+            if(c.getAsset().equals(card)){
+                if(characterStudentName.contains(card)){
+                    switch (card){
+                        case "inkeeper.jpg":
+                            do{
+                                this.showMessage("Scegli la posizione dell'isola \n>");
+                                posIsland=scanner.nextInt()-1;
+                                if(posIsland<0 || posIsland>this.vmodel.getIslands().size()-1)
+                                    this.showMessage(ANSI_RED+" Invalid input\n" +ANSI_RESET);
+                            }while (posIsland<0 || posIsland>this.vmodel.getIslands().size()-1);
+                            for(Color c1:color.values())
+                                choosenStudent.put(c1,0);
+                            Color color2=null;
+                           do{
+                               this.showMessage("Scegli il colore dello studente dalla carta\n>");
+                               String colorStudent=scanner.next();
+                               try{
+                                   color2=Color.valueOf(colorStudent.toUpperCase());
+                                   boolWhile=Arrays.asList(Color.values()).contains(color2);
+                                   if(c.getStudents().get().get(color2)>0)
+                                       c.getStudents().get().put(color2,c.getStudents().get().get(color2)-1);
+                                   else {
+                                       boolWhile=false;
+                                       System.out.print(ANSI_RED+"Choose color that is present on the card\n"+ANSI_RESET);
+                                       this.showMessage(">");
+                                   }
+                               }catch(Exception e){
+                                   boolWhile=false;
+                                   System.out.print(ANSI_RED+"Choose a valid color\n"+ANSI_RESET);
+                                   this.showMessage(">");
+                               }
+                           }while (!boolWhile);
+                           choosenStudent.put(color2,1);
+                           break;
+                        // TO DO
+                        case "thief.jpg":
+
+                            break;
+                        case "clown.jpg":
+                            break;
+
+                        case "princess,jpg":
+                            break;
+                        case "storyteller.jpg":
+                            break;
+
+                        case "auctioneer.jpg":
+                        case "herbalist.jpg":
+                            do{
+                                this.showMessage("Scegli la posizione dell'isola \n>");
+                                posIsland=scanner.nextInt()-1;
+                                if(posIsland<0 || posIsland>this.vmodel.getIslands().size()-1)
+                                    this.showMessage(ANSI_RED+" Invalid input\n" +ANSI_RESET);
+                            }while (posIsland<0 || posIsland>this.vmodel.getIslands().size()-1);
+                            break;
+                        case "lumberjack.jpg":
+                            do{
+                                this.showMessage("Scegli il colore da non calcolare nell'influenza\n>");
+                                String colorStudent=scanner.next();
+                                try{
+                                    color2=Color.valueOf(colorStudent.toUpperCase());
+                                    boolWhile=Arrays.asList(Color.values()).contains(color2);
+                                }catch(Exception e){
+                                    boolWhile=false;
+                                    System.out.print(ANSI_RED+"Choose a valid color"+ANSI_RESET);
+                                }
+                            }while (!boolWhile);
+                            break;
+                    }
+                }
+            }
+        }
+
+        serverHandler.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
     }
 
     @Override

@@ -238,7 +238,7 @@ public class GameModel {
     }
 
     /**
-     * ove the students to the island by passing the student's color
+     * Move the students to the island by passing the student's color
      * @param islandPosition
      * @param student
      */
