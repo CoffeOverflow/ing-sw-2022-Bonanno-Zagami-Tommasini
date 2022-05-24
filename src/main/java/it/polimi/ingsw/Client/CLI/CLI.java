@@ -193,6 +193,7 @@ public class CLI implements View, Runnable {
 
     @Override
     public void youWin() {
+        serverHandler.close();
     }
 
     @Override
