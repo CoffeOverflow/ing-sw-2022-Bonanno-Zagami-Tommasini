@@ -114,10 +114,20 @@ public class CLI implements View, Runnable {
     public void chooseMatch(String games) throws IOException {
         System.out.println("\nAvailable match:");
         System.out.println(games);
-        System.out.print("Select a match to join or type 0 for create new match > ");
-        Scanner scanner = new Scanner(System.in);
-        int game = scanner.nextInt();
-        serverHandler.send(new SelectMatch(game));
+        boolean confirmation = false;
+        do{
+            System.out.print("Select a match to join or type 0 for create new match > ");
+            Scanner scanner = new Scanner(System.in);
+            try{
+                int game = scanner.nextInt();
+                serverHandler.send(new SelectMatch(game));
+                confirmation = true;
+            }catch (InputMismatchException e){
+                showError("Please insert a number!");
+            }
+        }while(!confirmation);
+
+
     }
 
     @Override
@@ -133,10 +143,16 @@ public class CLI implements View, Runnable {
         do {
             showMessage("Select the number of player (2 or 3) > ");
             scanner = new Scanner(System.in);
-            num = scanner.nextInt();
-            if(num < 2 || num > 3){
-                showError("Please insert 2 or 3!");
+            try{
+                num = scanner.nextInt();
+                if(num < 2 || num > 3){
+                    showError("Please insert 2 or 3!");
+                }
             }
+            catch (InputMismatchException e){
+                showError("Please insert a number!");
+            }
+
         }while(num < 2 || num>3);
         do {
             showMessage("Expert mode? [y/n] > ");
@@ -187,28 +203,33 @@ public class CLI implements View, Runnable {
 
     @Override
     public void selectAssistantCard(SelectAssistantCard msg){
-        this.showMessage(SelectAssistantCard.getMsg());
         int value=0;
-        int steps=0;
-        for(String s: msg.getAvailableCards()){
+        do{
+            this.showMessage(SelectAssistantCard.getMsg());
+            int steps=0;
+            for(String s: msg.getAvailableCards()){
+                for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
+                    if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(s)) {
+                        value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
+                        steps = vmodel.getClientPlayer().getAssistantCards().get(i).getMothernatureSteps();
+                        break;
+                    }
+                }
+                this.showMessage("Card: "+ s + " value: " + value + " steps: " + steps+ "\n" );
+            }
+            System.out.print("> ");
+            Scanner scanner = new Scanner(System.in);
+            String card = scanner.next();
+            value = -1;
             for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
-                if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(s)) {
+                if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(card)) {
                     value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
-                    steps = vmodel.getClientPlayer().getAssistantCards().get(i).getMothernatureSteps();
                     break;
                 }
             }
-            this.showMessage("Card: "+ s + " value: " + value + " steps: " + steps+ "\n" );
-        }
-        System.out.print("> ");
-        Scanner scanner = new Scanner(System.in);
-        String card = scanner.next();
-        for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
-            if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(card)) {
-                value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
-                break;
-            }
-        }
+            if(value == -1)
+                showError("Please insert a valid card!");
+        }while(value == -1);
         serverHandler.send(new PlayAssistantCard(value));
         
 
@@ -258,15 +279,26 @@ public class CLI implements View, Runnable {
 
     @Override
     public void chooseWizard(SelectWizard message) throws IOException {
-        showMessage(message.getMsg());
-        for(Wizards wizard: message.getAvailableWizards()){
-            showMessage("> "+wizard.getName()+"\n");
-        }
-        System.out.print("> ");
-        Scanner scanner = new Scanner(System.in);
-        String wizard = scanner.nextLine();
-        wizard = wizard.replaceAll(" ", "").toUpperCase();
-        serverHandler.send(new ChooseWizard(wizard));
+        boolean confirmation = false;
+        do{
+            showMessage(message.getMsg());
+            for(Wizards wizard: message.getAvailableWizards()){
+                showMessage("> "+wizard.getName()+"\n");
+            }
+            System.out.print("> ");
+            Scanner scanner = new Scanner(System.in);
+            String wizard = scanner.nextLine();
+            wizard = wizard.replaceAll(" ", "").toUpperCase();
+            try {
+                serverHandler.send(new ChooseWizard(Wizards.valueOf(Wizards.class,wizard)));
+                confirmation = true;
+            }
+            catch (IllegalArgumentException e){
+                showError("Please insert a valid Wizard!");
+            }
+        }while(!confirmation);
+
+
 
     }
 
