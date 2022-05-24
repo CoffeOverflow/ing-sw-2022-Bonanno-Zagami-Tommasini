@@ -43,9 +43,6 @@ public class DecideFirstPlayerState implements GameControllerState {
             else count=0;
         }
 
-        System.out.println(players);
-        System.out.println(values);
-
         //Check if the assistant card played are different
         //in case two are the same check if the second player who has played the card
         //has a different card to play in his deck
@@ -69,13 +66,11 @@ public class DecideFirstPlayerState implements GameControllerState {
 
 
         gc.getModel().setCurrentCardPlayers((HashMap<Integer, AssistantCard>)gc.getCurrentCardPlayers().clone());
-        System.out.println("i'm here");
         String[] cards ={"turtle","elephant","dog", "octopus","lizard", "fox", "eagle","cat","turkey","lion"};
         for(int i=0; i<players.length;i++){
             gc.getModel().useAssistantCard(players[i],cards[values[i]-1]);
         }
 
-        System.out.println("i'm here 2");
         //determine order of action of the players in the turn
         for(int i=0; i<players.length; i++){//valore più basso, gioca prima
             for (int j = 0; j < players.length - i - 1; j++){
@@ -89,9 +84,6 @@ public class DecideFirstPlayerState implements GameControllerState {
                 }
             }
         }
-
-        System.out.println(players.toString());
-        System.out.println(values.toString());
 
         gc.setFirstPlayer(players[0]);
         gc.setTurnOrder(players);
