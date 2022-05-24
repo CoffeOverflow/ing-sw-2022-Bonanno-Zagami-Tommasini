@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.ClientToServer;
 import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.State.MoveMotherNatureState;
 import it.polimi.ingsw.Controller.State.MoveStudentsState;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
 import it.polimi.ingsw.Server.ServerToClient.*;
@@ -31,16 +32,21 @@ public class MoveMotherNature implements ClientToServerMessage{
                 BoardChange change=new BoardChange(game.getController().getConquest().getConqueror(),
                         game.getController().getConquest().getConqueredIsland());
                 game.sendAll(new UpdateMessage(change));
-               System.out.println("OK!");
             }else if(game.getController().getConquest()!=null && (game.getController().getConquest().getMergedIsland1()!=null
                     || game.getController().getConquest().getMergedIsland2()!=null)){
                 game.sendAll(new UpdateMessage((new BoardChange(game.getController().getConquest().getConqueror(),
                         game.getController().getConquest().getConqueredIsland(),game.getController().getConquest().getMergedIsland1(),
                         game.getController().getConquest().getMergedIsland2()))));
-                System.out.println("OK2!");
             }
-            System.out.println("sono qui");
-            game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
+            if(game.getController().checkEndGame()){
+                game.getController().setWinners(game.getController().getModel().getWinner());
+                for (Player p : game.getController().getWinners()) {
+                    game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
+                    game.sendAllExcept(new OtherWin(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
+                }
+            }else{
+                game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
+            }
 
         }catch(IllegalArgumentException e){
             e.printStackTrace();
