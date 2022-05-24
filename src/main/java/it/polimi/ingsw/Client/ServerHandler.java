@@ -41,4 +41,12 @@ public class ServerHandler {
             e.printStackTrace();
         }
     }
+
+    public void close(){
+        try {
+            server.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

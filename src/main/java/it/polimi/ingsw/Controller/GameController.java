@@ -100,7 +100,6 @@ public class GameController {
 
     public boolean fillCloud(){
         return model.getStudentsFromBag();
-        //Manca controllo per saltare lo stato
     }
 
     public List<Player> getWinners() {

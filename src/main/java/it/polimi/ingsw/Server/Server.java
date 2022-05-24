@@ -24,6 +24,7 @@ public class Server implements Runnable{
     private int nextGameID;
     private HashMap<Integer, String> nicknameByID;
     private HashMap<Integer, GameHandler> availableGames;
+    private HashMap<Integer, GameHandler> activeGames;
     public Server(ServerSocket server){
         this.server = server;
         this.clientExecutor = Executors.newCachedThreadPool();
@@ -31,6 +32,7 @@ public class Server implements Runnable{
         this.nextGameID = 1;
         this.nicknameByID = new HashMap<Integer, String>();
         this.availableGames = new HashMap<Integer, GameHandler>();
+        this.activeGames = new HashMap<Integer, GameHandler>();
 
     }
     public static void main(String[] args) {
@@ -122,10 +124,21 @@ public class Server implements Runnable{
     }
 
     public GameHandler getAvailableGameByID(int id) throws MatchFullException {
-        //Da fare mappa gamesByID
         if(availableGames.containsKey(id))
             return availableGames.get(id);
         else
             throw new MatchFullException();
+    }
+    public synchronized void addActiveGame(GameHandler game){
+        this.activeGames.put(game.getGameID(), game);
+    }
+
+    public synchronized void endGame(int gameID){
+        GameHandler game = activeGames.get(gameID);
+        for(ClientHandler player : game.getPlayers()){
+            nicknameByID.remove(player.getPlayerID());
+            player.close();
+        }
+        activeGames.remove(gameID);
     }
 }

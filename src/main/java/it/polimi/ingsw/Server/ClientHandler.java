@@ -144,6 +144,14 @@ public class ClientHandler implements Runnable{
         }while(!confirmation);
     }
 
+    public void close(){
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void run() {
         System.out.println("Client "+getPlayerID()+ " handler started!");
