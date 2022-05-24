@@ -21,6 +21,7 @@ public class GameController {
     private Integer firstPlayer;
 
 
+
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
 
     private Conquest conquest=null;

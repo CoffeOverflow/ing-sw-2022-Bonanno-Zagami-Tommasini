@@ -7,8 +7,8 @@ import it.polimi.ingsw.Server.GameHandler;
 public class ChooseWizard implements ClientToServerMessage{
     private Wizards wizard;
 
-    public ChooseWizard(String wizardName){
-        wizard=Wizards.valueOf(Wizards.class,wizardName);
+    public ChooseWizard(Wizards wizardName){
+        wizard = wizardName;
     }
 
     public Wizards getWizard() {
