@@ -27,7 +27,7 @@ public class Server implements Runnable{
     public Server(ServerSocket server){
         this.server = server;
         this.clientExecutor = Executors.newCachedThreadPool();
-        this.nextClientID = 0;
+        this.nextClientID = 2;
         this.nextGameID = 1;
         this.nicknameByID = new HashMap<Integer, String>();
         this.availableGames = new HashMap<Integer, GameHandler>();
