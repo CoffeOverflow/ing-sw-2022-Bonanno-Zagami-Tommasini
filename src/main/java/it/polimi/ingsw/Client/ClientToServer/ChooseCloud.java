@@ -25,17 +25,20 @@ public class ChooseCloud implements ClientToServerMessage{
         game.getController().setState(new TakeStudentsState());
         game.getController().doAction(action);
         if(!game.getController().getWinners().isEmpty()) {
+            System.out.println("sono qua 1");
             for (Player p : game.getController().getWinners()) {
                 game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
                 game.sendAllExcept(new OtherWin(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
             }
         }else{
             int pos=0;
-            for(int i:game.getController().getTurnOrder()){
+            System.out.println("sono qua 2");
+            for(int i=0; i<game.getController().getTurnOrder().length;i++){
                 if(game.getController().getTurnOrder()[i]==game.getController().getModel().getCurrentPlayer())
                     pos=i;
             }
             if(pos==game.getController().getTurnOrder().length-1){
+                System.out.println("sono qua 3");
                 game.getController().getModel().setCurrentPlayer(game.getController().getFirstPlayer());
                 game.sendTo(new YourTurn(),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
                 game.sendAllExcept(new IsTurnOfPlayer(game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()).getNickname()),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
@@ -46,6 +49,7 @@ public class ChooseCloud implements ClientToServerMessage{
                 game.sendTo(new SelectAssistantCard(cards), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
             }
             else{
+                System.out.println("sono qua 4");
                 game.getController().getModel().setCurrentPlayer(game.getController().getTurnOrder()[pos+1]);
                 game.sendAllExcept(new IsTurnOfPlayer(game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()).getNickname()),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
                 game.sendTo(new YourTurn(),game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));

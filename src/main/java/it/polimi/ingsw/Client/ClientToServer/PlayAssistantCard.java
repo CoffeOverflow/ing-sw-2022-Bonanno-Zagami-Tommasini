@@ -26,9 +26,7 @@ public class PlayAssistantCard implements ClientToServerMessage{
         if(game.getController().getCurrentCardPlayers().size()==game.getNumberOfPlayers()) {
             game.getController().setState(new DecideFirstPlayerState());
             try {
-                System.out.println("handle di play card prima dell'action");
                 game.getController().doAction(null);
-                System.out.println("handle di play card prima dopo action");
                 game.sendTo(new YourTurn(),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
                 game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),game.getClientByPlayerID(game.getController().getTurnOrder()[0]));
                 game.getController().getModel().setCurrentPlayer(game.getController().getTurnOrder()[0]);

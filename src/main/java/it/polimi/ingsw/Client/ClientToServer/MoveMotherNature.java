@@ -31,15 +31,12 @@ public class MoveMotherNature implements ClientToServerMessage{
                 BoardChange change=new BoardChange(game.getController().getConquest().getConqueror(),
                         game.getController().getConquest().getConqueredIsland());
                 game.sendAll(new UpdateMessage(change));
-               System.out.println("OK!");
             }else if(game.getController().getConquest()!=null && (game.getController().getConquest().getMergedIsland1()!=null
                     || game.getController().getConquest().getMergedIsland2()!=null)){
                 game.sendAll(new UpdateMessage((new BoardChange(game.getController().getConquest().getConqueror(),
                         game.getController().getConquest().getConqueredIsland(),game.getController().getConquest().getMergedIsland1(),
                         game.getController().getConquest().getMergedIsland2()))));
-                System.out.println("OK2!");
             }
-            System.out.println("sono qui");
             game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
 
         }catch(IllegalArgumentException e){
