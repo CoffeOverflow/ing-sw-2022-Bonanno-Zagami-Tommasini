@@ -43,6 +43,7 @@ public class MoveMotherNature implements ClientToServerMessage{
                 for (Player p : game.getController().getWinners()) {
                     game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
                     game.sendAllExcept(new OtherWin(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
+                    game.endGame();
                 }
             }else{
                 game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
