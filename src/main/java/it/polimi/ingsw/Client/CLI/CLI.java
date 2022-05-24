@@ -684,9 +684,9 @@ public class CLI implements View, Runnable {
                                 if(posIsland<0 || posIsland>this.vmodel.getIslands().size()-1)
                                     this.showMessage(ANSI_RED+" Invalid input\n" +ANSI_RESET);
                             }while (posIsland<0 || posIsland>this.vmodel.getIslands().size()-1);
+                            choosenStudent=new EnumMap<Color, Integer>(Color.class);
                             for(Color c1:color.values())
                                 choosenStudent.put(c1,0);
-
                            do{
                                this.showMessage("Scegli il colore dello studente dalla carta\n>");
                                String colorStudent=scanner.next();
@@ -696,7 +696,7 @@ public class CLI implements View, Runnable {
                                    if(!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2)<=0)
                                    {
                                        boolWhile=false;
-                                       System.out.print(ANSI_RED+"ChooColor color2=null;se a color that is present on the card\n"+ANSI_RESET);
+                                       System.out.print(ANSI_RED+"Choose a color that is present on the card\n"+ANSI_RESET);
                                        this.showMessage(">");
                                    }
                                }catch(Exception e){
@@ -705,14 +705,26 @@ public class CLI implements View, Runnable {
                                    this.showMessage(">");
                                }
                            }while (!boolWhile);
-                           choosenStudent.put(color2,1);
-                           break;
-                        // TO DO
+                            for(Color c1:color.values())
+                                choosenStudent.put(c1,0);
+                            choosenStudent=new EnumMap<Color, Integer>(Color.class);
+                            choosenStudent.put(color2,1);
+                            break;
                         case "thief.jpg":
-
+                            do {
+                                this.showMessage("Choose a color \n>");
+                                String colorStudent = scanner.next();
+                                try {
+                                    color2 = Color.valueOf(colorStudent.toUpperCase());
+                                    boolWhile = Arrays.asList(Color.values()).contains(color2);
+                                } catch (Exception e) {
+                                    boolWhile = false;
+                                    System.out.print(ANSI_RED + "Choose a valid color\n" + ANSI_RESET);
+                                    this.showMessage(">");
+                                }
+                            } while (!boolWhile);
                             break;
                         case "clown.jpg":
-
                             do{
                                 this.showMessage("how many students do you want to change?");
                                 numStudent= scanner.nextInt();
@@ -739,6 +751,9 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
+                                choosenStudent=new EnumMap<Color, Integer>(Color.class);
+                                for(Color c1:color.values())
+                                    choosenStudent.put(c1,0);
                                 choosenStudent.put(color2,1);
                             }
 
@@ -761,11 +776,14 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
+                                entranceStudent=new EnumMap<Color, Integer>(Color.class);
+                                for(Color c2:Color.values())
+                                    entranceStudent.put(c2,0);
                                 entranceStudent.put(color2,1);
                             }
                             break;
 
-                        case "princess,jpg":
+                        case "princess.jpg":
                             do {
                                 this.showMessage("Choose a color of the student\n>");
                                 String colorStudent = scanner.next();
@@ -784,6 +802,9 @@ public class CLI implements View, Runnable {
                                     this.showMessage(">");
                                 }
                             } while (!boolWhile);
+                            choosenStudent=new EnumMap<Color, Integer>(Color.class);
+                            for(Color c1:color.values())
+                                choosenStudent.put(c1,0);
                             choosenStudent.put(color2,1);
                             break;
                         case "storyteller.jpg":
@@ -813,6 +834,9 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
+                                choosenStudent=new EnumMap<Color, Integer>(Color.class);
+                                for(Color c1:color.values())
+                                    choosenStudent.put(c1,0);
                                 choosenStudent.put(color2,1);
                             }
 
@@ -835,6 +859,9 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
+                                entranceStudent=new EnumMap<Color, Integer>(Color.class);
+                                for(Color c2:Color.values())
+                                    entranceStudent.put(c2,0);
                                 entranceStudent.put(color2,1);
                             }
                             break;
@@ -866,8 +893,6 @@ public class CLI implements View, Runnable {
             }
         }
         serverHandler.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
-        System.out.println("La tua scelta");
-        System.out.println("Asset: "+asset+", posIsland: "+(posIsland+1)+",choosen: "+choosenStudent+", entrance: "+entranceStudent);
         asset=null;
         posIsland=null;
         choosenStudent=null;
