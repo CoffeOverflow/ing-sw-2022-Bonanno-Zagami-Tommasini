@@ -281,6 +281,19 @@ public class CLI implements View, Runnable {
         System.out.println("");
         System.out.println("___________CHARACTER CARDS___________");
         System.out.println("");
+        showCharacterCard();
+        System.out.println("");
+        System.out.println("___________BOARDS___________");
+        System.out.println("");
+        int i=0;
+        for(Player p:this.vmodel.getPlayers())
+            showSchool(p,i++);
+
+    }
+
+
+    @Override
+    public void showCharacterCard(){
         List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
         if(!characterCards.equals(null)) {
             String[] characterCardsName;
@@ -314,16 +327,7 @@ public class CLI implements View, Runnable {
                 System.out.println("");
             }
         }
-        System.out.println("");
-        System.out.println("___________BOARDS___________");
-        System.out.println("");
-        int i=0;
-        for(Player p:this.vmodel.getPlayers())
-            showSchool(p,i++);
-
     }
-
-
 
     @Override
     public void showIsland(){
@@ -664,6 +668,8 @@ public class CLI implements View, Runnable {
         EnumMap<Color,Integer> entranceStudent=null;
         Color color=null;
         boolean boolWhile;
+        Color color2=null;
+        int numStudent=0;
         Scanner scanner = new Scanner(System.in);
 
         List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
@@ -671,7 +677,7 @@ public class CLI implements View, Runnable {
             if(c.getAsset().equals(card)){
                 if(characterStudentName.contains(card)){
                     switch (card){
-                        case "inkeeper.jpg":
+                        case "innkeeper.jpg":
                             do{
                                 this.showMessage("Scegli la posizione dell'isola \n>");
                                 posIsland=scanner.nextInt()-1;
@@ -680,18 +686,17 @@ public class CLI implements View, Runnable {
                             }while (posIsland<0 || posIsland>this.vmodel.getIslands().size()-1);
                             for(Color c1:color.values())
                                 choosenStudent.put(c1,0);
-                            Color color2=null;
+
                            do{
                                this.showMessage("Scegli il colore dello studente dalla carta\n>");
                                String colorStudent=scanner.next();
                                try{
                                    color2=Color.valueOf(colorStudent.toUpperCase());
                                    boolWhile=Arrays.asList(Color.values()).contains(color2);
-                                   if(c.getStudents().get().get(color2)>0)
-                                       c.getStudents().get().put(color2,c.getStudents().get().get(color2)-1);
-                                   else {
+                                   if(!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2)<=0)
+                                   {
                                        boolWhile=false;
-                                       System.out.print(ANSI_RED+"Choose color that is present on the card\n"+ANSI_RESET);
+                                       System.out.print(ANSI_RED+"ChooColor color2=null;se a color that is present on the card\n"+ANSI_RESET);
                                        this.showMessage(">");
                                    }
                                }catch(Exception e){
@@ -707,11 +712,131 @@ public class CLI implements View, Runnable {
 
                             break;
                         case "clown.jpg":
+
+                            do{
+                                this.showMessage("how many students do you want to change?");
+                                numStudent= scanner.nextInt();
+                                if(numStudent<=0 || numStudent>3)
+                                    this.showMessage("Choose a number from 1 to 3");
+                            }while(numStudent<=0 || numStudent>3);
+
+                            for(int i=0;i<numStudent;i++) {
+                                do {
+                                    this.showMessage("Choose a color of the student\n>");
+                                    String colorStudent = scanner.next();
+                                    try {
+                                        color2 = Color.valueOf(colorStudent.toUpperCase());
+                                        boolWhile = Arrays.asList(Color.values()).contains(color2);
+                                        if (!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2) <= 0) {
+                                            boolWhile = false;
+                                            System.out.print(ANSI_RED + "Choose a color that is present on the card\n"
+                                                    + ANSI_RESET);
+                                            this.showMessage(">");
+                                        }
+                                    } catch (Exception e) {
+                                        boolWhile = false;
+                                        System.out.print(ANSI_RED + "Choose a valid color\n" + ANSI_RESET);
+                                        this.showMessage(">");
+                                    }
+                                } while (!boolWhile);
+                                choosenStudent.put(color2,1);
+                            }
+
+                            for(int i=0;i<numStudent;i++) {
+                                do {
+                                    this.showMessage("Choose a student from your entrance \n>");
+                                    String colorStudent = scanner.next();
+                                    try {
+                                        color2 = Color.valueOf(colorStudent.toUpperCase());
+                                        boolWhile = Arrays.asList(Color.values()).contains(color2);
+                                        if(!this.vmodel.getClientPlayer().getEntryStudents().containsKey(color2) || this.vmodel.getClientPlayer().getEntryStudents().get(color2)<=0 ){
+                                            boolWhile = false;
+                                            System.out.print(ANSI_RED + "Choose a color that is present at the entrance\n"
+                                                    + ANSI_RESET);
+                                            this.showMessage(">");
+                                        }
+                                    } catch (Exception e) {
+                                        boolWhile = false;
+                                        System.out.print(ANSI_RED + "Choose a valid color\n" + ANSI_RESET);
+                                        this.showMessage(">");
+                                    }
+                                } while (!boolWhile);
+                                entranceStudent.put(color2,1);
+                            }
                             break;
 
                         case "princess,jpg":
+                            do {
+                                this.showMessage("Choose a color of the student\n>");
+                                String colorStudent = scanner.next();
+                                try {
+                                    color2 = Color.valueOf(colorStudent.toUpperCase());
+                                    boolWhile = Arrays.asList(Color.values()).contains(color2);
+                                    if (!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2) <= 0) {
+                                        boolWhile = false;
+                                        System.out.print(ANSI_RED + "Choose a color that is present on the card\n"
+                                                + ANSI_RESET);
+                                        this.showMessage(">");
+                                    }
+                                } catch (Exception e) {
+                                    boolWhile = false;
+                                    System.out.print(ANSI_RED + "Choose a valid color\n" + ANSI_RESET);
+                                    this.showMessage(">");
+                                }
+                            } while (!boolWhile);
+                            choosenStudent.put(color2,1);
                             break;
                         case "storyteller.jpg":
+                            do{
+                                this.showMessage("how many students do you want to change?");
+                                numStudent= scanner.nextInt();
+                                if(numStudent<=0 || numStudent>2)
+                                    this.showMessage("Choose a number from 1 to 2");
+                            }while(numStudent<=0 || numStudent>2);
+
+                            for(int i=0;i<numStudent;i++) {
+                                do {
+                                    this.showMessage("Choose a color of the student\n>");
+                                    String colorStudent = scanner.next();
+                                    try {
+                                        color2 = Color.valueOf(colorStudent.toUpperCase());
+                                        boolWhile = Arrays.asList(Color.values()).contains(color2);
+                                        if (!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2) <= 0) {
+                                            boolWhile = false;
+                                            System.out.print(ANSI_RED + "Choose a color that is present on the card\n"
+                                                    + ANSI_RESET);
+                                            this.showMessage(">");
+                                        }
+                                    } catch (Exception e) {
+                                        boolWhile = false;
+                                        System.out.print(ANSI_RED + "Choose a valid color\n" + ANSI_RESET);
+                                        this.showMessage(">");
+                                    }
+                                } while (!boolWhile);
+                                choosenStudent.put(color2,1);
+                            }
+
+                            for(int i=0;i<numStudent;i++) {
+                                do {
+                                    this.showMessage("Choose a student from your school \n>");
+                                    String colorStudent = scanner.next();
+                                    try {
+                                        color2 = Color.valueOf(colorStudent.toUpperCase());
+                                        boolWhile = Arrays.asList(Color.values()).contains(color2);
+                                        if(!this.vmodel.getClientPlayer().getEntryStudents().containsKey(color2) || this.vmodel.getClientPlayer().getEntryStudents().get(color2)<=0 ){
+                                            boolWhile = false;
+                                            System.out.print(ANSI_RED + "Choose a color that is present in the school\n"
+                                                    + ANSI_RESET);
+                                            this.showMessage(">");
+                                        }
+                                    } catch (Exception e) {
+                                        boolWhile = false;
+                                        System.out.print(ANSI_RED + "Choose a valid color\n" + ANSI_RESET);
+                                        this.showMessage(">");
+                                    }
+                                } while (!boolWhile);
+                                entranceStudent.put(color2,1);
+                            }
                             break;
 
                         case "auctioneer.jpg":
@@ -740,8 +865,13 @@ public class CLI implements View, Runnable {
                 }
             }
         }
-
         serverHandler.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
+        System.out.println("La tua scelta");
+        System.out.println("Asset: "+asset+", posIsland: "+(posIsland+1)+",choosen: "+choosenStudent+", entrance: "+entranceStudent);
+        asset=null;
+        posIsland=null;
+        choosenStudent=null;
+        entranceStudent=null;
     }
 
     @Override

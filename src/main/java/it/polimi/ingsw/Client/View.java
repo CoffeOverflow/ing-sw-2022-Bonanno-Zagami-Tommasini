@@ -48,4 +48,6 @@ public interface View {
     void showClouds();
 
     void chooseOption(ChooseOption msg);
+
+    void showCharacterCard();
 }

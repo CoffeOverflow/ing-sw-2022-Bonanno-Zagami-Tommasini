@@ -25,10 +25,14 @@ public class UseCharacterCard implements ClientToServerMessage{
 
     public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
-        action.setChosenStudents(choosenStudents);
-        action.setChosenColor(color);
-        action.setEntranceStudents(entranceStudents);
-        action.setAsset(asset);
+        if(choosenStudents!=null)
+            action.setChosenStudents(choosenStudents);
+        if(color!=null)
+            action.setChosenColor(color);
+        if(entranceStudents!=null)
+            action.setEntranceStudents(entranceStudents);
+        if(asset!=null)
+            action.setAsset(asset);
         action.setPosIsland(posIsland);
         game.getController().doAction(action);
 
