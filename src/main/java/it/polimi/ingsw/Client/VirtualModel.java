@@ -21,7 +21,10 @@ public class VirtualModel {
     private Player clientPlayer;
 
     private List<Cloud> clouds=new ArrayList<>();
+
     private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
+
+    private boolean useCharacterCard =false;
 
     public VirtualModel() {
         for(Color c:Color.values()){
@@ -192,5 +195,15 @@ public class VirtualModel {
 
     public void moveMotherNature(int steps){
         this.motherNaturePosition=(motherNaturePosition+steps)%12;
+    }
+
+    public boolean isUseCharacterCard() {
+
+        return useCharacterCard;
+    }
+
+    public void setUseCharacterCard(boolean useCharacterCard) {
+
+        this.useCharacterCard = useCharacterCard;
     }
 }

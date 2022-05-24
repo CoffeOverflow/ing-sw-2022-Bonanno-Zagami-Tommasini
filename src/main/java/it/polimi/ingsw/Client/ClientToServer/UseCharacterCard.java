@@ -33,7 +33,9 @@ public class UseCharacterCard implements ClientToServerMessage{
             action.setEntranceStudents(entranceStudents);
         if(asset!=null)
             action.setAsset(asset);
-        action.setPosIsland(posIsland);
+        if(posIsland!=null)
+            action.setPosIsland(posIsland);
+
         game.getController().doAction(action);
 
     }

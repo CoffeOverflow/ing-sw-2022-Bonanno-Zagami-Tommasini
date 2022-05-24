@@ -586,19 +586,23 @@ public class CLI implements View, Runnable {
 
     @Override
     public void chooseOption(ChooseOption message){
-        showMessage(message.getMsg());
-        System.out.print("> ");
         int n=0;
         if(message.getType()==OptionType.CHOOSECLOUD){
+            showMessage(message.getMsg());
+            System.out.print("> ");
             Scanner scanner = new Scanner(System.in);
             do{
                 n = scanner.nextInt();
             }while(n<=0 || n>vmodel.getClouds().size());
             serverHandler.send(new ChooseCloud(n-1));
+            this.vmodel.setUseCharacterCard(false);
         }else{
         do {
             Scanner scanner = new Scanner(System.in);
-            if(message.isExpertMode()){
+            if(message.isExpertMode() && this.vmodel.isUseCharacterCard()==false){
+                String msg= message.getMsg();
+                showMessage("Choose an option: \n 1."+msg+" 2.Play a character card \n" );
+                System.out.print("> ");
                 n = scanner.nextInt();
             }else n=1;
             switch (n) {
@@ -655,6 +659,7 @@ public class CLI implements View, Runnable {
                     List<String> charcaterName=new ArrayList<>();
                     String card;
                     boolean choose;
+                    this.vmodel.setUseCharacterCard(true);
 
                     for(int i=0;i<3;i++) {
                         characterCardsName=characterCards.get(i).getAsset().split("\\.");
@@ -667,7 +672,7 @@ public class CLI implements View, Runnable {
                         card= scanner.next();
                         if(!charcaterName.contains(card)){
                             choose=false;
-                            System.out.println("Choose a valid card");
+                            System.out.println(ANSI_RED+"Choose a valid card"+ANSI_RESET);
                         }
                         else
                             choose=true;

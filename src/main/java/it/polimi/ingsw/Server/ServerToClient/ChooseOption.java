@@ -13,16 +13,10 @@ public class ChooseOption implements ServerToClientMessage{
         this.expertMode=expertMode;
         switch (type){
             case MOVESTUDENTS:
-                if(expertMode)
-                    msg="Choose an option: \n1.Move three students \n2.Play a character card \n";
-                else
-                    msg="Move three students\n";
-                break;
+                    msg="Move three students \n";
+                    break;
             case MOVENATURE:
-                    if(expertMode)
-                        msg="Choose an option: \n1.Move mother nature \n2.Play a character card \n";
-                    else
-                        msg="Move mother nature \n";
+                    msg="Move mother nature \n";
                 break;
             case CHOOSECLOUD:
                 msg="Choose the number of the cloud to take the students: \n";
