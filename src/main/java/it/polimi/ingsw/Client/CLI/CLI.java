@@ -192,7 +192,7 @@ public class CLI implements View, Runnable {
         int steps=0;
         for(String s: msg.getAvailableCards()){
             for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
-                if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equals(s)) {
+                if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(s)) {
                     value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
                     steps = vmodel.getClientPlayer().getAssistantCards().get(i).getMothernatureSteps();
                     break;
@@ -204,7 +204,7 @@ public class CLI implements View, Runnable {
         Scanner scanner = new Scanner(System.in);
         String card = scanner.next();
         for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
-            if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equals(card)) {
+            if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(card)) {
                 value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
                 break;
             }
