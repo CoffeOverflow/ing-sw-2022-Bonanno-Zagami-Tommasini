@@ -18,6 +18,7 @@ public class OtherWin implements ServerToClientMessage {
 
     @Override
     public void handle(View view) throws IOException {
+        view.showMessage(this.getMsg());
         view.youWin();
     }
 }

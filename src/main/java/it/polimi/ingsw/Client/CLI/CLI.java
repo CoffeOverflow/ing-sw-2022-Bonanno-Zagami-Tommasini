@@ -193,7 +193,6 @@ public class CLI implements View, Runnable {
 
     @Override
     public void youWin() {
-        this.showMessage(YouWin.getMsg());
     }
 
     @Override

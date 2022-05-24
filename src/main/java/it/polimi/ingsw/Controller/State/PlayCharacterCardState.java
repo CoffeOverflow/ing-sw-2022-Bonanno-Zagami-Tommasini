@@ -10,7 +10,6 @@ import java.util.Optional;
 public class PlayCharacterCardState implements GameControllerState{
 
     public void turnAction(GameController gc, Action action){
-        //TODO alla fine del turno di un giocatore chiamare metodo endTurnOfPlayer() che mette a false i check booleani
         GameModel model=gc.getModel();
         int cardPos=model.getCharactersPositions().get(action.getAsset());
         CharacterCard card=model.getCharacterCards().get(cardPos);
