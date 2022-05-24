@@ -22,6 +22,10 @@ public class GameController {
 
 
 
+    private GameControllerState stateToReturn;
+
+
+
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
 
     private Conquest conquest=null;
@@ -108,5 +112,15 @@ public class GameController {
 
     public void setWinners(List<Player> winners) {
         this.winners = winners;
+    }
+
+    public GameControllerState getStateToReturn() {
+
+        return stateToReturn;
+    }
+
+    public void setStateToReturn(GameControllerState stateToReturn) {
+
+        this.stateToReturn = stateToReturn;
     }
 }

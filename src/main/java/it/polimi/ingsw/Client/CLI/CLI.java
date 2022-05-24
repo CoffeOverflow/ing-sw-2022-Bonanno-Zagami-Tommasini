@@ -687,7 +687,6 @@ public class CLI implements View, Runnable {
                     characterStudentName.add("lumberjack.jpg");//choosen color (da non considerare nell'influenza)
                     characterStudentName.add("auctioneer.jpg");//posizione isola
                     characterStudentName.add("herbalist.jpg");//posizione isola
-
                     sendCard(characterStudentName,card.toLowerCase()+".jpg");
                     break;
                 default:
@@ -934,6 +933,11 @@ public class CLI implements View, Runnable {
         posIsland=null;
         choosenStudent=null;
         entranceStudent=null;
+    }
+
+    @Override
+    public void setUseCharcaterCard(){
+        this.vmodel.setUseCharacterCard(false);
     }
 
     @Override

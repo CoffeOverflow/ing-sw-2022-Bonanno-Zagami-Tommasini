@@ -62,6 +62,7 @@ public class MoveStudent implements ClientToServerMessage{
             }
         }catch(IllegalArgumentException e){
             game.sendTo(new ActionNonValid(), player);
+
         }
 
     }

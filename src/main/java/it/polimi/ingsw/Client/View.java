@@ -11,6 +11,8 @@ public interface View {
 
     void showError(String error);
 
+    void setUseCharcaterCard();
+
     void actionValid(String message);
 
     void chooseMatch(String message) throws IOException;

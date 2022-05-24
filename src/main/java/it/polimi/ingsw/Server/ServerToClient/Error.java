@@ -24,5 +24,8 @@ public class Error implements ServerToClientMessage{
     @Override
     public void handle(View view) throws IOException {
         view.showError(message);
+        if(error==ErrorsType.NOTENOUGHMONEY){
+            view.setUseCharcaterCard();
+        }
     }
 }

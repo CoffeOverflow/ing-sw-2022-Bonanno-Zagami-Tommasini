@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller.State;
 
 import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.GameController;
+import it.polimi.ingsw.Exceptions.MoneyException;
 import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.GameModel;
 
@@ -33,7 +34,7 @@ public class PlayCharacterCardState implements GameControllerState{
             card.useCard(action.getPosIsland(), model);
 
         }else{
-            System.out.println("you don't have enough money to play the card!");
+            throw new IllegalStateException();
         }
 
     }
