@@ -59,6 +59,11 @@ public class MoveStudent implements ClientToServerMessage{
 
         BoardChange change=new BoardChange(moveTo,studentColor,islandPosition,game.getController().getModel().getCurrentPlayer());
         game.sendAll(new UpdateMessage(change));
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if(numOfInstances<2 && game.getNumberOfPlayers()==2)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),player);
         else if(numOfInstances<3 && game.getNumberOfPlayers()==3)
