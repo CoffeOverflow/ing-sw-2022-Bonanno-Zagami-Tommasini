@@ -34,6 +34,7 @@ public class GameController {
 
     public GameController(boolean expertMode,int numberOfPlayers){
         model=new GameModel(expertMode,numberOfPlayers);
+        this.turnOrder=new Integer[numberOfPlayers];
 
 
     }
@@ -74,8 +75,11 @@ public class GameController {
         return turnOrder;
     }
 
-    public void setTurnOrder(Integer[] turnOrder) {
-        this.turnOrder = turnOrder;
+    public void setTurnOrder(int[] turnOrder) {
+
+        for(int i=0; i< turnOrder.length;i++){
+            this.turnOrder[i]=turnOrder[i];
+        }
     }
 
     public void doAction(Action action){
