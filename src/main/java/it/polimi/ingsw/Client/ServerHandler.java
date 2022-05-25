@@ -32,12 +32,12 @@ public class ServerHandler {
 
         new Thread(() -> { //Server to Client
             while(true){
-                sendHeartbeat();
                 try {
                     Thread.sleep(halfTimeout);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                sendHeartbeat();
             }
 
         }).start();
@@ -53,7 +53,7 @@ public class ServerHandler {
     }
     public void send(Object msg){
         try {
-            outputStream.reset();
+            //outputStream.reset();
             outputStream.writeObject(msg);
             outputStream.flush();
         }catch(Exception e){
@@ -63,7 +63,7 @@ public class ServerHandler {
 
     public void sendHeartbeat(){
         try {
-            outputStream.reset();
+            //outputStream.reset();
             outputStream.writeObject(new ClientHeartbeat());
             outputStream.flush();
         }catch(Exception e){

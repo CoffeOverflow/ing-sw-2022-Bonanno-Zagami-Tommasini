@@ -109,8 +109,8 @@ public class Constants {
     public static final char filledRect='■';
 
     public static final String[] cloud = {"   __   _    ", " _(  )_( )_  ", "(_   _", "_) ", "  (_) (__)   "};
-    public static final int timeout = 14;
-    public static final int halfTimeout = 7;
+    public static final int timeout = 14000;
+    public static final int halfTimeout = 7000;
 
     public static void setIP(String ip) {
         Constants.ip = ip;

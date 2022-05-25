@@ -33,12 +33,12 @@ public class ClientHandler implements Runnable{
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
         new Thread(() -> { //Server to Client
             while(true){
-                sendHeartbeat();
                 try {
                     Thread.sleep(halfTimeout);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                sendHeartbeat();
             }
 
         }).start();
@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable{
 
     public void send(ServerToClientMessage message){
         try {
-            outputStream.reset();
+            //outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException e) {
@@ -68,7 +68,7 @@ public class ClientHandler implements Runnable{
 
     public synchronized void sendHeartbeat(){
         try {
-            outputStream.reset();
+            //outputStream.reset();
             outputStream.writeObject(new ServerHeartbeat());
             outputStream.flush();
         } catch (IOException e) {
