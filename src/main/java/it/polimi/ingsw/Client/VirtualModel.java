@@ -34,6 +34,8 @@ public class VirtualModel {
             Professor p=new Professor(c);
             professors.put(c,p);
         }
+
+
     }
 
     public List<Cloud> getClouds() {
@@ -153,17 +155,13 @@ public class VirtualModel {
     }
 
     public void fillClouds(BoardChange bChange){
+        for(int i=0; i< players.size(); i++){
+            clouds.add(new Cloud());
+        }
         if(players.size()==2){
-            for(int i=0; i<2; i++){
-                clouds.add(new Cloud());
-            }
             clouds.get(0).setStudents(bChange.getStudents1());
             clouds.get(1).setStudents(bChange.getStudents2());
-
         }else if(players.size()==3){
-            for(int i=0; i<3; i++){
-                clouds.add(new Cloud());
-            }
             clouds.get(0).setStudents(bChange.getStudents1());
             clouds.get(1).setStudents(bChange.getStudents2());
             clouds.get(2).setStudents(bChange.getStudents3());
@@ -171,25 +169,13 @@ public class VirtualModel {
 
     }
 
-    public List<Island> getIslands() {
+    public List<Island> getIslands() {return islands;}
 
-        return islands;
-    }
+    public int getMotherNaturePosition() {return motherNaturePosition;}
 
-    public int getMotherNaturePosition() {
+    public List<CharacterCard> getCharacterCards() {return characterCards;}
 
-        return motherNaturePosition;
-    }
-
-    public List<CharacterCard> getCharacterCards() {
-
-        return characterCards;
-    }
-
-    public List<Player> getPlayers() {
-
-        return players;
-    }
+    public List<Player> getPlayers() {return players;}
 
 
     public Player getClientPlayer() {
@@ -200,19 +186,10 @@ public class VirtualModel {
         this.motherNaturePosition=(motherNaturePosition+steps)%12;
     }
 
-    public boolean isUseCharacterCard() {
+    public boolean isUseCharacterCard() { return useCharacterCard;}
 
-        return useCharacterCard;
-    }
+    public void setUseCharacterCard(boolean useCharacterCard) {this.useCharacterCard = useCharacterCard;}
 
-    public void setUseCharacterCard(boolean useCharacterCard) {
-
-        this.useCharacterCard = useCharacterCard;
-    }
-
-    public int getNumOfInstance() {
-
-        return numOfInstance++;
-    }
+    public int getNumOfInstance() {return numOfInstance++;}
     public void resetNumOfInstance(){this.numOfInstance=0;}
 }

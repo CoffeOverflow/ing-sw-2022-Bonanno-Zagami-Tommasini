@@ -49,6 +49,10 @@ public class UseCharacterCard implements ClientToServerMessage{
            game.getController().setStateToReturn(game.getController().getState());
            game.getController().setState(new PlayCharacterCardState());
            game.getController().doAction(action);
+           BoardChange change=new BoardChange(asset,posIsland,color,choosenStudents,entranceStudents,player.getPlayerID());
+           game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+asset+ANSI_RESET),player);
+           game.sendAll(new UpdateMessage(change));
+
        }catch (IllegalStateException e){
            game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
            game.sendTo(new GenericMessage(ANSI_RED+"you don't have enough money to play the card!"+ANSI_RESET),player);

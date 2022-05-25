@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
+import it.polimi.ingsw.Controller.State.MoveMotherNatureState;
 import it.polimi.ingsw.Controller.State.MoveStudentsState;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.Color;
@@ -70,6 +71,7 @@ public class MoveStudent implements ClientToServerMessage{
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),player);
         else if((numOfInstances==2 && game.getNumberOfPlayers()==2) || (numOfInstances==3 && game.getNumberOfPlayers()==3)) {
             game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+            game.getController().setState(new MoveMotherNatureState());
         }
 
     }

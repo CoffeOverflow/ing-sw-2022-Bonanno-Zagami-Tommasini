@@ -13,7 +13,7 @@ public class ChooseOption implements ServerToClientMessage{
         this.expertMode=expertMode;
         switch (type){
             case MOVESTUDENTS:
-                    msg="Move three students \n";
+                    msg="Move student \n";
                     break;
             case MOVENATURE:
                     msg="Move mother nature \n";

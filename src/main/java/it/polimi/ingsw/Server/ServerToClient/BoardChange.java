@@ -13,19 +13,19 @@ public class BoardChange implements Serializable{
 
     private Color studentColor;
 
-    private int islandPosition;
+    private Integer islandPosition;
 
     private Integer conquerIsland;
 
     private int motherNatureSteps;
-
     private Tower conquerorTower;
-
     private Integer mergedIsland1;
-
     private Integer mergedIsland2;
-
-
+    private String asset=null;
+    private Color color=null;
+    private EnumMap<Color,Integer> entranceStudent=null;
+    private EnumMap<Color,Integer> choosenStudent=null;
+    private int cloud;
     private int playerID;
 
     private EnumMap<Color, Integer> students1 = new EnumMap<Color, Integer>(Color.class);
@@ -75,6 +75,49 @@ public class BoardChange implements Serializable{
         this.change=Change.CLOUD;
     }
 
+    public BoardChange(EnumMap<Color, Integer> students1,int cloud,int player){
+        this.cloud=cloud;
+        this.students1=students1;
+        this.playerID=player;
+        this.change=Change.TAKECLOUD;
+    }
+
+
+    public BoardChange(String asset,Integer posIsland,Color color, EnumMap<Color,Integer> choosenStudent, EnumMap<Color,Integer> entranceStudent,int playerID){
+        this.asset=asset;
+        this.playerID=playerID;
+        this.choosenStudent=choosenStudent;
+        this.islandPosition=posIsland;
+        this.entranceStudent=entranceStudent;
+        if(color!=null)
+            this.color=color;
+        switch (asset){
+            case "auctioneer.jpg":
+                change=Change.MOTHERNATURE;
+                break;
+            case "clown.jpg":
+                change=Change.PLAYCLOWN;
+                break;
+            case "herbalist.jpg":
+                change=Change.PLAYHERBALIST;
+                break;
+            case "innkeeper.jpg":
+                change=Change.PLAYINNKEEPER;
+                break;
+            case "princess.jpg":
+                change=Change.PLAYPRINCESS;
+                break;
+            case "storyteller.jpg":
+                change=Change.PLAYSTORYTELLER;
+                break;
+            case "thief.jpg":
+                change=Change.PLAYTHIEF;
+                break;
+        }
+
+    }
+
+
 
     public MoveTo getMoveTo() {
         return moveTo;
@@ -121,6 +164,58 @@ public class BoardChange implements Serializable{
     public EnumMap<Color, Integer> getStudents3() {
         return students3;
     }
+
+    public int getCloud() {
+
+        return cloud;
+    }
+
+    public void setCloud(int cloud) {
+
+        this.cloud = cloud;
+    }
+
+
+    public String getAsset() {
+
+        return asset;
+    }
+
+    public void setAsset(String asset) {
+
+        this.asset = asset;
+    }
+
+    public Color getColor() {
+
+        return color;
+    }
+
+    public void setColor(Color color) {
+
+        this.color = color;
+    }
+
+    public EnumMap<Color, Integer> getEntranceStudent() {
+
+        return entranceStudent;
+    }
+
+    public void setEntranceStudent(EnumMap<Color, Integer> entranceStudent) {
+
+        this.entranceStudent = entranceStudent;
+    }
+
+    public EnumMap<Color, Integer> getChoosenStudent() {
+
+        return choosenStudent;
+    }
+
+    public void setChoosenStudent(EnumMap<Color, Integer> choosenStudent) {
+
+        this.choosenStudent = choosenStudent;
+    }
+
 
     @Override
     public int hashCode() {

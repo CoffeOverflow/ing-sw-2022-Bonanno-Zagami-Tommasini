@@ -242,6 +242,9 @@ public class CLI implements View, Runnable {
         switch(bchange.getChange()){
             case CONQUER:
                 this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
+                for(Player p:this.vmodel.getPlayers())
+                    if(p.getTower().equals(bchange.getConquerorTower()))
+                        p.setNumberOfTower(p.getNumberOfTower()-1);
                 break;
             case MOVESTUDENT:
                 if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
@@ -271,7 +274,84 @@ public class CLI implements View, Runnable {
             case CLOUD:
                 this.vmodel.fillClouds(bchange);
                 break;
+            case TAKECLOUD:
+                EnumMap<Color,Integer> noStudent=new EnumMap<Color, Integer>(Color.class);
+                for(Color c:Color.values())
+                    noStudent.put(c,0);
+                this.vmodel.getClouds().get(bchange.getCloud()).setStudents(noStudent);
+                for(Player p:this.vmodel.getPlayers())
+                    if(p.getPlayerID()== bchange.getPlayer())
+                         p.addEntryStudents(bchange.getStudents1());
+                break;
+            case PLAYCLOWN:
+                for(Color c:Color.values()) {
+                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
+                        for(Player p:this.vmodel.getPlayers())
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                 p.removeEntryStudent(c);
+                }
+                for(Player p:this.vmodel.getPlayers())
+                    if(p.getPlayerID()== bchange.getPlayer())
+                        p.addEntryStudents(bchange.getEntranceStudent());
+                break;
+            case PLAYHERBALIST:
+                this.vmodel.getIslands().get(bchange.getIslandPosition()).setNoEntryCard(1);
+                break;
+            case PLAYINNKEEPER:
+                for(Color c:Color.values())
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
+                        this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(c,1);
+                break;
+            case PLAYPRINCESS:
+                for(Color c:Color.values()) {
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c) > 0)
+                        for(Player p:this.vmodel.getPlayers())
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                p.addStudentOf(c);
+                }
+                break;
+            case PLAYSTORYTELLER:
+                List<Color> entranceToSala=new ArrayList<>();
+                EnumMap<Color,Integer> salaToEntrance=new EnumMap<Color, Integer>(Color.class);
+                for(Color c:Color.values())
+                    salaToEntrance.put(c,0);
+                for(Color c:Color.values()) {
+                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
+                    {
+                        for(Player p:this.vmodel.getPlayers())
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                    p.removeEntryStudent(c);
+                        entranceToSala.add(c);
+                    }
+
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
+                    {
+                        for(Player p:this.vmodel.getPlayers())
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                p.removeEntryStudent(c);
+                        salaToEntrance.put(c,salaToEntrance.get(c)+1);
+                    }
+                }
+
+                for(Color c:entranceToSala)
+                    for(Player p:this.vmodel.getPlayers())
+                        if(p.getPlayerID()== bchange.getPlayer())
+                            p.addStudentOf(c);
+
+                for(Player p:this.vmodel.getPlayers())
+                    if(p.getPlayerID()== bchange.getPlayer())
+                        p.addEntryStudents(salaToEntrance);
+
+                break;
+
+            case PLAYTHIEF:
+                Color colorToPutOnTheBag=bchange.getColor();
+                for(Player p:this.vmodel.getPlayers()){
+                    p.removeThreeStudentOf(colorToPutOnTheBag);
+                    }
+                break;
         }
+
         this.showBoard();
     }
 
@@ -413,7 +493,7 @@ public class CLI implements View, Runnable {
                             break;
 
                     }
-                    studentOnIsland.append(" "+filledRect);
+                    studentOnIsland.append(" "+ANSI_BACKGROUND_PURPLE+filledRect+ANSI_RESET);
                  }
             }
             if(i==this.vmodel.getMotherNaturePosition())
@@ -425,6 +505,9 @@ public class CLI implements View, Runnable {
                 this.showMessage("Island "+(i+1)+": "+studentOnIsland +'\n');
             else
                 this.showMessage("Island "+(i+1)+":  "+studentOnIsland+'\n');
+
+            if(this.vmodel.getIslands().get(i).getNoEntryCard()>0)
+                studentOnIsland.append(ANSI_RED+dashedCircle+ANSI_RESET);
             studentOnIsland.setLength(0);
         }
     }

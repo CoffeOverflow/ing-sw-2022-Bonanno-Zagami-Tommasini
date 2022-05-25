@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class Action {
     private int motherNatureSteps;
-    private int posIsland;
+    private Integer posIsland;
     private Color colorStudent;
     private MoveTo move;
     private int chooseCloud;
