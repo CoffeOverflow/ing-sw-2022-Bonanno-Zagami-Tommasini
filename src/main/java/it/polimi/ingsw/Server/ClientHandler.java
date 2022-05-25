@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
-import it.polimi.ingsw.Client.ClientToServer.ClientToServerMessage;
-import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
-import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
+import it.polimi.ingsw.Client.ClientToServer.*;
 import it.polimi.ingsw.Exceptions.DuplicateNicknameException;
 import it.polimi.ingsw.Exceptions.InvalidNicknameException;
 import it.polimi.ingsw.Exceptions.MatchFullException;
@@ -13,6 +10,9 @@ import it.polimi.ingsw.Server.ServerToClient.Error;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import static it.polimi.ingsw.Constants.halfTimeout;
+import static it.polimi.ingsw.Constants.timeout;
 
 public class ClientHandler implements Runnable{
     private Socket clientSocket;
@@ -26,11 +26,22 @@ public class ClientHandler implements Runnable{
 
     public ClientHandler(Socket clientSocket, Server server, int playerID) throws IOException {
         this.clientSocket = clientSocket;
+        this.clientSocket.setSoTimeout(timeout);
         this.server = server;
         this.playerID = playerID;
         this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
+        new Thread(() -> { //Server to Client
+            while(true){
+                sendHeartbeat();
+                try {
+                    Thread.sleep(halfTimeout);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
+        }).start();
     }
 
     public void setGame(GameHandler game){
@@ -49,6 +60,16 @@ public class ClientHandler implements Runnable{
         try {
             outputStream.reset();
             outputStream.writeObject(message);
+            outputStream.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public synchronized void sendHeartbeat(){
+        try {
+            outputStream.reset();
+            outputStream.writeObject(new ServerHeartbeat());
             outputStream.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -160,6 +181,8 @@ public class ClientHandler implements Runnable{
         ClientToServerMessage answer = null;
         while (true){
             answer = (ClientToServerMessage) answer();
+            if(answer instanceof ClientHeartbeat)
+                continue;
             answer.handleMessage(game, this);
         }
 
