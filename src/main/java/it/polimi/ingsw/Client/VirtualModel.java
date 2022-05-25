@@ -26,6 +26,9 @@ public class VirtualModel {
 
     private boolean useCharacterCard =false;
 
+
+    private int numOfInstance =0;
+
     public VirtualModel() {
         for(Color c:Color.values()){
             Professor p=new Professor(c);
@@ -206,4 +209,10 @@ public class VirtualModel {
 
         this.useCharacterCard = useCharacterCard;
     }
+
+    public int getNumOfInstance() {
+
+        return numOfInstance++;
+    }
+    public void resetNumOfInstance(){this.numOfInstance=0;}
 }

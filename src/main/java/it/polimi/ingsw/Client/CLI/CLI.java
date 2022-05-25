@@ -604,11 +604,11 @@ public class CLI implements View, Runnable {
                 showMessage("Choose an option: \n 1."+msg+" 2.Play a character card \n" );
                 System.out.print("> ");
                 n = scanner.nextInt();
+
             }else n=1;
             switch (n) {
                 case 1:
                     if (message.getType()==OptionType.MOVESTUDENTS) {
-                        for (int i = 0; i < 3; i++) {
                             System.out.print("Choose where to move the student: \n1.school\n2.island \n> ");
                             int n2 = 0;
                             String col=null;
@@ -632,20 +632,20 @@ public class CLI implements View, Runnable {
                                 }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(color) ||
                                         vmodel.getClientPlayer().getEntryStudents().get(color)==0);
                                 if (n2 == 1) {
-                                    serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color,i));
+                                    serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color,this.vmodel.getNumOfInstance()));
                                 } else if (n2 == 2) {
                                     int islandPosition;
                                     do{
                                     System.out.print("Choose the number of the island: \n> ");
                                     islandPosition= scanner.nextInt();}while(islandPosition<=0 || islandPosition>vmodel.getIslands().size());
-                                    serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,i));
+                                    serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,this.vmodel.getNumOfInstance()));
                                     //vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
                                 } else {
                                     System.out.print("Option not valid, retry!\n");
                                 }
                             } while (n2 != 1 && n2 != 2);
-                        }
                     } else if (message.getType()==OptionType.MOVENATURE) {
+                        this.vmodel.resetNumOfInstance();
                         int steps;
                         System.out.println("Choose the steps of mother nature");
                         steps = scanner.nextInt();
