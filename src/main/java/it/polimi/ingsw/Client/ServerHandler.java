@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 
 import java.io.IOException;
@@ -15,8 +16,8 @@ public class ServerHandler {
 
     public ServerHandler() {
         try{
-            this.server=new Socket("127.0.0.1",2000);
-            //this.server=new Socket(Constants.getIP(),Constants.getPort());
+            //this.server=new Socket("127.0.0.1",2000);
+            this.server=new Socket(Constants.getIP(),Constants.getPort());
             inputStream = new ObjectInputStream(server.getInputStream());
             outputStream= new ObjectOutputStream(server.getOutputStream());
         }catch (Exception e){
