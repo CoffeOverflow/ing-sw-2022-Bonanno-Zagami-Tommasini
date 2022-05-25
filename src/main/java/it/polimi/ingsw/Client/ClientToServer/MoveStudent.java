@@ -52,10 +52,6 @@ public class MoveStudent implements ClientToServerMessage{
         }
         try{
             game.getController().doAction(action);
-
-            if(numOfInstances==2) {
-                game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
-            }
         }catch(IllegalArgumentException e){
             game.sendTo(new ActionNonValid(), player);
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),player);
@@ -63,6 +59,9 @@ public class MoveStudent implements ClientToServerMessage{
 
         BoardChange change=new BoardChange(moveTo,studentColor,islandPosition,game.getController().getModel().getCurrentPlayer());
         game.sendAll(new UpdateMessage(change));
+        if(numOfInstances==2) {
+            game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+        }
 
     }
 }
