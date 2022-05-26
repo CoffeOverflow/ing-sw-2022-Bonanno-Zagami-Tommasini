@@ -52,7 +52,7 @@ public class PlayAssistantCard implements ClientToServerMessage{
             }
         }catch(IllegalArgumentException e){
             String[] cards=new String[game.getController().getModel().getPlayerByID(playerId).getAssistantCards().size()];
-            for(int i=0; i<10;i++){
+            for(int i=0; i<cards.length;i++){
                 cards[i]=game.getController().getModel().getPlayerByID(game.getPlayers().get(game.getCurrentPlayerPosition()).getPlayerID()).getAssistantCards().get(i).getName();
             }
 

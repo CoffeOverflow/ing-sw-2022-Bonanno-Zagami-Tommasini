@@ -2,10 +2,15 @@ package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.State.TakeStudentsState;
+import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
 import it.polimi.ingsw.Server.ServerToClient.*;
+
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
 
 public class ChooseCloud implements ClientToServerMessage{
 
@@ -25,11 +30,11 @@ public class ChooseCloud implements ClientToServerMessage{
             Action action = new Action();
             action.setChooseCloud(cloud);
             game.getController().setState(new TakeStudentsState());
-            BoardChange change=new BoardChange(game.getController().getModel().getClouds().get(cloud).getStudents(),cloud,
+            BoardChange clearChange=new BoardChange(game.getController().getModel().getClouds().get(cloud).getStudents(),cloud,
                     player.getPlayerID());
             game.getController().doAction(action);
             //GESTIRE SE è ULTIMO GIOCATORE SETTARE I VALORI SULLE CLOUD!
-            game.sendAll(new UpdateMessage(change));
+            game.sendAll(new UpdateMessage(clearChange));
             if (!game.getController().getWinners().isEmpty()) {
                 for (Player p : game.getController().getWinners()) {
                     game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
@@ -43,7 +48,23 @@ public class ChooseCloud implements ClientToServerMessage{
                     if (game.getController().getTurnOrder()[i] == game.getController().getModel().getCurrentPlayer())
                         pos = i;
                 }
+
                 if (pos == game.getController().getTurnOrder().length - 1) {
+                    if(game.getController().getModel().isLastRound()){
+                        game.getController().setWinners(game.getController().getModel().getWinner());
+                    }
+                    game.getController().fillCloud();
+                    BoardChange fillChange=null;
+                    EnumMap<Color, Integer> studentsCloud1=game.getController().getModel().getClouds().get(0).getStudents();
+                    EnumMap<Color, Integer> studentsCloud2=game.getController().getModel().getClouds().get(1).getStudents();
+                    if(game.getController().getModel().getClouds().size()==3){
+                        EnumMap<Color, Integer> studentsCloud3=game.getController().getModel().getClouds().get(2).getStudents();
+                        fillChange=new BoardChange(studentsCloud1,studentsCloud2,studentsCloud3);
+                    }else{
+                        fillChange=new BoardChange(studentsCloud1,studentsCloud2);
+                    }
+                    game.sendAll(new UpdateMessage(fillChange));
+
                     game.getController().getModel().setCurrentPlayer(game.getController().getFirstPlayer());
                     game.sendTo(new YourTurn(), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
                     game.sendAllExcept(new IsTurnOfPlayer(

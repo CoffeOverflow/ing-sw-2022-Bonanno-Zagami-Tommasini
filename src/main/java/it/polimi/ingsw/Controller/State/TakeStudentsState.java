@@ -32,11 +32,6 @@ public class TakeStudentsState implements GameControllerState{
         else
             System.out.println("La nuvola è vuota");
 
-        if(gc.getModel().getCurrentPlayer()==gc.getTurnOrder()[gc.getTurnOrder().length-1]){
-            if(gc.getModel().isLastRound()){
-                gc.setWinners(gc.getModel().getWinner());
-            }
-            gc.fillCloud();
-        }
+
     }
 }
