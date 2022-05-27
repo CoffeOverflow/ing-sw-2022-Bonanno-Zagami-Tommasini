@@ -629,6 +629,7 @@ public class CLI implements View, Runnable {
                 if (i == 2) {
                     //cloudsStrings.append(cloud[i]);
                     students = clouds.get(j).getStudents();
+                    int numberOfStudentsOnCloud = 0;
                     for (Color c : Color.values()) {
                         for (int y = 0; y < students.get(c); y++) {
                             switch (c) {
@@ -648,6 +649,12 @@ public class CLI implements View, Runnable {
                                     studentOnClouds.append(ANSI_YELLOW + filledCircle + ANSI_RESET);
                                     break;
                             }
+                            numberOfStudentsOnCloud++;
+                        }
+                    }
+                    if(numberOfStudentsOnCloud != clouds.size()+1){
+                        for (int k = 0; k < clouds.size()+1; k++){
+                            studentOnClouds.append(" ");
                         }
                     }
                     if(clouds.size() == 2)
