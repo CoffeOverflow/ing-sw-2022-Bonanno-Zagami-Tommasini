@@ -170,22 +170,19 @@ public class GameHandler implements Runnable{
 
             }
             sendAll(msg);
-            controller.fillCloud();
-            BoardChange change=null;
-            if(numberOfPlayers==2){
-                change=new BoardChange(controller.getModel().getClouds().get(0).getStudents(),
-                        controller.getModel().getClouds().get(1).getStudents());
-
-            }else if(numberOfPlayers==3){
-                change=new BoardChange(controller.getModel().getClouds().get(0).getStudents(),
-                        controller.getModel().getClouds().get(1).getStudents(),
-                        controller.getModel().getClouds().get(2).getStudents());
-            }
-
-            sendAll(new UpdateMessage(change));
-
         }
+        controller.fillCloud();
+        BoardChange change=null;
+        if(numberOfPlayers==2){
+            change=new BoardChange(controller.getModel().getClouds().get(0).getStudents(),
+                    controller.getModel().getClouds().get(1).getStudents());
 
+        }else if(numberOfPlayers==3){
+            change=new BoardChange(controller.getModel().getClouds().get(0).getStudents(),
+                    controller.getModel().getClouds().get(1).getStudents(),
+                    controller.getModel().getClouds().get(2).getStudents());
+        }
+        sendAll(new UpdateMessage(change));
 
         /*while(true){
 

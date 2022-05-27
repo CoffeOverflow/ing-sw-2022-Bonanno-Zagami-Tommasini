@@ -54,8 +54,6 @@ public class PlayAssistantCard implements ClientToServerMessage{
                 for(int i=0; i< cards.length;i++){
                     cards[i]=model.getPlayerByID(game.getPlayers().get(game.getCurrentPlayerPosition()).getPlayerID()).getAssistantCards().get(i).getName();
                 }
-                for(int i=0; i<cards.length;i++)
-                    System.out.println(cards[i]);
                 game.sendTo(new SelectAssistantCard(cards),game.getPlayers().get(game.getCurrentPlayerPosition()));
             }
         }catch(IllegalArgumentException e){

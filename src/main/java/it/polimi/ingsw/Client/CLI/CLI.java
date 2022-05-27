@@ -388,12 +388,12 @@ public class CLI implements View, Runnable {
         System.out.println("");
         System.out.println("___________CLOUDS___________");
         showClouds();
-
-        {System.out.println("");
-        System.out.println("___________CHARACTER CARDS___________");
-        System.out.println("");
+        if(vmodel.getCharacterCards()!=null){
+            System.out.println("");
+            System.out.println("___________CHARACTER CARDS___________");
+            System.out.println("");
+            showCharacterCard();
         }
-        showCharacterCard();
         System.out.println("");
         System.out.println("___________BOARDS___________");
         System.out.println("");
@@ -655,7 +655,6 @@ public class CLI implements View, Runnable {
                     cloudsStrings.append(cloud[i]+studentOnClouds+cloud[i+1]);
                     studentOnClouds.setLength(0);
 
-
                 }
                 else{
                     cloudsStrings.append(cloud[i]);
@@ -676,6 +675,7 @@ public class CLI implements View, Runnable {
             showMessage(message.getMsg());
             System.out.print("> ");
             Scanner scanner = new Scanner(System.in);
+            boolean checkIfNonEmptyCloud=false;
             do{
                 try {
                     n = scanner.nextInt();
@@ -684,6 +684,16 @@ public class CLI implements View, Runnable {
                     this.showMessage("Please insert an integer value");
                 }
             }while(n<=0 || n>vmodel.getClouds().size());
+                if(!checkIfNonEmptyCloud)
+                    System.out.print("choose a valid number for the cloud: \n> ");
+                n = scanner.nextInt();
+                if(n>0 && n<=vmodel.getClouds().size()){
+                    for(Color c :vmodel.getClouds().get(n-1).getStudents().keySet()){
+                        if(vmodel.getClouds().get(n-1).getStudents().get(c)>0)
+                            checkIfNonEmptyCloud=true;
+                    }
+                }
+            }while(!checkIfNonEmptyCloud);
             serverHandler.send(new ChooseCloud(n-1));
             this.vmodel.setUseCharacterCard(false);
         }else{
