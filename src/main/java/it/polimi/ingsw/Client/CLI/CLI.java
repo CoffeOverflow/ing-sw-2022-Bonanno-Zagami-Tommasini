@@ -671,11 +671,12 @@ public class CLI implements View, Runnable {
     @Override
     public void chooseOption(ChooseOption message){
         int n=0;
+        boolean checkIfNonEmptyCloud=false;
         if(message.getType()==OptionType.CHOOSECLOUD){
             showMessage(message.getMsg());
             System.out.print("> ");
             Scanner scanner = new Scanner(System.in);
-            boolean checkIfNonEmptyCloud=false;
+            checkIfNonEmptyCloud=false;
             do{
                 try {
                     n = scanner.nextInt();
@@ -684,7 +685,8 @@ public class CLI implements View, Runnable {
                     this.showMessage("Please insert an integer value");
                 }
             }while(n<=0 || n>vmodel.getClouds().size());
-                if(!checkIfNonEmptyCloud)
+             do{
+                 if(!checkIfNonEmptyCloud)
                     System.out.print("choose a valid number for the cloud: \n> ");
                 n = scanner.nextInt();
                 if(n>0 && n<=vmodel.getClouds().size()){
