@@ -26,13 +26,13 @@ public class CLI implements View, Runnable {
     }
     public static void main(String[] args) {
         System.out.println("\n"+Constants.ERIANTYS);
-        Scanner scanner = new Scanner(System.in);
+        /*Scanner scanner = new Scanner(System.in);
         System.out.print("\nInsert the server IP address > ");
         String ip = scanner.nextLine();
         System.out.print("Insert the server port > ");
-        int port = scanner.nextInt();
-        Constants.setIP(ip);
-        Constants.setPort(port);
+        int port = scanner.nextInt();*/
+        Constants.setIP("127.0.0.1");
+        Constants.setPort(2000);
         ServerHandler server = new ServerHandler();
         Thread cliThread = new Thread(new CLI(server));
         cliThread.start();
@@ -949,8 +949,9 @@ public class CLI implements View, Runnable {
                     fromServer.handle(this);
                 }
 
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+            } catch (IOException | ClassNotFoundException | RuntimeException e) {
+                showError("\nConnection error, maybe one player left the match. The app will now close!");
+                System.exit(-1);
             }
         }
 

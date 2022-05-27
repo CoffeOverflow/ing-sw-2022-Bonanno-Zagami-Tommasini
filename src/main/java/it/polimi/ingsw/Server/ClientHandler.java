@@ -38,7 +38,12 @@ public class ClientHandler implements Runnable{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                sendHeartbeat();
+                try{
+                    sendHeartbeat();
+                }catch (RuntimeException e){
+                    System.out.println("Client "+getPlayerID()+" "+getNickname()+" disconnected!");
+                    break;
+                }
             }
 
         }).start();
@@ -180,7 +185,12 @@ public class ClientHandler implements Runnable{
         System.out.println("Client "+getPlayerID()+" select game setup complete!");
         ClientToServerMessage answer = null;
         while (true){
-            answer = (ClientToServerMessage) answer();
+            try{
+                answer = (ClientToServerMessage) answer();
+            }catch (RuntimeException e){
+                server.endGame(game.getGameID());
+                break;
+            }
             if(answer instanceof ClientHeartbeat)
                 continue;
             answer.handleMessage(game, this);

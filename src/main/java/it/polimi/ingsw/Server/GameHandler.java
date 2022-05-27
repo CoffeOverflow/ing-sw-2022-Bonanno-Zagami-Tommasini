@@ -57,7 +57,7 @@ public class GameHandler implements Runnable{
         player.setGame(this);
         if(players.size() == numberOfPlayers){
             server.removeAvailableGame(gameID);
-
+            server.addActiveGame(this);
             Thread gameThread = new Thread(this);
             gameThread.start();
         }

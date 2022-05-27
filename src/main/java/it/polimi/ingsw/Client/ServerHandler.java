@@ -9,8 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import static it.polimi.ingsw.Constants.halfTimeout;
-import static it.polimi.ingsw.Constants.timeout;
+import static it.polimi.ingsw.Constants.*;
 
 public class ServerHandler {
     private Socket server;
@@ -30,14 +29,19 @@ public class ServerHandler {
         }
 
 
-        new Thread(() -> { //Server to Client
+        new Thread(() -> { //Client to Server
             while(true){
                 try {
                     Thread.sleep(halfTimeout);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                sendHeartbeat();
+                try{
+                    sendHeartbeat();
+                }catch (RuntimeException e){
+                    System.out.println(ANSI_RED+"\nConnection error, server unreachable!");
+                    System.exit(-1);
+                }
             }
 
         }).start();
@@ -48,7 +52,7 @@ public class ServerHandler {
             return (ServerToClientMessage) inputStream.readObject();
         }
         catch(Exception e){
-            return null;
+           throw new RuntimeException(e);
         }
     }
     public void send(Object msg){
@@ -66,8 +70,8 @@ public class ServerHandler {
             //outputStream.reset();
             outputStream.writeObject(new ClientHeartbeat());
             outputStream.flush();
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(RuntimeException | IOException e){
+            throw new RuntimeException(e);
         }
     }
 
