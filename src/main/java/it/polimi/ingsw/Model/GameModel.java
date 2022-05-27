@@ -74,7 +74,7 @@ public class GameModel {
         }
 
         if(expertMode)
-            coins=Optional.of(20);
+            coins=Optional.of(20-numberOfPlayers);
 
         /**
          * Initialize clouds, islands and professor
