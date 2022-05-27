@@ -36,6 +36,7 @@ public class VirtualModel {
         }
 
 
+
     }
 
     public List<Cloud> getClouds() {
@@ -50,6 +51,7 @@ public class VirtualModel {
                 isl.addStudents(mapStudentIsland.get(i), 1);
             islands.add(isl);
         }
+
 
         motherNaturePosition=msg.getMotherNaturePosition();
     }
@@ -155,9 +157,11 @@ public class VirtualModel {
     }
 
     public void fillClouds(BoardChange bChange){
-        for(int i=0; i< players.size(); i++){
-            clouds.add(new Cloud());
-        }
+
+        if(clouds.isEmpty()){
+            for(int i=0; i< players.size(); i++){
+                clouds.add(new Cloud());
+        }}
         if(players.size()==2){
             clouds.get(0).setStudents(bChange.getStudents1());
             clouds.get(1).setStudents(bChange.getStudents2());

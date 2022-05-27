@@ -52,16 +52,19 @@ public class UseCharacterCard implements ClientToServerMessage{
            BoardChange change=new BoardChange(asset,posIsland,color,choosenStudents,entranceStudents,player.getPlayerID());
            game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+asset+ANSI_RESET),player);
            game.sendAll(new UpdateMessage(change));
+           game.getController().setState(game.getController().getStateToReturn());
+           System.out.println(game.getController().getState());
 
        }catch (IllegalStateException e){
            game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
            game.sendTo(new GenericMessage(ANSI_RED+"you don't have enough money to play the card!"+ANSI_RESET),player);
        }
 
-       game.getController().setState(game.getController().getStateToReturn());
-       if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState)
+        System.out.println(game.getController().getState());
+
+        if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
-       else
+        else
             game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
 
 

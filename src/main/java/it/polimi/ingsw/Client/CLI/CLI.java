@@ -655,6 +655,7 @@ public class CLI implements View, Runnable {
                     cloudsStrings.append(cloud[i]+studentOnClouds+cloud[i+1]);
                     studentOnClouds.setLength(0);
 
+
                 }
                 else{
                     cloudsStrings.append(cloud[i]);
@@ -665,6 +666,7 @@ public class CLI implements View, Runnable {
                 i++;
         }
         this.showMessage("\n"+cloudsStrings+"\n\n");
+        cloudsStrings.setLength(0);
     }
 
     @Override
@@ -675,7 +677,12 @@ public class CLI implements View, Runnable {
             System.out.print("> ");
             Scanner scanner = new Scanner(System.in);
             do{
-                n = scanner.nextInt();
+                try {
+                    n = scanner.nextInt();
+                }
+                catch (InputMismatchException e){
+                    this.showMessage("Please insert an integer value");
+                }
             }while(n<=0 || n>vmodel.getClouds().size());
             serverHandler.send(new ChooseCloud(n-1));
             this.vmodel.setUseCharacterCard(false);
@@ -686,7 +693,12 @@ public class CLI implements View, Runnable {
                 String msg= message.getMsg();
                 showMessage("Choose an option: \n 1."+msg+" 2.Play a character card \n" );
                 System.out.print("> ");
-                n = scanner.nextInt();
+                try {
+                    n = scanner.nextInt();
+                }
+                catch (InputMismatchException e){
+                    this.showMessage("Please insert an integer value\n");
+                }
 
             }else n=1;
             switch (n) {
@@ -698,7 +710,12 @@ public class CLI implements View, Runnable {
                             Color color=null;
                             boolean boolWhile;
                             do {
-                                n2 = scanner.nextInt();
+                                try {
+                                    n2 = scanner.nextInt();
+                                }catch (InputMismatchException e){
+                                    this.showMessage("Please insert an integer value\n");
+                                }
+
                                 do{
                                     do{
                                         System.out.print("Choose the color of the student: \n> ");
@@ -772,7 +789,7 @@ public class CLI implements View, Runnable {
                     sendCard(characterStudentName,card.toLowerCase()+".jpg");
                     break;
                 default:
-                    System.out.print("Option not valid, retry!");
+                    System.out.print("Option not valid, retry!\n");
                     break;
             }
         }while(n!=1 && n!=2);
@@ -1005,6 +1022,8 @@ public class CLI implements View, Runnable {
                                     System.out.print(ANSI_RED+"Choose a valid color"+ANSI_RESET);
                                 }
                             }while (!boolWhile);
+                            break;
+                        default:
                             break;
                     }
                 }
