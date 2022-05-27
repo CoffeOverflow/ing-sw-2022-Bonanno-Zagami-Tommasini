@@ -113,6 +113,9 @@ public class BoardChange implements Serializable{
             case "thief.jpg":
                 change=Change.PLAYTHIEF;
                 break;
+            default:
+                System.out.print("Option not valid, retry!\n");
+                break;
         }
 
     }
