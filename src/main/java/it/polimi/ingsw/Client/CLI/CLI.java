@@ -979,6 +979,7 @@ public class CLI implements View, Runnable {
                                             this.showMessage(">");
                                         }
                                     } catch (Exception e) {
+                                        e.printStackTrace();
                                         boolWhile = false;
                                         System.out.print(ANSI_RED + "Choose a valid color\n" + ANSI_RESET);
                                         this.showMessage(">");

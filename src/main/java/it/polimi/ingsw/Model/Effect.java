@@ -33,7 +33,7 @@ class Effect1 implements Effect{
     public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
         model.moveStudentsToIsland(islandPosition,card.getChosenStudents().get());
         EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
-        card.getStudents().get().forEach((k, v) -> newStudents.merge(k, v, Integer::sum));
+        newStudents.forEach((k, v) -> card.getStudents().get().merge(k, v, Integer::sum));
     }
 }
 
@@ -131,7 +131,6 @@ class Effect7 implements Effect{
      */
     public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
         model.setTwoAdditionalPoints(true);
-
     }
 }
 
@@ -183,7 +182,7 @@ class Effect10 implements Effect{
     public void effect(Player player, int islandPosition, GameModel model,  CharacterCard card){
         player.addStudentOf((Color)card.getChosenStudents().get().keySet().toArray()[0]);
         EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
-        card.getStudents().get().forEach((k, v) -> newStudents.merge(k, v, Integer::sum));
+        newStudents.forEach((k, v) -> card.getStudents().get().merge(k, v, Integer::sum));
     }
 }
 

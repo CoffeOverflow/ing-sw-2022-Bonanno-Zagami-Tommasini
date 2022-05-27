@@ -46,12 +46,26 @@ public class UseCharacterCard implements ClientToServerMessage{
             action.setPosIsland(posIsland);
 
        try{
-           game.getController().setStateToReturn(game.getController().getState());
+           System.out.println(game.getController().getState());
+           if(!(game.getController().getState() instanceof PlayCharacterCardState))
+                game.getController().setStateToReturn(game.getController().getState());
            game.getController().setState(new PlayCharacterCardState());
+           System.out.println("sono qua");
            game.getController().doAction(action);
            BoardChange change=new BoardChange(asset,posIsland,color,choosenStudents,entranceStudents,player.getPlayerID());
            game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+asset+ANSI_RESET),player);
+           try {
+               Thread.sleep(500);
+           } catch (InterruptedException e) {
+               throw new RuntimeException(e);
+           }
            game.sendAll(new UpdateMessage(change));
+           try {
+               Thread.sleep(500);
+           } catch (InterruptedException e) {
+               throw new RuntimeException(e);
+           }
+           System.out.println("sono qua2");
            game.getController().setState(game.getController().getStateToReturn());
            System.out.println(game.getController().getState());
 
@@ -61,7 +75,7 @@ public class UseCharacterCard implements ClientToServerMessage{
        }
 
         System.out.println(game.getController().getState());
-
+        System.out.println("sono qua3");
         if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
         else

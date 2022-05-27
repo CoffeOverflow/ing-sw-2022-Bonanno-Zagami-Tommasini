@@ -214,8 +214,12 @@ public class CharacterCard {
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
         int count=0;
-        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null)
-            chosenStudents=null;
+        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null) {
+            for(Color c: chosenStudents.get().keySet()){
+                this.getStudents().get().put(c, this.getStudents().get().get(c)-chosenStudents.get().get(c));
+            }
+            chosenStudents = null;
+        }
         if(entranceStudents!=null && entranceStudents.isPresent())
             entranceStudents=null;
         if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())
