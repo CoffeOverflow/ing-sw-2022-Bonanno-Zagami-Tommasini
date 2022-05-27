@@ -42,13 +42,14 @@ public class Player {
         this.expertMode = expertMode;
         this.tower = tower;
         this.numberOfTower = numberOfTower;
-        money = 0;
+        money = expertMode ? 1:0;
         //JSON Assistant card
         InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/json/assistants.json"));
         JsonReader json = new JsonReader(reader);
         assistantCards = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
         for(Color c:Color.values())
             students.put(c,0);
+        System.out.println("Nickmname: "+nickname+ " Money: "+money);
     }
 
 

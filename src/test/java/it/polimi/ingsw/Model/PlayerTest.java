@@ -43,9 +43,9 @@ class PlayerTest {
         player1.setStudents(Color.BLUE, 0);
         player1.addStudentOf(Color.BLUE);
         player1.addStudentOf(Color.BLUE);
-        assertEquals(player1.getMoney(), 0);
-        player1.addStudentOf(Color.BLUE);
         assertEquals(player1.getMoney(), 1);
+        player1.addStudentOf(Color.BLUE);
+        assertEquals(player1.getMoney(), 2);
         assertEquals(player1.getStudentsOf(Color.BLUE), 3);
 
         //No expert mode
