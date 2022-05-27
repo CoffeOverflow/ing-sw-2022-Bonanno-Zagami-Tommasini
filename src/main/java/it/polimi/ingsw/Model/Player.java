@@ -49,7 +49,6 @@ public class Player {
         assistantCards = new Gson().fromJson(json, new TypeToken<List<AssistantCard>>(){}.getType());
         for(Color c:Color.values())
             students.put(c,0);
-        System.out.println("Nickmname: "+nickname+ " Money: "+money);
     }
 
 
