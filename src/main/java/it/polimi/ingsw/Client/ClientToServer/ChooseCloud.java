@@ -76,8 +76,6 @@ public class ChooseCloud implements ClientToServerMessage{
                         cards[i] = game.getController().getModel()
                                 .getPlayerByID(game.getPlayers().get(game.getCurrentPlayerPosition()).getPlayerID()).getAssistantCards().get(i).getName();
                     }
-                    for(int i=0; i<cards.length;i++)
-                        System.out.println(cards[i]);
                     game.sendTo(new SelectAssistantCard(cards),
                             game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
                 } else {
