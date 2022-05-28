@@ -218,6 +218,28 @@ public class GameHandler implements Runnable{
         server.endGame(this.gameID);
     }
 
+    public void checkConquest(){
+        if(controller.getModel().getConquest()!=null && controller.getModel().getConquest().getMergedIsland1()==null
+                && controller.getModel().getConquest().getMergedIsland2()==null){
+            BoardChange change=new BoardChange(controller.getModel().getConquest().getConqueror(),
+                    controller.getModel().getConquest().getConqueredIsland());
+            sendAll(new UpdateMessage(change));
+        }else if(controller.getModel().getConquest()!=null && (controller.getModel().getConquest().getMergedIsland1()!=null
+                || controller.getModel().getConquest().getMergedIsland2()!=null)){
+            sendAll(new UpdateMessage((new BoardChange(controller.getModel().getConquest().getConqueror(),
+                    controller.getModel().getConquest().getConqueredIsland(),controller.getModel().getConquest().getMergedIsland1(),
+                    controller.getModel().getConquest().getMergedIsland2()))));
+        }
+        if(controller.checkEndGame()){
+            controller.setWinners(controller.getModel().getWinner());
+            for (Player p : controller.getWinners()) {
+                sendTo(new YouWin(), getClientByPlayerID(p.getPlayerID()));
+                sendAllExcept(new OtherWin(p.getNickname()), getClientByPlayerID(p.getPlayerID()));
+                endGame();
+            }
+        }
+    }
+
     @Override
     public void run() {
         setup();

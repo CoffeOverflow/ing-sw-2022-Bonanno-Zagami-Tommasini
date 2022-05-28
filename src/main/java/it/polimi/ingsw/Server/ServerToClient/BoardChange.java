@@ -25,6 +25,7 @@ public class BoardChange implements Serializable{
     private Color color=null;
     private EnumMap<Color,Integer> entranceStudent=null;
     private EnumMap<Color,Integer> choosenStudent=null;
+    private EnumMap<Color,Integer> cardStudents=null;
     private int cloud;
     private int playerID;
 
@@ -83,12 +84,13 @@ public class BoardChange implements Serializable{
     }
 
 
-    public BoardChange(String asset,Integer posIsland,Color color, EnumMap<Color,Integer> choosenStudent, EnumMap<Color,Integer> entranceStudent,int playerID){
+    public BoardChange(String asset,Integer posIsland,Color color, EnumMap<Color,Integer> cardStudents,EnumMap<Color,Integer> choosenStudent, EnumMap<Color,Integer> entranceStudent,int playerID){
         this.asset=asset;
         this.playerID=playerID;
         this.choosenStudent=choosenStudent;
         this.islandPosition=posIsland;
         this.entranceStudent=entranceStudent;
+        this.cardStudents=cardStudents;
         if(color!=null)
             this.color=color;
         switch (asset){
@@ -114,7 +116,7 @@ public class BoardChange implements Serializable{
                 change=Change.PLAYTHIEF;
                 break;
             default:
-                System.out.print("Option not valid, retry!\n");
+                change=Change.DEFAULT;
                 break;
         }
 
@@ -219,6 +221,9 @@ public class BoardChange implements Serializable{
         this.choosenStudent = choosenStudent;
     }
 
+    public EnumMap<Color, Integer> getCardStudents() {
+        return cardStudents;
+    }
 
     @Override
     public int hashCode() {

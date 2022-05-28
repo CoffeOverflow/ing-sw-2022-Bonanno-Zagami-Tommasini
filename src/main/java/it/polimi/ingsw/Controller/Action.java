@@ -55,11 +55,11 @@ public class Action {
     }
 
 
-    public int getPosIsland() {
+    public Integer getPosIsland() {
         return posIsland;
     }
 
-    public void setPosIsland(int posIsland) {
+    public void setPosIsland(Integer posIsland) {
         this.posIsland = posIsland;
     }
 

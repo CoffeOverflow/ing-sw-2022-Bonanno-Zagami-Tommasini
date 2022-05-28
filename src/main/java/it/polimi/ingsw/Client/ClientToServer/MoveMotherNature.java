@@ -27,25 +27,8 @@ public class MoveMotherNature implements ClientToServerMessage{
             game.getController().setState(new MoveMotherNatureState());
             game.getController().doAction(action);
             game.sendAll(new UpdateMessage(new BoardChange(steps)));
-            if(game.getController().getConquest()!=null && game.getController().getConquest().getMergedIsland1()==null
-                && game.getController().getConquest().getMergedIsland2()==null){
-                BoardChange change=new BoardChange(game.getController().getConquest().getConqueror(),
-                        game.getController().getConquest().getConqueredIsland());
-                game.sendAll(new UpdateMessage(change));
-            }else if(game.getController().getConquest()!=null && (game.getController().getConquest().getMergedIsland1()!=null
-                    || game.getController().getConquest().getMergedIsland2()!=null)){
-                game.sendAll(new UpdateMessage((new BoardChange(game.getController().getConquest().getConqueror(),
-                        game.getController().getConquest().getConqueredIsland(),game.getController().getConquest().getMergedIsland1(),
-                        game.getController().getConquest().getMergedIsland2()))));
-            }
-            if(game.getController().checkEndGame()){
-                game.getController().setWinners(game.getController().getModel().getWinner());
-                for (Player p : game.getController().getWinners()) {
-                    game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
-                    game.sendAllExcept(new OtherWin(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
-                    game.endGame();
-                }
-            }else{
+            game.checkConquest();
+            if(!game.getController().checkEndGame()){
                 game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
             }
 

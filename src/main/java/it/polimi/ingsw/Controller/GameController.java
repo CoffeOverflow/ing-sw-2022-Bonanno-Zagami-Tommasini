@@ -28,7 +28,6 @@ public class GameController {
 
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
 
-    private Conquest conquest=null;
 
     private List<Player> winners=new ArrayList<Player>();
 
@@ -88,13 +87,6 @@ public class GameController {
         this.currentCardPlayers = currentCardPlayers;
     }
 
-    public Conquest getConquest() {
-        return conquest;
-    }
-
-    public void setConquest(Conquest conquest) {
-        this.conquest = conquest;
-    }
 
     public boolean checkEndGame(){
         if(model.getIslandSize() == model.getNumberOfPlayers())

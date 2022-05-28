@@ -238,6 +238,7 @@ public class CLI implements View, Runnable {
     @Override
     public void update(UpdateMessage msg){
 
+
         BoardChange bchange=msg.getChange();
         switch(bchange.getChange()){
             case CONQUER:
@@ -299,8 +300,15 @@ public class CLI implements View, Runnable {
                 break;
             case PLAYINNKEEPER:
                 for(Color c:Color.values())
-                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
-                        this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(c,1);
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0) {
+                        this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(c, 1);
+                        for(CharacterCard card:this.vmodel.getCharacterCards()){
+                            if(card.getAsset().equals("innkeeper.jpg")) {
+                                card.getStudents().get().put(c, card.getStudents().get().get(c) - 1);
+                                card.setStudents(bchange.getCardStudents());
+                            }
+                        }
+                    }
                 break;
             case PLAYPRINCESS:
                 for(Color c:Color.values()) {

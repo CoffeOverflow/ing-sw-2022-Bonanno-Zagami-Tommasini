@@ -48,7 +48,8 @@ public class CharacterCard {
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
                 }
                 effect = new Effect1();
-                cost=1;
+                cost=0;
+                //cost=1;
                 break;
             case "clown.jpg":
                 if (students!=null && studentNumber == 6){
@@ -83,16 +84,19 @@ public class CharacterCard {
         this.asset = asset;
         switch(asset){
             case "auctioneer.jpg":
-                cost=3;
+                cost=0;
+                //cost=3;
                 effect=new Effect2();
                 break;
             case "postman.jpg":
-                cost=1;
+                cost=0;
+                //cost=1;
                 effect=new Effect3();
                 break;
             case "herbalist.jpg":
+                cost=0;
                 noEntryTiles=Optional.of(4);
-                cost=2;
+                //cost=2;
                 effect=new Effect4();
                 break;
             case "centaur.jpg":
@@ -210,7 +214,7 @@ public class CharacterCard {
      * @param islandPosition island on which the changes will be applied
      * @param model instance of the game model
      */
-    public void useCard(int islandPosition, GameModel model){
+    public void useCard(Integer islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
         int count=0;

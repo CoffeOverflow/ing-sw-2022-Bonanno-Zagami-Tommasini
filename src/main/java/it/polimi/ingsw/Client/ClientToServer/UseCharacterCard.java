@@ -5,6 +5,7 @@ import it.polimi.ingsw.Controller.State.DecideFirstPlayerState;
 import it.polimi.ingsw.Controller.State.MoveStudentsState;
 import it.polimi.ingsw.Controller.State.PlayCharacterCardState;
 import it.polimi.ingsw.Exceptions.MoneyException;
+import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
@@ -50,9 +51,16 @@ public class UseCharacterCard implements ClientToServerMessage{
            if(!(game.getController().getState() instanceof PlayCharacterCardState))
                 game.getController().setStateToReturn(game.getController().getState());
            game.getController().setState(new PlayCharacterCardState());
-           System.out.println("sono qua");
            game.getController().doAction(action);
-           BoardChange change=new BoardChange(asset,posIsland,color,choosenStudents,entranceStudents,player.getPlayerID());
+           EnumMap<Color,Integer> cardStudents=new EnumMap<Color, Integer>(Color.class);
+           //auctioneer si blocca qua:
+           for(CharacterCard c:game.getController().getModel().getCharacterCards()){
+               if(c.getAsset().equals(asset) && null!=c.getStudents() && c.getStudents().isPresent())
+                   cardStudents=c.getStudents().get().clone();
+           }
+           game.checkConquest();
+           System.out.println("sono qua");
+           BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
            game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+asset+ANSI_RESET),player);
            try {
                Thread.sleep(500);

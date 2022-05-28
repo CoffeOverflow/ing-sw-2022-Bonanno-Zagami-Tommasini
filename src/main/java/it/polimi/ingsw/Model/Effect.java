@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Controller.GameController;
-
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -19,7 +16,7 @@ public interface Effect {
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model, CharacterCard card);
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card);
 }
 
 class Effect1 implements Effect{
@@ -30,7 +27,7 @@ class Effect1 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         model.moveStudentsToIsland(islandPosition,card.getChosenStudents().get());
         EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
         newStudents.forEach((k, v) -> card.getStudents().get().merge(k, v, Integer::sum));
@@ -46,11 +43,14 @@ class Effect2 implements Effect{
      * @param card character card that is used
      */
 
-    public void effect(Player player, int islandPosition,  GameModel model, CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         int noEntryCards=model.getIslandByPosition(islandPosition).getNoEntryCard();
-        if(noEntryCards==0)
-            model.computeInfluence(islandPosition);
+        if(noEntryCards==0){
+            Conquest c=model.computeInfluence(islandPosition);
+            model.setConquest(c);
+        }
         else{
+            model.setConquest(null);
             model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards-1);
             int n=model.getCharactersPositions().get("herbalist.jpg");
             model.getCharacterCards().get(n).setNoEntryTiles(Optional.of(model.getCharacterCards().get(n).getNoEntryTiles().get()+1));
@@ -66,7 +66,7 @@ class Effect3 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
 
         model.setTwoAdditionalSteps(true);
 
@@ -82,7 +82,7 @@ class Effect4 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model,  CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         int noEntryCards=model.getIslandByPosition(model.getMotherNaturePosition()).getNoEntryCard();
         model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards+1);
         int n=model.getCharactersPositions().get("herbalist.jpg");
@@ -98,7 +98,7 @@ class Effect5 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model,CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         model.setTowersNotCounted(true);
     }
 }
@@ -110,7 +110,7 @@ class Effect6 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         EnumMap<Color, Integer> cardStudents=card.getStudents().get();
         for(Color c: card.getChosenStudents().get().keySet()){
             int n= cardStudents.get(c);
@@ -129,7 +129,7 @@ class Effect7 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         model.setTwoAdditionalPoints(true);
     }
 }
@@ -143,7 +143,7 @@ class Effect8 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition,GameModel model, CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         model.setNotCountedColor(card.getChosenColor().get());
     }
 }
@@ -156,7 +156,7 @@ class Effect9 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model, CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         for(Color c: card.getEntranceStudents().get().keySet()){ //EntranceStudents:entrance students to swap
             int n= player.getEntryStudents().get(c);
             for(int i=0; i<n;i++)
@@ -179,7 +179,7 @@ class Effect10 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model,  CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         player.addStudentOf((Color)card.getChosenStudents().get().keySet().toArray()[0]);
         EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
         newStudents.forEach((k, v) -> card.getStudents().get().merge(k, v, Integer::sum));
@@ -195,7 +195,7 @@ class Effect11 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model,CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         int count=0;
         for(Player p:model.getPlayers()){
               count+=p.removeThreeStudentOf(card.getChosenColor().get());
@@ -215,7 +215,7 @@ class Effect12 implements Effect{
      * @param islandPosition island to which the changes will be applied
      * @param card character card that is used
      */
-    public void effect(Player player, int islandPosition, GameModel model,CharacterCard card){
+    public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
          for(Professor p:model.getProfessors().values()){
              try{
                 if(p.getPlayer().getStudentsOf(p.getColor())==

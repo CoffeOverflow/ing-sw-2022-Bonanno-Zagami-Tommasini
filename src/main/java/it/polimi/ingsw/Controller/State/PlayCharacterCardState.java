@@ -38,6 +38,7 @@ public class PlayCharacterCardState implements GameControllerState{
                 card.increaseCost();
             }
             System.out.println("dentro state7");
+            System.out.println(action.getPosIsland());
             card.useCard(action.getPosIsland(), model);
 
         }else{
