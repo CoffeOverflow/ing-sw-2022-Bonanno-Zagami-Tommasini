@@ -191,9 +191,8 @@ public class ClientHandler implements Runnable{
                 server.endGame(game.getGameID());
                 break;
             }
-            if(answer instanceof ClientHeartbeat)
-                continue;
-            answer.handleMessage(game, this);
+            if(!(answer instanceof ClientHeartbeat))
+                answer.handleMessage(game, this);
         }
 
 
