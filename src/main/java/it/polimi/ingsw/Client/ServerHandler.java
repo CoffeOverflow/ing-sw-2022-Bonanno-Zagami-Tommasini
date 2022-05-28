@@ -55,7 +55,7 @@ public class ServerHandler {
            throw new RuntimeException(e);
         }
     }
-    public void send(Object msg){
+    public synchronized void send(Object msg){
         try {
             outputStream.reset();
             outputStream.writeObject(msg);
@@ -66,13 +66,7 @@ public class ServerHandler {
     }
 
     public void sendHeartbeat(){
-        try {
-            outputStream.reset();
-            outputStream.writeObject(new ClientHeartbeat());
-            outputStream.flush();
-        }catch(RuntimeException | IOException e){
-            throw new RuntimeException(e);
-        }
+        send(new ClientHeartbeat());
     }
 
     public void close(){

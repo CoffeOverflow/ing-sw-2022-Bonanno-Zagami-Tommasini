@@ -61,7 +61,7 @@ public class ClientHandler implements Runnable{
         return nickname;
     }
 
-    public void send(ServerToClientMessage message){
+    public synchronized void send(ServerToClientMessage message){
         try {
             outputStream.reset();
             outputStream.writeObject(message);
@@ -72,13 +72,7 @@ public class ClientHandler implements Runnable{
     }
 
     public synchronized void sendHeartbeat(){
-        try {
-            outputStream.reset();
-            outputStream.writeObject(new ServerHeartbeat());
-            outputStream.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        send(new ServerHeartbeat());
     }
 
     public Object answer(){
