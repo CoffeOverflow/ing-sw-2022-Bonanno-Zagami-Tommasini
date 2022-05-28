@@ -61,7 +61,7 @@ public class ServerHandler {
             outputStream.writeObject(msg);
             outputStream.flush();
         }catch(Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
