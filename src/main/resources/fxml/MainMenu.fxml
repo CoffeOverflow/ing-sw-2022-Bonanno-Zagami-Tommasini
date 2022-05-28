@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="menu" prefHeight="435" prefWidth="435" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.MainMenu">
+   <children>
+      <Button fx:id="button" layoutX="180" layoutY="350" mnemonicParsing="false" onAction="#buttonClicked" text="-&gt;"  />
+      <!--<Label fx:id="label" layoutX="232.0" layoutY="19.0" text="Label" />
+      <TextField fx:id="textField" layoutX="14.0" layoutY="14.0" />-->
+   </children>
+</AnchorPane>

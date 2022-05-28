@@ -1,0 +1,7 @@
+#menu{
+    -fx-background-image: url("../graphics/backgrounds/erinatys_logo.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 435 435;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
