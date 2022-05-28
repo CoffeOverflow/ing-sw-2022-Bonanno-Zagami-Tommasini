@@ -26,11 +26,11 @@ public class ClientHandler implements Runnable{
 
     public ClientHandler(Socket clientSocket, Server server, int playerID) throws IOException {
         this.clientSocket = clientSocket;
-        this.clientSocket.setSoTimeout(timeout);
         this.server = server;
         this.playerID = playerID;
         this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
+        this.clientSocket.setSoTimeout(timeout);
         new Thread(() -> { //Server to Client
             while(true){
                 try {
