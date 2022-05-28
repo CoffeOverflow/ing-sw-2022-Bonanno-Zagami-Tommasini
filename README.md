@@ -44,5 +44,7 @@ chcp 65001
 ## Software used
 
 **Astah UML** - UML diagrams
+
 **Intellij IDEA Ultimate** - Main IDE
+
 **sequencediagram.org** - Sequence diagrams
