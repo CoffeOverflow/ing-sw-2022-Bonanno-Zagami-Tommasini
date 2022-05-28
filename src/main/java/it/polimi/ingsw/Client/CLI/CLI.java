@@ -5,14 +5,12 @@ import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Constants;
-import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
+import it.polimi.ingsw.Server.ServerToClient.ServerHeartbeat;
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static it.polimi.ingsw.Constants.*;
@@ -1063,9 +1061,15 @@ public class CLI implements View, Runnable {
             ServerToClientMessage fromServer = null;
             try {
                 fromServer = serverHandler.read();
-                fromServer.handle(this);
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                if(fromServer instanceof ServerHeartbeat)
+                    continue;
+                else{
+                    fromServer.handle(this);
+                }
+
+            } catch (IOException | ClassNotFoundException | RuntimeException e) {
+                showError("\nConnection error, maybe one player left the match. The app will now close!");
+                System.exit(-1);
             }
         }
 
