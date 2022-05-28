@@ -39,7 +39,7 @@ public class ServerHandler {
                 try{
                     sendHeartbeat();
                 }catch (RuntimeException e){
-                    System.out.println(ANSI_RED+"\nConnection error, server unreachable!");
+                    System.out.println(ANSI_RED+"\nConnection error, server unreachable!"+ANSI_RESET);
                     System.exit(-1);
                 }
             }
