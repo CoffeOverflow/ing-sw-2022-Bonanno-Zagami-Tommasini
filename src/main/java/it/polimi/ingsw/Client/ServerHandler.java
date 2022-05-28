@@ -67,7 +67,7 @@ public class ServerHandler {
 
     public void sendHeartbeat(){
         try {
-            outputStream.reset();
+            //outputStream.reset();
             outputStream.writeObject(new ClientHeartbeat());
             outputStream.flush();
         }catch(RuntimeException | IOException e){

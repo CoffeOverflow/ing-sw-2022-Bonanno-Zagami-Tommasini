@@ -73,7 +73,7 @@ public class ClientHandler implements Runnable{
 
     public synchronized void sendHeartbeat(){
         try {
-            outputStream.reset();
+            //outputStream.reset();
             outputStream.writeObject(new ServerHeartbeat());
             outputStream.flush();
         } catch (IOException e) {
