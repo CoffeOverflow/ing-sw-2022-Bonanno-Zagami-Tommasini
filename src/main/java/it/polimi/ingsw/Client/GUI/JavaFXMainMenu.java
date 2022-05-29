@@ -36,6 +36,7 @@ public class JavaFXMainMenu extends Application
         primaryStage.setScene(sc);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
+        primaryStage.setTitle("Eriantys");
         primaryStage.show();
     }
 }
