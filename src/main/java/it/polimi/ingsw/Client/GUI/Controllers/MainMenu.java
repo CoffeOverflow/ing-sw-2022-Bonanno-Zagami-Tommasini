@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client.GUI;
+package it.polimi.ingsw.Client.GUI.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -23,7 +23,7 @@ public class MainMenu
     public void initialize()
     {
         //label.setText("");
-        button.setText("GIOCA");
+        button.setText("Play");
     }
 
 

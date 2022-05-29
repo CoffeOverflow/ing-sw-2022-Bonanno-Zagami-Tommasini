@@ -2,14 +2,44 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane id="menu" prefHeight="600" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.MainMenu">
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane id="menu" prefHeight="600" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.MainMenu">
    <children>
-      <HBox alignment="CENTER"  prefWidth="435.0" layoutY="350"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+      <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+         <Label fx:id="title" alignment="TOP_CENTER"  styleClass="credits"  text="Eriantys" textFill="WHITE">
+            <font>
+               <Font name="Newborough" size="70.0" />
+            </font>
+         </Label>
+      </HBox>
+      <HBox alignment="CENTER"  prefWidth="600.0" layoutY="450"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
          <children>
-            <Button fx:id="button"  mnemonicParsing="false" onAction="#buttonClicked" text="-&gt;"  />
+            <Button fx:id="button" prefHeight="50" prefWidth="100" mnemonicParsing="false" onAction="#buttonClicked" text="-&gt;" >
+               <font>
+                  <Font name="Newborough" size="28.0" />
+               </font>
+            </Button>
+
          </children>
       </HBox>
+      <ImageView fx:id="cranio_logo" fitHeight="100" fitWidth="100" layoutY="500" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/logos/cranio_logo.png" />
+         </image>
+      </ImageView>
+      <HBox alignment="CENTER"  prefWidth="600.0" layoutY="580"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+         <children>
+            <Label fx:id="team" alignment="CENTER"  styleClass="credits"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE">
+               <font>
+                  <Font name="Newborough" size="18.0" />
+               </font>
+            </Label>
+
+         </children>
+      </HBox>
+
 
       <!--<Label fx:id="label" layoutX="232.0" layoutY="19.0" text="Label" />
       <TextField fx:id="textField" layoutX="14.0" layoutY="14.0" />-->

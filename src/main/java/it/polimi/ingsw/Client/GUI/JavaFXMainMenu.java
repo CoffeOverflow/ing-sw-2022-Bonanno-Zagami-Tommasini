@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class JavaFXMainMenu extends Application
     @Override
     public void start(Stage primaryStage)
     {
+        Font.loadFont(getClass().getResourceAsStream("/fonts/newborough.ttf"), 14);
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
@@ -33,6 +35,7 @@ public class JavaFXMainMenu extends Application
         sc.getStylesheets().addAll(this.getClass().getResource("/css/mainmenu.css").toExternalForm());
         primaryStage.setScene(sc);
         primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }
