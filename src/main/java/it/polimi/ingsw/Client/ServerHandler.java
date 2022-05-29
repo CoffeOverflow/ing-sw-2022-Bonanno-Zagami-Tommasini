@@ -21,9 +21,9 @@ public class ServerHandler {
         try{
             //this.server=new Socket("127.0.0.1",2000);
             this.server=new Socket(Constants.getIP(),Constants.getPort());
-            this.server.setSoTimeout(timeout);
             inputStream = new ObjectInputStream(server.getInputStream());
             outputStream= new ObjectOutputStream(server.getOutputStream());
+            this.server.setSoTimeout(timeout);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class ServerHandler {
                 try{
                     sendHeartbeat();
                 }catch (RuntimeException e){
-                    System.out.println(ANSI_RED+"\nConnection error, server unreachable!");
+                    System.out.println(ANSI_RED+"\nConnection error, server unreachable!"+ANSI_RESET);
                     System.exit(-1);
                 }
             }
@@ -55,24 +55,18 @@ public class ServerHandler {
            throw new RuntimeException(e);
         }
     }
-    public void send(Object msg){
+    public synchronized void send(Object msg){
         try {
-            //outputStream.reset();
+            outputStream.reset();
             outputStream.writeObject(msg);
             outputStream.flush();
         }catch(Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void sendHeartbeat(){
-        try {
-            //outputStream.reset();
-            outputStream.writeObject(new ClientHeartbeat());
-            outputStream.flush();
-        }catch(RuntimeException | IOException e){
-            throw new RuntimeException(e);
-        }
+        send(new ClientHeartbeat());
     }
 
     public void close(){

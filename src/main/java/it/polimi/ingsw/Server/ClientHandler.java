@@ -26,11 +26,11 @@ public class ClientHandler implements Runnable{
 
     public ClientHandler(Socket clientSocket, Server server, int playerID) throws IOException {
         this.clientSocket = clientSocket;
-        this.clientSocket.setSoTimeout(timeout);
         this.server = server;
         this.playerID = playerID;
         this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
+        this.clientSocket.setSoTimeout(timeout);
         new Thread(() -> { //Server to Client
             while(true){
                 try {
@@ -61,9 +61,9 @@ public class ClientHandler implements Runnable{
         return nickname;
     }
 
-    public void send(ServerToClientMessage message){
+    public synchronized void send(ServerToClientMessage message){
         try {
-            //outputStream.reset();
+            outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException e) {
@@ -72,13 +72,7 @@ public class ClientHandler implements Runnable{
     }
 
     public synchronized void sendHeartbeat(){
-        try {
-            //outputStream.reset();
-            outputStream.writeObject(new ServerHeartbeat());
-            outputStream.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        send(new ServerHeartbeat());
     }
 
     public Object answer(){
@@ -98,7 +92,9 @@ public class ClientHandler implements Runnable{
             switch (state){
                 case "Nickname":
                     send(new RequestNickname());
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if(answer instanceof ChooseNickname){
                         String nick = ((ChooseNickname) answer).getNickname();
                         try {
@@ -128,7 +124,9 @@ public class ClientHandler implements Runnable{
                     else{
                         send(new ChooseMatch());
                     }
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if(answer instanceof SelectMatch){
                         //Controllo sull'intero
                         if(((SelectMatch) answer).getMatch() == 0){
@@ -153,7 +151,9 @@ public class ClientHandler implements Runnable{
                     break;
                 case "Setup":
                     send(new RequestSetUp());
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if (answer instanceof SelectModeAndPlayers){
                         if(((SelectModeAndPlayers) answer).getNumberOfPlayers() == 2 || ((SelectModeAndPlayers) answer).getNumberOfPlayers() == 3){
                             server.newGame(this, ((SelectModeAndPlayers) answer).getNumberOfPlayers(), ((SelectModeAndPlayers) answer).isExpertMode());
@@ -191,9 +191,8 @@ public class ClientHandler implements Runnable{
                 server.endGame(game.getGameID());
                 break;
             }
-            if(answer instanceof ClientHeartbeat)
-                continue;
-            answer.handleMessage(game, this);
+            if(!(answer instanceof ClientHeartbeat))
+                answer.handleMessage(game, this);
         }
 
 

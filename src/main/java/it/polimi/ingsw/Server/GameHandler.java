@@ -71,20 +71,20 @@ public class GameHandler implements Runnable{
         return gameID;
     }
 
-    public void sendAll(ServerToClientMessage message){
+    public synchronized void sendAll(ServerToClientMessage message){
         for(ClientHandler client: players){
             client.send(message);
         }
     }
 
-    public void sendAllExcept(ServerToClientMessage message, ClientHandler player){
+    public synchronized void sendAllExcept(ServerToClientMessage message, ClientHandler player){
         for(ClientHandler client: players){
             if(!client.equals(player))
                 client.send(message);
         }
     }
 
-    public void sendTo(ServerToClientMessage message, ClientHandler player){
+    public synchronized void sendTo(ServerToClientMessage message, ClientHandler player){
         for(ClientHandler client: players){
             if(client.equals(player))
                 client.send(message);

@@ -1069,11 +1069,8 @@ public class CLI implements View, Runnable {
             ServerToClientMessage fromServer = null;
             try {
                 fromServer = serverHandler.read();
-                if(fromServer instanceof ServerHeartbeat)
-                    continue;
-                else{
+                if(!(fromServer instanceof ServerHeartbeat))
                     fromServer.handle(this);
-                }
 
             } catch (IOException | ClassNotFoundException | RuntimeException e) {
                 showError("\nConnection error, maybe one player left the match. The app will now close!");
