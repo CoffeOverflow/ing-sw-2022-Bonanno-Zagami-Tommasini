@@ -92,7 +92,9 @@ public class ClientHandler implements Runnable{
             switch (state){
                 case "Nickname":
                     send(new RequestNickname());
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if(answer instanceof ChooseNickname){
                         String nick = ((ChooseNickname) answer).getNickname();
                         try {
@@ -122,7 +124,9 @@ public class ClientHandler implements Runnable{
                     else{
                         send(new ChooseMatch());
                     }
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if(answer instanceof SelectMatch){
                         //Controllo sull'intero
                         if(((SelectMatch) answer).getMatch() == 0){
@@ -147,7 +151,9 @@ public class ClientHandler implements Runnable{
                     break;
                 case "Setup":
                     send(new RequestSetUp());
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if (answer instanceof SelectModeAndPlayers){
                         if(((SelectModeAndPlayers) answer).getNumberOfPlayers() == 2 || ((SelectModeAndPlayers) answer).getNumberOfPlayers() == 3){
                             server.newGame(this, ((SelectModeAndPlayers) answer).getNumberOfPlayers(), ((SelectModeAndPlayers) answer).isExpertMode());
