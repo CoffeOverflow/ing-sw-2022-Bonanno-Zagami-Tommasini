@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class JavaFXMainMenu extends Application
+public class MainMenu extends Application
 {
     // When using IntelliJ, don't run the application from here, use the main
     // method in JavaFXMain

@@ -2,14 +2,12 @@ package it.polimi.ingsw.Client.GUI.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 
 
 /**
  *  Scene controller class for the scene TestScene
  */
-public class MainMenu
+public class MainMenuController
 {
     public Button button;
     /*public Label label;

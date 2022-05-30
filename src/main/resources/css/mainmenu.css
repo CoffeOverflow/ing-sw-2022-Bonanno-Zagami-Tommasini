@@ -5,8 +5,10 @@
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
+
+/*
 #button {
     -fx-background-image: url("../graphics/buttons/button.png");
     -fx-background-size: stretch;
     -fx-background-color: transparent;
-}
+}*/

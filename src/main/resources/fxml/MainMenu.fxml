@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<AnchorPane id="menu" prefHeight="600" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.MainMenu">
+<AnchorPane id="menu" prefHeight="600" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.MainMenuController">
    <children>
       <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
          <Label fx:id="title" alignment="TOP_CENTER"  styleClass="credits"  text="Eriantys" textFill="WHITE">
@@ -16,7 +16,7 @@
       </HBox>
       <HBox alignment="CENTER"  prefWidth="600.0" layoutY="450"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
          <children>
-            <Button fx:id="button" prefHeight="70" prefWidth="150" mnemonicParsing="false" onAction="#buttonClicked" text="-&gt;" >
+            <Button fx:id="button" prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#buttonClicked" text="-&gt;" >
                <font>
                   <Font name="Newborough" size="38.0" />
                </font>
