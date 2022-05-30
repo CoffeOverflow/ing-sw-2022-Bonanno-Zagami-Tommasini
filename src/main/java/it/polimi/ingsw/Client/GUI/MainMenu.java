@@ -38,5 +38,6 @@ public class MainMenu extends Application
         primaryStage.setResizable(false);
         primaryStage.setTitle("Eriantys");
         primaryStage.show();
+
     }
 }

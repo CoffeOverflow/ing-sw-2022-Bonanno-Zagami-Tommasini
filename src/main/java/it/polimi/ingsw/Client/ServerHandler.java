@@ -25,7 +25,7 @@ public class ServerHandler {
             outputStream= new ObjectOutputStream(server.getOutputStream());
             this.server.setSoTimeout(timeout);
         }catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
 
