@@ -294,7 +294,7 @@ public class CLI implements View, Runnable {
                         p.addEntryStudents(bchange.getEntranceStudent());
                 break;
             case PLAYHERBALIST:
-                this.vmodel.getIslands().get(bchange.getIslandPosition()).setNoEntryCard(1);
+                this.vmodel.getIslands().get(bchange.getIslandPosition()).setNoEntryCard(this.vmodel.getIslands().get(bchange.getIslandPosition()).getNoEntryCard()+1);
                 break;
             case PLAYINNKEEPER:
                 for(Color c:Color.values())
@@ -455,7 +455,7 @@ public class CLI implements View, Runnable {
         int numberOfTower=0;
         Optional<Tower> tower;
         int num=0;
-        for(int i=0;i<12;i++)
+        for(int i=0;i<this.vmodel.getIslands().size();i++)
         {
             students=this.vmodel.getIslands().get(i).getStudents();
             tower=this.vmodel.getIslands().get(i).getTower();

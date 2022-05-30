@@ -84,27 +84,27 @@ public class CharacterCard {
         this.asset = asset;
         switch(asset){
             case "auctioneer.jpg":
-                cost=0;
-                //cost=3;
+                cost=3;
                 effect=new Effect2();
                 break;
             case "postman.jpg":
-                cost=0;
-                //cost=1;
+                cost=1;
                 effect=new Effect3();
                 break;
             case "herbalist.jpg":
-                cost=0;
                 noEntryTiles=Optional.of(4);
                 //cost=2;
+                cost=0;
                 effect=new Effect4();
                 break;
             case "centaur.jpg":
-                cost=3;
+                //cost=3;
+                cost=0;
                 effect=new Effect5();
                 break;
             case "infantryman.jpg":
-                cost=2;
+                //cost=2;
+                cost=0;
                 effect=new Effect7();
                 break;
             case "lumberjack.jpg":
