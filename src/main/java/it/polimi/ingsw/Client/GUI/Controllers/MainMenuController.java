@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
 import it.polimi.ingsw.Client.CLI.CLI;
+import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Constants;
 import javafx.event.ActionEvent;
@@ -19,14 +20,19 @@ import java.net.Socket;
 /**
  *  Scene controller class for the scene TestScene
  */
-public class MainMenuController
+public class MainMenuController implements GUIController
 {
+    private GUI gui;
     public Button button;
     public Button connect;
     public VBox connection;
     public TextField address;
     public TextField port;
 
+
+    public void setGui(GUI gui) {
+        this.gui = gui;
+    }
 
     /**
      * Method automatically called when the scene is loaded.
@@ -56,6 +62,7 @@ public class MainMenuController
             alert.setTitle("Success");
             alert.setHeaderText("Connected to the server successfully!");
             alert.showAndWait();
+            gui.changeScene("SETUP");
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -63,5 +70,10 @@ public class MainMenuController
             alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
             alert.showAndWait();
         }
+    }
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
     }
 }
