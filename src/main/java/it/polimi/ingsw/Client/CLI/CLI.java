@@ -509,7 +509,7 @@ public class CLI implements View, Runnable {
                 studentOnIsland.append(" "+ANSI_YELLOW+filledRect+ANSI_RESET);
             }
 
-            if(i==9 || i==10 ||i==11)
+            if(i>=9)
                 this.showMessage("Island "+(i+1)+": "+studentOnIsland +'\n');
             else
                 this.showMessage("Island "+(i+1)+":  "+studentOnIsland+'\n');
