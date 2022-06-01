@@ -307,14 +307,14 @@ public class GameModel {
                 influences.put(p.getPlayerID(),getPlayerInfluence(p.getPlayerID(),islandPosition));
             }
             if(influences.get(p.getPlayerID())>key){
-                key=getPlayerInfluence(p.getPlayerID(),islandPosition);
+                key=influences.get(p.getPlayerID());
                 conqueror=Optional.of(p.getPlayerID());
             }
         }
         //check if the higher value of influence is unique
         if(conqueror.isPresent()){
             for(Player p:players){
-                if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID())==influences.get(conqueror)){
+                if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID()).equals(influences.get(conqueror.get()))){
                     conqueror=Optional.empty();
                 }
             }
@@ -343,8 +343,12 @@ public class GameModel {
             return new Conquest(getPlayerTower(conqueror.get()),islandPosition,null,null);
         else if(conqueror.isPresent() && mergeResult==-1){
             if(islandPosition==0)
-                mergeIsland1=islands.size()-1;
-            else mergeIsland1=islandPosition-1;
+                mergeIsland1=oldIslandsSize-1;
+            else {
+                mergeIsland1 = islandPosition - 1;
+                if(motherNaturePosition==islandPosition)
+                motherNaturePosition--;
+            }
             if(islands.size()==oldIslandsSize-1){
                 return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,null);
             }else if(islands.size()==oldIslandsSize-2){
@@ -354,8 +358,11 @@ public class GameModel {
                 return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,mergeIsland2);
             }
         }else if(conqueror.isPresent() && mergeResult==+1){
-            if(islandPosition==oldIslandsSize-1)
-                mergeIsland1=0;
+            if(islandPosition==oldIslandsSize-1) {
+                mergeIsland1 = 0;
+                if(motherNaturePosition==islandPosition)
+                motherNaturePosition=0;
+            }
             else mergeIsland1=islandPosition+1;
             if(islands.size()==oldIslandsSize-1){
                 return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,null);
@@ -385,11 +392,11 @@ public class GameModel {
         }else if((island-1)>=0 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island);
             checkMergeIsland( island-1,tower);
-            return +1;
+            return -1;
         }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).isPresent() && getTowerOnIsland(island+1).get().equals(tower)){
             mergeIslands(island,island+1);
             checkMergeIsland(island,tower);
-            return -1;
+            return +1;
         }else{return 0;}
     }
 
