@@ -210,7 +210,7 @@ public class GameModel {
      * @param islandPos1
      * @param islandPos2
      */
-    public void mergeIslands(int islandPos1, int islandPos2){
+    public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
         Island deleteIsland,notDeleteIsland;
         int islandPosNotDelete;
         if(islandPos1<islandPos2){
@@ -227,6 +227,10 @@ public class GameModel {
         }
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
+        for(Player p: this.players)
+            if(p.getTower().equals(tower))
+                p.setNumberOfTower(p.getNumberOfTower()-1);
+        motherNaturePosition=islandPosNotDelete;
     }
 
     /**
@@ -378,26 +382,29 @@ public class GameModel {
 
     public int checkMergeIsland( int island, Tower tower){
         if(island==getIslandSize()-1 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
-            mergeIslands(island-1,island);
+            mergeIslands(island-1,island,tower);
             checkMergeIsland( island-1,tower);
             return -1;
         }else if(island==getIslandSize()-1 && getTowerOnIsland(0).isPresent() && getTowerOnIsland(0).get().equals(tower) ){
-            mergeIslands(0,island);
+            mergeIslands(0,island,tower);
             checkMergeIsland(0,tower);
             return +1;
         }else if(island==0 && getTowerOnIsland(getIslandSize()-1).isPresent() && getTowerOnIsland(getIslandSize()-1).get().equals(tower)){
-            mergeIslands(island,getIslandSize()-1);
+            mergeIslands(island,getIslandSize()-1,tower);
             checkMergeIsland( island,tower);
             return -1;
         }else if((island-1)>=0 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
-            mergeIslands(island-1,island);
+            mergeIslands(island-1,island,tower);
             checkMergeIsland( island-1,tower);
             return -1;
         }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).isPresent() && getTowerOnIsland(island+1).get().equals(tower)){
-            mergeIslands(island,island+1);
+            mergeIslands(island,island+1,tower);
             checkMergeIsland(island,tower);
             return +1;
         }else{return 0;}
+
+
+
     }
 
     /**
