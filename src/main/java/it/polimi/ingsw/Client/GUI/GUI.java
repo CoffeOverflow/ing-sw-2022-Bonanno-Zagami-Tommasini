@@ -132,7 +132,13 @@ public class GUI extends Application implements Runnable, View
     public void chooseMatch(String message) throws IOException {
         if(currentScene.equals(nameToScene.get("SETUP"))){
             SetupController controller = (SetupController) sceneToController.get(currentScene);
-            controller.showChooseMatch();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.showChooseMatch(message);
+                }
+            });
+
         }
     }
 

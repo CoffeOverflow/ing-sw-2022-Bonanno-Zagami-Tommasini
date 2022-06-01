@@ -52,12 +52,20 @@
 
             </VBox>
         </HBox>
-        <!--Nickname-->
-        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
-            <VBox fx:id="chooseMatch" alignment="CENTER" layoutX="300" spacing="5">
-                <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Lista partite" textFill="WHITE"/>
-            </VBox>
-        </HBox>
+        <!--Match-->
+        <VBox fx:id="chooseMatch" alignment="CENTER" layoutY="250">
+            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Lista partite" textFill="WHITE"/>
+            <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
+                <VBox fx:id="listOfMatch" alignment="CENTER" spacing="5">
+                    <!--<HBox alignment="CENTER" >
+                        <Label  prefHeight="21.0" prefWidth="333.0" text="PARTITA" textFill="WHITE"/>
+                        <Button  prefHeight="30" prefWidth="100" mnemonicParsing="false"  text="Join" />
+                    </HBox>-->
+                </VBox>
+            </HBox>
+        </VBox>
+
+
 
 
     </children>

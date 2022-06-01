@@ -43,6 +43,8 @@ public class ClientHandler implements Runnable{
                 }catch (RuntimeException e){
                     System.out.println("Client "+getPlayerID()+" "+getNickname()+" disconnected!");
                     server.removePlayer(getPlayerID());
+                    if(game != null && server.getAvailableGames().contains(game))
+                        server.removeAvailableGame(game.getGameID());
                     break;
                 }
             }
@@ -190,6 +192,7 @@ public class ClientHandler implements Runnable{
                 answer = (ClientToServerMessage) answer();
             }catch (RuntimeException e){
                 server.endGame(game.getGameID());
+                server.removeAvailableGame(game.getGameID());
                 break;
             }
             if(!(answer instanceof ClientHeartbeat))
