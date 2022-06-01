@@ -54,22 +54,50 @@ public class MainMenuController implements GUIController
     }
 
     public void connectButtonClicked(ActionEvent actionEvent){
-        Constants.setIP(address.getText());
-        Constants.setPort(Integer.parseInt(port.getText()));
-        try {
-            Socket test = new Socket(Constants.getIP(),Constants.getPort());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText("Connected to the server successfully!");
-            alert.showAndWait();
-            gui.changeScene("SETUP");
-        } catch (IOException e) {
+        if(!(address.getText().equals("")) && !(port.getText().equals(""))){
+            int portNumber = 0;
+            try{
+                portNumber = Integer.parseInt(port.getText());
+                if(portNumber > 1024){
+                    Constants.setIP(address.getText());
+                    Constants.setPort(Integer.parseInt(port.getText()));
+                    try {
+                        gui.setServerHandler(new ServerHandler());
+                        gui.changeScene("SETUP");
+                        Thread guiThread = new Thread(gui);
+                        guiThread.start();
+                    } catch (RuntimeException e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Server unreachable or non-existent");
+                        alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
+                        alert.showAndWait();
+                    }
+                }
+                else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Port not valid");
+                    alert.setContentText("Make sure that port number is greater than 1024!");
+                    alert.showAndWait();
+                }
+            }catch (RuntimeException e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Port not valid");
+                alert.setContentText("Please insert a number!");
+                alert.showAndWait();
+            }
+
+        }
+        else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Server unreachable or non-existent");
-            alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
+            alert.setHeaderText("IP address or port fields is empty");
+            alert.setContentText("Verify that the fields are not empty and try again!");
             alert.showAndWait();
         }
+
     }
 
     @Override

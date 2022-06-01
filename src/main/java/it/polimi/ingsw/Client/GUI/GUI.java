@@ -3,21 +3,17 @@ package it.polimi.ingsw.Client.GUI;
 import it.polimi.ingsw.Client.GUI.Controllers.GUIController;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.VirtualModel;
+import it.polimi.ingsw.Server.ServerToClient.ServerHeartbeat;
+import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class GUI extends Application implements Runnable
 {
@@ -40,7 +36,7 @@ public class GUI extends Application implements Runnable
     public void start(Stage stage) throws Exception {
         setup();
         this.stage = stage;
-        run();
+        displayScene();
     }
 
     public void setup(){
@@ -58,9 +54,27 @@ public class GUI extends Application implements Runnable
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+
     @Override
     public void run() {
+        while(true){
+            ServerToClientMessage fromServer = null;
+            try {
+                fromServer = serverHandler.read();
+                if(!(fromServer instanceof ServerHeartbeat))
+                    //fromServer.handle(this);
+                    return;
+
+            } catch (IOException | ClassNotFoundException | RuntimeException e) {
+                //showError("\nConnection error, maybe one player left the match. The app will now close!");
+                System.exit(-1);
+            }
+        }
+    }
+
+    public void displayScene() {
         stage.setScene(currentScene);
         stage.sizeToScene();
         stage.setResizable(false);
@@ -72,6 +86,11 @@ public class GUI extends Application implements Runnable
 
     public void changeScene(String scene){
         this.currentScene = nameToScene.get(scene);
-        run();
+        displayScene();
     }
+
+    public void setServerHandler(ServerHandler serverHandler) {
+        this.serverHandler = serverHandler;
+    }
+
 }
