@@ -6,13 +6,59 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+<AnchorPane id="setup"
+            xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.polimi.ingsw.Client.GUI.Controllers.SetupController"
-            prefHeight="600.0" prefWidth="600.0">
-    <!--Eriantys Logo-->
-    <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
-        <Label fx:id="title" alignment="TOP_CENTER"  styleClass="credits"  text="Eriantys" textFill="WHITE">
-        </Label>
-    </HBox>
+            prefHeight="600.0" prefWidth="600.0"
+            stylesheets="@../css/setup.css">
+    <children>
+        <!--Eriantys Logo-->
+        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+            <Label fx:id="title" alignment="TOP_CENTER"  styleClass="credits"  text="Eriantys" textFill="WHITE">
+                <font>
+                    <Font name="Newborough" size="70.0" />
+                </font>
+            </Label>
+        </HBox>
+        <!--Cranio logo-->
+        <ImageView fx:id="cranio_logo" fitHeight="100" fitWidth="100" layoutY="500" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../graphics/logos/cranio_logo.png" />
+            </image>
+        </ImageView>
+        <!--Caduti in battaglia durante lo sviluppo di questo progetto-->
+        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="580"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+            <children>
+                <Label fx:id="team" alignment="CENTER"  styleClass="credits"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE">
+                    <font>
+                        <Font name="Newborough" size="18.0" />
+                    </font>
+                </Label>
+
+            </children>
+        </HBox>
+
+        <!--Nickname-->
+        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
+            <VBox fx:id="requestNickname" alignment="CENTER" layoutX="300" spacing="5">
+                <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert a nickname" textFill="WHITE"/>
+                <TextField fx:id="nickname" />
+
+                    <Button fx:id="send" prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#sendButtonClicked" text="Send" />
+
+            </VBox>
+        </HBox>
+        <!--Nickname-->
+        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
+            <VBox fx:id="chooseMatch" alignment="CENTER" layoutX="300" spacing="5">
+                <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Lista partite" textFill="WHITE"/>
+            </VBox>
+        </HBox>
+
+
+    </children>
 </AnchorPane>

@@ -34,6 +34,15 @@ public class MainMenuController implements GUIController
         this.gui = gui;
     }
 
+    @Override
+    public void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(message);
+        //alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
+        alert.showAndWait();
+    }
+
     /**
      * Method automatically called when the scene is loaded.
      * Initializes the scene.

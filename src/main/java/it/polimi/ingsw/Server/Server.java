@@ -143,4 +143,8 @@ public class Server implements Runnable{
         }
         activeGames.remove(gameID);
     }
+
+    public synchronized void removePlayer(int id){
+        nicknameByID.remove(id);
+    }
 }

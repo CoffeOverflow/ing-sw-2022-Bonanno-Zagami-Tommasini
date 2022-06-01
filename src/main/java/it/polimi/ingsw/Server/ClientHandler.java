@@ -42,6 +42,7 @@ public class ClientHandler implements Runnable{
                     sendHeartbeat();
                 }catch (RuntimeException e){
                     System.out.println("Client "+getPlayerID()+" "+getNickname()+" disconnected!");
+                    server.removePlayer(getPlayerID());
                     break;
                 }
             }
