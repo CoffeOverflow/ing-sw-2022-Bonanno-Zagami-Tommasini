@@ -12,6 +12,7 @@ public class VirtualModel {
 
     private List<Island> islands =new ArrayList<>();
 
+
     private int motherNaturePosition;
 
     private List<CharacterCard> characterCards=null;
@@ -34,9 +35,6 @@ public class VirtualModel {
             Professor p=new Professor(c);
             professors.put(c,p);
         }
-
-
-
     }
 
     public List<Cloud> getClouds() {
@@ -103,7 +101,7 @@ public class VirtualModel {
 
     }
 
-    public void mergeIslands(int islandPos1, int islandPos2){
+    public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
         Island deleteIsland,notDeleteIsland;
         int islandPosNotDelete;
         if(islandPos1<islandPos2){
@@ -122,7 +120,10 @@ public class VirtualModel {
 
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
-        //fare i controlli sul noEntryCard.
+        for(Player p:this.players)
+            if(p.getTower().equals(tower))
+                p.setNumberOfTower(p.getNumberOfTower()-1);
+        motherNaturePosition=islandPosNotDelete;
 
     }
     public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
@@ -196,4 +197,8 @@ public class VirtualModel {
 
     public int getNumOfInstance() {return numOfInstance++;}
     public void resetNumOfInstance(){this.numOfInstance=0;}
+    public void setMotherNaturePosition(int motherNaturePosition) {
+
+        this.motherNaturePosition = motherNaturePosition;
+    }
 }

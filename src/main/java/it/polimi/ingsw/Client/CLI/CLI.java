@@ -264,10 +264,9 @@ public class CLI implements View, Runnable {
                 }
                 break;
             case MERGE:
-                this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
-                this.vmodel.mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1());
+                this.vmodel.mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
                 if(bchange.getMergedIsland2()!=null)
-                    this.vmodel.mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland2());
+                    this.vmodel.mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland2(),bchange.getConquerorTower());
                 break;
             case MOTHERNATURE:
                 this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
@@ -405,9 +404,19 @@ public class CLI implements View, Runnable {
         System.out.println("");
         System.out.println("___________BOARDS___________");
         System.out.println("");
-        int i=0;
+
         for(Player p:this.vmodel.getPlayers())
-            showSchool(p,i++);
+        {
+            Tower tower=p.getTower();
+            String colorTower;
+            if(tower.equals(Tower.WHITE))
+                colorTower=ANSI_WHITE;
+            else if(tower.equals(Tower.BLACK))
+                colorTower=ANSI_BLACK;
+            else
+                colorTower=ANSI_GRAY;
+            showSchool(p,colorTower);
+        }
 
     }
 
@@ -459,6 +468,7 @@ public class CLI implements View, Runnable {
         int num=0;
         for(int i=0;i<this.vmodel.getIslands().size();i++)
         {
+            System.out.println(this.vmodel.getIslands().get(i).getStudents());
             students=this.vmodel.getIslands().get(i).getStudents();
             tower=this.vmodel.getIslands().get(i).getTower();
             for(Color c: Color.values())
@@ -521,7 +531,7 @@ public class CLI implements View, Runnable {
     }
 
     @Override
-    public void showSchool(Player p,int numColor){
+    public void showSchool(Player p,String colorTower){
 
         char[][] boardElement = new char[5][14];
 
@@ -552,7 +562,6 @@ public class CLI implements View, Runnable {
         for(int i=0;i<5;i++)
             num+=numColorEntryStudents[i];
         String[] ansiColor={ANSI_GREEN,ANSI_RED,ANSI_YELLOW,ANSI_PINK,ANSI_BLUE};
-        String[] ansiTower={WHITE_BRIGHT,ANSI_BLACK,ANSI_GRAY};
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 14; j++) {
                 if (i == 0 && j == 0) boardElement[i][j] = dashedCircle;
@@ -610,7 +619,7 @@ public class CLI implements View, Runnable {
                             boardElement[i][j] = filledRect;
                             numberOfTower--;
                         } else boardElement[i][j] = emptyRect;
-                        color.append(WHITE_BACKGROUND + ansiTower[numColor]);
+                        color.append(WHITE_BACKGROUND + colorTower);
                         color.append(boardElement[i][j]);
                         if(j!=13)
                         color.append(" ");
@@ -763,8 +772,6 @@ public class CLI implements View, Runnable {
                                     islandPosition= scanner.nextInt();}while(islandPosition<=0 || islandPosition>vmodel.getIslands().size());
                                     serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,this.vmodel.getNumOfInstance()));
                                     //vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
-                                } else {
-                                    System.out.print("Option not valid, retry!\n");
                                 }
                             } while (n2 != 1 && n2 != 2);
                     } else if (message.getType()==OptionType.MOVENATURE) {
