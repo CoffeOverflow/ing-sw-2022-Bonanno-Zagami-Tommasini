@@ -21,6 +21,7 @@ public class SetupController implements GUIController{
     public VBox requestNickname;
     public VBox chooseMatch;
     public VBox listOfMatch;
+    public VBox newgameform;
     public TextField nickname;
     public Button send;
     @Override
@@ -40,6 +41,7 @@ public class SetupController implements GUIController{
     public void initialize() {
         requestNickname.setVisible(false);
         chooseMatch.setVisible(false);
+        newgameform.setVisible(false);
     }
 
     public void showNicknameField(){
@@ -64,7 +66,7 @@ public class SetupController implements GUIController{
                     join.prefHeight(30);
                     join.prefWidth(100);
                     game.getChildren().add(gameName);
-                    game.setSpacing(100);
+                    game.setSpacing(20);
                     game.getChildren().add(join);
                     listOfMatch.getChildren().add(game);
                 }
@@ -90,5 +92,12 @@ public class SetupController implements GUIController{
 
     public void sendButtonClicked(){
         gui.send(new ChooseNickname(nickname.getText()));
+    }
+    public void newgameButtonClicked(){
+        chooseMatch.setVisible(false);
+        newgameform.setVisible(true);
+    }
+    public void createnewgameButtonClicked(){
+        newgameform.setVisible(false);
     }
 }

@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
 <AnchorPane id="setup"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -53,16 +54,54 @@
             </VBox>
         </HBox>
         <!--Match-->
-        <VBox fx:id="chooseMatch" alignment="CENTER" layoutY="250">
+        <VBox fx:id="chooseMatch" alignment="CENTER" layoutY="250" spacing="30">
             <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Lista partite" textFill="WHITE"/>
             <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
-                <VBox fx:id="listOfMatch" alignment="CENTER" spacing="5">
+                <VBox fx:id="listOfMatch" alignment="CENTER" spacing="10">
                     <!--<HBox alignment="CENTER" >
                         <Label  prefHeight="21.0" prefWidth="333.0" text="PARTITA" textFill="WHITE"/>
                         <Button  prefHeight="30" prefWidth="100" mnemonicParsing="false"  text="Join" />
                     </HBox>-->
                 </VBox>
             </HBox>
+            <Button fx:id="newgame" prefHeight="30" prefWidth="100" mnemonicParsing="false" onAction="#newgameButtonClicked" text="New game" />
+        </VBox>
+
+        <!--New game-->
+        <VBox fx:id="newgameform" alignment="CENTER" layoutY="250" spacing="15">
+            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Impostazioni partita" textFill="WHITE"/>
+            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Number of players:" textFill="WHITE"/>
+            <HBox alignment="CENTER" prefWidth="600.0" layoutY="250" spacing="10">
+                <RadioButton fx:id="2players" text="2 Players">
+
+                    <toggleGroup>
+                        <ToggleGroup fx:id="players"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="3players" text="3 Players">
+
+                    <toggleGroup>
+                        <fx:reference source="players"/>
+                    </toggleGroup>
+                </RadioButton>
+            </HBox>
+            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Mode:" textFill="WHITE"/>
+            <HBox alignment="CENTER" prefWidth="600.0" layoutY="300" spacing="10">
+                <RadioButton fx:id="expertmode" text="Expert mode">
+
+                    <toggleGroup>
+                        <ToggleGroup fx:id="mode"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="normalmode" text="Normal mode">
+
+                    <toggleGroup>
+                        <fx:reference source="mode"/>
+                    </toggleGroup>
+                </RadioButton>
+            </HBox>
+
+            <Button fx:id="createnewgame" prefHeight="30" prefWidth="100" mnemonicParsing="false" onAction="#createnewgameButtonClicked" text="Create game" />
         </VBox>
 
 
