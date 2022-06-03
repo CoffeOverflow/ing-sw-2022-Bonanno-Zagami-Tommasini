@@ -59,7 +59,6 @@ public class UseCharacterCard implements ClientToServerMessage{
                    cardStudents=c.getStudents().get().clone();
            }
            game.checkConquest();
-           System.out.println("sono qua");
            BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
            game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+asset+ANSI_RESET),player);
            try {
@@ -73,9 +72,7 @@ public class UseCharacterCard implements ClientToServerMessage{
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
-           System.out.println("sono qua2");
            game.getController().setState(game.getController().getStateToReturn());
-           System.out.println(game.getController().getState());
 
        }catch (IllegalStateException e){
            game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
@@ -83,7 +80,6 @@ public class UseCharacterCard implements ClientToServerMessage{
        }
 
         System.out.println(game.getController().getState());
-        System.out.println("sono qua3");
         if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
         else

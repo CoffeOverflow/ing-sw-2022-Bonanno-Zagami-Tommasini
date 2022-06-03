@@ -232,6 +232,7 @@ public class GameHandler implements Runnable{
             if(controller.getModel().getMotherNaturePosition()==controller.getModel().getConquest().getConqueredIsland()-1)
             sendAll(new UpdateMessage((new BoardChange(-1))));
         }
+        controller.getModel().setConquest(null);
         if(controller.checkEndGame()){
             controller.setWinners(controller.getModel().getWinner());
             for (Player p : controller.getWinners()) {

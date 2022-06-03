@@ -48,8 +48,7 @@ public class CharacterCard {
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
                 }
                 effect = new Effect1();
-                cost=0;
-                //cost=1;
+                cost=1;
                 break;
             case "clown.jpg":
                 if (students!=null && studentNumber == 6){
@@ -59,7 +58,8 @@ public class CharacterCard {
                     throw new IllegalArgumentException("the card must contain six students and the chosen students must be at most three");
                 }
                 effect = new Effect6();
-                cost=1;
+                cost=0;
+                //cost=1;
                 break;
             case "princess.jpg":
                 if (students!=null && studentNumber == 4){
@@ -98,8 +98,7 @@ public class CharacterCard {
                 effect=new Effect4();
                 break;
             case "centaur.jpg":
-                //cost=3;
-                cost=0;
+                cost=3;
                 effect=new Effect5();
                 break;
             case "infantryman.jpg":

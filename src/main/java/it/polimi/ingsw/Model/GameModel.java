@@ -230,7 +230,7 @@ public class GameModel {
         for(Player p: this.players)
             if(p.getTower().equals(tower))
                 p.setNumberOfTower(p.getNumberOfTower()-1);
-        motherNaturePosition=islandPosNotDelete;
+        //motherNaturePosition=islandPosNotDelete;
     }
 
     /**
