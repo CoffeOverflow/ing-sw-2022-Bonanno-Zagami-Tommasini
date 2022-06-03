@@ -84,6 +84,7 @@ public class BoardChange implements Serializable{
     }
 
 
+
     public BoardChange(String asset,Integer posIsland,Color color, EnumMap<Color,Integer> cardStudents,EnumMap<Color,Integer> choosenStudent, EnumMap<Color,Integer> entranceStudent,int playerID){
         this.asset=asset;
         this.playerID=playerID;
@@ -91,6 +92,7 @@ public class BoardChange implements Serializable{
         this.islandPosition=posIsland;
         this.entranceStudent=entranceStudent;
         this.cardStudents=cardStudents;
+
         if(color!=null)
             this.color=color;
         switch (asset){
