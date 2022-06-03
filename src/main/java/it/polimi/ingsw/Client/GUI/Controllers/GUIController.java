@@ -6,4 +6,6 @@ public interface GUIController {
     public void setGUI(GUI gui);
 
     public void showError(String message);
+
+    public void showMessage(String message);
 }

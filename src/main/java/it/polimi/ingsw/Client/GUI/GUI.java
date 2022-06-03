@@ -99,6 +99,19 @@ public class GUI extends Application implements Runnable, View
         this.serverHandler = serverHandler;
     }
 
+    public void waitForOtherPlayers(){
+        if(currentScene.equals(nameToScene.get("SETUP"))){
+            SetupController controller = (SetupController) sceneToController.get(currentScene);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.waitForOtherPlayers();
+                }
+            });
+
+        }
+    }
+
     @Override
     public void requestNickname() throws IOException {
         if(currentScene.equals(nameToScene.get("SETUP"))){
@@ -144,7 +157,12 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void showMessage(String message) {
-
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                sceneToController.get(currentScene).showMessage(message);
+            }
+        });
     }
 
     @Override

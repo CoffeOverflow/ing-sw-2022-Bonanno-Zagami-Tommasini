@@ -43,6 +43,14 @@ public class MainMenuController implements GUIController
         alert.showAndWait();
     }
 
+    @Override
+    public void showMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(message);
+        alert.showAndWait();
+    }
+
     /**
      * Method automatically called when the scene is loaded.
      * Initializes the scene.

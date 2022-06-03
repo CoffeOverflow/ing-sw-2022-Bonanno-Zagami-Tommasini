@@ -72,13 +72,13 @@
             <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Impostazioni partita" textFill="WHITE"/>
             <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Number of players:" textFill="WHITE"/>
             <HBox alignment="CENTER" prefWidth="600.0" layoutY="250" spacing="10">
-                <RadioButton fx:id="2players" text="2 Players">
+                <RadioButton fx:id="twoPlayers" text="2 Players">
 
                     <toggleGroup>
                         <ToggleGroup fx:id="players"/>
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton fx:id="3players" text="3 Players">
+                <RadioButton fx:id="threePlayers" text="3 Players">
 
                     <toggleGroup>
                         <fx:reference source="players"/>
@@ -102,6 +102,13 @@
             </HBox>
 
             <Button fx:id="createnewgame" prefHeight="30" prefWidth="100" mnemonicParsing="false" onAction="#createnewgameButtonClicked" text="Create game" />
+        </VBox>
+
+        <!--Wait for other players-->
+        <VBox fx:id="wait" alignment="CENTER" layoutY="250" spacing="30">
+            <HBox alignment="CENTER" prefWidth="600.0" layoutY="250" spacing="10">
+                <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Wait for other players.." textFill="WHITE" style="-fx-font-size: 26px;"/>
+            </HBox>
         </VBox>
 
 

@@ -1,17 +1,22 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
+import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
+import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Client.GUI.GUI;
+import it.polimi.ingsw.Server.ServerToClient.ChooseMatch;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static javafx.scene.paint.Color.RED;
 import static javafx.scene.paint.Color.WHITE;
@@ -22,8 +27,13 @@ public class SetupController implements GUIController{
     public VBox chooseMatch;
     public VBox listOfMatch;
     public VBox newgameform;
+    public VBox wait;
     public TextField nickname;
     public Button send;
+    public RadioButton twoPlayers;
+    public RadioButton threePlayers;
+    public RadioButton expertmode;
+    public RadioButton normalmode;
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
@@ -33,8 +43,16 @@ public class SetupController implements GUIController{
     public void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText(message);
+        alert.setHeaderText(message.replaceAll("\u001B\\[[\\d;]*[^\\d;]",""));
         //alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
+        alert.showAndWait();
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(message.replaceAll("\u001B\\[[\\d;]*[^\\d;]",""));
         alert.showAndWait();
     }
 
@@ -42,6 +60,7 @@ public class SetupController implements GUIController{
         requestNickname.setVisible(false);
         chooseMatch.setVisible(false);
         newgameform.setVisible(false);
+        wait.setVisible(false);
     }
 
     public void showNicknameField(){
@@ -65,6 +84,13 @@ public class SetupController implements GUIController{
                     Button join = new Button("Join");
                     join.prefHeight(30);
                     join.prefWidth(100);
+                    join.setUserData(line.split("\\.")[0]);
+                    join.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            joinGame(event);
+                        }
+                    });
                     game.getChildren().add(gameName);
                     game.setSpacing(20);
                     game.getChildren().add(join);
@@ -96,8 +122,30 @@ public class SetupController implements GUIController{
     public void newgameButtonClicked(){
         chooseMatch.setVisible(false);
         newgameform.setVisible(true);
+        gui.send(new SelectMatch(0));
     }
     public void createnewgameButtonClicked(){
-        newgameform.setVisible(false);
+        if((twoPlayers.isSelected() || threePlayers.isSelected()) && (expertmode.isSelected() || normalmode.isSelected())){
+            newgameform.setVisible(false);
+            gui.send(new SelectModeAndPlayers(twoPlayers.isSelected() ? 2:3, expertmode.isSelected()));
+            System.out.println(twoPlayers.isSelected() ? 2:3);
+        }
+        else{
+            gui.showError("Some settings are missing, please select all the option!");
+        }
+
+    }
+
+    public void joinGame(Event event){
+        chooseMatch.setVisible(false);
+        Node node = (Node) event.getSource() ;
+        int match = Integer.parseInt((String) node.getUserData());
+        gui.send(new SelectMatch(match));
+
+    }
+
+    public void waitForOtherPlayers(){
+        chooseMatch.setVisible(false);
+        wait.setVisible(true);
     }
 }
