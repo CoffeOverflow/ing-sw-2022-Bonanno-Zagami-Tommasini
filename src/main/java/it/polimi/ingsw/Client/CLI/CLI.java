@@ -221,8 +221,12 @@ public class CLI implements View, Runnable {
             value = -1;
             for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
                 if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(card)) {
-                    value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
-                    break;
+                    for(String s: msg.getAvailableCards()){
+                        if(card.equalsIgnoreCase(s)){
+                            value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
+                            break;
+                        }
+                    }
                 }
             }
             if(value == -1)
@@ -271,6 +275,15 @@ public class CLI implements View, Runnable {
                    break;
             case MOTHERNATURE:
                 this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
+                if(this.vmodel.getIslands().get(this.vmodel.getMotherNaturePosition()).getNoEntryCard()>0){
+                    this.vmodel.getIslands().get(this.vmodel.getMotherNaturePosition()).setNoEntryCard(this.vmodel.getIslands().get(this.vmodel.getMotherNaturePosition()).getNoEntryCard()-1);
+                    for(CharacterCard card:this.vmodel.getCharacterCards()){
+                        if(card.getAsset().equals("herbalist.jpg")){
+                            int noEntryTitlesOnCard=card.getNoEntryTiles().get()+Integer.valueOf(1);
+                            card.setNoEntryTiles(Optional.of(noEntryTitlesOnCard));
+                        }
+                    }
+                }
                 break;
             case CLOUD:
                 this.vmodel.fillClouds(bchange);
@@ -301,7 +314,11 @@ public class CLI implements View, Runnable {
                         p.addEntryStudents(bchange.getChoosenStudent());
                         for(CharacterCard card :characterCards)
                             if(card.equals(bchange.getAsset()))
+                            {
                                 p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
                     }
                 break;
             case PLAYHERBALIST:
@@ -312,6 +329,7 @@ public class CLI implements View, Runnable {
                         for(CharacterCard card :characterCards){
                             if(card.getAsset().equals(bchange.getAsset())){
                                 p.decreaseMoney(card.getCost());
+                                card.increaseCost();
                                 int entryTitles=card.getNoEntryTiles().get();
                                 card.setNoEntryTiles(Optional.of(entryTitles-1));
                             }
@@ -336,7 +354,10 @@ public class CLI implements View, Runnable {
                         p.addEntryStudents(bchange.getEntranceStudent());
                         for(CharacterCard card :characterCards)
                             if(card.getAsset().equals(bchange.getAsset()))
+                            {
                                 p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
 
                     }
                 break;
@@ -349,7 +370,10 @@ public class CLI implements View, Runnable {
                                 p.addStudentOf(c);
                                 for(CharacterCard card :characterCards)
                                     if(card.getAsset().equals(bchange.getAsset()))
+                                    {
                                         p.decreaseMoney(card.getCost());
+                                        card.increaseCost();
+                                    }
                             }
 
                 }
@@ -388,7 +412,10 @@ public class CLI implements View, Runnable {
                         p.addEntryStudents(salaToEntrance);
                         for(CharacterCard card :characterCards)
                             if(card.getAsset().equals(bchange.getAsset()))
+                            {
                                 p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
                     }
 
                 break;
@@ -403,7 +430,10 @@ public class CLI implements View, Runnable {
                     if(p.getPlayerID()== bchange.getPlayer())
                         for(CharacterCard card :characterCards)
                             if(card.getAsset().equals(bchange.getAsset()))
+                            {
                                 p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
                 break;
             case DEFAULT:
                 String asset= bchange.getAsset();
@@ -411,7 +441,10 @@ public class CLI implements View, Runnable {
                     if(p.getPlayerID()==bchange.getPlayer())
                         for(CharacterCard card :characterCards)
                             if(card.getAsset().equals(bchange.getAsset()))
+                            {
                                 p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
                 break;
         }
 
@@ -569,13 +602,16 @@ public class CLI implements View, Runnable {
                     studentOnIsland.append(" "+ANSI_BACKGROUND_PURPLE+filledRect+ANSI_RESET);
                  }
             }
+
+            int entryCardPerIsland=this.vmodel.getIslands().get(i).getNoEntryCard();
+            for(int m=0;m<entryCardPerIsland;m++)
+                studentOnIsland.append(ANSI_RED+dashedCircle+ANSI_RESET);
+
             if(i==this.vmodel.getMotherNaturePosition())
             {
                 studentOnIsland.append(" "+ANSI_YELLOW+filledRect+ANSI_RESET);
             }
-            int entryCardPerIsland=this.vmodel.getIslands().get(i).getNoEntryCard();
-            for(int m=0;m<entryCardPerIsland;m++)
-                studentOnIsland.append(ANSI_RED+dashedCircle+ANSI_RESET);
+
             if(i>=9)
                 this.showMessage("Island "+(i+1)+": "+studentOnIsland +'\n');
             else
@@ -901,9 +937,14 @@ public class CLI implements View, Runnable {
                         case "innkeeper.jpg":
                             do{
                                 this.showMessage("Scegli la posizione dell'isola \n>");
-                                posIsland=scanner.nextInt()-1;
-                                if(posIsland<0 || posIsland>this.vmodel.getIslands().size()-1)
-                                    this.showMessage(ANSI_RED+" Invalid input\n" +ANSI_RESET);
+                                try{
+                                    posIsland=scanner.nextInt()-1;
+                                    if(posIsland<0 || posIsland>this.vmodel.getIslands().size()-1)
+                                        this.showMessage(ANSI_RED+" Invalid input\n" +ANSI_RESET);
+                                }catch(Exception e){
+                                    this.showMessage("Insert a valid value\n");
+                                    this.showMessage(">");
+                                }
                             }while (posIsland<0 || posIsland>this.vmodel.getIslands().size()-1);
                             choosenStudent=new EnumMap<Color, Integer>(Color.class);
                             for(Color c1:color.values())
@@ -933,7 +974,7 @@ public class CLI implements View, Runnable {
                             break;
                         case "thief.jpg":
                             do {
-                                this.showMessage("Choose a color \n>");
+                                this.showMessage("Choose the color of students to put on the bag \n>");
                                 String colorStudent = scanner.next();
                                 try {
                                     color2 = Color.valueOf(colorStudent.toUpperCase());
@@ -948,9 +989,16 @@ public class CLI implements View, Runnable {
                         case "clown.jpg":
                             do{
                                 this.showMessage("how many students do you want to change?");
-                                numStudent= scanner.nextInt();
-                                if(numStudent<=0 || numStudent>3)
+                                try{
+                                    numStudent= scanner.nextInt();
+                                }catch (Exception e){
+                                    this.showMessage("Insert a valid value\n");
+                                    this.showMessage(">");
+                                }
+                                if(numStudent<=0 || numStudent>3) {
                                     this.showMessage("Choose a number from 1 to 3");
+                                    this.showMessage(">");
+                                }
                             }while(numStudent<=0 || numStudent>3);
 
                             choosenStudent=new EnumMap<Color, Integer>(Color.class);
@@ -958,7 +1006,7 @@ public class CLI implements View, Runnable {
                                 choosenStudent.put(c1,0);
                             for(int i=0;i<numStudent;i++) {
                                 do {
-                                    this.showMessage("Choose a color of the student\n>");
+                                    this.showMessage("Choose a student from the card\n>");
                                     String colorStudent = scanner.next();
                                     try {
                                         color2 = Color.valueOf(colorStudent.toUpperCase());
@@ -1005,7 +1053,7 @@ public class CLI implements View, Runnable {
 
                         case "princess.jpg":
                             do {
-                                this.showMessage("Choose a color of the student\n>");
+                                this.showMessage("Choose a color of the student from the card\n>");
                                 String colorStudent = scanner.next();
                                 try {
                                     color2 = Color.valueOf(colorStudent.toUpperCase());
@@ -1030,7 +1078,11 @@ public class CLI implements View, Runnable {
                         case "storyteller.jpg":
                             do{
                                 this.showMessage("how many students do you want to change?");
-                                numStudent= scanner.nextInt();
+                                try{
+                                    numStudent= scanner.nextInt();
+                                }catch(Exception e){
+                                    this.showMessage("Insert a valid value \n>");
+                                }
                                 if(numStudent<=0 || numStudent>2)
                                     this.showMessage("Choose a number from 1 to 2");
                             }while(numStudent<=0 || numStudent>2);
@@ -1040,14 +1092,14 @@ public class CLI implements View, Runnable {
                                 choosenStudent.put(c1,0);
                             for(int i=0;i<numStudent;i++) {
                                 do {
-                                    this.showMessage("Choose a color of the student\n>");
+                                    this.showMessage("Choose a color of the student from your school \n>");
                                     String colorStudent = scanner.next();
                                     try {
                                         color2 = Color.valueOf(colorStudent.toUpperCase());
                                         boolWhile = Arrays.asList(Color.values()).contains(color2);
-                                        if (!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2) <= 0) {
+                                        if (!this.vmodel.getClientPlayer().getStudents().containsKey(color2) || this.vmodel.getClientPlayer().getStudents().get(color2) <= 0) {
                                             boolWhile = false;
-                                            System.out.print(ANSI_RED + "Choose a color that is present on the card\n"
+                                            System.out.print(ANSI_RED + "Choose a color that is present on your school \n"
                                                     + ANSI_RESET);
                                             this.showMessage(">");
                                         }
@@ -1067,14 +1119,14 @@ public class CLI implements View, Runnable {
                                 entranceStudent.put(c2,0);
                             for(int i=0;i<numStudent;i++) {
                                 do {
-                                    this.showMessage("Choose a student from your school \n>");
+                                    this.showMessage("Choose a student from your entrance \n>");
                                     String colorStudent = scanner.next();
                                     try {
                                         color2 = Color.valueOf(colorStudent.toUpperCase());
                                         boolWhile = Arrays.asList(Color.values()).contains(color2);
                                         if(!this.vmodel.getClientPlayer().getEntryStudents().containsKey(color2) || this.vmodel.getClientPlayer().getEntryStudents().get(color2)<=0 ){
                                             boolWhile = false;
-                                            System.out.print(ANSI_RED + "Choose a color that is present in the school\n"
+                                            System.out.print(ANSI_RED + "Choose a color that is present in your entrance\n"
                                                     + ANSI_RESET);
                                             this.showMessage(">");
                                         }
@@ -1093,15 +1145,19 @@ public class CLI implements View, Runnable {
                         case "auctioneer.jpg":
                         case "herbalist.jpg":
                             do{
-                                this.showMessage("Scegli la posizione dell'isola \n>");
-                                posIsland=scanner.nextInt()-1;
+                                this.showMessage("Choose the island position \n>");
+                                try{
+                                    posIsland=scanner.nextInt()-1;
+                                }catch (Exception e){
+                                    this.showMessage("Insert a valid value \n >");
+                                }
                                 if(posIsland<0 || posIsland>this.vmodel.getIslands().size()-1)
                                     this.showMessage(ANSI_RED+" Invalid input\n" +ANSI_RESET);
                             }while (posIsland<0 || posIsland>this.vmodel.getIslands().size()-1);
                             break;
                         case "lumberjack.jpg":
                             do{
-                                this.showMessage("Scegli il colore da non calcolare nell'influenza\n>");
+                                this.showMessage("Choose the color not to be considered when calculating the influence \n>");
                                 String colorStudent=scanner.next();
                                 try{
                                     color2=Color.valueOf(colorStudent.toUpperCase());
