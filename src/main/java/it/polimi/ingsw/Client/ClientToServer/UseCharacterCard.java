@@ -47,13 +47,11 @@ public class UseCharacterCard implements ClientToServerMessage{
             action.setPosIsland(posIsland);
 
        try{
-           System.out.println(game.getController().getState());
            if(!(game.getController().getState() instanceof PlayCharacterCardState))
                 game.getController().setStateToReturn(game.getController().getState());
            game.getController().setState(new PlayCharacterCardState());
            game.getController().doAction(action);
            EnumMap<Color,Integer> cardStudents=new EnumMap<Color, Integer>(Color.class);
-           //auctioneer si blocca qua:
            for(CharacterCard c:game.getController().getModel().getCharacterCards()){
                if(c.getAsset().equals(asset) && null!=c.getStudents() && c.getStudents().isPresent())
                    cardStudents=c.getStudents().get().clone();
@@ -61,6 +59,7 @@ public class UseCharacterCard implements ClientToServerMessage{
            game.checkConquest();
            BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
            game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+asset+ANSI_RESET),player);
+
            try {
                Thread.sleep(500);
            } catch (InterruptedException e) {

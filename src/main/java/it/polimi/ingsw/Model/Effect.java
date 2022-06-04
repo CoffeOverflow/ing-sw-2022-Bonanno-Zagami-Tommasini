@@ -112,13 +112,13 @@ class Effect6 implements Effect{
      */
     public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
         EnumMap<Color, Integer> cardStudents=card.getStudents().get();
-        for(Color c: card.getChosenStudents().get().keySet()){
-            int n= cardStudents.get(c);
-            cardStudents.put(c,n-card.getChosenStudents().get().get(c));
+        card.addStudents(card.getEntranceStudents().get());
+        for(Color c: card.getEntranceStudents().get().keySet()){
+            for(int i=0; i<card.getEntranceStudents().get().get(c);i++)
+                player.removeEntryStudent(c);
         }
-        cardStudents.putAll(card.getEntranceStudents().get());
-        card.setStudents(cardStudents);
         player.addEntryStudents(card.getChosenStudents().get());
+
     }
 }
 class Effect7 implements Effect{
@@ -144,6 +144,7 @@ class Effect8 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
+        System.out.println("color: "+card.getChosenColor().get());
         model.setNotCountedColor(card.getChosenColor().get());
     }
 }

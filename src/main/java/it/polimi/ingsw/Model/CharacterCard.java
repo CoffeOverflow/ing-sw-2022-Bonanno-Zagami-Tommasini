@@ -58,8 +58,7 @@ public class CharacterCard {
                     throw new IllegalArgumentException("the card must contain six students and the chosen students must be at most three");
                 }
                 effect = new Effect6();
-                cost=0;
-                //cost=1;
+                cost=1;
                 break;
             case "princess.jpg":
                 if (students!=null && studentNumber == 4){
@@ -93,8 +92,7 @@ public class CharacterCard {
                 break;
             case "herbalist.jpg":
                 noEntryTiles=Optional.of(4);
-                //cost=2;
-                cost=0;
+                cost=2;
                 effect=new Effect4();
                 break;
             case "centaur.jpg":
@@ -102,12 +100,12 @@ public class CharacterCard {
                 effect=new Effect5();
                 break;
             case "infantryman.jpg":
-                //cost=2;
-                cost=0;
+                cost=2;
                 effect=new Effect7();
                 break;
             case "lumberjack.jpg":
-                cost=3;
+                //cost=3;
+                cost=0;
                 effect=new Effect8();
                 break;
             case "storyteller.jpg":
@@ -151,6 +149,10 @@ public class CharacterCard {
 
     public String getAsset(){
         return asset;
+    }
+
+    public void addStudents(EnumMap<Color, Integer> studentsToAdd){
+        studentsToAdd.forEach((k, v) -> this.students.get().merge(k, v, Integer::sum));
     }
 
     public void setStudents(EnumMap<Color, Integer> students) {
@@ -216,8 +218,9 @@ public class CharacterCard {
     public void useCard(Integer islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
+
         int count=0;
-        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null) {
+        if(chosenStudents!=null && chosenStudents.isPresent()) {
             for(Color c: chosenStudents.get().keySet()){
                 this.getStudents().get().put(c, this.getStudents().get().get(c)-chosenStudents.get().get(c));
             }

@@ -155,9 +155,9 @@ public class GameModel {
         String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
                 "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
         int[] cardNumbers=new int[3];
-        cardNumbers[0]=3;
-        cardNumbers[1]=4;
-        cardNumbers[2]=5;
+        cardNumbers[0]=6;
+        cardNumbers[1]=7;
+        cardNumbers[2]=8;
         /*for(int i=0; i<3; i++){
             switch(i){
                 case 0:

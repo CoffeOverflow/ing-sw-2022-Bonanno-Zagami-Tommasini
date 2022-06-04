@@ -285,15 +285,20 @@ public class CLI implements View, Runnable {
                          p.addEntryStudents(bchange.getStudents1());
                 break;
             case PLAYCLOWN:
+                for(CharacterCard c: vmodel.getCharacterCards())
+                    if(c.getAsset().equals("clown.jpg"))
+                        c.setStudents(bchange.getCardStudents());
                 for(Color c:Color.values()) {
                     if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
                         for(Player p:this.vmodel.getPlayers())
-                            if(p.getPlayerID()== bchange.getPlayer())
-                                 p.removeEntryStudent(c);
+                            if(p.getPlayerID()== bchange.getPlayer()) {
+                                for(int i=0; i<bchange.getEntranceStudent().get(c);i++)
+                                    p.removeEntryStudent(c);
+                            }
                 }
                 for(Player p:this.vmodel.getPlayers())
                     if(p.getPlayerID()== bchange.getPlayer())
-                        p.addEntryStudents(bchange.getEntranceStudent());
+                        p.addEntryStudents(bchange.getChoosenStudent());
                 break;
             case PLAYHERBALIST:
                 this.vmodel.getIslands().get(bchange.getIslandPosition()).setNoEntryCard(this.vmodel.getIslands().get(bchange.getIslandPosition()).getNoEntryCard()+1);
@@ -889,6 +894,7 @@ public class CLI implements View, Runnable {
                                 }
                             } while (!boolWhile);
                             break;
+
                         case "clown.jpg":
                             do{
                                 this.showMessage("how many students do you want to change?");
@@ -897,6 +903,9 @@ public class CLI implements View, Runnable {
                                     this.showMessage("Choose a number from 1 to 3");
                             }while(numStudent<=0 || numStudent>3);
 
+                            choosenStudent=new EnumMap<Color, Integer>(Color.class);
+                            for(Color c1:Color.values())
+                                choosenStudent.put(c1,0);
                             for(int i=0;i<numStudent;i++) {
                                 do {
                                     this.showMessage("Choose a color of the student\n>");
@@ -916,12 +925,11 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
-                                choosenStudent=new EnumMap<Color, Integer>(Color.class);
-                                for(Color c1:color.values())
-                                    choosenStudent.put(c1,0);
-                                choosenStudent.put(color2,1);
+                                choosenStudent.put(color2,choosenStudent.get(color2)+1);
                             }
-
+                            entranceStudent=new EnumMap<Color, Integer>(Color.class);
+                            for(Color c2: Color.values())
+                                entranceStudent.put(c2,0);
                             for(int i=0;i<numStudent;i++) {
                                 do {
                                     this.showMessage("Choose a student from your entrance \n>");
@@ -941,10 +949,7 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
-                                entranceStudent=new EnumMap<Color, Integer>(Color.class);
-                                for(Color c2:Color.values())
-                                    entranceStudent.put(c2,0);
-                                entranceStudent.put(color2,1);
+                                entranceStudent.put(color2,entranceStudent.get(color2)+1);
                             }
                             break;
 
@@ -968,7 +973,7 @@ public class CLI implements View, Runnable {
                                 }
                             } while (!boolWhile);
                             choosenStudent=new EnumMap<Color, Integer>(Color.class);
-                            for(Color c1:color.values())
+                            for(Color c1:Color.values())
                                 choosenStudent.put(c1,0);
                             choosenStudent.put(color2,1);
                             break;
@@ -980,6 +985,9 @@ public class CLI implements View, Runnable {
                                     this.showMessage("Choose a number from 1 to 2");
                             }while(numStudent<=0 || numStudent>2);
 
+                            choosenStudent=new EnumMap<Color, Integer>(Color.class);
+                            for(Color c1:Color.values())
+                                choosenStudent.put(c1,0);
                             for(int i=0;i<numStudent;i++) {
                                 do {
                                     this.showMessage("Choose a color of the student\n>");
@@ -1000,12 +1008,13 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
-                                choosenStudent=new EnumMap<Color, Integer>(Color.class);
-                                for(Color c1:color.values())
-                                    choosenStudent.put(c1,0);
-                                choosenStudent.put(color2,1);
+
+                                choosenStudent.put(color2,choosenStudent.get(color2)+1);
                             }
 
+                            entranceStudent=new EnumMap<Color, Integer>(Color.class);
+                            for(Color c2:Color.values())
+                                entranceStudent.put(c2,0);
                             for(int i=0;i<numStudent;i++) {
                                 do {
                                     this.showMessage("Choose a student from your school \n>");
@@ -1025,10 +1034,9 @@ public class CLI implements View, Runnable {
                                         this.showMessage(">");
                                     }
                                 } while (!boolWhile);
-                                entranceStudent=new EnumMap<Color, Integer>(Color.class);
-                                for(Color c2:Color.values())
-                                    entranceStudent.put(c2,0);
-                                entranceStudent.put(color2,1);
+
+                                entranceStudent.put(color2,entranceStudent.get(color2)+1);
+                                showMessage("entrance stud to send: "+entranceStudent);
                             }
                             break;
 
@@ -1053,6 +1061,7 @@ public class CLI implements View, Runnable {
                                     System.out.print(ANSI_RED+"Choose a valid color"+ANSI_RESET);
                                 }
                             }while (!boolWhile);
+                            color=color2;
                             break;
                         default:
                             break;
@@ -1065,6 +1074,7 @@ public class CLI implements View, Runnable {
         posIsland=null;
         choosenStudent=null;
         entranceStudent=null;
+        color=null;
     }
 
     @Override
