@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI;
 
 import it.polimi.ingsw.Client.GUI.Controllers.GUIController;
+import it.polimi.ingsw.Client.GUI.Controllers.GameController;
 import it.polimi.ingsw.Client.GUI.Controllers.SetupController;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
@@ -74,6 +75,7 @@ public class GUI extends Application implements Runnable, View
                     fromServer.handle(this);
 
             } catch (IOException | ClassNotFoundException | RuntimeException e) {
+                e.printStackTrace();
                 showError("\nConnection error, maybe one player left the match. The app will now close!");
                 System.exit(-1);
             }
@@ -87,7 +89,6 @@ public class GUI extends Application implements Runnable, View
         stage.setTitle("Eriantys");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/icons/mother_nature.png")));
         stage.show();
-
     }
 
     public void changeScene(String scene){
@@ -110,6 +111,15 @@ public class GUI extends Application implements Runnable, View
             });
 
         }
+    }
+
+    public void startGame(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                changeScene("GAME");
+            }
+        });
     }
 
     @Override
@@ -217,7 +227,16 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void chooseWizard(SelectWizard message) throws IOException {
+        if(currentScene.equals(nameToScene.get("GAME"))){
+            GameController controller = (GameController) sceneToController.get(currentScene);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.selectWizard(message);
+                }
+            });
 
+        }
     }
 
     @Override

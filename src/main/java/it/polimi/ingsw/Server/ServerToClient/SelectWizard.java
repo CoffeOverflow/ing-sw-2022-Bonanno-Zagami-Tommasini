@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Wizards;
 

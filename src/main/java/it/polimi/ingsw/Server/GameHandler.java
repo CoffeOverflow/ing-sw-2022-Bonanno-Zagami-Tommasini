@@ -107,7 +107,12 @@ public class GameHandler implements Runnable{
 
 
     public void setup(){
-        sendAll(new GenericMessage("The game is starting..."));
+        sendAll(new GameIsStarting("The game is starting..."));
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         sendAll(new SelectWizard(wizards));
         while(ready < numberOfPlayers){
             try {
