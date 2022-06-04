@@ -34,6 +34,7 @@ public class PlayCharacterCardState implements GameControllerState{
             }
 
             card.useCard(action.getPosIsland(), model);
+
         }else{
             throw new IllegalStateException();
         }
