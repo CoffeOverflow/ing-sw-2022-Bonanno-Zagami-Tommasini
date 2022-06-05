@@ -38,6 +38,7 @@ public class GameModel {
     private boolean twoAdditionalPoints=false;
     private Color notCountedColor=null;
     private boolean towersNotCounted=false;
+    private boolean takeProfessorWhenTie=false;
 
     private boolean[] firstUseCharacters=new boolean[3];
 
@@ -155,9 +156,9 @@ public class GameModel {
         String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
                 "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
         int[] cardNumbers=new int[3];
-        cardNumbers[0]=6;
-        cardNumbers[1]=7;
-        cardNumbers[2]=8;
+        cardNumbers[0]=9;
+        cardNumbers[1]=10;
+        cardNumbers[2]=11;
         /*for(int i=0; i<3; i++){
             switch(i){
                 case 0:
@@ -426,10 +427,30 @@ public class GameModel {
                 }
             }
         }
-        if(numOfColor>max)
+        if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max) )
         {
             this.professors.get(studentColor).goToSchool(getPlayerByID(player));
         }
+    }
+
+    public void removeFromSchool (int player,Color studentColor, int number){
+        for(Player p:this.players) {
+            if (p.getPlayerID() == player) {
+                p.getStudents().put(studentColor, p.getStudentsOf(studentColor) - number);
+            }
+        }
+        Player toGo=null;
+        int max = 0;
+        for (Player play : players) {
+            if (play.getStudentsOf(studentColor) > max) {
+                max = play.getStudentsOf(studentColor);
+                toGo=play;
+            }
+        }
+        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+            this.professors.get(studentColor).goToSchool(toGo);
+        if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
+            professors.get(studentColor).getPlayer().removeProfessor(studentColor);
     }
 
     /**
@@ -483,6 +504,7 @@ public class GameModel {
         this.notCountedColor=null;
         this.twoAdditionalPoints=false;
         this.twoAdditionalSteps=false;
+        this.takeProfessorWhenTie=false;
     }
 
     public int getMotherNaturePosition(){
@@ -736,6 +758,10 @@ public class GameModel {
 
     public void setConquest(Conquest conquest) {
         this.conquest = conquest;
+    }
+
+    public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
+        this.takeProfessorWhenTie = takeProfessorWhenTie;
     }
 }
 

@@ -117,6 +117,9 @@ public class BoardChange implements Serializable{
             case "thief.jpg":
                 change=Change.PLAYTHIEF;
                 break;
+            case "merchant.jpg":
+                change=Change.PLAYMERCHANT;
+                break;
             default:
                 change=Change.DEFAULT;
                 break;

@@ -14,6 +14,6 @@ public class YourTurn implements ServerToClientMessage{
 
     @Override
     public void handle(View view) throws IOException {
-        view.showMessage(msg);
+        view.isTurnOfPlayer(msg);
     }
 }

@@ -32,9 +32,7 @@ public class PlayCharacterCardState implements GameControllerState{
                 model.setFirstUseCharacters(cardPos);
                 card.increaseCost();
             }
-
             card.useCard(action.getPosIsland(), model);
-
         }else{
             throw new IllegalStateException();
         }

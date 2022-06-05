@@ -104,8 +104,7 @@ public class CharacterCard {
                 effect=new Effect7();
                 break;
             case "lumberjack.jpg":
-                //cost=3;
-                cost=0;
+                cost=3;
                 effect=new Effect8();
                 break;
             case "storyteller.jpg":
@@ -113,11 +112,13 @@ public class CharacterCard {
                 effect=new Effect9();
                 break;
             case "thief.jpg":
-                cost=3;
+                cost=0;
+                //cost=3;
                 effect=new Effect11();
                 break;
             case "merchant.jpg":
-                cost=2;
+                cost=0;
+                //cost=2;
                 effect=new Effect12();
                 break;
             default:
@@ -220,7 +221,7 @@ public class CharacterCard {
         effect.effect(player,islandPosition, model,this);
 
         int count=0;
-        if(chosenStudents!=null && chosenStudents.isPresent()) {
+        if(chosenStudents!=null && chosenStudents.isPresent() && this.getStudents()!=null &&  this.getStudents().isPresent()) {
             for(Color c: chosenStudents.get().keySet()){
                 this.getStudents().get().put(c, this.getStudents().get().get(c)-chosenStudents.get().get(c));
             }

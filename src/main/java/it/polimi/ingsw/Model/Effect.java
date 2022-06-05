@@ -144,7 +144,6 @@ class Effect8 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
-        System.out.println("color: "+card.getChosenColor().get());
         model.setNotCountedColor(card.getChosenColor().get());
     }
 }
@@ -158,15 +157,17 @@ class Effect9 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
+
         for(Color c: card.getEntranceStudents().get().keySet()){ //EntranceStudents:entrance students to swap
-            int n= player.getEntryStudents().get(c);
+            int n= card.getEntranceStudents().get().get(c);
             for(int i=0; i<n;i++)
-                player.addStudentOf(c);
-            player.getEntryStudents().put(c,n-card.getEntranceStudents().get().get(c));
+                model.moveToSchool(player.getPlayerID(),c);
         }
         for(Color c: card.getChosenStudents().get().keySet()){
-            int n= player.getStudentsOf(c);
-            player.setStudents(c,n-card.getChosenStudents().get().get(c));
+            if(card.getChosenStudents().get().get(c)>0) {
+                int n = player.getStudentsOf(c);
+                model.removeFromSchool(player.getPlayerID(), c, card.getChosenStudents().get().get(c));
+            }
         }
         player.addEntryStudents(card.getChosenStudents().get()); //ChosenStudents:dining room students to swap
     }
@@ -181,7 +182,23 @@ class Effect10 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
-        player.addStudentOf((Color)card.getChosenStudents().get().keySet().toArray()[0]);
+        Color studentColor=(Color)card.getChosenStudents().get().keySet().toArray()[0];
+        player.addStudentOf(studentColor);
+        int max=0;
+        int numOfColor=player.getStudentsOf(studentColor);
+        for(Player p: model.getPlayers())
+        {
+            if(!p.equals(player)){
+                if(p.getStudentsOf(studentColor)>max)
+                {
+                    max=p.getStudentsOf(studentColor);
+                }
+            }
+        }
+        if(numOfColor>max)
+        {
+            model.getProfessors().get(studentColor).goToSchool(player);
+        }
         EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);
         newStudents.forEach((k, v) -> card.getStudents().get().merge(k, v, Integer::sum));
     }
@@ -202,7 +219,9 @@ class Effect11 implements Effect{
               count+=p.removeThreeStudentOf(card.getChosenColor().get());
           }
         model.addStudentsBag(card.getChosenColor().get(),count);
-
+        Player hasProfessor=model.getProfessors().get(card.getChosenColor().get()).getPlayer();
+        if(null!=hasProfessor && hasProfessor.getStudentsOf(card.getChosenColor().get())==0)
+            hasProfessor.removeProfessor(card.getChosenColor().get());
     }
 }
 
@@ -217,16 +236,6 @@ class Effect12 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
-         for(Professor p:model.getProfessors().values()){
-             try{
-                if(p.getPlayer().getStudentsOf(p.getColor())==
-                        player.getStudentsOf(p.getColor())){
-                    p.goToSchool(player);
-                 }
-             }catch(NoSuchElementException e){
-
-             }
-         }
-
+        model.setTakeProfessorWhenTie(true);
     }
 }

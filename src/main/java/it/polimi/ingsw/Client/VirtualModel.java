@@ -27,6 +27,8 @@ public class VirtualModel {
 
     private boolean useCharacterCard =false;
 
+    private boolean takeProfessorWhenTie=false;
+
 
     private int numOfInstance =0;
 
@@ -150,12 +152,34 @@ public class VirtualModel {
                         }
                     }
                 }
-                if(numOfColor>max)
+                if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max))
                 {
                     this.professors.get(studentColor).goToSchool(p);
                 }
             }
     }
+
+    public void removeFromSchool (int player,Color studentColor, int number){
+
+        for(Player p:this.players) {
+            if (p.getPlayerID() == player) {
+                p.getStudents().put(studentColor, p.getStudentsOf(studentColor) - number);
+            }
+        }
+        Player toGo=null;
+        int max = 0;
+        for (Player play : players) {
+            if (play.getStudentsOf(studentColor) > max) {
+                max = play.getStudentsOf(studentColor);
+                toGo=play;
+            }
+        }
+        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+            this.professors.get(studentColor).goToSchool(toGo);
+        if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
+            professors.get(studentColor).getPlayer().removeProfessor(studentColor);
+    }
+
 
     public void fillClouds(BoardChange bChange){
 
@@ -200,5 +224,11 @@ public class VirtualModel {
     public void setMotherNaturePosition(int motherNaturePosition) {
 
         this.motherNaturePosition = motherNaturePosition;
+    }
+    public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
+        this.takeProfessorWhenTie = takeProfessorWhenTie;
+    }
+    public EnumMap<Color, Professor> getProfessors() {
+        return professors;
     }
 }

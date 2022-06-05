@@ -187,6 +187,7 @@ public class CLI implements View, Runnable {
     @Override
     public void isTurnOfPlayer(String msg){
         this.showMessage(msg);
+        vmodel.setTakeProfessorWhenTie(false);
     }
 
     @Override
@@ -367,10 +368,11 @@ public class CLI implements View, Runnable {
                         for(Player p:this.vmodel.getPlayers())
                             if(p.getPlayerID()== bchange.getPlayer())
                             {
-                                p.addStudentOf(c);
+                                vmodel.moveToSchool(p.getPlayerID(),c);
                                 for(CharacterCard card :characterCards)
                                     if(card.getAsset().equals(bchange.getAsset()))
                                     {
+                                        card.setStudents(bchange.getCardStudents());
                                         p.decreaseMoney(card.getCost());
                                         card.increaseCost();
                                     }
@@ -379,7 +381,6 @@ public class CLI implements View, Runnable {
                 }
                 break;
             case PLAYSTORYTELLER:
-                List<Color> entranceToSala=new ArrayList<>();
                 EnumMap<Color,Integer> salaToEntrance=new EnumMap<Color, Integer>(Color.class);
                 for(Color c:Color.values())
                     salaToEntrance.put(c,0);
@@ -388,23 +389,19 @@ public class CLI implements View, Runnable {
                     {
                         for(Player p:this.vmodel.getPlayers())
                             if(p.getPlayerID()== bchange.getPlayer())
-                                    p.removeEntryStudent(c);
-                        entranceToSala.add(c);
+                                for(int i=0; i<bchange.getEntranceStudent().get(c) ; i++){
+                                    vmodel.moveToSchool(p.getPlayerID(),c);
+                                }
                     }
 
                     if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
                     {
                         for(Player p:this.vmodel.getPlayers())
                             if(p.getPlayerID()== bchange.getPlayer())
-                                p.removeEntryStudent(c);
-                        salaToEntrance.put(c,salaToEntrance.get(c)+1);
+                                vmodel.removeFromSchool(p.getPlayerID(),c,bchange.getChoosenStudent().get(c));
+                        salaToEntrance.put(c,bchange.getChoosenStudent().get(c));
                     }
                 }
-
-                for(Color c:entranceToSala)
-                    for(Player p:this.vmodel.getPlayers())
-                        if(p.getPlayerID()== bchange.getPlayer())
-                            p.addStudentOf(c);
 
                 for(Player p:this.vmodel.getPlayers())
                     if(p.getPlayerID()== bchange.getPlayer())
@@ -430,11 +427,16 @@ public class CLI implements View, Runnable {
                     if(p.getPlayerID()== bchange.getPlayer())
                         for(CharacterCard card :characterCards)
                             if(card.getAsset().equals(bchange.getAsset()))
-                            {
+                            {   Player hasProfessor=vmodel.getProfessors().get(bchange.getColor()).getPlayer();
+                                if(null!=hasProfessor && hasProfessor.getStudentsOf(bchange.getColor())==0)
+                                    hasProfessor.removeProfessor(bchange.getColor());
                                 p.decreaseMoney(card.getCost());
                                 card.increaseCost();
                             }
+
                 break;
+            case PLAYMERCHANT:
+                vmodel.setTakeProfessorWhenTie(true);
             case DEFAULT:
                 String asset= bchange.getAsset();
                 for(Player p:this.vmodel.getPlayers())
@@ -985,6 +987,7 @@ public class CLI implements View, Runnable {
                                     this.showMessage(">");
                                 }
                             } while (!boolWhile);
+                            color=color2;
                             break;
                         case "clown.jpg":
                             do{
@@ -1138,7 +1141,6 @@ public class CLI implements View, Runnable {
                                 } while (!boolWhile);
 
                                 entranceStudent.put(color2,entranceStudent.get(color2)+1);
-                                showMessage("entrance stud to send: "+entranceStudent);
                             }
                             break;
 
