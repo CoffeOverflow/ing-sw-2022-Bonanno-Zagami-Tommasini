@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
+import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -63,11 +66,24 @@ public class GameController implements GUIController{
             wizardButton.setPrefSize(100, 200);
             //Setting a graphic to the button
             wizardButton.setGraphic(wizardImgview);
+            wizardButton.setUserData(wizard.getName());
+            wizardButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    chooseWizard(event);
+                }
+            });
             listOfWizards.getChildren().add(wizardButton);
         }
         selectWizard.setVisible(true);
         listOfWizards.setVisible(true);
 
 
+    }
+
+    public void chooseWizard(Event event){
+        Node node = (Node) event.getSource() ;
+        String wizard = (String) node.getUserData();
+        gui.send(new ChooseWizard(Wizards.valueOf(Wizards.class,wizard.replaceAll(" ", "").toUpperCase())));
     }
 }

@@ -12,10 +12,10 @@
             stylesheets="@../css/game.css"
             prefHeight="720" prefWidth="1280"
             fx:id="gameBoard">
-    <VBox fx:id="selectWizard" alignment="CENTER" prefWidth="1280" layoutY="360">
+    <VBox fx:id="selectWizard" alignment="CENTER" prefWidth="1280" layoutY="360" spacing="20">
+        <Label  alignment="CENTER" styleClass="inputLabels" text="Choose wizard:" textFill="WHITE" style="-fx-font-size: 26px;"/>
         <HBox fx:id="listOfWizards" alignment="CENTER" spacing="20" prefWidth="1280">
-            <Button text="PROVA"></Button>
-            <Button text="PROVA"></Button>
+
         </HBox>
     </VBox>
 
