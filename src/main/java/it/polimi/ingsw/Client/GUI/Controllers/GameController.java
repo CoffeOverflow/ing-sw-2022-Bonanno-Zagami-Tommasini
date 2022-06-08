@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.GUI.Controllers;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Client.GUI.GUI;
+import it.polimi.ingsw.Client.GUI.GamePhase;
 import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import javafx.event.Event;
@@ -18,19 +19,40 @@ import javafx.scene.layout.VBox;
 
 public class GameController implements GUIController{
     private GUI gui;
+    private GamePhase currentPhase;
     public AnchorPane gameBoard;
     public VBox selectWizard;
+    public VBox game;
     public HBox listOfWizards;
+    public AnchorPane player1;
 
     public void initialize() {
         gameBoard.setVisible(true);
+        game.setVisible(false);
         listOfWizards.setVisible(false);
         selectWizard.setVisible(false);
+        currentPhase = GamePhase.WIZARD;
+        Image img = new Image(getClass().getResourceAsStream("/graphics/board/Plancia_DEF2.png"));
+        ImageView imageView = new ImageView(img);
+        imageView.setFitHeight(300);
+        imageView.setPreserveRatio(true);
+        player1.getChildren().add(imageView);
+
     }
 
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
+    }
+
+    public void changePhase(){
+        switch (currentPhase){
+            case WIZARD:
+                selectWizard.setVisible(false);
+                game.setVisible(true);
+                currentPhase = GamePhase.GAME;
+                break;
+        }
     }
 
     @Override

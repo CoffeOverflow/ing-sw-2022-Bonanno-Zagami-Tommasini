@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.polimi.ingsw.Client.GUI.Controllers.GameController"
-            stylesheets="@../css/game.css"
-            prefHeight="720" prefWidth="1280"
-            fx:id="gameBoard">
+<AnchorPane fx:id="gameBoard" prefHeight="720" prefWidth="1280" stylesheets="@../css/game.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.GameController">
     <!--CHOOSE WIZARD-->
-    <VBox fx:id="selectWizard" alignment="CENTER" prefWidth="1280" layoutY="360" spacing="20" >
-        <Label  alignment="CENTER" styleClass="inputLabels" text="Choose wizard:" textFill="WHITE" style="-fx-font-size: 26px;"/>
-        <HBox fx:id="listOfWizards" alignment="CENTER" spacing="20" prefWidth="1280">
+    <VBox fx:id="selectWizard" alignment="CENTER" layoutY="360" prefWidth="1280" spacing="20">
+        <Label alignment="CENTER" style="-fx-font-size: 26px;" styleClass="inputLabels" text="Choose wizard:" textFill="WHITE" />
+        <HBox fx:id="listOfWizards" alignment="CENTER" prefWidth="1280" spacing="20">
 
         </HBox>
+    </VBox>
+    <VBox fx:id="game" alignment="CENTER" layoutY="0" prefWidth="1280">
+        <AnchorPane fx:id="player1">
+
+        </AnchorPane>
     </VBox>
 
 
