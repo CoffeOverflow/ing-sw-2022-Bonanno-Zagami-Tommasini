@@ -280,7 +280,17 @@ public class GUI extends Application implements Runnable, View
     }
 
     @Override
-    public void showBoard() {
+    public void showBoard(){
+        if(currentScene.equals(nameToScene.get("GAME"))){
+            GameController controller = (GameController) sceneToController.get(currentScene);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.showBoard();
+                }
+            });
+
+        }
 
     }
 
@@ -307,5 +317,9 @@ public class GUI extends Application implements Runnable, View
     @Override
     public void showCharacterCard() {
 
+    }
+
+    public VirtualModel getVmodel() {
+        return vmodel;
     }
 }
