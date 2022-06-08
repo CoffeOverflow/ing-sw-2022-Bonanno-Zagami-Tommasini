@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="gameBoard" prefHeight="720" prefWidth="1280" stylesheets="@../css/game.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.GameController">
+<AnchorPane fx:id="mainPane"  id="mainPane" prefHeight="720" prefWidth="1280" stylesheets="@../css/game.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.GameController">
     <!--CHOOSE WIZARD-->
     <VBox fx:id="selectWizard" alignment="CENTER" layoutY="360" prefWidth="1280" spacing="20">
         <Label alignment="CENTER" style="-fx-font-size: 26px;" styleClass="inputLabels" text="Choose wizard:" textFill="WHITE" />

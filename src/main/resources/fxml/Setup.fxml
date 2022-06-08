@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
-<AnchorPane id="setup"
+<AnchorPane fx:id="mainPane" id="mainPane"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.polimi.ingsw.Client.GUI.Controllers.SetupController"
@@ -46,16 +46,16 @@
         <!--Nickname-->
         <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
             <VBox fx:id="requestNickname" alignment="CENTER" layoutX="300" spacing="5">
-                <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert a nickname" textFill="WHITE"/>
+                <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert a nickname" textFill="BLACK"/>
                 <TextField fx:id="nickname" />
 
-                    <Button fx:id="send" prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#sendButtonClicked" text="Send" />
+                    <Button fx:id="send" style="-fx-font-size: 18" prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#sendButtonClicked" text="Send" />
 
             </VBox>
         </HBox>
         <!--Match-->
         <VBox fx:id="chooseMatch" alignment="CENTER" layoutY="250" spacing="30">
-            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Lista partite" textFill="WHITE"/>
+            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Lista partite" textFill="BLACK"/>
             <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
                 <VBox fx:id="listOfMatch" alignment="CENTER" spacing="10">
                     <!--<HBox alignment="CENTER" >
@@ -69,8 +69,8 @@
 
         <!--New game-->
         <VBox fx:id="newgameform" alignment="CENTER" layoutY="250" spacing="15">
-            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Impostazioni partita" textFill="WHITE"/>
-            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Number of players:" textFill="WHITE"/>
+            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Impostazioni partita" textFill="BLACK"/>
+            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Number of players:" textFill="BLACK"/>
             <HBox alignment="CENTER" prefWidth="600.0" layoutY="250" spacing="10">
                 <RadioButton fx:id="twoPlayers" text="2 Players">
 
@@ -85,7 +85,7 @@
                     </toggleGroup>
                 </RadioButton>
             </HBox>
-            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Mode:" textFill="WHITE"/>
+            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Mode:" textFill="BLACK"/>
             <HBox alignment="CENTER" prefWidth="600.0" layoutY="300" spacing="10">
                 <RadioButton fx:id="expertmode" text="Expert mode">
 
@@ -107,7 +107,7 @@
         <!--Wait for other players-->
         <VBox fx:id="wait" alignment="CENTER" layoutY="250" spacing="30">
             <HBox alignment="CENTER" prefWidth="600.0" layoutY="250" spacing="10">
-                <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Wait for other players.." textFill="WHITE" style="-fx-font-size: 26px;"/>
+                <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Wait for other players.." textFill="BLACK" style="-fx-font-size: 26px;"/>
             </HBox>
         </VBox>
 

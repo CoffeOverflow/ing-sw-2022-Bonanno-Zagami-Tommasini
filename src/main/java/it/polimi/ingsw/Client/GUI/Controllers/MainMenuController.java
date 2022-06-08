@@ -1,20 +1,15 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
-import it.polimi.ingsw.Client.CLI.CLI;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Constants;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-
-import java.io.IOException;
-import java.net.Socket;
 
 
 /**
@@ -23,6 +18,7 @@ import java.net.Socket;
 public class MainMenuController implements GUIController
 {
     private GUI gui;
+    @FXML public AnchorPane mainPane;
     public Button button;
     public Button connect;
     public VBox connection;

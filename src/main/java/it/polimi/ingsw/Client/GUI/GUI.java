@@ -11,9 +11,12 @@ import it.polimi.ingsw.Server.ServerToClient.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -84,16 +87,33 @@ public class GUI extends Application implements Runnable, View
 
     public void displayScene() {
         stage.setScene(currentScene);
-        stage.sizeToScene();
+        //stage.sizeToScene();
         stage.setResizable(false);
         stage.setTitle("Eriantys");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/icons/mother_nature.png")));
         stage.show();
+        AutoResize resize = new AutoResize((Pane) currentScene.lookup("#mainPane"));
+        currentScene.widthProperty().addListener(resize.getWidthListener());
+        currentScene.heightProperty().addListener(resize.getHeightListener());
     }
 
     public void changeScene(String scene){
         this.currentScene = nameToScene.get(scene);
-        displayScene();
+        stage.setScene(currentScene);
+        if(scene == "GAME"){
+            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            stage.setResizable(true);
+            stage.show();
+            AutoResize resize = new AutoResize((Pane) currentScene.lookup("#mainPane"));
+            currentScene.widthProperty().addListener(resize.getWidthListener());
+            currentScene.heightProperty().addListener(resize.getHeightListener());
+            return;
+        }
+        stage.show();
+
+
     }
 
     public void setServerHandler(ServerHandler serverHandler) {
@@ -213,6 +233,14 @@ public class GUI extends Application implements Runnable, View
     @Override
     public void isTurnOfPlayer(String msg){
         this.showMessage(msg);
+        GameController controller = (GameController) sceneToController.get(currentScene);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.changePhase(GamePhase.ANOTHERPLAYERTURN);
+            }
+        });
+
         vmodel.setTakeProfessorWhenTie(false);
     }
 

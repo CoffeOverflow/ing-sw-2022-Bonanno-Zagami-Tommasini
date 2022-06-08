@@ -5,23 +5,17 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<AnchorPane id="menu" prefHeight="600" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.MainMenuController" stylesheets="@../css/mainmenu.css">
+<AnchorPane fx:id="mainPane" id="mainPane" prefHeight="600" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.MainMenuController" stylesheets="@../css/mainmenu.css">
    <children>
       <!--Eriantys Logo-->
       <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
-         <Label fx:id="title" alignment="TOP_CENTER"  styleClass="credits"  text="Eriantys" textFill="WHITE">
-            <font>
-               <Font name="Newborough" size="70.0" />
-            </font>
+         <Label fx:id="title" alignment="TOP_CENTER"  styleClass="Eriantys"  style="-fx-font-size: 70" text="Eriantys" textFill="WHITE">
          </Label>
       </HBox>
       <!--Play button-->
       <HBox alignment="CENTER"  prefWidth="600.0" layoutY="450"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
          <children>
-            <Button fx:id="button"  prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#playButtonClicked" text="-&gt;" >
-               <font>
-                  <Font name="Newborough" size="38.0" />
-               </font>
+            <Button fx:id="button" styleClass="Eriantys" style="-fx-font-size: 38" prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#playButtonClicked" text="-&gt;" >
             </Button>
 
          </children>
@@ -35,30 +29,20 @@
       <!--Caduti in battaglia durante lo sviluppo di questo progetto-->
       <HBox alignment="CENTER"  prefWidth="600.0" layoutY="580"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
          <children>
-            <Label fx:id="team" alignment="CENTER"  styleClass="credits"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE">
-               <font>
-                  <Font name="Newborough" size="18.0" />
-               </font>
-            </Label>
-
+            <Label fx:id="team" alignment="CENTER"  styleClass="Eriantys" style="-fx-font-size: 18"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE"/>
          </children>
       </HBox>
 
       <!--Connection: IP and Port fields-->
       <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
          <VBox fx:id="connection" alignment="CENTER" layoutX="300" spacing="5">
-            <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert server IP address" textFill="WHITE"/>
+            <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert server IP address" textFill="BLACK"/>
             <TextField fx:id="address" />
-            <Label styleClass="inputLabels"  prefHeight="21.0" prefWidth="333.0" text="Insert server port" textFill="WHITE"/>
+            <Label styleClass="inputLabels"  prefHeight="21.0" prefWidth="333.0" text="Insert server port" textFill="BLACK"/>
             <TextField fx:id="port"/>
             <spacing/>
             <children >
-               <Button fx:id="connect" prefHeight="60" prefWidth="150" mnemonicParsing="false"  onAction="#connectButtonClicked" text="-&gt;" >
-                  <font>
-                     <Font name="Newborough" size="18.0" />
-                  </font>
-               </Button>
-
+               <Button fx:id="connect" style="-fx-font-size: 18" prefHeight="60" prefWidth="150" mnemonicParsing="false"  onAction="#connectButtonClicked" text="-&gt;" />
             </children>
          </VBox>
       </HBox>

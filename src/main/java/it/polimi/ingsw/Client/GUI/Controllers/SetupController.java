@@ -8,11 +8,14 @@ import it.polimi.ingsw.Server.ServerToClient.ChooseMatch;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.Scanner;
@@ -23,6 +26,7 @@ import static javafx.scene.paint.Color.WHITE;
 
 public class SetupController implements GUIController{
     private GUI gui;
+    @FXML public AnchorPane mainPane;
     public VBox requestNickname;
     public VBox chooseMatch;
     public VBox listOfMatch;
@@ -103,6 +107,7 @@ public class SetupController implements GUIController{
                     gameName.prefHeight(333);
                     gameName.prefWidth(21);
                     gameName.setTextFill(RED);
+                    gameName.setFont(new Font("Arial", 26));
                     game.getChildren().add(gameName);
                     listOfMatch.getChildren().add(game);
                 }

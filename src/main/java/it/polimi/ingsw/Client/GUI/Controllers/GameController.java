@@ -7,7 +7,7 @@ import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -20,14 +20,14 @@ import javafx.scene.layout.VBox;
 public class GameController implements GUIController{
     private GUI gui;
     private GamePhase currentPhase;
-    public AnchorPane gameBoard;
+    @FXML public AnchorPane mainPane;
     public VBox selectWizard;
     public VBox game;
     public HBox listOfWizards;
     public AnchorPane player1;
 
     public void initialize() {
-        gameBoard.setVisible(true);
+        mainPane.setVisible(true);
         game.setVisible(false);
         listOfWizards.setVisible(false);
         selectWizard.setVisible(false);
@@ -53,6 +53,10 @@ public class GameController implements GUIController{
                 currentPhase = GamePhase.GAME;
                 break;
         }
+    }
+
+    public void changePhase(GamePhase phase){
+        currentPhase = phase;
     }
 
     @Override
