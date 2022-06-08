@@ -112,13 +112,11 @@ public class CharacterCard {
                 effect=new Effect9();
                 break;
             case "thief.jpg":
-                cost=0;
-                //cost=3;
+                cost=3;
                 effect=new Effect11();
                 break;
             case "merchant.jpg":
-                cost=0;
-                //cost=2;
+                cost=2;
                 effect=new Effect12();
                 break;
             default:

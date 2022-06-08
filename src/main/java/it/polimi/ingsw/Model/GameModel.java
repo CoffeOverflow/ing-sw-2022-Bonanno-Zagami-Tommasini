@@ -156,10 +156,7 @@ public class GameModel {
         String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
                 "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
         int[] cardNumbers=new int[3];
-        cardNumbers[0]=9;
-        cardNumbers[1]=10;
-        cardNumbers[2]=11;
-        /*for(int i=0; i<3; i++){
+        for(int i=0; i<3; i++){
             switch(i){
                 case 0:
                     cardNumbers[i]=rand.nextInt(12);
@@ -175,7 +172,7 @@ public class GameModel {
                     }while(cardNumbers[i]==cardNumbers[0] || cardNumbers[i]==cardNumbers[1]);
                     break;
             }
-        }*/
+        }
         if(expertMode){
             try{
             for(int i=0; i<3;i++) {
