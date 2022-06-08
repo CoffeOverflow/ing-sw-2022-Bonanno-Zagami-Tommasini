@@ -250,7 +250,7 @@ public class GUI extends Application implements Runnable, View
     }
 
     @Override
-    public void showSchool(Player p, int num) {
+    public void showSchool(Player p,String colorTower) {
 
     }
 
