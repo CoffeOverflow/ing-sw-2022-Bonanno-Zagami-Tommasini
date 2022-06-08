@@ -24,7 +24,11 @@ public class PlayAssistantCard implements ClientToServerMessage{
         GameController contr=game.getController();
         GameModel model=contr.getModel();
         int playerId= model.getCurrentPlayer();
-        AssistantCard card= model.getPlayerByID(playerId).getAssistantCards().get(cardValue-1);
+        AssistantCard card=null;
+        for(AssistantCard c: model.getPlayerByID(playerId).getAssistantCards()){
+            if(c.getValue()==cardValue)
+                card=c;
+        }
         contr.addCurrentAssistantCard(playerId,card);
         contr.setState(new DecideFirstPlayerState());
         try{

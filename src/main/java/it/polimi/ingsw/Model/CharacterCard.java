@@ -48,8 +48,7 @@ public class CharacterCard {
                     throw new IllegalArgumentException("the card must contain four students and the chosen student must be one");
                 }
                 effect = new Effect1();
-                cost=0;
-                //cost=1;
+                cost=1;
                 break;
             case "clown.jpg":
                 if (students!=null && studentNumber == 6){
@@ -84,19 +83,16 @@ public class CharacterCard {
         this.asset = asset;
         switch(asset){
             case "auctioneer.jpg":
-                cost=0;
-                //cost=3;
+                cost=3;
                 effect=new Effect2();
                 break;
             case "postman.jpg":
-                cost=0;
-                //cost=1;
+                cost=1;
                 effect=new Effect3();
                 break;
             case "herbalist.jpg":
-                cost=0;
                 noEntryTiles=Optional.of(4);
-                //cost=2;
+                cost=2;
                 effect=new Effect4();
                 break;
             case "centaur.jpg":
@@ -152,6 +148,10 @@ public class CharacterCard {
 
     public String getAsset(){
         return asset;
+    }
+
+    public void addStudents(EnumMap<Color, Integer> studentsToAdd){
+        studentsToAdd.forEach((k, v) -> this.students.get().merge(k, v, Integer::sum));
     }
 
     public void setStudents(EnumMap<Color, Integer> students) {
@@ -217,8 +217,9 @@ public class CharacterCard {
     public void useCard(Integer islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
+
         int count=0;
-        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null) {
+        if(chosenStudents!=null && chosenStudents.isPresent() && this.getStudents()!=null &&  this.getStudents().isPresent()) {
             for(Color c: chosenStudents.get().keySet()){
                 this.getStudents().get().put(c, this.getStudents().get().get(c)-chosenStudents.get().get(c));
             }

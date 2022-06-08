@@ -5,6 +5,9 @@ import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Controller.State.DecideFirstPlayerState;
 import it.polimi.ingsw.Controller.State.GameControllerState;
 import it.polimi.ingsw.Exceptions.MatchFullException;
+import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
@@ -19,11 +22,6 @@ public class GameHandler implements Runnable{
     private final int gameID;
     private final String name;
     private final int numberOfPlayers;
-
-    public boolean isExpertMode() {
-
-        return expertMode;
-    }
 
     private final boolean             expertMode;
     private final List<ClientHandler> players;
@@ -103,8 +101,6 @@ public class GameHandler implements Runnable{
             player.send(new SelectWizard(wizards));
         }
     }
-
-
 
     public void setup(){
         sendAll(new GameIsStarting("The game is starting..."));
@@ -234,7 +230,10 @@ public class GameHandler implements Runnable{
             sendAll(new UpdateMessage((new BoardChange(controller.getModel().getConquest().getConqueror(),
                     controller.getModel().getConquest().getConqueredIsland(),controller.getModel().getConquest().getMergedIsland1(),
                     controller.getModel().getConquest().getMergedIsland2()))));
+            if(controller.getModel().getMotherNaturePosition()==controller.getModel().getConquest().getConqueredIsland()-1)
+            sendAll(new UpdateMessage((new BoardChange(-1))));
         }
+        controller.getModel().setConquest(null);
         if(controller.checkEndGame()){
             controller.setWinners(controller.getModel().getWinner());
             for (Player p : controller.getWinners()) {
@@ -264,5 +263,9 @@ public class GameHandler implements Runnable{
     @Override
     public String toString() {
         return gameID + ". " + name + " " + players.size() + "/" + numberOfPlayers + " players " + (expertMode ? ANSI_RED + "Expert mode" + ANSI_RESET : ANSI_GREEN + "Base mode" + ANSI_RESET);
+    }
+    public boolean isExpertMode() {
+
+        return expertMode;
     }
 }

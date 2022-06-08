@@ -38,6 +38,7 @@ public class GameModel {
     private boolean twoAdditionalPoints=false;
     private Color notCountedColor=null;
     private boolean towersNotCounted=false;
+    private boolean takeProfessorWhenTie=false;
 
     private boolean[] firstUseCharacters=new boolean[3];
 
@@ -155,10 +156,7 @@ public class GameModel {
         String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
                 "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
         int[] cardNumbers=new int[3];
-        cardNumbers[0]=3;
-        cardNumbers[1]=4;
-        cardNumbers[2]=5;
-        /*for(int i=0; i<3; i++){
+        for(int i=0; i<3; i++){
             switch(i){
                 case 0:
                     cardNumbers[i]=rand.nextInt(12);
@@ -174,7 +172,7 @@ public class GameModel {
                     }while(cardNumbers[i]==cardNumbers[0] || cardNumbers[i]==cardNumbers[1]);
                     break;
             }
-        }*/
+        }
         if(expertMode){
             try{
             for(int i=0; i<3;i++) {
@@ -210,7 +208,7 @@ public class GameModel {
      * @param islandPos1
      * @param islandPos2
      */
-    public void mergeIslands(int islandPos1, int islandPos2){
+    public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
         Island deleteIsland,notDeleteIsland;
         int islandPosNotDelete;
         if(islandPos1<islandPos2){
@@ -227,6 +225,10 @@ public class GameModel {
         }
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
+        for(Player p: this.players)
+            if(p.getTower().equals(tower))
+                p.setNumberOfTower(p.getNumberOfTower()-1);
+        //motherNaturePosition=islandPosNotDelete;
     }
 
     /**
@@ -307,14 +309,14 @@ public class GameModel {
                 influences.put(p.getPlayerID(),getPlayerInfluence(p.getPlayerID(),islandPosition));
             }
             if(influences.get(p.getPlayerID())>key){
-                key=getPlayerInfluence(p.getPlayerID(),islandPosition);
+                key=influences.get(p.getPlayerID());
                 conqueror=Optional.of(p.getPlayerID());
             }
         }
         //check if the higher value of influence is unique
         if(conqueror.isPresent()){
             for(Player p:players){
-                if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID())==influences.get(conqueror)){
+                if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID()).equals(influences.get(conqueror.get()))){
                     conqueror=Optional.empty();
                 }
             }
@@ -343,8 +345,12 @@ public class GameModel {
             return new Conquest(getPlayerTower(conqueror.get()),islandPosition,null,null);
         else if(conqueror.isPresent() && mergeResult==-1){
             if(islandPosition==0)
-                mergeIsland1=islands.size()-1;
-            else mergeIsland1=islandPosition-1;
+                mergeIsland1=oldIslandsSize-1;
+            else {
+                mergeIsland1 = islandPosition - 1;
+                if(motherNaturePosition==islandPosition)
+                motherNaturePosition--;
+            }
             if(islands.size()==oldIslandsSize-1){
                 return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,null);
             }else if(islands.size()==oldIslandsSize-2){
@@ -354,8 +360,11 @@ public class GameModel {
                 return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,mergeIsland2);
             }
         }else if(conqueror.isPresent() && mergeResult==+1){
-            if(islandPosition==oldIslandsSize-1)
-                mergeIsland1=0;
+            if(islandPosition==oldIslandsSize-1) {
+                mergeIsland1 = 0;
+                if(motherNaturePosition==islandPosition)
+                motherNaturePosition=0;
+            }
             else mergeIsland1=islandPosition+1;
             if(islands.size()==oldIslandsSize-1){
                 return new Conquest(getPlayerTower(conqueror.get()),islandPosition,mergeIsland1,null);
@@ -371,26 +380,29 @@ public class GameModel {
 
     public int checkMergeIsland( int island, Tower tower){
         if(island==getIslandSize()-1 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
-            mergeIslands(island-1,island);
+            mergeIslands(island-1,island,tower);
             checkMergeIsland( island-1,tower);
             return -1;
         }else if(island==getIslandSize()-1 && getTowerOnIsland(0).isPresent() && getTowerOnIsland(0).get().equals(tower) ){
-            mergeIslands(0,island);
+            mergeIslands(0,island,tower);
             checkMergeIsland(0,tower);
             return +1;
         }else if(island==0 && getTowerOnIsland(getIslandSize()-1).isPresent() && getTowerOnIsland(getIslandSize()-1).get().equals(tower)){
-            mergeIslands(island,getIslandSize()-1);
+            mergeIslands(island,getIslandSize()-1,tower);
             checkMergeIsland( island,tower);
             return -1;
         }else if((island-1)>=0 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
-            mergeIslands(island-1,island);
+            mergeIslands(island-1,island,tower);
             checkMergeIsland( island-1,tower);
-            return +1;
-        }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).isPresent() && getTowerOnIsland(island+1).get().equals(tower)){
-            mergeIslands(island,island+1);
-            checkMergeIsland(island,tower);
             return -1;
+        }else if((island+1)<getIslandSize() && getTowerOnIsland(island+1).isPresent() && getTowerOnIsland(island+1).get().equals(tower)){
+            mergeIslands(island,island+1,tower);
+            checkMergeIsland(island,tower);
+            return +1;
         }else{return 0;}
+
+
+
     }
 
     /**
@@ -412,10 +424,30 @@ public class GameModel {
                 }
             }
         }
-        if(numOfColor>max)
+        if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max) )
         {
             this.professors.get(studentColor).goToSchool(getPlayerByID(player));
         }
+    }
+
+    public void removeFromSchool (int player,Color studentColor, int number){
+        for(Player p:this.players) {
+            if (p.getPlayerID() == player) {
+                p.getStudents().put(studentColor, p.getStudentsOf(studentColor) - number);
+            }
+        }
+        Player toGo=null;
+        int max = 0;
+        for (Player play : players) {
+            if (play.getStudentsOf(studentColor) > max) {
+                max = play.getStudentsOf(studentColor);
+                toGo=play;
+            }
+        }
+        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+            this.professors.get(studentColor).goToSchool(toGo);
+        if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
+            professors.get(studentColor).getPlayer().removeProfessor(studentColor);
     }
 
     /**
@@ -469,6 +501,7 @@ public class GameModel {
         this.notCountedColor=null;
         this.twoAdditionalPoints=false;
         this.twoAdditionalSteps=false;
+        this.takeProfessorWhenTie=false;
     }
 
     public int getMotherNaturePosition(){
@@ -722,6 +755,10 @@ public class GameModel {
 
     public void setConquest(Conquest conquest) {
         this.conquest = conquest;
+    }
+
+    public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
+        this.takeProfessorWhenTie = takeProfessorWhenTie;
     }
 }
 
