@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class VirtualModel {
 
@@ -180,6 +178,217 @@ public class VirtualModel {
             professors.get(studentColor).getPlayer().removeProfessor(studentColor);
     }
 
+    public void update(UpdateMessage msg){
+
+        BoardChange bchange=msg.getChange();
+        switch(bchange.getChange()){
+            case CONQUER:
+                islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
+                for(Player p:players)
+                    if(p.getTower().equals(bchange.getConquerorTower()))
+                        p.setNumberOfTower(p.getNumberOfTower()-1);
+                break;
+            case MOVESTUDENT:
+                if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
+                    for(Player p: players){
+                        if(p.getPlayerID() == bchange.getPlayer()){
+                            islands.get(bchange.getIslandPosition()).addStudents(bchange.getStudentColor(),1);
+                            p.getEntryStudents().put(bchange.getStudentColor(),p.getEntryStudents().get(bchange.getStudentColor())-1);
+                        }
+                    }
+                }
+                else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
+                    for(Player p: players)
+                    {
+                        if(p.getPlayerID()==bchange.getPlayer()){
+                            moveToSchool(p.getPlayerID(),bchange.getStudentColor());
+                        }
+                    }
+                }
+                break;
+            case MERGE:
+                islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
+                mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
+                if(bchange.getMergedIsland2()!=null)
+                    mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland2(),bchange.getConquerorTower());
+                break;
+            case MOTHERNATURE:
+                moveMotherNature(bchange.getMotherNatureSteps());
+                if(islands.get(motherNaturePosition).getNoEntryCard()>0){
+                    islands.get(motherNaturePosition).setNoEntryCard(islands.get(motherNaturePosition).getNoEntryCard()-1);
+                    for(CharacterCard card:characterCards){
+                        if(card.getAsset().equals("herbalist.jpg")){
+                            int noEntryTitlesOnCard=card.getNoEntryTiles().get()+Integer.valueOf(1);
+                            card.setNoEntryTiles(Optional.of(noEntryTitlesOnCard));
+                        }
+                    }
+                }
+                break;
+            case CLOUD:
+                fillClouds(bchange);
+                break;
+            case TAKECLOUD:
+                EnumMap<Color,Integer> noStudent=new EnumMap<Color, Integer>(Color.class);
+                for(Color c:Color.values())
+                    noStudent.put(c,0);
+                clouds.get(bchange.getCloud()).setStudents(noStudent);
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                        p.addEntryStudents(bchange.getStudents1());
+                break;
+            case PLAYCLOWN:
+                for(CharacterCard c: characterCards)
+                    if(c.getAsset().equals("clown.jpg"))
+                        c.setStudents(bchange.getCardStudents());
+                for(Color c:Color.values()) {
+                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer()) {
+                                for(int i=0; i<bchange.getEntranceStudent().get(c);i++)
+                                    p.removeEntryStudent(c);
+                            }
+                }
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer()) {
+                        p.addEntryStudents(bchange.getChoosenStudent());
+                        for(CharacterCard card :characterCards)
+                            if(card.equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
+                    }
+                break;
+            case PLAYHERBALIST:
+                islands.get(bchange.getIslandPosition()).setNoEntryCard(islands.get(bchange.getIslandPosition()).getNoEntryCard()+1);
+                for(Player p:players){
+                    if(p.getPlayerID()==bchange.getPlayer())
+                    {
+                        for(CharacterCard card :characterCards){
+                            if(card.getAsset().equals(bchange.getAsset())){
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                                int entryTitles=card.getNoEntryTiles().get();
+                                card.setNoEntryTiles(Optional.of(entryTitles-1));
+                            }
+                        }
+                    }
+                }
+                break;
+            case PLAYINNKEEPER:
+                for(Color c:Color.values())
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0) {
+                        islands.get(bchange.getIslandPosition()).addStudents(c, 1);
+                        for(CharacterCard card:characterCards){
+                            if(card.getAsset().equals("innkeeper.jpg")) {
+                                card.getStudents().get().put(c, card.getStudents().get().get(c) - 1);
+                                card.setStudents(bchange.getCardStudents());
+                            }
+                        }
+                    }
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                    {
+                        p.addEntryStudents(bchange.getEntranceStudent());
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
+                    }
+                break;
+            case PLAYPRINCESS:
+                for(Color c:Color.values()) {
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c) > 0)
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer())
+                            {
+                                moveToSchool(p.getPlayerID(),c);
+                                for(CharacterCard card :characterCards)
+                                    if(card.getAsset().equals(bchange.getAsset()))
+                                    {
+                                        card.setStudents(bchange.getCardStudents());
+                                        p.decreaseMoney(card.getCost());
+                                        card.increaseCost();
+                                    }
+                            }
+
+                }
+                break;
+            case PLAYSTORYTELLER:
+                EnumMap<Color,Integer> salaToEntrance=new EnumMap<Color, Integer>(Color.class);
+                for(Color c:Color.values())
+                    salaToEntrance.put(c,0);
+                for(Color c:Color.values()) {
+                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
+                    {
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                for(int i=0; i<bchange.getEntranceStudent().get(c) ; i++){
+                                    moveToSchool(p.getPlayerID(),c);
+                                }
+                    }
+
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
+                    {
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                removeFromSchool(p.getPlayerID(),c,bchange.getChoosenStudent().get(c));
+                        salaToEntrance.put(c,bchange.getChoosenStudent().get(c));
+                    }
+                }
+
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                    {
+                        p.addEntryStudents(salaToEntrance);
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+                    }
+
+                break;
+
+            case PLAYTHIEF:
+                Color colorToPutOnTheBag=bchange.getColor();
+                for(Player p:players)
+                {
+                    p.removeThreeStudentOf(colorToPutOnTheBag);
+                }
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {   Player hasProfessor=professors.get(bchange.getColor()).getPlayer();
+                                if(null!=hasProfessor && hasProfessor.getStudentsOf(bchange.getColor())==0)
+                                    hasProfessor.removeProfessor(bchange.getColor());
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
+                break;
+            case PLAYMERCHANT:
+                takeProfessorWhenTie=true;
+            case DEFAULT:
+                String asset= bchange.getAsset();
+                for(Player p:players)
+                    if(p.getPlayerID()==bchange.getPlayer())
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+                break;
+        }
+    }
+
 
     public void fillClouds(BoardChange bChange){
 
@@ -221,14 +430,9 @@ public class VirtualModel {
 
     public int getNumOfInstance() {return numOfInstance++;}
     public void resetNumOfInstance(){this.numOfInstance=0;}
-    public void setMotherNaturePosition(int motherNaturePosition) {
 
-        this.motherNaturePosition = motherNaturePosition;
-    }
     public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
         this.takeProfessorWhenTie = takeProfessorWhenTie;
     }
-    public EnumMap<Color, Professor> getProfessors() {
-        return professors;
-    }
+
 }
