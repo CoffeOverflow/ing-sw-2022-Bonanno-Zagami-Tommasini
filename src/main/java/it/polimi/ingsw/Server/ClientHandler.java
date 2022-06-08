@@ -30,8 +30,8 @@ public class ClientHandler implements Runnable{
         this.playerID = playerID;
         this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
-        //this.clientSocket.setSoTimeout(timeout);
-        /*new Thread(() -> { //Server to Client
+        this.clientSocket.setSoTimeout(timeout);
+        new Thread(() -> { //Server to Client
             while(true){
                 try {
                     Thread.sleep(halfTimeout);
@@ -49,7 +49,7 @@ public class ClientHandler implements Runnable{
                 }
             }
 
-        }).start();*/
+        }).start();
     }
 
     public void setGame(GameHandler game){
