@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
-import it.polimi.ingsw.Client.ClientToServer.ClientToServerMessage;
-import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
-import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
+import it.polimi.ingsw.Client.ClientToServer.*;
 import it.polimi.ingsw.Exceptions.DuplicateNicknameException;
 import it.polimi.ingsw.Exceptions.InvalidNicknameException;
 import it.polimi.ingsw.Exceptions.MatchFullException;
@@ -13,6 +10,9 @@ import it.polimi.ingsw.Server.ServerToClient.Error;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import static it.polimi.ingsw.Constants.halfTimeout;
+import static it.polimi.ingsw.Constants.timeout;
 
 public class ClientHandler implements Runnable{
     private Socket clientSocket;
@@ -30,7 +30,23 @@ public class ClientHandler implements Runnable{
         this.playerID = playerID;
         this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
+        //this.clientSocket.setSoTimeout(timeout);
+        /*new Thread(() -> { //Server to Client
+            while(true){
+                try {
+                    Thread.sleep(halfTimeout);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                try{
+                    sendHeartbeat();
+                }catch (RuntimeException e){
+                    System.out.println("Client "+getPlayerID()+" "+getNickname()+" disconnected!");
+                    break;
+                }
+            }
 
+        }).start();*/
     }
 
     public void setGame(GameHandler game){
@@ -45,7 +61,7 @@ public class ClientHandler implements Runnable{
         return nickname;
     }
 
-    public void send(ServerToClientMessage message){
+    public synchronized void send(ServerToClientMessage message){
         try {
             outputStream.reset();
             outputStream.writeObject(message);
@@ -53,6 +69,10 @@ public class ClientHandler implements Runnable{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public synchronized void sendHeartbeat(){
+        send(new ServerHeartbeat());
     }
 
     public Object answer(){
@@ -72,7 +92,9 @@ public class ClientHandler implements Runnable{
             switch (state){
                 case "Nickname":
                     send(new RequestNickname());
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if(answer instanceof ChooseNickname){
                         String nick = ((ChooseNickname) answer).getNickname();
                         try {
@@ -102,7 +124,9 @@ public class ClientHandler implements Runnable{
                     else{
                         send(new ChooseMatch());
                     }
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if(answer instanceof SelectMatch){
                         //Controllo sull'intero
                         if(((SelectMatch) answer).getMatch() == 0){
@@ -127,7 +151,9 @@ public class ClientHandler implements Runnable{
                     break;
                 case "Setup":
                     send(new RequestSetUp());
-                    answer = answer();
+                    do{
+                        answer = answer();
+                    }while(answer instanceof ClientHeartbeat);
                     if (answer instanceof SelectModeAndPlayers){
                         if(((SelectModeAndPlayers) answer).getNumberOfPlayers() == 2 || ((SelectModeAndPlayers) answer).getNumberOfPlayers() == 3){
                             server.newGame(this, ((SelectModeAndPlayers) answer).getNumberOfPlayers(), ((SelectModeAndPlayers) answer).isExpertMode());
@@ -144,6 +170,14 @@ public class ClientHandler implements Runnable{
         }while(!confirmation);
     }
 
+    public void close(){
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void run() {
         System.out.println("Client "+getPlayerID()+ " handler started!");
@@ -151,8 +185,14 @@ public class ClientHandler implements Runnable{
         System.out.println("Client "+getPlayerID()+" select game setup complete!");
         ClientToServerMessage answer = null;
         while (true){
-            answer = (ClientToServerMessage) answer();
-            answer.handleMessage(game, this);
+            try{
+                answer = (ClientToServerMessage) answer();
+            }catch (RuntimeException e){
+                server.endGame(game.getGameID());
+                break;
+            }
+            if(!(answer instanceof ClientHeartbeat))
+                answer.handleMessage(game, this);
         }
 
 

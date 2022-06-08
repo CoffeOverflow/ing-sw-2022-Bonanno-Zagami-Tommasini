@@ -2,9 +2,13 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.State.GameControllerState;
 import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Model.Conquest;
 import it.polimi.ingsw.Model.GameModel;
+import it.polimi.ingsw.Model.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class GameController {
 
@@ -17,10 +21,19 @@ public class GameController {
     private Integer firstPlayer;
 
 
+
+    private GameControllerState stateToReturn;
+
+
+
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
+
+
+    private List<Player> winners=new ArrayList<Player>();
 
     public GameController(boolean expertMode,int numberOfPlayers){
         model=new GameModel(expertMode,numberOfPlayers);
+        this.turnOrder=new Integer[numberOfPlayers];
 
 
     }
@@ -59,13 +72,21 @@ public class GameController {
         return turnOrder;
     }
 
-    public void setTurnOrder(Integer[] turnOrder) {
-        this.turnOrder = turnOrder;
+    public void setTurnOrder(int[] turnOrder) {
+
+        for(int i=0; i< turnOrder.length;i++){
+            this.turnOrder[i]=turnOrder[i];
+        }
     }
 
     public void doAction(Action action){
         state.turnAction(this, action);
     }
+
+    public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
+        this.currentCardPlayers = currentCardPlayers;
+    }
+
 
     public boolean checkEndGame(){
         if(model.getIslandSize() == model.getNumberOfPlayers())
@@ -77,6 +98,23 @@ public class GameController {
 
     public boolean fillCloud(){
         return model.getStudentsFromBag();
-        //Manca controllo per saltare lo stato
+    }
+
+    public List<Player> getWinners() {
+        return winners;
+    }
+
+    public void setWinners(List<Player> winners) {
+        this.winners = winners;
+    }
+
+    public GameControllerState getStateToReturn() {
+
+        return stateToReturn;
+    }
+
+    public void setStateToReturn(GameControllerState stateToReturn) {
+
+        this.stateToReturn = stateToReturn;
     }
 }

@@ -49,7 +49,9 @@ public class StateTest {
         a.setColorStudent(Color.BLUE);
         state.turnAction(gc,a);
 
+
         System.out.println("Students "+this.gc.getModel().getPlayerByID(1).getEntryStudents());
+        System.out.println(gc.getModel().getPlayerByID(1).getStudents());
 
         TakeStudentTurnAction();
     }

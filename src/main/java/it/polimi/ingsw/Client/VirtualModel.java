@@ -1,10 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Server.ServerToClient.MatchCreated;
-import it.polimi.ingsw.Server.ServerToClient.PlayersInfo;
-import it.polimi.ingsw.Server.ServerToClient.SetUpCharacterCard;
-import it.polimi.ingsw.Server.ServerToClient.SetUpSchoolStudent;
+import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -15,18 +12,47 @@ public class VirtualModel {
 
     private List<Island> islands =new ArrayList<>();
 
+
     private int motherNaturePosition;
 
-    private List<CharacterCard> characterCards=new ArrayList<>();
+    private List<CharacterCard> characterCards=null;
 
     private List<Player> players=new ArrayList<>();
 
-    public void setIslandsAndMotherNature(MatchCreated msg){
-        HashMap<Integer, Color> mapStudentIsland= msg.getMapStudentIsland();
-        for(Integer i: mapStudentIsland.keySet()){
-            islands.add(new Island());
-            islands.get(i).addStudents(mapStudentIsland.get(i),1);
+    private Player clientPlayer;
+
+    private List<Cloud> clouds=new ArrayList<>();
+
+    private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
+
+    private boolean useCharacterCard =false;
+
+    private boolean takeProfessorWhenTie=false;
+
+
+    private int numOfInstance =0;
+
+    public VirtualModel() {
+        for(Color c:Color.values()){
+            Professor p=new Professor(c);
+            professors.put(c,p);
         }
+    }
+
+    public List<Cloud> getClouds() {
+        return clouds;
+    }
+
+    public void setIslandsAndMotherNature(MatchCreated msg)  {
+        HashMap<Integer, Color> mapStudentIsland = msg.getMapStudentIsland();
+        for(int i=0; i<12; i++) {
+            Island isl=new Island();
+            if(mapStudentIsland.get(i)!=null)
+                isl.addStudents(mapStudentIsland.get(i), 1);
+            islands.add(isl);
+        }
+
+
         motherNaturePosition=msg.getMotherNaturePosition();
     }
 
@@ -35,7 +61,9 @@ public class VirtualModel {
         for(Integer i: msg.getMapIDNickname().keySet()){
             players.add(new Player(i,msg.getMapIDNickname().get(i), msg.isExpertMode(),
                     msg.getMapTowerToPlayer().get(i),msg.getNumberOfTowers()));
-            players.get(j).setWizard(Wizards.valueOf(msg.getMapPlayerWizard().get(i).toUpperCase()));
+            players.get(j).setWizard(msg.getMapPlayerWizard().get(i));
+            if(players.get(j).getPlayerID()==msg.getYourPlayerID())
+                clientPlayer=players.get(j);
             j++;
         }
     }
@@ -48,6 +76,7 @@ public class VirtualModel {
     }
 
     public void setCharacterCards(SetUpCharacterCard msg){
+        characterCards=new ArrayList<>();
         int numberOfCard;
         for(int i=0; i<msg.getCharacterCards().length;i++){
             CharacterCard card=null;
@@ -74,7 +103,7 @@ public class VirtualModel {
 
     }
 
-    public void mergeIslands(int islandPos1, int islandPos2){
+    public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
         Island deleteIsland,notDeleteIsland;
         int islandPosNotDelete;
         if(islandPos1<islandPos2){
@@ -93,7 +122,10 @@ public class VirtualModel {
 
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
-        //fare i controlli sul noEntryCard.
+        for(Player p:this.players)
+            if(p.getTower().equals(tower))
+                p.setNumberOfTower(p.getNumberOfTower()-1);
+        motherNaturePosition=islandPosNotDelete;
 
     }
     public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
@@ -103,27 +135,100 @@ public class VirtualModel {
         }
     }
 
-    public List<Island> getIslands() {
-
-        return islands;
+    public void moveToSchool (int player,Color studentColor){
+        for(Player p:this.players)
+            if(p.getPlayerID()==player)
+            {
+                p.addStudentOf(studentColor);
+                p.removeEntryStudent(studentColor);
+                int numOfColor=p.getStudentsOf(studentColor);
+                int max=0;
+                for(Player play: players)
+                {
+                    if(play.getPlayerID()!=p.getPlayerID()){
+                        if(play.getStudentsOf(studentColor)>max)
+                        {
+                            max=play.getStudentsOf(studentColor);
+                        }
+                    }
+                }
+                if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max))
+                {
+                    this.professors.get(studentColor).goToSchool(p);
+                }
+            }
     }
 
-    public int getMotherNaturePosition() {
+    public void removeFromSchool (int player,Color studentColor, int number){
 
-        return motherNaturePosition;
+        for(Player p:this.players) {
+            if (p.getPlayerID() == player) {
+                p.getStudents().put(studentColor, p.getStudentsOf(studentColor) - number);
+            }
+        }
+        Player toGo=null;
+        int max = 0;
+        for (Player play : players) {
+            if (play.getStudentsOf(studentColor) > max) {
+                max = play.getStudentsOf(studentColor);
+                toGo=play;
+            }
+        }
+        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+            this.professors.get(studentColor).goToSchool(toGo);
+        if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
+            professors.get(studentColor).getPlayer().removeProfessor(studentColor);
     }
 
-    public List<CharacterCard> getCharacterCards() {
 
-        return characterCards;
+    public void fillClouds(BoardChange bChange){
+
+        if(clouds.isEmpty()){
+            for(int i=0; i< players.size(); i++){
+                clouds.add(new Cloud());
+        }}
+        if(players.size()==2){
+            clouds.get(0).setStudents(bChange.getStudents1());
+            clouds.get(1).setStudents(bChange.getStudents2());
+        }else if(players.size()==3){
+            clouds.get(0).setStudents(bChange.getStudents1());
+            clouds.get(1).setStudents(bChange.getStudents2());
+            clouds.get(2).setStudents(bChange.getStudents3());
+        }
+
     }
 
-    public List<Player> getPlayers() {
+    public List<Island> getIslands() {return islands;}
 
-        return players;
+    public int getMotherNaturePosition() {return motherNaturePosition;}
+
+    public List<CharacterCard> getCharacterCards() {return characterCards;}
+
+    public List<Player> getPlayers() {return players;}
+
+
+    public Player getClientPlayer() {
+        return clientPlayer;
     }
 
-    public void moveMotherNature(int stpes){
-        this.motherNaturePosition=(motherNaturePosition+stpes)%12;
+    public void moveMotherNature(int steps){
+        this.motherNaturePosition=(motherNaturePosition+steps)%12;
+    }
+
+    public boolean isUseCharacterCard() { return useCharacterCard;}
+
+    public void setUseCharacterCard(boolean useCharacterCard) {this.useCharacterCard = useCharacterCard;}
+
+    public int getNumOfInstance() {return numOfInstance++;}
+    public void resetNumOfInstance(){this.numOfInstance=0;}
+    public void setMotherNaturePosition(int motherNaturePosition) {
+
+        this.motherNaturePosition = motherNaturePosition;
+    }
+    public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
+        this.takeProfessorWhenTie = takeProfessorWhenTie;
+    }
+    public EnumMap<Color, Professor> getProfessors() {
+        return professors;
     }
 }

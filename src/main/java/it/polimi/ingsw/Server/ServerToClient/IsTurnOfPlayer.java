@@ -9,7 +9,7 @@ public class IsTurnOfPlayer implements ServerToClientMessage{
     private String msg;
 
     public IsTurnOfPlayer(String playerNickname){
-        msg="it's the turn of "+playerNickname;
+        msg="it's the turn of "+playerNickname+'\n';
     }
 
     public String getMsg() {

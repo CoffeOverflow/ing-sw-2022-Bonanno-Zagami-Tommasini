@@ -1,14 +1,18 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.ClientToServer.ClientToServerMessage;
 import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
 
-public class YouWin implements ServerToClientMessage{
+public class OtherWin implements ServerToClientMessage {
+    private String msg;
 
-    private static String msg="Congratulations, you won!";
+    public OtherWin(String nickname){
+        msg=nickname+ " won!\n";
+    }
 
-    public static String getMsg() {
+    public  String getMsg() {
         return msg;
     }
 

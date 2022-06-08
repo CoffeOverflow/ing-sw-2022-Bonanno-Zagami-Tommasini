@@ -10,6 +10,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,6 +26,7 @@ public class Server implements Runnable{
     private int nextGameID;
     private HashMap<Integer, String> nicknameByID;
     private HashMap<Integer, GameHandler> availableGames;
+    private HashMap<Integer, GameHandler> activeGames;
     public Server(ServerSocket server){
         this.server = server;
         this.clientExecutor = Executors.newCachedThreadPool();
@@ -31,14 +34,15 @@ public class Server implements Runnable{
         this.nextGameID = 1;
         this.nicknameByID = new HashMap<Integer, String>();
         this.availableGames = new HashMap<Integer, GameHandler>();
+        this.activeGames = new HashMap<Integer, GameHandler>();
 
     }
     public static void main(String[] args) {
         int port = -1;
         ServerSocket server = null;
-        /*Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("\nWelcome to Eriantys server!\n");
-        do{
+        /*do{
             System.out.print("Enter the server port > ");
             try {
                 port = scanner.nextInt();
@@ -122,10 +126,21 @@ public class Server implements Runnable{
     }
 
     public GameHandler getAvailableGameByID(int id) throws MatchFullException {
-        //Da fare mappa gamesByID
         if(availableGames.containsKey(id))
             return availableGames.get(id);
         else
             throw new MatchFullException();
+    }
+    public synchronized void addActiveGame(GameHandler game){
+        this.activeGames.put(game.getGameID(), game);
+    }
+
+    public synchronized void endGame(int gameID){
+        GameHandler game = activeGames.get(gameID);
+        for(ClientHandler player : game.getPlayers()){
+            nicknameByID.remove(player.getPlayerID());
+            player.close();
+        }
+        activeGames.remove(gameID);
     }
 }

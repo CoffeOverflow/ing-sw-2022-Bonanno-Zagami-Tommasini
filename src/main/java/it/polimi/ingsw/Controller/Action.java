@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class Action {
     private int motherNatureSteps;
-    private int posIsland;
+    private Integer posIsland;
     private Color colorStudent;
     private MoveTo move;
     private int chooseCloud;
@@ -55,11 +55,11 @@ public class Action {
     }
 
 
-    public int getPosIsland() {
+    public Integer getPosIsland() {
         return posIsland;
     }
 
-    public void setPosIsland(int posIsland) {
+    public void setPosIsland(Integer posIsland) {
         this.posIsland = posIsland;
     }
 

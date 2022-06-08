@@ -124,6 +124,7 @@ public class CharacterCard {
         }
     }
 
+
     public Optional<EnumMap<Color, Integer>> getChosenStudents() {
         return chosenStudents;
     }
@@ -149,6 +150,10 @@ public class CharacterCard {
         return asset;
     }
 
+    public void addStudents(EnumMap<Color, Integer> studentsToAdd){
+        studentsToAdd.forEach((k, v) -> this.students.get().merge(k, v, Integer::sum));
+    }
+
     public void setStudents(EnumMap<Color, Integer> students) {
         this.students=Optional.of(students);
     }
@@ -170,7 +175,7 @@ public class CharacterCard {
         if( (this.asset.equals("innkeeper.jpg") && studentNumber==1) ||
                 (this.asset.equals("princess.jpg") && studentNumber==1)
         )
-        this.chosenStudents=Optional.of(chosenStudents);
+            this.chosenStudents=Optional.of(chosenStudents);
         else{
             throw new IllegalStateException("Unexpected number of chosen students: " + studentNumber);
         }
@@ -209,12 +214,17 @@ public class CharacterCard {
      * @param islandPosition island on which the changes will be applied
      * @param model instance of the game model
      */
-    public void useCard(int islandPosition, GameModel model){
+    public void useCard(Integer islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
+
         int count=0;
-        if(chosenStudents!=null && chosenStudents.isPresent() && entranceStudents==null)
-            chosenStudents=null;
+        if(chosenStudents!=null && chosenStudents.isPresent() && this.getStudents()!=null &&  this.getStudents().isPresent()) {
+            for(Color c: chosenStudents.get().keySet()){
+                this.getStudents().get().put(c, this.getStudents().get().get(c)-chosenStudents.get().get(c));
+            }
+            chosenStudents = null;
+        }
         if(entranceStudents!=null && entranceStudents.isPresent())
             entranceStudents=null;
         if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())

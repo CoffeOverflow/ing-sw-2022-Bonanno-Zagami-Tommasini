@@ -3,15 +3,16 @@ package it.polimi.ingsw.Server.ServerToClient;
 import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class SelectAssistantCard implements ServerToClientMessage{
 
-    private static String msg="select a card to play";
+    private static String msg="select a card to play \n";
 
-    private List<String> availableCards;
+    private String[] availableCards;
 
-    public SelectAssistantCard(List<String> cards){
+    public SelectAssistantCard(String[] cards){
         availableCards=cards;
     }
 
@@ -19,7 +20,7 @@ public class SelectAssistantCard implements ServerToClientMessage{
         return msg;
     }
 
-    public List<String> getAvailableCards() {
+    public String[] getAvailableCards() {
         return availableCards;
     }
 

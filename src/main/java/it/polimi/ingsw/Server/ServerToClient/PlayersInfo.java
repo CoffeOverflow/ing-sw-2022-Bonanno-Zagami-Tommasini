@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Tower;
+import it.polimi.ingsw.Model.Wizards;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,18 +15,22 @@ public class PlayersInfo implements ServerToClientMessage{
 
     private boolean expertMode;
 
-    private HashMap<Integer,String> mapPlayerWizard;
+    private HashMap<Integer, Wizards> mapPlayerWizard;
 
     private HashMap<Integer, Tower> mapTowerToPlayer;
 
+    private int yourPlayerID;
 
-    public PlayersInfo( boolean expertMode, HashMap<Integer, String> mapPlayerWizard,
-                       HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname) {
 
+
+    public PlayersInfo(boolean expertMode, int numberOfTowers, HashMap<Integer, Wizards> mapPlayerWizard,
+                       HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname, int yourPlayerID) {
+        this.numberOfTowers=numberOfTowers;
         this.expertMode = expertMode;
         this.mapPlayerWizard = mapPlayerWizard;
         this.mapTowerToPlayer=mapTowerToPlayer;
         this.mapIDNickname=mapIDNickname;
+        this.yourPlayerID=yourPlayerID;
     }
 
 
@@ -37,7 +42,7 @@ public class PlayersInfo implements ServerToClientMessage{
         return expertMode;
     }
 
-    public HashMap<Integer, String> getMapPlayerWizard() {
+    public HashMap<Integer, Wizards> getMapPlayerWizard() {
         return mapPlayerWizard;
     }
 
@@ -47,6 +52,10 @@ public class PlayersInfo implements ServerToClientMessage{
 
     public HashMap<Integer, String> getMapIDNickname() {
         return mapIDNickname;
+    }
+
+    public int getYourPlayerID() {
+        return yourPlayerID;
     }
 
     @Override

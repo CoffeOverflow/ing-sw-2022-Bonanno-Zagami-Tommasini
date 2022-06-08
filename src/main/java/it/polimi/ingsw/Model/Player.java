@@ -42,7 +42,7 @@ public class Player {
         this.expertMode = expertMode;
         this.tower = tower;
         this.numberOfTower = numberOfTower;
-        money = 0;
+        money = expertMode ? 1:0;
         //JSON Assistant card
         InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/json/assistants.json"));
         JsonReader json = new JsonReader(reader);
@@ -162,6 +162,7 @@ public class Player {
         for(AssistantCard card: assistantCards){
             if (card.getName().equals(name)){
                 assistantCards.remove(card);
+                break;
             }
         }
     }
