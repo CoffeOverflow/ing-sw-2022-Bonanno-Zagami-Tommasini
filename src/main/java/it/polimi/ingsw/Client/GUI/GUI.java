@@ -142,8 +142,8 @@ public class GUI extends Application implements Runnable, View
     }
 
     @Override
-    public void setUseCharcaterCard() {
-
+    public void setUseCharcaterCard(){
+        this.vmodel.setUseCharacterCard(false);
     }
 
     @Override
@@ -192,37 +192,38 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void matchCreated(MatchCreated msg) {
-
+        this.vmodel.setIslandsAndMotherNature(msg);
     }
 
     @Override
     public void playersInfo(PlayersInfo msg) {
-
+        this.vmodel.setPlayersInfo(msg);
     }
 
     @Override
-    public void setUpCharacterCard(SetUpCharacterCard msg) {
-
+    public void setUpCharacterCard(SetUpCharacterCard msg){
+        this.vmodel.setCharacterCards(msg);
     }
 
     @Override
-    public void setUpSchoolStudent(SetUpSchoolStudent msg) {
-
+    public void setUpSchoolStudent(SetUpSchoolStudent msg){
+        this.vmodel.setSchoolStudents(msg);
     }
 
     @Override
-    public void isTurnOfPlayer(String msg) {
-
+    public void isTurnOfPlayer(String msg){
+        this.showMessage(msg);
+        vmodel.setTakeProfessorWhenTie(false);
     }
 
     @Override
     public void youWin() {
-
+        serverHandler.close();
     }
 
     @Override
-    public void otherPlayerWins(OtherPlayerWins msg) {
-
+    public void otherPlayerWins(OtherPlayerWins msg){
+        this.showMessage(msg.getMsg());
     }
 
     @Override
@@ -232,7 +233,8 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void update(UpdateMessage msg) {
-
+        vmodel.update(msg);
+        this.showBoard();
     }
 
     @Override
