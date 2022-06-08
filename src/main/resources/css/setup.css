@@ -1,5 +1,5 @@
 #mainPane{
-    -fx-background-image: url("../graphics/backgrounds/eriantys_banner_no_items_70.png");
+    -fx-background-image: url("../graphics/backgrounds/eriantys_banner_no_items_85.png");
     -fx-background-size: stretch;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
@@ -10,6 +10,8 @@
 }
 .inputLabels{
     -fx-font-size: 22;
-    -fx-font-weight: bold;
+    -fx-text-fill: WHITE;
+
 }
+
 

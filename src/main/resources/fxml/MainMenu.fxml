@@ -36,9 +36,9 @@
       <!--Connection: IP and Port fields-->
       <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
          <VBox fx:id="connection" alignment="CENTER" layoutX="300" spacing="5">
-            <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert server IP address" textFill="BLACK"/>
+            <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert server IP address" />
             <TextField fx:id="address" />
-            <Label styleClass="inputLabels"  prefHeight="21.0" prefWidth="333.0" text="Insert server port" textFill="BLACK"/>
+            <Label styleClass="inputLabels"  prefHeight="21.0" prefWidth="333.0" text="Insert server port" />
             <TextField fx:id="port"/>
             <spacing/>
             <children >

@@ -85,6 +85,7 @@ public class SetupController implements GUIController{
                     gameName.prefHeight(333);
                     gameName.prefWidth(21);
                     gameName.setTextFill(WHITE);
+                    gameName.setFont(new Font("Arial", 18));
                     Button join = new Button("Join");
                     join.prefHeight(30);
                     join.prefWidth(100);
