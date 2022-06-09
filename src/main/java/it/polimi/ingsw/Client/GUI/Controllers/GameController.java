@@ -6,9 +6,7 @@ import it.polimi.ingsw.Client.ClientToServer.PlayAssistantCard;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.GUI.GamePhase;
 import it.polimi.ingsw.Client.VirtualModel;
-import it.polimi.ingsw.Model.Cloud;
-import it.polimi.ingsw.Model.Color;
-import it.polimi.ingsw.Model.Wizards;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.SelectAssistantCard;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import javafx.application.Platform;
@@ -23,10 +21,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +43,14 @@ public class GameController implements GUIController{
 
     public AnchorPane cloudGrids;
     public HBox assistantCard;
+    public AnchorPane secondSchoolPane;
+    public AnchorPane thirdSchoolPane;
+    public AnchorPane mySchoolPane;
 
     public List<GridPane> cloudGridsList=new ArrayList<>();
+    public List<GridPane> schoolEntranceGridsList=new ArrayList<>();
+    public List<GridPane> schoolDiningGridsList=new ArrayList<>();
+    public List<GridPane> schoolTowersGridsList=new ArrayList<>();
 
 
 
@@ -168,6 +169,19 @@ public class GameController implements GUIController{
             cloudGridsList.add((GridPane)cloudGrids.getChildren().get(count));
             count++;
         }
+
+        schoolEntranceGridsList.add((GridPane)mySchoolPane.getChildren().get(1));
+        schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
+        schoolDiningGridsList.add((GridPane)mySchoolPane.getChildren().get(2));
+        schoolDiningGridsList.add((GridPane)secondSchoolPane.getChildren().get(2));
+        schoolTowersGridsList.add((GridPane)mySchoolPane.getChildren().get(3));
+        schoolTowersGridsList.add((GridPane)secondSchoolPane.getChildren().get(3));
+        if(gui.getVmodel().getPlayers().size()==3){
+            schoolEntranceGridsList.add((GridPane)thirdSchoolPane.getChildren().get(1));
+            schoolDiningGridsList.add((GridPane)thirdSchoolPane.getChildren().get(2));
+            schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
+        }
+
     }
     public void showBoard(){
         this.showCloud();
@@ -176,6 +190,39 @@ public class GameController implements GUIController{
     }
 
     public void showSchool(){
+        VirtualModel vmodel=gui.getVmodel();
+        int count=0;
+        /* show entrance students*/
+        for(Player player: vmodel.getPlayers()){
+            int k=0;
+            int j=0;
+            for(Color color: player.getEntryStudents().keySet()) {
+                for (int i = 0; i < player.getEntryStudents().get(color); i++) {
+                    Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
+                    ImageView studentImgview = new ImageView(studentImg);
+                    studentImgview.setFitHeight(15);
+                    //wizardImgview.setFitWidth(494);
+                    studentImgview.setPreserveRatio(true);
+                    studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                        @Override public void handle(MouseEvent mouseEvent) {
+
+                            Alert a = new Alert(Alert.AlertType.INFORMATION);
+                            a.setContentText("This is checkmark");
+                            a.show();
+                        }
+                    });
+                    schoolEntranceGridsList.get(count).add(studentImgview, j, k);
+                    if (j == 3 && k==0) {
+                        k++;
+                        j = 0;
+                    } else {
+                        j++;
+                    }
+                }
+            }
+            count++;
+        }
 
 
     }
