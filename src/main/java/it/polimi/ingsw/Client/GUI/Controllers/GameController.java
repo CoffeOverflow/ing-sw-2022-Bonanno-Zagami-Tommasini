@@ -13,6 +13,7 @@ import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -20,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -154,35 +156,51 @@ public class GameController implements GUIController{
         }
     }
     public void showBoard(){
+        this.showCloud();
+        this.showSchool();
+
+    }
+
+    public void showSchool(){
+
+
+    }
+
+    public void showCloud(){
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
         for(Cloud cloud: vmodel.getClouds()){
+            int k=0;
+            int j=0;
             for(Color color: cloud.getStudents().keySet()) {
-                int k=0;
-                int j=0;
                 for (int i = 0; i < cloud.getStudents().get(color); i++) {
-                    Button studentButton = new Button();
                     Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
                     ImageView studentImgview = new ImageView(studentImg);
-                    studentImgview.setFitHeight(20);
+                    studentImgview.setFitHeight(15);
                     //wizardImgview.setFitWidth(494);
                     studentImgview.setPreserveRatio(true);
-                    studentButton.setPrefSize(5, 5);
-                    studentButton.setGraphic(studentImgview);
-                    cloudGridsList.get(count).add(studentButton, j, k);
-                    if(j==1){
+                    studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                        @Override public void handle(MouseEvent mouseEvent) {
+
+                            Alert a = new Alert(Alert.AlertType.INFORMATION);
+                            a.setContentText("This is checkmark");
+                            a.show();
+                        }
+                    });
+                    cloudGridsList.get(count).add(studentImgview, j, k);
+
+                    if (j == 1) {
                         k++;
-                        j=0;
-                    }else{
+                        j = 0;
+                    } else {
                         j++;
                     }
-
                 }
-
             }
+            count++;
         }
     }
-
     public void chooseWizard(Event event){
         Node node = (Node) event.getSource() ;
         String wizard = (String) node.getUserData();
