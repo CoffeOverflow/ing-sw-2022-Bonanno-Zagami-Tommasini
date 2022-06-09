@@ -97,7 +97,7 @@ public class GameHandler implements Runnable{
             player.send(new ActionValid());
         }
         else{
-            player.send(new Error(ErrorsType.CHOSENOTVALID, "Scelta non valida"));
+            player.send(new Error(ErrorsType.CHOSENOTVALID, "The selected wizard was choosen by another player!"));
             player.send(new SelectWizard(wizards));
         }
     }

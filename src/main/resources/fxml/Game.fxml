@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="mainPane"  id="mainPane" prefHeight="720" prefWidth="1280" stylesheets="@../css/game.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.GameController">
+<AnchorPane id="mainPane" fx:id="mainPane" prefHeight="720.0" prefWidth="1228.0" stylesheets="@../css/game.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.GameController">
     <!--CHOOSE WIZARD-->
-    <VBox fx:id="selectWizard" alignment="CENTER" layoutX="-104.0" layoutY="360.0" prefWidth="1280" spacing="20">
+    <VBox fx:id="selectWizard" alignment="CENTER" layoutY="360.0" prefWidth="1280.0" spacing="20">
         <Label alignment="CENTER" style="-fx-font-size: 26px;" styleClass="inputLabels" text="Choose wizard:" textFill="WHITE" />
         <HBox fx:id="listOfWizards" alignment="CENTER" prefWidth="1280" spacing="20">
 

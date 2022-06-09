@@ -85,10 +85,13 @@ public class GameController implements GUIController{
 
     @Override
     public void showMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Info");
-        alert.setHeaderText(message.replaceAll("\u001B\\[[\\d;]*[^\\d;]",""));
-        alert.showAndWait();
+        if(!message.contains("Match is starting")){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Info");
+            alert.setHeaderText(message.replaceAll("\u001B\\[[\\d;]*[^\\d;]",""));
+            alert.showAndWait();
+        }
+
     }
 
     public void selectWizard(SelectWizard wizards){
