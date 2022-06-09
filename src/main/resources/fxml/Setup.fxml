@@ -19,11 +19,7 @@
     <children>
         <!--Eriantys Logo-->
         <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
-            <Label fx:id="title" alignment="TOP_CENTER"  styleClass="credits"  text="Eriantys" textFill="WHITE">
-                <font>
-                    <Font name="Newborough" size="70.0" />
-                </font>
-            </Label>
+            <Label fx:id="title" alignment="TOP_CENTER"  style="-fx-font-size: 70" styleClass="Eriantys"  text="Eriantys" textFill="WHITE"/>
         </HBox>
         <!--Cranio logo-->
         <ImageView fx:id="cranio_logo" fitHeight="100" fitWidth="100" layoutY="500" pickOnBounds="true" preserveRatio="true">
@@ -34,12 +30,7 @@
         <!--Caduti in battaglia durante lo sviluppo di questo progetto-->
         <HBox alignment="CENTER"  prefWidth="600.0" layoutY="580"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
             <children>
-                <Label fx:id="team" alignment="CENTER"  styleClass="credits"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE">
-                    <font>
-                        <Font name="Newborough" size="18.0" />
-                    </font>
-                </Label>
-
+                <Label fx:id="team" alignment="CENTER"  styleClass="Eriantys" style="-fx-font-size: 18"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE"/>
             </children>
         </HBox>
 
