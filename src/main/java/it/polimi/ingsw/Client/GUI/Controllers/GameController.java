@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
+import it.polimi.ingsw.Client.ClientToServer.ChooseCloud;
 import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.GUI.GamePhase;
@@ -140,6 +141,19 @@ public class GameController implements GUIController{
         }
         int count=0;
         for(Cloud cloud:gui.getVmodel().getClouds()){
+            cloudGrids.getChildren().get(count).setUserData(count);
+            cloudGrids.getChildren().get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                @Override public void handle(MouseEvent mouseEvent) {
+
+                    if(currentPhase==GamePhase.FILLCLOUD){
+                        chooseCloud(mouseEvent);
+                    }else{
+                    Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setContentText("You can't take the students in this phase");
+                    a.show();}
+                }
+            });
             cloudGridsList.add((GridPane)cloudGrids.getChildren().get(count));
             count++;
         }
@@ -159,6 +173,7 @@ public class GameController implements GUIController{
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
         for(Cloud cloud: vmodel.getClouds()){
+
             int k=0;
             int j=0;
             for(Color color: cloud.getStudents().keySet()) {
@@ -168,15 +183,6 @@ public class GameController implements GUIController{
                     studentImgview.setFitHeight(15);
                     //wizardImgview.setFitWidth(494);
                     studentImgview.setPreserveRatio(true);
-                    studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-                        @Override public void handle(MouseEvent mouseEvent) {
-
-                            Alert a = new Alert(Alert.AlertType.INFORMATION);
-                            a.setContentText("This is checkmark");
-                            a.show();
-                        }
-                    });
                     cloudGridsList.get(count).add(studentImgview, j, k);
 
                     if (j == 1) {
@@ -194,5 +200,11 @@ public class GameController implements GUIController{
         Node node = (Node) event.getSource() ;
         String wizard = (String) node.getUserData();
         gui.send(new ChooseWizard(Wizards.valueOf(Wizards.class,wizard.replaceAll(" ", "").toUpperCase())));
+    }
+
+    public void chooseCloud(MouseEvent event){
+        Node node=(Node) event.getSource();
+        int cloudId=(int) node.getUserData();
+        gui.send((new ChooseCloud(cloudId)));
     }
 }

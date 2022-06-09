@@ -5,5 +5,6 @@ public enum GamePhase {
     ASSISTANT,
     CHARACTER,
     ANOTHERPLAYERTURN,
+    FILLCLOUD,
     GAME;
 }
