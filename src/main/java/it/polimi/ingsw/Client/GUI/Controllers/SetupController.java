@@ -85,7 +85,8 @@ public class SetupController implements GUIController{
                     gameName.prefHeight(333);
                     gameName.prefWidth(21);
                     gameName.setTextFill(WHITE);
-                    gameName.setFont(new Font("Arial", 18));
+                    //gameName.setFont(new Font("Arial", 18));
+                    gameName.setStyle("-fx-font-size: 18");
                     Button join = new Button("Join");
                     join.prefHeight(30);
                     join.prefWidth(100);
@@ -108,7 +109,8 @@ public class SetupController implements GUIController{
                     gameName.prefHeight(333);
                     gameName.prefWidth(21);
                     gameName.setTextFill(RED);
-                    gameName.setFont(new Font("Arial", 26));
+                    //gameName.setFont(new Font("Arial", 26));
+                    gameName.setStyle("-fx-font-size: 26");
                     game.getChildren().add(gameName);
                     listOfMatch.getChildren().add(game);
                 }
