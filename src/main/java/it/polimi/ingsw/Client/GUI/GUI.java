@@ -218,6 +218,14 @@ public class GUI extends Application implements Runnable, View
     @Override
     public void playersInfo(PlayersInfo msg) {
         this.vmodel.setPlayersInfo(msg);
+        GameController controller = (GameController) sceneToController.get(currentScene);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.setGrids();
+            }
+        });
+
     }
 
     @Override
