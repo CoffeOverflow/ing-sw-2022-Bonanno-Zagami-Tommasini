@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -157,7 +158,7 @@ public class GameController implements GUIController{
                     studentImgview.setPreserveRatio(true);
                     studentButton.setPrefSize(5, 5);
                     studentButton.setGraphic(studentImgview);
-                    cloudGridsList.get(count).add(studentButton, k, j);
+                    cloudGridsList.get(count).add(studentButton, j, k);
                     if(j==1){
                         k++;
                         j=0;

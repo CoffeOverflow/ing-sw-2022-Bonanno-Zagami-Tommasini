@@ -218,14 +218,6 @@ public class GUI extends Application implements Runnable, View
     @Override
     public void playersInfo(PlayersInfo msg) {
         this.vmodel.setPlayersInfo(msg);
-        GameController controller = (GameController) sceneToController.get(currentScene);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controller.setGrids();
-            }
-        });
-
     }
 
     @Override
@@ -269,6 +261,18 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void update(UpdateMessage msg) {
+        if(vmodel.getClouds().isEmpty()){
+            vmodel.update(msg);
+            GameController controller = (GameController) sceneToController.get(currentScene);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.setGrids();
+                }
+            });
+            this.showBoard();
+            return;
+        }
         vmodel.update(msg);
         this.showBoard();
     }
