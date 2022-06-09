@@ -29,6 +29,7 @@ public class GameController implements GUIController{
     private GamePhase currentPhase;
     @FXML public AnchorPane mainPane;
     public VBox selectWizard;
+    public VBox waitForOtherWizard;
     public HBox listOfWizards;
 
     public AnchorPane boardAndOthersSchool;
@@ -49,6 +50,7 @@ public class GameController implements GUIController{
         mySchool.setVisible(false);
         listOfWizards.setVisible(false);
         selectWizard.setVisible(false);
+        waitForOtherWizard.setVisible(false);
         currentPhase = GamePhase.WIZARD;
 
 
@@ -63,7 +65,8 @@ public class GameController implements GUIController{
         switch (currentPhase){
             case WIZARD:
                 selectWizard.setVisible(false);
-                boardAndOthersSchool.setVisible(true);
+                waitForOtherWizard.setVisible(true);
+                //boardAndOthersSchool.setVisible(true);
                 mySchool.setVisible(true);
                 currentPhase = GamePhase.GAME;
                 break;
@@ -126,6 +129,8 @@ public class GameController implements GUIController{
     }
 
     public void setGrids(){
+        waitForOtherWizard.setVisible(false);
+        boardAndOthersSchool.setVisible(true);
         if(gui.getVmodel().getPlayers().size()==2){
             thirdPlayerSchool.setVisible(false);
             cloud3.setVisible(false);
@@ -137,7 +142,6 @@ public class GameController implements GUIController{
         }
     }
     public void showBoard(){
-        setGrids();
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
         for(Cloud cloud: vmodel.getClouds()){
