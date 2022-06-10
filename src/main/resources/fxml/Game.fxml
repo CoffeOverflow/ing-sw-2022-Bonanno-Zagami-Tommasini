@@ -22,11 +22,11 @@
     <VBox fx:id="waitForOtherWizard" alignment="CENTER" layoutY="360.0" prefWidth="1280.0" spacing="20">
         <Label alignment="CENTER" style="-fx-font-size: 26px;" styleClass="inputLabels" text="Other players are choosing a wizard, please wait!" textFill="WHITE" />
     </VBox>
-   <AnchorPane fx:id="boardAndOthersSchool" prefHeight="480.0" prefWidth="1280.0" AnchorPane.topAnchor="0.0">
+   <AnchorPane fx:id="boardAndOthersSchool" prefHeight="480.0" prefWidth="1280.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-         <AnchorPane fx:id="thirdSchoolPane" layoutX="1042.0" layoutY="24.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="198.0" AnchorPane.rightAnchor="15.0">
+         <AnchorPane fx:id="thirdSchoolPane" layoutX="1042.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="198.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="12.0">
             <children>
-               <ImageView fx:id="thirdPlayerSchool" fitHeight="182.0" fitWidth="466.0" layoutX="-105.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+               <ImageView fx:id="thirdPlayerSchool" fitHeight="182.0" fitWidth="466.0" layoutX="-105.0" layoutY="122.0" preserveRatio="true" rotate="90.0" AnchorPane.bottomAnchor="123.11111111111109" AnchorPane.leftAnchor="-105.42364501953125" AnchorPane.rightAnchor="-116.35413275824652" AnchorPane.topAnchor="122.0">
                   <image>
                      <Image url="@../graphics/board/Plancia_DEF2.png" />
                   </image>
@@ -34,7 +34,7 @@
                      <Rectangle2D minY="447.0" />
                   </viewport>
                </ImageView>
-               <GridPane fx:id="gridEntrance3" layoutX="29.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity">
+               <GridPane fx:id="gridEntrance3" layoutX="29.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="362.4444444444444" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="18.111111111111114" AnchorPane.topAnchor="14.0">
                   <columnConstraints>
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
@@ -47,7 +47,7 @@
                      <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                </GridPane>
-               <GridPane fx:id="gridTower3" layoutX="44.0" layoutY="339.0">
+               <GridPane fx:id="gridTower3" layoutX="44.0" layoutY="339.0" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="340.0">
                   <columnConstraints>
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
@@ -59,7 +59,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                </GridPane>
-               <GridPane fx:id="gridDining21" layoutX="33.0" layoutY="81.0" prefHeight="204.0" prefWidth="141.0">
+               <GridPane fx:id="gridDining21" layoutX="33.0" layoutY="81.0" prefHeight="204.0" prefWidth="141.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="80.0">
                   <columnConstraints>
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
@@ -142,44 +142,23 @@
                <Image url="@../graphics/board/island2.png" />
             </image>
          </ImageView>
-         <ImageView fx:id="cloud3" fitHeight="96.0" fitWidth="110.0" layoutX="590.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../graphics/board/cloud_card.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="cloud1" fitHeight="96.0" fitWidth="110.0" layoutX="470.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../graphics/board/cloud_card.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="cloud2" fitHeight="96.0" fitWidth="110.0" layoutX="710.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../graphics/board/cloud_card.png" />
-            </image>
-         </ImageView>
-          <AnchorPane fx:id="cloudGrids" layoutX="436.0" layoutY="135.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="408.0" AnchorPane.topAnchor="135.0">
-             <GridPane fx:id="gridCloud1" layoutX="51.0" layoutY="102.0" prefHeight="60.0" prefWidth="58.0">
-               <columnConstraints>
-                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-             </GridPane>
-
-             <GridPane fx:id="gridCloud2" layoutX="294.0" layoutY="102.0" prefHeight="60.0" prefWidth="58.0">
-                <columnConstraints>
-                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                </columnConstraints>
-                <rowConstraints>
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-             </GridPane>
-              <GridPane fx:id="gridCloud3" layoutX="175.0" layoutY="32.0" prefHeight="60.0" prefWidth="58.0">
+          <AnchorPane fx:id="cloudGrids" centerShape="true" layoutX="436.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="408.0">
+              <ImageView fx:id="cloud1" fitHeight="96.0" fitWidth="110.0" layoutX="51.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="51.0" AnchorPane.topAnchor="102.0">
+                  <image>
+                      <Image url="@../graphics/board/cloud_card.png" />
+                  </image>
+              </ImageView>
+              <ImageView fx:id="cloud2" fitHeight="96.0" fitWidth="110.0" layoutX="294.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="294.0" AnchorPane.topAnchor="102.0">
+                  <image>
+                      <Image url="@../graphics/board/cloud_card.png" />
+                  </image>
+              </ImageView>
+              <ImageView fx:id="cloud3" fitHeight="96.0" fitWidth="110.0" layoutX="175.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="32.0">
+                  <image>
+                      <Image url="@../graphics/board/cloud_card.png" />
+                  </image>
+              </ImageView>
+              <GridPane fx:id="gridCloud1" layoutX="70.0" layoutY="120.0" prefHeight="60.0" prefWidth="58.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="279.77777777777777" AnchorPane.topAnchor="120.0">
                   <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -189,15 +168,36 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
               </GridPane>
+              <GridPane fx:id="gridCloud2" layoutX="313.0" layoutY="120.0" prefHeight="60.0" prefWidth="58.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="313.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="120.0">
+                  <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+              </GridPane>
+              <GridPane fx:id="gridCloud3" layoutX="194.0" layoutY="50.0" prefHeight="60.0" prefWidth="58.0" AnchorPane.bottomAnchor="92.0" AnchorPane.leftAnchor="194.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="50.0">
+                  <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+              </GridPane>
+
           </AnchorPane>
-         <AnchorPane fx:id="secondSchoolPane" layoutX="13.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="182.0">
+         <AnchorPane fx:id="secondSchoolPane" layoutX="13.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="182.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="12.0">
             <children>
-               <ImageView fx:id="secondPlayerSchool" fitHeight="182.0" fitWidth="466.0" layoutX="-119.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" AnchorPane.leftAnchor="-119.0" AnchorPane.rightAnchor="-118.35413275824652">
+               <ImageView fx:id="secondPlayerSchool" fitHeight="182.0" fitWidth="466.0" layoutX="-119.0" layoutY="131.0" preserveRatio="true" rotate="90.0" AnchorPane.leftAnchor="-119.0" AnchorPane.rightAnchor="131.0">
                   <image>
                      <Image url="@../graphics/board/Plancia_DEF2.png" />
                   </image>
                </ImageView>
-               <GridPane fx:id="gridEntrance2" alignment="CENTER" layoutX="15.0" layoutY="22.0" minHeight="-Infinity" minWidth="-Infinity">
+               <GridPane fx:id="gridEntrance2" alignment="CENTER" layoutX="15.0" layoutY="22.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.6" prefWidth="151.1" AnchorPane.bottomAnchor="372.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="22.0">
                  <columnConstraints>
                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
@@ -210,8 +210,8 @@
                    <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                </GridPane>
-               <GridPane fx:id="gridDining2" alignment="CENTER" layoutX="18.0" layoutY="88.0" prefHeight="204.0" prefWidth="141.0">
-                 <columnConstraints >
+               <GridPane fx:id="gridDining2" alignment="CENTER" layoutX="18.0" layoutY="88.0" prefHeight="204.0" prefWidth="141.0" AnchorPane.bottomAnchor="153.5" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="88.0">
+                 <columnConstraints>
                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
@@ -231,12 +231,12 @@
                    <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                </GridPane>
-               <GridPane fx:id="gridTower2" layoutX="31.0" layoutY="350.0">
+               <GridPane fx:id="gridTower2" layoutX="31.0" layoutY="350.0" prefHeight="60.44" prefWidth="120.88" AnchorPane.bottomAnchor="33.6" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="30.4" AnchorPane.topAnchor="350.0">
                  <columnConstraints>
-                   <ColumnConstraints  halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                   <ColumnConstraints  halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                     <ColumnConstraints  halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                  </columnConstraints>
                  <rowConstraints>
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -247,14 +247,15 @@
          </AnchorPane>
       </children>
    </AnchorPane>
-   <AnchorPane fx:id="mySchoolPane" layoutX="407.0" layoutY="524.0" prefHeight="182.0" prefWidth="466.0">
+   <AnchorPane fx:id="mySchoolPane" centerShape="true" layoutX="415.0" layoutY="524.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="182.0" prefWidth="466.0" AnchorPane.bottomAnchor="13.0">
       <children>
-         <ImageView fx:id="mySchool" fitHeight="182.0" fitWidth="466.0" layoutX="23.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+
+         <ImageView fx:id="mySchool" fitHeight="182.0" fitWidth="466.0" preserveRatio="true" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="0.0">
             <image>
                <Image url="@../graphics/board/Plancia_DEF2.png" />
             </image>
          </ImageView>
-         <GridPane fx:id="gridEntrance1" alignment="CENTER" layoutX="-18.0" layoutY="66.0" minHeight="-Infinity" minWidth="-Infinity" rotate="270.0">
+         <GridPane fx:id="gridEntrance1" alignment="CENTER" layoutX="-18.0" layoutY="66.0" minHeight="-Infinity" minWidth="-Infinity" rotate="270.0" AnchorPane.bottomAnchor="65.55555555555557" AnchorPane.leftAnchor="-18.0" AnchorPane.rightAnchor="333.1111111111111" AnchorPane.topAnchor="66.0">
             <columnConstraints>
                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
@@ -267,19 +268,7 @@
                <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
             </rowConstraints>
          </GridPane>
-         <GridPane fx:id="gridTower1" layoutX="330.0" layoutY="61.0" rotate="270.0">
-            <columnConstraints>
-               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-         </GridPane>
-         <GridPane fx:id="gridDining22" layoutX="129.0" layoutY="-13.0" prefHeight="204.0" prefWidth="141.0" rotate="270.0">
+         <GridPane fx:id="gridDining22" layoutX="129.0" layoutY="-13.0" prefHeight="204.0" prefWidth="141.0" rotate="270.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="129.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="-13.0">
             <columnConstraints>
                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
@@ -300,9 +289,21 @@
                <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
             </rowConstraints>
          </GridPane>
+          <GridPane fx:id="gridTower1" layoutX="330.0" layoutY="58.0" rotate="270.0" AnchorPane.bottomAnchor="63.777777777777786" AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="15.333333333333343" AnchorPane.topAnchor="58.0">
+              <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+          </GridPane>
       </children>
    </AnchorPane>
-   <HBox alignment="CENTER" fx:id="assistantCard" layoutY="538.0" prefHeight="182.0" prefWidth="1280.0" spacing="10"/>
+   <HBox fx:id="assistantCard" alignment="CENTER" layoutY="538.0" prefHeight="182.0" prefWidth="1280.0" spacing="10" />
 
 
 </AnchorPane>

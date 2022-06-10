@@ -151,7 +151,7 @@ public class GameController implements GUIController{
             thirdPlayerSchool.setVisible(false);
             cloud3.setVisible(false);
         }
-        int count=0;
+        int count=3;
         for(Cloud cloud:gui.getVmodel().getClouds()){
             cloudGrids.getChildren().get(count).setUserData(count);
             cloudGrids.getChildren().get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -167,6 +167,8 @@ public class GameController implements GUIController{
                 }
             });
             cloudGridsList.add((GridPane)cloudGrids.getChildren().get(count));
+            //AnchorPane.setBottomAnchor(cloudGridsList.get(count),102.00);
+            //AnchorPane.setLeftAnchor(cloudGridsList.get(count),51.00);
             count++;
         }
 
@@ -192,10 +194,11 @@ public class GameController implements GUIController{
     public void showSchool(){
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
-        /* show entrance students*/
+
         for(Player player: vmodel.getPlayers()){
             int k=0;
             int j=0;
+            /* show entrance students*/
             for(Color color: player.getEntryStudents().keySet()) {
                 for (int i = 0; i < player.getEntryStudents().get(color); i++) {
                     Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
@@ -221,8 +224,55 @@ public class GameController implements GUIController{
                     }
                 }
             }
+            /* show towers on school*/
+            k=0;
+            j=0;
+            for(int h=0; h<player.getNumberOfTower();h++){
+                Image towerImg = new Image(getClass().getResourceAsStream("/graphics/board/" + player.getTower().getFile()));
+                ImageView towerImgView = new ImageView(towerImg);
+                towerImgView.setFitHeight(30);
+                towerImgView.setRotate(90);
+                towerImgView.setPreserveRatio(true);
+                schoolTowersGridsList.get(count).add(towerImgView,j,k);
+                if (j == 3) {
+                    k++;
+                    j = 0;
+                } else {
+                    j++;
+                }
+            }
+
+            /* show dining students*/
+            for(Color color: player.getStudents().keySet()) {
+                j=0;
+                for (int i = 0; i < player.getStudents().get(color); i++) {
+                    Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
+                    ImageView studentImgview = new ImageView(studentImg);
+                    studentImgview.setFitHeight(15);
+                    studentImgview.setPreserveRatio(true);
+                    switch(color){
+                        case BLUE:
+                            schoolDiningGridsList.get(count).add(studentImgview,0,j);
+                            break;
+                        case PINK:
+                            schoolDiningGridsList.get(count).add(studentImgview,1,j);
+                            break;
+                        case YELLOW:
+                            schoolDiningGridsList.get(count).add(studentImgview,2,j);
+                            break;
+                        case RED:
+                            schoolDiningGridsList.get(count).add(studentImgview,3,j);
+                            break;
+                        case GREEN:
+                            schoolDiningGridsList.get(count).add(studentImgview,4,j);
+                            break;
+                    }
+                    j++;
+                }
+                }
             count++;
         }
+
 
 
     }
