@@ -421,7 +421,7 @@ public class VirtualModel {
     }
 
     public void moveMotherNature(int steps){
-        this.motherNaturePosition=(motherNaturePosition+steps)%12;
+        this.motherNaturePosition=(motherNaturePosition+steps)%this.islands.size();
     }
 
     public boolean isUseCharacterCard() { return useCharacterCard;}
