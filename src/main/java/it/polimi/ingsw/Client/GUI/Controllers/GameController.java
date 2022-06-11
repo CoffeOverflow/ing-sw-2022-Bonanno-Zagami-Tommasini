@@ -15,6 +15,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -52,6 +53,9 @@ public class GameController implements GUIController{
     public List<GridPane> schoolEntranceGridsList=new ArrayList<>();
     public List<GridPane> schoolDiningGridsList=new ArrayList<>();
     public List<GridPane> schoolTowersGridsList=new ArrayList<>();
+
+    public List<GridPane> islandGridsList=new ArrayList<>();
+    public List<Group> islandGroupsList=new ArrayList<>();
 
 
 
@@ -185,11 +189,39 @@ public class GameController implements GUIController{
             schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
         }
 
+        for(int i=0; i<gui.getVmodel().getIslands().size();i++){
+            islandGroupsList.add((Group)boardAndOthersSchool.getChildren().get(i));
+            islandGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(1));
+        }
+
     }
     public void showBoard(){
         this.showCloud();
         this.showSchool();
+        this.showIsland();
+    }
 
+    private void showIsland() {
+        VirtualModel vmodel=gui.getVmodel();
+        int count=0;
+        for(Island island: vmodel.getIslands()){
+            int k=0;
+            int j=0;
+            for(Color color:island.getStudents().keySet()){
+                for(int i=0; i<island.getStudents().get(color);i++){
+                    Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
+                    ImageView studentImgview = new ImageView(studentImg);
+                    studentImgview.setFitHeight(15);
+                    studentImgview.setPreserveRatio(true);
+                    islandGridsList.get(count).add(studentImgview,j,k);
+                    if(j==3){
+                        k++;
+                        j=0;
+                    }else j++;
+                }
+            }
+            count++;
+        }
     }
 
     public void showSchool(){
