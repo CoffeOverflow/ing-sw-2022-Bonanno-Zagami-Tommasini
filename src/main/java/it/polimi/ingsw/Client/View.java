@@ -43,13 +43,6 @@ public interface View {
 
     void showBoard();
 
-    void showIsland();
-
-    void showSchool(Player p,String colorTower);
-
-    void showClouds();
-
     void chooseOption(ChooseOption msg);
 
-    void showCharacterCard();
 }
