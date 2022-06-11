@@ -331,6 +331,13 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void chooseOption(ChooseOption msg) {
+        GameController controller = (GameController) sceneToController.get(currentScene);
+        if(msg.getType()==OptionType.MOVESTUDENTS)
+            controller.setCurrentPhase(GamePhase.MOVESTUDENT);
+        else if(msg.getType()==OptionType.MOVENATURE)
+            controller.setCurrentPhase(GamePhase.MOVEMOTHERNATURE);
+        else if(msg.getType()== OptionType.CHOOSECLOUD)
+            controller.setCurrentPhase(GamePhase.CHOOSECLOUD);
 
     }
 

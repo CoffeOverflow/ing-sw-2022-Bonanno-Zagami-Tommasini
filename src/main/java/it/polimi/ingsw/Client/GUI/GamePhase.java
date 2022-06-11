@@ -6,5 +6,8 @@ public enum GamePhase {
     CHARACTER,
     ANOTHERPLAYERTURN,
     FILLCLOUD,
+    MOVESTUDENT,
+    CHOOSECLOUD,
+    MOVEMOTHERNATURE,
     GAME;
 }

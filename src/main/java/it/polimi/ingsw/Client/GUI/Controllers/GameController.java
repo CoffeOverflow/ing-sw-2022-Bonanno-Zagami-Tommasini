@@ -7,6 +7,7 @@ import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.GUI.GamePhase;
 import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Server.ServerToClient.ChooseOption;
 import it.polimi.ingsw.Server.ServerToClient.SelectAssistantCard;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import javafx.application.Platform;
@@ -210,9 +211,9 @@ public class GameController implements GUIController{
 
                         @Override public void handle(MouseEvent mouseEvent) {
 
-                            Alert a = new Alert(Alert.AlertType.INFORMATION);
+                            /*Alert a = new Alert(Alert.AlertType.INFORMATION);
                             a.setContentText("This is checkmark");
-                            a.show();
+                            a.show();*/
                         }
                     });
                     schoolEntranceGridsList.get(count).add(studentImgview, j, k);
@@ -359,5 +360,9 @@ public class GameController implements GUIController{
         Node node=(Node) event.getSource();
         int cloudId=(int) node.getUserData();
         gui.send((new ChooseCloud(cloudId)));
+    }
+
+    public void setCurrentPhase(GamePhase currentPhase) {
+        this.currentPhase = currentPhase;
     }
 }
