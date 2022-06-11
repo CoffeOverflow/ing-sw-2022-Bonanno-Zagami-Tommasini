@@ -11,6 +11,7 @@ import it.polimi.ingsw.Server.ServerToClient.ChooseOption;
 import it.polimi.ingsw.Server.ServerToClient.SelectAssistantCard;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -47,9 +48,13 @@ public class GameController implements GUIController{
 
     public AnchorPane cloudGrids;
     public HBox assistantCard;
+    public HBox character;
+    public HBox charAndMoney;
     public AnchorPane secondSchoolPane;
     public AnchorPane thirdSchoolPane;
     public AnchorPane mySchoolPane;
+    public GridPane moneyWizardGrid;
+    public GridPane wizardGrid;
 
     public List<GridPane> cloudGridsList=new ArrayList<>();
     public List<GridPane> schoolEntranceGridsList=new ArrayList<>();
@@ -60,8 +65,6 @@ public class GameController implements GUIController{
     public List<GridPane> islandGridsList=new ArrayList<>();
     public List<Group> islandGroupsList=new ArrayList<>();
 
-
-
     public void initialize() {
         mainPane.setVisible(true);
         boardAndOthersSchool.setVisible(false);
@@ -70,8 +73,6 @@ public class GameController implements GUIController{
         selectWizard.setVisible(false);
         waitForOtherWizard.setVisible(false);
         currentPhase = GamePhase.WIZARD;
-
-
     }
 
     @Override
@@ -121,6 +122,58 @@ public class GameController implements GUIController{
 
     }
 
+    public void showCharacterCard(){
+        List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
+        for(CharacterCard charCard:characterCards){
+            Image characterImg = new Image(getClass().getResourceAsStream("/graphics/character/"+charCard.getAsset()));
+            ImageView characterImgview = new ImageView(characterImg);
+            characterImgview.setFitHeight(150);
+            characterImgview.setPreserveRatio(true);
+            //Creating a Button
+            Button characterButton = new Button();
+            //Setting the size of the button
+            characterButton.setPrefSize(60, 150);
+            //Setting a graphic to the button
+            characterButton.setGraphic(characterImgview);
+            characterButton.setUserData(charCard.getAsset());
+            characterButton.setOnAction(new EventHandler() {
+
+                @Override public void handle(Event event) {
+                    chooseCharacter(event);
+                }
+            });
+            character.getChildren().add(characterButton);
+        }
+    }
+
+    public void showMoney(){
+        Image wizardImg = new Image(getClass().getResourceAsStream("/graphics/wizards/"+gui.getVmodel().getClientPlayer().getWizard().getCutFile()));
+        ImageView wizardImgview = new ImageView(wizardImg);
+        wizardImgview.setFitHeight(70);
+        wizardImgview.setPreserveRatio(true);
+        Image circle = new Image(getClass().getResourceAsStream("/graphics/additionalElement/cerchi.png"));
+        ImageView circleImageView = new ImageView(circle);
+        circleImageView.setFitHeight(80);
+        circleImageView.setPreserveRatio(true);
+        moneyWizardGrid.add(circleImageView,0,0);
+
+        wizardGrid.add(wizardImgview,0,0);
+
+        for(int i=0;i<gui.getVmodel().getClientPlayer().getMoney();i++)
+        {
+            Image moneyImg = new Image(getClass().getResourceAsStream("/graphics/additionalElement/Moneta_base.png"));
+            ImageView moneyImgView=new ImageView(moneyImg);
+            moneyImgView.setFitHeight(70);
+            moneyImgView.setPreserveRatio(true);
+            moneyWizardGrid.add(moneyImgView,i+1,0);
+        }
+
+    }
+
+    public void chooseCharacter(Event event){
+
+    }
+
     public void selectWizard(SelectWizard wizards){
 
         listOfWizards.getChildren().clear();
@@ -166,17 +219,12 @@ public class GameController implements GUIController{
 
                 @Override public void handle(MouseEvent mouseEvent) {
 
-                    if(currentPhase==GamePhase.FILLCLOUD){
+                    if(currentPhase==GamePhase.CHOOSECLOUD){
                         chooseCloud(mouseEvent);
-                    }else{
-                    Alert a = new Alert(Alert.AlertType.ERROR);
-                    a.setContentText("You can't take the students in this phase");
-                    a.show();}
+                    }
                 }
             });
             cloudGridsList.add((GridPane)cloudGrids.getChildren().get(count));
-            //AnchorPane.setBottomAnchor(cloudGridsList.get(count),102.00);
-            //AnchorPane.setLeftAnchor(cloudGridsList.get(count),51.00);
             count++;
         }
 
@@ -202,9 +250,11 @@ public class GameController implements GUIController{
         this.showCloud();
         this.showSchool();
         this.showIsland();
+        this.showCharacterCard();
+        this.showMoney();
     }
 
-    private void showIsland() {
+    public void showIsland() {
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
         for(Island island: vmodel.getIslands()){
