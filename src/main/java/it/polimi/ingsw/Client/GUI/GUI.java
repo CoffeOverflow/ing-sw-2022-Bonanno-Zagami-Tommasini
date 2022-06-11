@@ -315,21 +315,6 @@ public class GUI extends Application implements Runnable, View
     }
 
     @Override
-    public void showIsland() {
-
-    }
-
-    @Override
-    public void showSchool(Player p,String colorTower) {
-
-    }
-
-    @Override
-    public void showClouds() {
-
-    }
-
-    @Override
     public void chooseOption(ChooseOption msg) {
         GameController controller = (GameController) sceneToController.get(currentScene);
         if(msg.getType()==OptionType.MOVESTUDENTS)
@@ -338,11 +323,6 @@ public class GUI extends Application implements Runnable, View
             controller.setCurrentPhase(GamePhase.MOVEMOTHERNATURE);
         else if(msg.getType()== OptionType.CHOOSECLOUD)
             controller.setCurrentPhase(GamePhase.CHOOSECLOUD);
-
-    }
-
-    @Override
-    public void showCharacterCard() {
 
     }
 

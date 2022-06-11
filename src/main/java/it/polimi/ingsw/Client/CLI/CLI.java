@@ -301,8 +301,6 @@ public class CLI implements View, Runnable {
 
     }
 
-
-    @Override
     public void showCharacterCard(){
         List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
         if(!characterCards.equals(null)) {
@@ -339,7 +337,6 @@ public class CLI implements View, Runnable {
         }
     }
 
-    @Override
     public void showIsland(){
 
         EnumMap<Color,Integer> students;
@@ -414,7 +411,6 @@ public class CLI implements View, Runnable {
         }
     }
 
-    @Override
     public void showSchool(Player p,String colorTower){
 
         char[][] boardElement = new char[5][14];
@@ -518,7 +514,6 @@ public class CLI implements View, Runnable {
 
     }
 
-    @Override
     public void showClouds() {
         List<Cloud> clouds = this.vmodel.getClouds();
         EnumMap<Color, Integer> students;
