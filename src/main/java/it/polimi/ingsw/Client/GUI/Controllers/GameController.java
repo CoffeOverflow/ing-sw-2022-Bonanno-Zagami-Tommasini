@@ -19,6 +19,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -52,6 +54,7 @@ public class GameController implements GUIController{
     public List<GridPane> schoolEntranceGridsList=new ArrayList<>();
     public List<GridPane> schoolDiningGridsList=new ArrayList<>();
     public List<GridPane> schoolTowersGridsList=new ArrayList<>();
+    private Integer[] selectedStudent = null;
 
 
 
@@ -207,15 +210,16 @@ public class GameController implements GUIController{
                     studentImgview.setFitHeight(15);
                     //wizardImgview.setFitWidth(494);
                     studentImgview.setPreserveRatio(true);
-                    studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    if(count == 0){
+                        studentImgview.setUserData(new Integer[]{j, k});
+                        studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
-                        @Override public void handle(MouseEvent mouseEvent) {
-
-                            /*Alert a = new Alert(Alert.AlertType.INFORMATION);
-                            a.setContentText("This is checkmark");
-                            a.show();*/
-                        }
-                    });
+                            @Override public void handle(MouseEvent mouseEvent) {
+                                //Evidenziare lo studente e settare la variabile
+                                setSelectedStudent(mouseEvent);
+                            }
+                        });
+                    }
                     schoolEntranceGridsList.get(count).add(studentImgview, j, k);
                     if (j == 3 && k==0) {
                         k++;
@@ -364,5 +368,29 @@ public class GameController implements GUIController{
 
     public void setCurrentPhase(GamePhase currentPhase) {
         this.currentPhase = currentPhase;
+    }
+
+
+    public void setSelectedStudent(MouseEvent event){
+        System.out.println(currentPhase);
+        if(currentPhase.equals(GamePhase.MOVESTUDENT)){
+            if(selectedStudent != null){
+                for (Node student : this.schoolEntranceGridsList.get(0).getChildren()) {
+                    if(GridPane.getColumnIndex(student) ==  selectedStudent[0] && GridPane.getRowIndex(student) == selectedStudent[1]){
+                        student.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+                    }
+                }
+            }
+            Node node = (Node) event.getSource();
+            this.selectedStudent = (Integer[]) node.getUserData();
+
+            for (Node student : this.schoolEntranceGridsList.get(0).getChildren()) {
+                if(GridPane.getColumnIndex(student) ==  selectedStudent[0] && GridPane.getRowIndex(student) == selectedStudent[1]){
+                    student.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
+                }
+            }
+
+        }
+
     }
 }

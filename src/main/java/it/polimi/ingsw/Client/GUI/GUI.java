@@ -239,7 +239,7 @@ public class GUI extends Application implements Runnable, View
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                controller.changePhase(GamePhase.ANOTHERPLAYERTURN);
+                controller.changePhase(msg.contains("it's your turn")? GamePhase.MOVESTUDENT : GamePhase.ANOTHERPLAYERTURN);
             }
         });
 
