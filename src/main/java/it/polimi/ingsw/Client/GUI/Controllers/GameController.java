@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.GUI.Controllers;
 import it.polimi.ingsw.Client.ClientToServer.ChooseCloud;
 import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Client.ClientToServer.PlayAssistantCard;
+import it.polimi.ingsw.Client.ClientToServer.UseCharacterCard;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.GUI.GamePhase;
 import it.polimi.ingsw.Client.VirtualModel;
@@ -29,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,6 +66,10 @@ public class GameController implements GUIController{
 
     public List<GridPane> islandGridsList=new ArrayList<>();
     public List<Group> islandGroupsList=new ArrayList<>();
+    public GridPane cardGrid1;
+    public GridPane cardGrid2;
+    public GridPane cardGrid3;
+
 
     public void initialize() {
         mainPane.setVisible(true);
@@ -124,7 +130,14 @@ public class GameController implements GUIController{
 
     public void showCharacterCard(){
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
+        List<GridPane> cardGridList=new ArrayList<>();
+        cardGridList.add(cardGrid1);
+        cardGridList.add(cardGrid2);
+        cardGridList.add(cardGrid3);
+        int countForCardGrid=0;
         for(CharacterCard charCard:characterCards){
+            int j=0;
+            int k=0;
             Image characterImg = new Image(getClass().getResourceAsStream("/graphics/character/"+charCard.getAsset()));
             ImageView characterImgview = new ImageView(characterImg);
             characterImgview.setFitHeight(150);
@@ -139,11 +152,60 @@ public class GameController implements GUIController{
             characterButton.setOnAction(new EventHandler() {
 
                 @Override public void handle(Event event) {
-                    chooseCharacter(event);
+                    if(currentPhase==GamePhase.CHARACTER)
+                        chooseCharacter(event);
                 }
             });
+            List<String> characterStudentName = new ArrayList<>();
+            characterStudentName.add("innkeeper.jpg");
+            characterStudentName.add("clown.jpg");
+            characterStudentName.add("princess.jpg");
+            EnumMap<Color,Integer> studentsOnCard=new EnumMap<Color, Integer>(Color.class);
+            if (characterStudentName.contains(charCard.getAsset())) {
+                studentsOnCard=charCard.getStudents().get();
+                for(Color c:Color.values()){
+                    while(studentsOnCard.get(c)>0)
+                    {
+                        Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + c.getFileStudent()));
+                        ImageView studentImgview = new ImageView(studentImg);
+                        studentImgview.setFitHeight(15);
+                        studentImgview.setPreserveRatio(true);
+                        cardGridList.get(countForCardGrid).add(studentImgview,j,k);
+                        if(j==1){
+                            j=0;
+                            k++;
+                        }else
+                            j++;
+                        studentsOnCard.put(c,studentsOnCard.get(c)-1);
+                    }
+                }
+            }
+
+
+            if(charCard.getAsset().equals("herbalist.jpg")){
+                Image noEntryImage = new Image(getClass().getResourceAsStream("/graphics/board/deny_island_icon.png"));
+                ImageView noEntryImageview = new ImageView(noEntryImage);
+                noEntryImageview.setFitHeight(15);
+                noEntryImageview.setPreserveRatio(true);
+                    int noEntryTitles=charCard.getNoEntryTiles().get();
+                    while(noEntryTitles>0)
+                    {
+                        cardGridList.get(countForCardGrid).add(noEntryImageview,j,k);
+                        if(j==1){
+                            j=0;
+                            k++;
+                        }else
+                            j++;
+
+                        noEntryTitles--;
+                    }
+            }
+
             character.getChildren().add(characterButton);
+
+            countForCardGrid++;
         }
+
     }
 
     public void showMoney(){
@@ -171,6 +233,8 @@ public class GameController implements GUIController{
     }
 
     public void chooseCharacter(Event event){
+
+        //gui.send(new UseCharacterCard());
 
     }
 
@@ -244,6 +308,7 @@ public class GameController implements GUIController{
             islandGroupsList.add((Group)boardAndOthersSchool.getChildren().get(i));
             islandGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(1));
         }
+
 
     }
     public void showBoard(){
