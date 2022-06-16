@@ -70,6 +70,11 @@ public class GameController implements GUIController{
     public GridPane cardGrid2;
     public GridPane cardGrid3;
 
+    private Integer posIsland=null;
+    private EnumMap<Color,Integer> choosenStudent=null;
+    private EnumMap<Color,Integer> entranceStudent=null;
+    private Color color=null;
+
 
     public void initialize() {
         mainPane.setVisible(true);
@@ -99,7 +104,17 @@ public class GameController implements GUIController{
             case ASSISTANT:
                 assistantCard.setVisible(false);
                 mySchool.setVisible(true);
+                character.setVisible(true);
+                wizardGrid.setVisible(true);
+                moneyWizardGrid.setVisible(true);
+                cardGrid1.setVisible(true);
+                cardGrid2.setVisible(true);
+                cardGrid3.setVisible(true);
+                for(int i=0;i<3;i++){
+                    character.getChildren().get(i).setDisable(false);
+                }
                 currentPhase = GamePhase.GAME;
+                this.showBoard();
                 break;
         }
     }
@@ -129,6 +144,7 @@ public class GameController implements GUIController{
     }
 
     public void showCharacterCard(){
+        character.getChildren().clear();
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
         List<GridPane> cardGridList=new ArrayList<>();
         cardGridList.add(cardGrid1);
@@ -152,7 +168,7 @@ public class GameController implements GUIController{
             characterButton.setOnAction(new EventHandler() {
 
                 @Override public void handle(Event event) {
-                    if(currentPhase==GamePhase.CHARACTER)
+                    if(currentPhase!=GamePhase.ANOTHERPLAYERTURN)
                         chooseCharacter(event);
                 }
             });
@@ -183,13 +199,14 @@ public class GameController implements GUIController{
 
 
             if(charCard.getAsset().equals("herbalist.jpg")){
-                Image noEntryImage = new Image(getClass().getResourceAsStream("/graphics/board/deny_island_icon.png"));
-                ImageView noEntryImageview = new ImageView(noEntryImage);
-                noEntryImageview.setFitHeight(15);
-                noEntryImageview.setPreserveRatio(true);
+
                     int noEntryTitles=charCard.getNoEntryTiles().get();
                     while(noEntryTitles>0)
                     {
+                        Image noEntryImage = new Image(getClass().getResourceAsStream("/graphics/board/deny_island_icon.png"));
+                        ImageView noEntryImageview = new ImageView(noEntryImage);
+                        noEntryImageview.setFitHeight(15);
+                        noEntryImageview.setPreserveRatio(true);
                         cardGridList.get(countForCardGrid).add(noEntryImageview,j,k);
                         if(j==1){
                             j=0;
@@ -233,7 +250,17 @@ public class GameController implements GUIController{
     }
 
     public void chooseCharacter(Event event){
+        currentPhase=GamePhase.CHARACTER;
+        Node node=(Node)event.getSource();
+        String asset=(String) node.getUserData();
 
+
+        switch (asset){
+            case "innkeeper.jpg":
+
+                break;
+
+        }
         //gui.send(new UseCharacterCard());
 
     }
@@ -332,6 +359,19 @@ public class GameController implements GUIController{
                     studentImgview.setFitHeight(15);
                     studentImgview.setPreserveRatio(true);
                     islandGridsList.get(count).add(studentImgview,j,k);
+                    Group actualGroup=islandGroupsList.get(count);
+                    actualGroup.setUserData(count);
+                        islandGroupsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                            @Override public void handle(MouseEvent mouseEvent) {
+
+                                if(currentPhase==GamePhase.CHARACTER){
+                                    posIsland=(Integer) actualGroup.getUserData();
+                                    System.out.println("posizione isola: "+posIsland);
+                                }
+                            }
+                        });
+
                     if(j==3){
                         k++;
                         j=0;
@@ -463,6 +503,16 @@ public class GameController implements GUIController{
 
     public void selectAssistantCard(SelectAssistantCard msg){
         mySchool.setVisible(false);
+        character.setVisible(false);
+        wizardGrid.setVisible(false);
+        moneyWizardGrid.setVisible(false);
+        cardGrid1.setVisible(false);
+        cardGrid2.setVisible(false);
+        cardGrid3.setVisible(false);
+        for(int i=0;i<3;i++){
+            character.getChildren().get(i).setDisable(true);
+        }
+
         assistantCard.setVisible(true);
         currentPhase = GamePhase.ASSISTANT;
         assistantCard.getChildren().clear();
