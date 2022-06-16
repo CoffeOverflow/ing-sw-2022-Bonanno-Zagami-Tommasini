@@ -240,7 +240,7 @@ public class GameController implements GUIController{
 
         for(int i=0;i<gui.getVmodel().getClientPlayer().getMoney();i++)
         {
-            Image moneyImg = new Image(getClass().getResourceAsStream("/graphics/additionalElement/Moneta_base.png"));
+            Image moneyImg = new Image(getClass().getResourceAsStream("/graphics/additionalElement/coin.png"));
             ImageView moneyImgView=new ImageView(moneyImg);
             moneyImgView.setFitHeight(70);
             moneyImgView.setPreserveRatio(true);
