@@ -46,6 +46,15 @@
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                </GridPane>
+                <GridPane fx:id="towerIslandgrid1" layoutX="46.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
             </children>
          </Group>
          <Group fx:id="groupIsland2" layoutX="700.0" layoutY="14.0">
@@ -66,6 +75,15 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
+               <GridPane fx:id="towerIslandgrid2" layoutX="46.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                </GridPane>
@@ -92,6 +110,15 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                </GridPane>
+               <GridPane fx:id="towerIslandgrid3" layoutX="44.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
             </children>
          </Group>
          <Group fx:id="groupIsland4" layoutX="885.0" layoutY="189.0">
@@ -112,6 +139,15 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
+               <GridPane fx:id="towerIslandgrid4" layoutX="44.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                </GridPane>
@@ -138,6 +174,15 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                </GridPane>
+               <GridPane fx:id="towerIslandgrid5" layoutX="43.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
             </children>
          </Group>
           <Group fx:id="groupIsland6" layoutX="700.0" layoutY="372.0">
@@ -161,6 +206,15 @@
                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
+               <GridPane fx:id="towerIslandgrid6" layoutX="40.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
               </children>
           </Group>
           <Group fx:id="groupIsland7" layoutX="560.0" layoutY="378.0">
@@ -184,6 +238,15 @@
                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
+               <GridPane fx:id="towerIslandgrid7" layoutX="44.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
               </children>
           </Group>
           <Group fx:id="groupIsland8" layoutX="430.0" layoutY="372.0">
@@ -207,6 +270,15 @@
                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
+               <GridPane fx:id="towerIslandgrid8" layoutX="41.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
               </children>
           </Group>
           <Group fx:id="groupIsland9" layoutX="310.0" layoutY="303.0">
@@ -230,6 +302,15 @@
                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
+               <GridPane fx:id="towerIslandgrid9" layoutX="45.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
               </children>
           </Group>
           <Group fx:id="groupIsland10" layoutX="325.0" layoutY="255.0">
@@ -253,6 +334,15 @@
                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
+               <GridPane fx:id="towerIslandgrid10" layoutX="-60.0" layoutY="-64.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
               </children>
           </Group>
           <Group fx:id="groupIsland11" layoutX="310.0" layoutY="75.0">
@@ -276,6 +366,15 @@
                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
+               <GridPane fx:id="towerIslandgrid11" layoutX="41.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
               </children>
           </Group>
          <Group fx:id="groupIsland12" layoutX="430.0" layoutY="14.0">
@@ -296,6 +395,15 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
+               <GridPane fx:id="towerIslandGrid12" layoutX="41.0">
+                  <columnConstraints>
+                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  </columnConstraints>
+                  <rowConstraints>
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                </GridPane>
@@ -402,6 +510,18 @@
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                </GridPane>
+                <GridPane fx:id="secondSchoolProfGrid" layoutX="18.0" layoutY="305.0" prefWidth="141.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
             </children>
          </AnchorPane>
           <AnchorPane fx:id="thirdSchoolPane" layoutX="1042.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="198.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="12.0">
@@ -427,18 +547,6 @@
                           <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
-                  <GridPane fx:id="gridTower3" layoutX="44.0" layoutY="339.0" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="340.0">
-                      <columnConstraints>
-                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                      </columnConstraints>
-                      <rowConstraints>
-                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      </rowConstraints>
-                  </GridPane>
                   <GridPane fx:id="gridDining21" layoutX="33.0" layoutY="81.0" prefHeight="204.0" prefWidth="141.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="80.0">
                       <columnConstraints>
                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
@@ -460,6 +568,30 @@
                           <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                   </GridPane>
+                  <GridPane fx:id="gridTower3" layoutX="44.0" layoutY="339.0" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="340.0">
+                      <columnConstraints>
+                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                  </GridPane>
+                  <GridPane fx:id="thirdSchoolProfGrid" layoutX="33.0" layoutY="297.0" prefWidth="141.0">
+                  <columnConstraints>
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+               </GridPane>
               </children>
           </AnchorPane>
       </children>
@@ -518,6 +650,18 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
           </GridPane>
+         <GridPane fx:id="mySchoolProfGrid" layoutX="258.0" layoutY="79.0" prefWidth="141.0" rotate="270.0">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+         </GridPane>
       </children>
    </AnchorPane>
    <HBox fx:id="character" prefHeight="182.0" prefWidth="391.0" spacing="10" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />

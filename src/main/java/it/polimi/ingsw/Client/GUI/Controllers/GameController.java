@@ -20,12 +20,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -59,12 +62,15 @@ public class GameController implements GUIController{
     public List<GridPane> cloudGridsList=new ArrayList<>();
     public List<GridPane> schoolEntranceGridsList=new ArrayList<>();
     public List<GridPane> schoolDiningGridsList=new ArrayList<>();
+
+    public List<GridPane> schoolProfGridsList=new ArrayList<>();
     public List<GridPane> schoolTowersGridsList=new ArrayList<>();
     private Integer[] selectedStudent = null;
     private Color colorOfSelectedStudent = null;
     private int numberOfMovedStudent = 0;
 
     public List<GridPane> islandGridsList=new ArrayList<>();
+    public List<GridPane> islandTowerGridsList=new ArrayList<>();
     public List<Group> islandGroupsList=new ArrayList<>();
     public GridPane cardGrid1;
     public GridPane cardGrid2;
@@ -331,6 +337,7 @@ public class GameController implements GUIController{
                 schoolEntranceGridsList.add((GridPane) mySchoolPane.getChildren().get(1));
                 schoolDiningGridsList.add((GridPane) mySchoolPane.getChildren().get(2));
                 schoolTowersGridsList.add((GridPane) mySchoolPane.getChildren().get(3));
+                schoolProfGridsList.add((GridPane)mySchoolPane.getChildren().get(4));
             }else{
                 count++;
                 switch(count){
@@ -338,29 +345,20 @@ public class GameController implements GUIController{
                         schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
                         schoolDiningGridsList.add((GridPane)secondSchoolPane.getChildren().get(2));
                         schoolTowersGridsList.add((GridPane)secondSchoolPane.getChildren().get(3));
+                        schoolProfGridsList.add((GridPane)secondSchoolPane.getChildren().get(4));
                         break;
                     case 3:
                         schoolEntranceGridsList.add((GridPane)thirdSchoolPane.getChildren().get(1));
                         schoolDiningGridsList.add((GridPane)thirdSchoolPane.getChildren().get(2));
                         schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
+                        schoolProfGridsList.add((GridPane)thirdSchoolPane.getChildren().get(4));
                 }
             }
         }
-        /*schoolEntranceGridsList.add((GridPane)mySchoolPane.getChildren().get(1));
-        schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
-        schoolDiningGridsList.add((GridPane)mySchoolPane.getChildren().get(2));
-        schoolDiningGridsList.add((GridPane)secondSchoolPane.getChildren().get(2));
-        schoolTowersGridsList.add((GridPane)mySchoolPane.getChildren().get(3));
-        schoolTowersGridsList.add((GridPane)secondSchoolPane.getChildren().get(3));
-        if(gui.getVmodel().getPlayers().size()==3){
-            schoolEntranceGridsList.add((GridPane)thirdSchoolPane.getChildren().get(1));
-            schoolDiningGridsList.add((GridPane)thirdSchoolPane.getChildren().get(2));
-            schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
-        }*/
-
         for(int i=0; i<gui.getVmodel().getIslands().size();i++){
             islandGroupsList.add((Group)boardAndOthersSchool.getChildren().get(i));
             islandGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(1));
+            islandTowerGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(2));
         }
 
 
@@ -375,6 +373,10 @@ public class GameController implements GUIController{
         for(GridPane gridPane: islandGridsList)
             gridPane.getChildren().clear();
         for(GridPane gridPane: cloudGridsList)
+            gridPane.getChildren().clear();
+        for(GridPane gridPane: schoolProfGridsList)
+            gridPane.getChildren().clear();
+        for(GridPane gridPane: islandTowerGridsList)
             gridPane.getChildren().clear();
 
         this.showCloud();
@@ -393,8 +395,12 @@ public class GameController implements GUIController{
                 ImageView motherNatureImgview = new ImageView(motherNatureImg);
                 motherNatureImgview.setFitHeight(20);
                 motherNatureImgview.setPreserveRatio(true);
+                motherNatureImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent mouseEvent) {
+                        setSelectedMotherNature(mouseEvent);
+                    }
+                });
                 islandGridsList.get(count).add(motherNatureImgview,3,3);
-
             }
             int k=0;
             int j=0;
@@ -425,14 +431,24 @@ public class GameController implements GUIController{
                     }else j++;
                 }
             }
+            if(island.getNumberOfTowers()>0){
+                Image towerImg = new Image(getClass().getResourceAsStream("/graphics/board/" +island.getTower().get().getFile()));
+                ImageView towerImgview = new ImageView(towerImg);
+                towerImgview.setFitHeight(20);
+                towerImgview.setPreserveRatio(true);
+                islandTowerGridsList.get(count).add(towerImgview,0,0);
+                Text numberOfTower=new Text(": "+island.getNumberOfTowers());
+                numberOfTower.setFont(new Font(20));
+                islandTowerGridsList.get(count).add(numberOfTower,1,0);
+            }
             count++;
         }
     }
 
 
     public void islandClicked(MouseEvent event){
+        Node node = (Node) event.getSource();
         if(currentPhase == GamePhase.MOVESTUDENT && selectedStudent!=null){
-            Node node = (Node) event.getSource();
             System.out.println((int) node.getUserData());
             System.out.println(colorOfSelectedStudent);
             System.out.println(selectedStudent[0]+" "+selectedStudent[1]);
@@ -443,6 +459,10 @@ public class GameController implements GUIController{
                 numberOfMovedStudent = 0;
                 currentPhase = GamePhase.GAME;
             }
+        }else if(currentPhase== GamePhase.MOVEMOTHERNATURE && gui.getVmodel().getMotherNaturePosition()!=((int)node.getUserData())){
+            System.out.println("user data:"+((int)node.getUserData()));
+            gui.send(new MoveMotherNature((int)(node.getUserData())-gui.getVmodel().getMotherNaturePosition()));
+            currentPhase = GamePhase.GAME;
         }
     }
 
@@ -545,6 +565,33 @@ public class GameController implements GUIController{
                     j++;
                 }
                 }
+
+            /*show professors*/
+            for(Color color: Color.values()){
+                if(vmodel.getClientPlayer().isPresentProfessor(color)){
+                    Image profImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileTeacher()));
+                    ImageView profImgview = new ImageView(profImg);
+                    profImgview.setFitHeight(15);
+                    profImgview.setPreserveRatio(true);
+                    switch(color){
+                        case BLUE:
+                            schoolProfGridsList.get(count).add(profImgview,0,0);
+                            break;
+                        case PINK:
+                            schoolProfGridsList.get(count).add(profImgview,1,0);
+                            break;
+                        case YELLOW:
+                            schoolProfGridsList.get(count).add(profImgview,2,0);
+                            break;
+                        case RED:
+                            schoolProfGridsList.get(count).add(profImgview,3,0);
+                            break;
+                        case GREEN:
+                            schoolProfGridsList.get(count).add(profImgview,4,0);
+                            break;
+                    }
+                }
+            }
             count++;
         }
 
@@ -673,5 +720,19 @@ public class GameController implements GUIController{
 
         }
 
+    }
+
+    public void setSelectedMotherNature(MouseEvent event){
+        if(currentPhase.equals(GamePhase.MOVEMOTHERNATURE)){
+            /*for (Node node : islandGridsList.get(gui.getVmodel().getMotherNaturePosition()).getChildren()) {
+                if(GridPane.getColumnIndex(node) == 3 && GridPane.getRowIndex(node) == 3){
+                    node.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+                }
+            }*/
+            System.out.println(currentPhase);
+            Node node = (Node) event.getSource();
+            node.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+            node.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
+        }
     }
 }
