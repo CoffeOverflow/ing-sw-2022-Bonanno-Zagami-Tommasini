@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
-import it.polimi.ingsw.Client.ClientToServer.ChooseCloud;
-import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
-import it.polimi.ingsw.Client.ClientToServer.PlayAssistantCard;
-import it.polimi.ingsw.Client.ClientToServer.UseCharacterCard;
+import it.polimi.ingsw.Client.ClientToServer.*;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.GUI.GamePhase;
 import it.polimi.ingsw.Client.VirtualModel;
+import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.ChooseOption;
 import it.polimi.ingsw.Server.ServerToClient.SelectAssistantCard;
@@ -63,6 +61,8 @@ public class GameController implements GUIController{
     public List<GridPane> schoolDiningGridsList=new ArrayList<>();
     public List<GridPane> schoolTowersGridsList=new ArrayList<>();
     private Integer[] selectedStudent = null;
+    private Color colorOfSelectedStudent = null;
+    private int numberOfMovedStudent = 0;
 
     public List<GridPane> islandGridsList=new ArrayList<>();
     public List<Group> islandGroupsList=new ArrayList<>();
@@ -319,6 +319,12 @@ public class GameController implements GUIController{
             count++;
         }
 
+
+        mySchoolPane.getChildren().get(2).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                schoolClicked(mouseEvent);
+            }
+        });
         schoolEntranceGridsList.add((GridPane)mySchoolPane.getChildren().get(1));
         schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
         schoolDiningGridsList.add((GridPane)mySchoolPane.getChildren().get(2));
@@ -364,7 +370,7 @@ public class GameController implements GUIController{
                         islandGroupsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
                             @Override public void handle(MouseEvent mouseEvent) {
-
+                                islandClicked(mouseEvent);
                                 if(currentPhase==GamePhase.CHARACTER){
                                     posIsland=(Integer) actualGroup.getUserData();
                                     System.out.println("posizione isola: "+posIsland);
@@ -379,6 +385,34 @@ public class GameController implements GUIController{
                 }
             }
             count++;
+        }
+    }
+
+
+    public void islandClicked(MouseEvent event){
+        if(currentPhase == GamePhase.MOVESTUDENT){
+            Node node = (Node) event.getSource();
+            System.out.println((int) node.getUserData());
+            System.out.println(colorOfSelectedStudent);
+            System.out.println(selectedStudent[0]+" "+selectedStudent[1]);
+            gui.send(new MoveStudent(MoveTo.ISLAND,colorOfSelectedStudent,(int) node.getUserData(),gui.getVmodel().getNumOfInstance()));
+            if(++numberOfMovedStudent == 3){
+                numberOfMovedStudent = 0;
+                currentPhase = GamePhase.GAME;
+            }
+        }
+    }
+
+    public void schoolClicked(MouseEvent event){
+        if(currentPhase == GamePhase.MOVESTUDENT){
+            Node node = (Node) event.getSource();
+            System.out.println(colorOfSelectedStudent);
+            System.out.println(selectedStudent[0]+" "+selectedStudent[1]);
+            gui.send(new MoveStudent(MoveTo.SCHOOL,colorOfSelectedStudent,gui.getVmodel().getNumOfInstance()));
+            if(++numberOfMovedStudent == 3){
+                numberOfMovedStudent = 0;
+                currentPhase = GamePhase.GAME;
+            }
         }
     }
 
@@ -398,7 +432,7 @@ public class GameController implements GUIController{
                     //wizardImgview.setFitWidth(494);
                     studentImgview.setPreserveRatio(true);
                     if(count == 0){
-                        studentImgview.setUserData(new Integer[]{j, k});
+                        studentImgview.setUserData(new Object[]{j, k, color});
                         studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
                             @Override public void handle(MouseEvent mouseEvent) {
@@ -579,8 +613,9 @@ public class GameController implements GUIController{
                 }
             }
             Node node = (Node) event.getSource();
-            this.selectedStudent = (Integer[]) node.getUserData();
-
+            Object[] data = (Object[]) node.getUserData();
+            this.selectedStudent = new Integer[]{(Integer) data[0], (Integer) data[1]};
+            this.colorOfSelectedStudent = (Color) data[2];
             for (Node student : this.schoolEntranceGridsList.get(0).getChildren()) {
                 if(GridPane.getColumnIndex(student) ==  selectedStudent[0] && GridPane.getRowIndex(student) == selectedStudent[1]){
                     student.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
