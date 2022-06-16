@@ -609,7 +609,7 @@ public class GameController implements GUIController{
         System.out.println(currentPhase);
         if(currentPhase.equals(GamePhase.MOVESTUDENT)){
             if(selectedStudent != null){
-                for (Node student : this.schoolEntranceGridsList.get(0).getChildren()) {
+                for (Node student : ((GridPane)this.mySchoolPane.getChildren().get(1)).getChildren()) {
                     if(GridPane.getColumnIndex(student) ==  selectedStudent[0] && GridPane.getRowIndex(student) == selectedStudent[1]){
                         student.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
                     }
@@ -619,7 +619,7 @@ public class GameController implements GUIController{
             Object[] data = (Object[]) node.getUserData();
             this.selectedStudent = new Integer[]{(Integer) data[0], (Integer) data[1]};
             this.colorOfSelectedStudent = (Color) data[2];
-            for (Node student : this.schoolEntranceGridsList.get(0).getChildren()) {
+            for (Node student : ((GridPane)this.mySchoolPane.getChildren().get(1)).getChildren()) {
                 if(GridPane.getColumnIndex(student) ==  selectedStudent[0] && GridPane.getRowIndex(student) == selectedStudent[1]){
                     student.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
                 }
