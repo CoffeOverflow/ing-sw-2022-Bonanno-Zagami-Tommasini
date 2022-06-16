@@ -114,7 +114,7 @@ public class GameController implements GUIController{
                     character.getChildren().get(i).setDisable(false);
                 }
                 currentPhase = GamePhase.GAME;
-                this.showBoard();
+
                 break;
         }
     }
@@ -358,6 +358,18 @@ public class GameController implements GUIController{
         for(Island island: vmodel.getIslands()){
             int k=0;
             int j=0;
+            Group actualGroup=islandGroupsList.get(count);
+            actualGroup.setUserData(count);
+            islandGridsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                @Override public void handle(MouseEvent mouseEvent) {
+
+                    if(currentPhase==GamePhase.CHARACTER){
+                        islandClicked(mouseEvent);
+                        setValueForCharacterCard(actualGroup);
+                    }
+                }
+            });
             for(Color color:island.getStudents().keySet()){
                 for(int i=0; i<island.getStudents().get(color);i++){
                     Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
@@ -365,19 +377,6 @@ public class GameController implements GUIController{
                     studentImgview.setFitHeight(15);
                     studentImgview.setPreserveRatio(true);
                     islandGridsList.get(count).add(studentImgview,j,k);
-                    Group actualGroup=islandGroupsList.get(count);
-                    actualGroup.setUserData(count);
-                        islandGroupsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-                            @Override public void handle(MouseEvent mouseEvent) {
-                                islandClicked(mouseEvent);
-                                if(currentPhase==GamePhase.CHARACTER){
-                                    posIsland=(Integer) actualGroup.getUserData();
-                                    System.out.println("posizione isola: "+posIsland);
-                                }
-                            }
-                        });
-
                     if(j==3){
                         k++;
                         j=0;
@@ -414,6 +413,10 @@ public class GameController implements GUIController{
                 currentPhase = GamePhase.GAME;
             }
         }
+    }
+
+    public void setValueForCharacterCard(Group actualGroup){
+        posIsland=(Integer) actualGroup.getUserData();
     }
 
     public void showSchool(){
