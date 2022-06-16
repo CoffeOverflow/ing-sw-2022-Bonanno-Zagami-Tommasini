@@ -88,34 +88,17 @@ public class GUI extends Application implements Runnable, View
 
     public void displayScene() {
         stage.setScene(currentScene);
-        //stage.sizeToScene();
-        //stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setResizable(false);
         stage.setTitle("Eriantys");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/icons/mother_nature.png")));
         stage.show();
-        AutoResize resize = new AutoResize((Pane) currentScene.lookup("#mainPane"));
-        currentScene.widthProperty().addListener(resize.getWidthListener());
-        currentScene.heightProperty().addListener(resize.getHeightListener());
     }
 
     public void changeScene(String scene){
         this.currentScene = nameToScene.get(scene);
         stage.setScene(currentScene);
-        if(scene.equals("GAME")){
-            stage.setResizable(true);
-            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-            stage.show();
-            AutoResize resize = new AutoResize((Pane) currentScene.lookup("#mainPane"));
-            currentScene.widthProperty().addListener(resize.getWidthListener());
-            currentScene.heightProperty().addListener(resize.getHeightListener());
-            //stage.setResizable(true);
-            return;
-        }
         stage.show();
-
-
     }
 
     public void setServerHandler(ServerHandler serverHandler) {
