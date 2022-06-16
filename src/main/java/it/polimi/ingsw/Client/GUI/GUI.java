@@ -100,6 +100,9 @@ public class GUI extends Application implements Runnable, View
     public void changeScene(String scene){
         this.currentScene = nameToScene.get(scene);
         stage.setScene(currentScene);
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
         stage.show();
     }
 

@@ -431,12 +431,14 @@ public class GameController implements GUIController{
 
 
     public void islandClicked(MouseEvent event){
-        if(currentPhase == GamePhase.MOVESTUDENT){
+        if(currentPhase == GamePhase.MOVESTUDENT && selectedStudent!=null){
             Node node = (Node) event.getSource();
             System.out.println((int) node.getUserData());
             System.out.println(colorOfSelectedStudent);
             System.out.println(selectedStudent[0]+" "+selectedStudent[1]);
             gui.send(new MoveStudent(MoveTo.ISLAND,colorOfSelectedStudent,(int) node.getUserData(),gui.getVmodel().getNumOfInstance()));
+            colorOfSelectedStudent = null;
+            selectedStudent = null;
             if(++numberOfMovedStudent == 3){
                 numberOfMovedStudent = 0;
                 currentPhase = GamePhase.GAME;
@@ -445,11 +447,13 @@ public class GameController implements GUIController{
     }
 
     public void schoolClicked(MouseEvent event){
-        if(currentPhase == GamePhase.MOVESTUDENT){
+        if(currentPhase == GamePhase.MOVESTUDENT && selectedStudent!=null){
             Node node = (Node) event.getSource();
             System.out.println(colorOfSelectedStudent);
             System.out.println(selectedStudent[0]+" "+selectedStudent[1]);
             gui.send(new MoveStudent(MoveTo.SCHOOL,colorOfSelectedStudent,gui.getVmodel().getNumOfInstance()));
+            colorOfSelectedStudent = null;
+            selectedStudent = null;
             if(++numberOfMovedStudent == 3){
                 numberOfMovedStudent = 0;
                 currentPhase = GamePhase.GAME;
