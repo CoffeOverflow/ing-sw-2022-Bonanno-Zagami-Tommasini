@@ -325,7 +325,28 @@ public class GameController implements GUIController{
                 schoolClicked(mouseEvent);
             }
         });
-        schoolEntranceGridsList.add((GridPane)mySchoolPane.getChildren().get(1));
+        count=1;
+        for(int i=0; i<gui.getVmodel().getPlayers().size();i++){
+            if(gui.getVmodel().getPlayers().get(i).equals(gui.getVmodel().getClientPlayer())) {
+                schoolEntranceGridsList.add((GridPane) mySchoolPane.getChildren().get(1));
+                schoolDiningGridsList.add((GridPane) mySchoolPane.getChildren().get(2));
+                schoolTowersGridsList.add((GridPane) mySchoolPane.getChildren().get(3));
+            }else{
+                count++;
+                switch(count){
+                    case 2:
+                        schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
+                        schoolDiningGridsList.add((GridPane)secondSchoolPane.getChildren().get(2));
+                        schoolTowersGridsList.add((GridPane)secondSchoolPane.getChildren().get(3));
+                        break;
+                    case 3:
+                        schoolEntranceGridsList.add((GridPane)thirdSchoolPane.getChildren().get(1));
+                        schoolDiningGridsList.add((GridPane)thirdSchoolPane.getChildren().get(2));
+                        schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
+                }
+            }
+        }
+        /*schoolEntranceGridsList.add((GridPane)mySchoolPane.getChildren().get(1));
         schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
         schoolDiningGridsList.add((GridPane)mySchoolPane.getChildren().get(2));
         schoolDiningGridsList.add((GridPane)secondSchoolPane.getChildren().get(2));
@@ -335,7 +356,7 @@ public class GameController implements GUIController{
             schoolEntranceGridsList.add((GridPane)thirdSchoolPane.getChildren().get(1));
             schoolDiningGridsList.add((GridPane)thirdSchoolPane.getChildren().get(2));
             schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
-        }
+        }*/
 
         for(int i=0; i<gui.getVmodel().getIslands().size();i++){
             islandGroupsList.add((Group)boardAndOthersSchool.getChildren().get(i));
@@ -345,6 +366,17 @@ public class GameController implements GUIController{
 
     }
     public void showBoard(){
+        for(GridPane gridPane: schoolEntranceGridsList)
+            gridPane.getChildren().clear();
+        for(GridPane gridPane: schoolDiningGridsList)
+            gridPane.getChildren().clear();
+        for(GridPane gridPane: schoolTowersGridsList)
+            gridPane.getChildren().clear();
+        for(GridPane gridPane: islandGridsList)
+            gridPane.getChildren().clear();
+        for(GridPane gridPane: cloudGridsList)
+            gridPane.getChildren().clear();
+
         this.showCloud();
         this.showSchool();
         this.showIsland();
@@ -356,16 +388,26 @@ public class GameController implements GUIController{
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
         for(Island island: vmodel.getIslands()){
+            if(vmodel.getMotherNaturePosition()==count){
+                Image motherNatureImg=new Image(getClass().getResourceAsStream("/graphics/icons/mother_nature.png"));
+                ImageView motherNatureImgview = new ImageView(motherNatureImg);
+                motherNatureImgview.setFitHeight(20);
+                motherNatureImgview.setPreserveRatio(true);
+                islandGridsList.get(count).add(motherNatureImgview,3,3);
+
+            }
             int k=0;
             int j=0;
             Group actualGroup=islandGroupsList.get(count);
             actualGroup.setUserData(count);
+
+            islandGridsList.get(count).setUserData(count);
             islandGridsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
                 @Override public void handle(MouseEvent mouseEvent) {
 
+                    islandClicked(mouseEvent);
                     if(currentPhase==GamePhase.CHARACTER){
-                        islandClicked(mouseEvent);
                         setValueForCharacterCard(actualGroup);
                     }
                 }
@@ -434,7 +476,7 @@ public class GameController implements GUIController{
                     studentImgview.setFitHeight(15);
                     //wizardImgview.setFitWidth(494);
                     studentImgview.setPreserveRatio(true);
-                    if(count == 0){
+                    if(player.equals(vmodel.getClientPlayer())){
                         studentImgview.setUserData(new Object[]{j, k, color});
                         studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 

@@ -31,6 +31,8 @@ public class GUI extends Application implements Runnable, View
     private HashMap<String, Scene> nameToScene = new HashMap<>();
     private HashMap<Scene, GUIController> sceneToController = new HashMap<>();
 
+    private boolean firstUpdate=true;
+
     public GUI(){
         this.vmodel = new VirtualModel();
     }
@@ -258,7 +260,10 @@ public class GUI extends Application implements Runnable, View
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    controller.setGrids();
+                    if(firstUpdate) {
+                        controller.setGrids();
+                        firstUpdate=false;
+                    }
                 }
             });
             this.showBoard();
