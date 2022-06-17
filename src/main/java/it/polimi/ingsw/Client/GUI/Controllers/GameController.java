@@ -311,7 +311,7 @@ public class GameController implements GUIController{
         }
         int count=3;
         for(Cloud cloud:gui.getVmodel().getClouds()){
-            cloudGrids.getChildren().get(count).setUserData(count);
+            cloudGrids.getChildren().get(count).setUserData(count-3);
             cloudGrids.getChildren().get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
                 @Override public void handle(MouseEvent mouseEvent) {
@@ -688,9 +688,12 @@ public class GameController implements GUIController{
     }
 
     public void chooseCloud(MouseEvent event){
-        Node node=(Node) event.getSource();
-        int cloudId=(int) node.getUserData();
-        gui.send((new ChooseCloud(cloudId)));
+        if(currentPhase==GamePhase.CHOOSECLOUD){
+            Node node=(Node) event.getSource();
+            int cloudId=(int) node.getUserData();
+            System.out.println("cloudId"+cloudId);
+            gui.send((new ChooseCloud(cloudId)));
+        }
     }
 
     public void setCurrentPhase(GamePhase currentPhase) {
