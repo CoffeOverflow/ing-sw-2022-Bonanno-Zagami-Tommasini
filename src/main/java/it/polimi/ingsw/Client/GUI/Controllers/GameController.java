@@ -568,7 +568,7 @@ public class GameController implements GUIController{
 
             /*show professors*/
             for(Color color: Color.values()){
-                if(vmodel.getClientPlayer().isPresentProfessor(color)){
+                if(player.isPresentProfessor(color)){
                     Image profImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileTeacher()));
                     ImageView profImgview = new ImageView(profImg);
                     profImgview.setFitHeight(15);
