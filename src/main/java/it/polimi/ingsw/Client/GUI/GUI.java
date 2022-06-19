@@ -257,7 +257,8 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void update(UpdateMessage msg) {
-        if(vmodel.getClouds().isEmpty()){
+
+        if(vmodel.getClouds().isEmpty() || msg.getChange().getChange()==Change.MERGE){
             vmodel.update(msg);
             GameController controller = (GameController) sceneToController.get(currentScene);
             Platform.runLater(new Runnable() {
@@ -267,8 +268,13 @@ public class GUI extends Application implements Runnable, View
                         controller.setGrids();
                         firstUpdate=false;
                     }
+                    if(msg.getChange().getChange()==Change.MERGE) {
+                        controller.handleMerge(msg);
+                    }
+
                 }
             });
+
             this.showBoard();
             return;
         }

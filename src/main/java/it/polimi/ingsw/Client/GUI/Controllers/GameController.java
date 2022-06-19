@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.ChooseOption;
 import it.polimi.ingsw.Server.ServerToClient.SelectAssistantCard;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
+import it.polimi.ingsw.Server.ServerToClient.UpdateMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -727,15 +728,67 @@ public class GameController implements GUIController{
 
     public void setSelectedMotherNature(MouseEvent event){
         if(currentPhase.equals(GamePhase.MOVEMOTHERNATURE)){
-            /*for (Node node : islandGridsList.get(gui.getVmodel().getMotherNaturePosition()).getChildren()) {
-                if(GridPane.getColumnIndex(node) == 3 && GridPane.getRowIndex(node) == 3){
-                    node.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
-                }
-            }*/
-            System.out.println(currentPhase);
             Node node = (Node) event.getSource();
             node.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
             node.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
         }
+    }
+
+    public void handleMerge(UpdateMessage msg){
+        int conqueredIsland=msg.getChange().getConquerIsland();
+        int mergedIsland1=msg.getChange().getMergedIsland1();
+
+        double x1 = islandGroupsList.get(mergedIsland1).getLayoutX();
+        double x2 = islandGroupsList.get(conqueredIsland).getLayoutX();
+        double y1 = islandGroupsList.get(mergedIsland1).getLayoutY();
+        double y2 = islandGroupsList.get(conqueredIsland).getLayoutY();
+        if(null!=msg.getChange().getMergedIsland2()){
+            int mergedIsland2=msg.getChange().getMergedIsland2();
+            double x3 = islandGroupsList.get(mergedIsland2).getLayoutX();
+            double y3 = islandGroupsList.get(mergedIsland2).getLayoutY();
+            double x=(x1+x2+x3)/3;
+            double y=(y1+y2+y3)/3;
+            if(mergedIsland1<mergedIsland2){
+                islandGridsList.remove(mergedIsland2);
+                islandGroupsList.get(mergedIsland2).getChildren().clear();
+                islandGroupsList.remove(mergedIsland2);
+                islandGroupsList.get(mergedIsland1).setLayoutX(x);
+                islandGroupsList.get(mergedIsland1).setLayoutY(y);
+                //islandGroupsList.get(mergedIsland1).setScaleX( islandGroupsList.get(mergedIsland1).getScaleX()*1.2);
+                //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland1).getScaleY()*1.2);
+            }else{
+                islandGridsList.remove(mergedIsland1);
+                islandGroupsList.get(mergedIsland1).getChildren().clear();
+                islandGroupsList.remove(mergedIsland1);
+                islandGroupsList.get(mergedIsland2).setLayoutX(x);
+                islandGroupsList.get(mergedIsland2).setLayoutY(y);
+                //islandGroupsList.get(mergedIsland1).setScaleX( islandGroupsList.get(mergedIsland2).getScaleX()*1.2);
+                //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland2).getScaleY()*1.2);
+            }
+            islandGridsList.remove(conqueredIsland);
+            islandGroupsList.get(conqueredIsland).getChildren().clear();
+            islandGroupsList.remove(conqueredIsland);
+        }else{
+            double x=(x1+x2)/2;
+            double y=(y1+y2)/2;
+            if(mergedIsland1<conqueredIsland){
+                islandGridsList.remove(conqueredIsland);
+                islandGroupsList.get(conqueredIsland).getChildren().clear();
+                islandGroupsList.remove(conqueredIsland);
+                islandGroupsList.get(mergedIsland1).setLayoutX(x);
+                islandGroupsList.get(mergedIsland1).setLayoutY(y);
+                //islandGroupsList.get(mergedIsland1).setScaleX( islandGroupsList.get(mergedIsland1).getScaleX()*1.1);
+                //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland1).getScaleY()*1.1);
+            }else{
+                islandGridsList.remove(mergedIsland1);
+                islandGroupsList.get(mergedIsland1).getChildren().clear();
+                islandGroupsList.remove(mergedIsland1);
+                islandGroupsList.get(conqueredIsland).setLayoutX(x);
+                islandGroupsList.get(conqueredIsland).setLayoutY(y);
+                //islandGroupsList.get(conqueredIsland).setScaleX( islandGroupsList.get(conqueredIsland).getScaleX()*1.1);
+                //islandGroupsList.get(conqueredIsland).setScaleY( islandGroupsList.get(conqueredIsland).getScaleY()*1.1);
+            }
+        }
+        //System.out.println(islandGroupsList);
     }
 }

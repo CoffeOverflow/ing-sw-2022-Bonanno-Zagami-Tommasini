@@ -230,8 +230,15 @@ public class GameHandler implements Runnable{
             sendAll(new UpdateMessage((new BoardChange(controller.getModel().getConquest().getConqueror(),
                     controller.getModel().getConquest().getConqueredIsland(),controller.getModel().getConquest().getMergedIsland1(),
                     controller.getModel().getConquest().getMergedIsland2()))));
-            if(controller.getModel().getMotherNaturePosition()==controller.getModel().getConquest().getConqueredIsland()-1)
-            sendAll(new UpdateMessage((new BoardChange(-1))));
+            int minPosition;
+            if(controller.getModel().getConquest().getMergedIsland1()<controller.getModel().getConquest().getConqueredIsland())
+                minPosition=controller.getModel().getConquest().getMergedIsland1();
+            else if(null!=controller.getModel().getConquest().getMergedIsland2() &&
+                    controller.getModel().getConquest().getMergedIsland2()<controller.getModel().getConquest().getConqueredIsland())
+                minPosition=controller.getModel().getConquest().getMergedIsland2();
+            else minPosition=controller.getModel().getConquest().getConqueredIsland();
+            if(controller.getModel().getMotherNaturePosition()!=minPosition)
+                sendAll(new UpdateMessage((new BoardChange(-1))));
         }
         controller.getModel().setConquest(null);
         if(controller.checkEndGame()){

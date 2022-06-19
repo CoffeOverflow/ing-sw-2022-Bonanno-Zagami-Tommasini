@@ -20,4 +20,5 @@ public class UpdateMessage implements ServerToClientMessage{
     public void handle(View view) throws IOException {
         view.update(this);
     }
+
 }
