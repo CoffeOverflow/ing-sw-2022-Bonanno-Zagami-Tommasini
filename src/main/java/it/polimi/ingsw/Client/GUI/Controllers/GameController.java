@@ -6,22 +6,16 @@ import it.polimi.ingsw.Client.GUI.GamePhase;
 import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Server.ServerToClient.ChooseOption;
 import it.polimi.ingsw.Server.ServerToClient.SelectAssistantCard;
 import it.polimi.ingsw.Server.ServerToClient.SelectWizard;
 import it.polimi.ingsw.Server.ServerToClient.UpdateMessage;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -34,7 +28,6 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Locale;
 
 public class GameController implements GUIController{
     private GUI gui;
@@ -57,8 +50,11 @@ public class GameController implements GUIController{
     public AnchorPane secondSchoolPane;
     public AnchorPane thirdSchoolPane;
     public AnchorPane mySchoolPane;
-    public GridPane moneyWizardGrid;
-    public GridPane wizardGrid;
+    public ImageView wizardImg;
+    public ImageView moneyImg;
+    public Text nickname;
+    public Text money;
+    public Group wizardAndMoney;
 
     public List<GridPane> cloudGridsList=new ArrayList<>();
     public List<GridPane> schoolEntranceGridsList=new ArrayList<>();
@@ -90,9 +86,11 @@ public class GameController implements GUIController{
         mainPane.setVisible(true);
         boardAndOthersSchool.setVisible(false);
         mySchool.setVisible(false);
+        wizardAndMoney.setVisible(false);
         listOfWizards.setVisible(false);
         selectWizard.setVisible(false);
         waitForOtherWizard.setVisible(false);
+        wizardAndMoney.setVisible(false);
         currentPhase = GamePhase.WIZARD;
     }
 
@@ -114,9 +112,8 @@ public class GameController implements GUIController{
             case ASSISTANT:
                 assistantCard.setVisible(false);
                 mySchool.setVisible(true);
+                wizardAndMoney.setVisible(true);
                 character.setVisible(true);
-                wizardGrid.setVisible(true);
-                moneyWizardGrid.setVisible(true);
                 cardGrid1.setVisible(true);
                 cardGrid2.setVisible(true);
                 cardGrid3.setVisible(true);
@@ -242,31 +239,18 @@ public class GameController implements GUIController{
 
     }
 
-    public void showMoney(){
-        if(firsTimeInMethod) {
-            Image wizardImg = new Image(getClass().getResourceAsStream(
-                    "/graphics/wizards/" + gui.getVmodel().getClientPlayer().getWizard().getCutFile()));
-            ImageView wizardImgview = new ImageView(wizardImg);
-            wizardImgview.setFitHeight(70);
-            wizardImgview.setPreserveRatio(true);
-            Image circle = new Image(getClass().getResourceAsStream("/graphics/additionalElement/cerchi.png"));
-            ImageView circleImageView = new ImageView(circle);
-            circleImageView.setFitHeight(80);
-            circleImageView.setPreserveRatio(true);
-            moneyWizardGrid.add(circleImageView, 0, 0);
-
-            wizardGrid.add(wizardImgview, 0, 0);
-            firsTimeInMethod=false;
-        }
-        for(int i=0;i<gui.getVmodel().getClientPlayer().getMoney();i++)
-        {
-            Image moneyImg = new Image(getClass().getResourceAsStream("/graphics/additionalElement/coin.png"));
-            ImageView moneyImgView=new ImageView(moneyImg);
-            moneyImgView.setFitHeight(70);
-            moneyImgView.setPreserveRatio(true);
-            moneyWizardGrid.add(moneyImgView,i+1,0);
-        }
-
+    public void setWizardAndNickname(){
+        wizardImg.setImage(new Image(getClass().getResourceAsStream(
+                "/graphics/wizards/" + gui.getVmodel().getClientPlayer().getWizard().getCutFile())));
+        wizardImg.setFitHeight(80);
+        wizardImg.setPreserveRatio(true);
+        moneyImg.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/coin.png")));
+        moneyImg.setFitHeight(70);
+        moneyImg.setPreserveRatio(true);
+        firsTimeInMethod=false;
+        money.setText(String.valueOf(gui.getVmodel().getClientPlayer().getMoney()));
+        nickname.setText(gui.getVmodel().getClientPlayer().getNickname());
+        wizardAndMoney.setVisible(true);
     }
 
 
@@ -382,7 +366,7 @@ public class GameController implements GUIController{
         this.showSchool();
         this.showIsland();
         this.showCharacterCard();
-        this.showMoney();
+        this.setWizardAndNickname();
     }
 
     public void showIsland() {
@@ -650,9 +634,8 @@ public class GameController implements GUIController{
 
     public void selectAssistantCard(SelectAssistantCard msg){
         mySchool.setVisible(false);
+        wizardAndMoney.setVisible(false);
         character.setVisible(false);
-        wizardGrid.setVisible(false);
-        moneyWizardGrid.setVisible(false);
         cardGrid1.setVisible(false);
         cardGrid2.setVisible(false);
         cardGrid3.setVisible(false);
