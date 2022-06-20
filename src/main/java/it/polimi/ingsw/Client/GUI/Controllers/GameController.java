@@ -77,10 +77,13 @@ public class GameController implements GUIController{
     public GridPane cardGrid2;
     public GridPane cardGrid3;
 
+    private boolean firsTimeInMethod=true;
+
     private Integer posIsland=null;
     private EnumMap<Color,Integer> choosenStudent=null;
     private EnumMap<Color,Integer> entranceStudent=null;
     private Color color=null;
+    private int numOfStudentChoose=0;
 
 
     public void initialize() {
@@ -176,7 +179,7 @@ public class GameController implements GUIController{
 
                 @Override public void handle(Event event) {
                     if(currentPhase!=GamePhase.ANOTHERPLAYERTURN)
-                        chooseCharacter(event);
+                        currentPhase=GamePhase.CHARACTER;
                 }
             });
             List<String> characterStudentName = new ArrayList<>();
@@ -193,6 +196,13 @@ public class GameController implements GUIController{
                         ImageView studentImgview = new ImageView(studentImg);
                         studentImgview.setFitHeight(15);
                         studentImgview.setPreserveRatio(true);
+
+                        studentImgview.setUserData(c);
+                        studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                            @Override public void handle(MouseEvent mouseEvent) {
+                               setValueForCharacterCard(c);
+                            }
+                        });
                         cardGridList.get(countForCardGrid).add(studentImgview,j,k);
                         if(j==1){
                             j=0;
@@ -233,18 +243,21 @@ public class GameController implements GUIController{
     }
 
     public void showMoney(){
-        Image wizardImg = new Image(getClass().getResourceAsStream("/graphics/wizards/"+gui.getVmodel().getClientPlayer().getWizard().getCutFile()));
-        ImageView wizardImgview = new ImageView(wizardImg);
-        wizardImgview.setFitHeight(70);
-        wizardImgview.setPreserveRatio(true);
-        Image circle = new Image(getClass().getResourceAsStream("/graphics/additionalElement/cerchi.png"));
-        ImageView circleImageView = new ImageView(circle);
-        circleImageView.setFitHeight(80);
-        circleImageView.setPreserveRatio(true);
-        moneyWizardGrid.add(circleImageView,0,0);
+        if(firsTimeInMethod) {
+            Image wizardImg = new Image(getClass().getResourceAsStream(
+                    "/graphics/wizards/" + gui.getVmodel().getClientPlayer().getWizard().getCutFile()));
+            ImageView wizardImgview = new ImageView(wizardImg);
+            wizardImgview.setFitHeight(70);
+            wizardImgview.setPreserveRatio(true);
+            Image circle = new Image(getClass().getResourceAsStream("/graphics/additionalElement/cerchi.png"));
+            ImageView circleImageView = new ImageView(circle);
+            circleImageView.setFitHeight(80);
+            circleImageView.setPreserveRatio(true);
+            moneyWizardGrid.add(circleImageView, 0, 0);
 
-        wizardGrid.add(wizardImgview,0,0);
-
+            wizardGrid.add(wizardImgview, 0, 0);
+            firsTimeInMethod=false;
+        }
         for(int i=0;i<gui.getVmodel().getClientPlayer().getMoney();i++)
         {
             Image moneyImg = new Image(getClass().getResourceAsStream("/graphics/additionalElement/coin.png"));
@@ -256,21 +269,6 @@ public class GameController implements GUIController{
 
     }
 
-    public void chooseCharacter(Event event){
-        currentPhase=GamePhase.CHARACTER;
-        Node node=(Node)event.getSource();
-        String asset=(String) node.getUserData();
-
-
-        switch (asset){
-            case "innkeeper.jpg":
-
-                break;
-
-        }
-        //gui.send(new UseCharacterCard());
-
-    }
 
     public void selectWizard(SelectWizard wizards){
 
@@ -482,8 +480,26 @@ public class GameController implements GUIController{
         }
     }
 
-    public void setValueForCharacterCard(Group actualGroup){
-        posIsland=(Integer) actualGroup.getUserData();
+    public void setValueForCharacterCard(Object parameter){
+
+       if(parameter instanceof Group) {
+           Group actualGroup=(Group) parameter;
+           posIsland = (Integer) actualGroup.getUserData();
+       }
+       if(parameter instanceof Color){
+           if(numOfStudentChoose==0){
+               choosenStudent=new EnumMap<Color, Integer>(Color.class);
+               for(Color c:Color.values())
+                   choosenStudent.put(c,0);
+               numOfStudentChoose++;
+           }
+           ImageView actualImageStudent=(ImageView) parameter;
+           Color choosenColor=(Color)actualImageStudent.getUserData();
+           choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
+
+       }
+
+
     }
 
     public void showSchool(){
