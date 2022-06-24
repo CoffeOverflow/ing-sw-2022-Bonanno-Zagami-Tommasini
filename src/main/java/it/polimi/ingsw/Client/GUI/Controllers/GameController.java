@@ -541,13 +541,15 @@ public class GameController implements GUIController{
                 hboxColorCharacter.setVisible(false);
                 hboxColorCharacter1.setVisible(false);
                 currentPhase = GamePhase.GAME;
-                posIsland=null;
-                imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+                if(null!=imageSelectedIsland)
+                    imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
                 imageSelectedIsland=null;
+                posIsland=null;
                 choosenStudent=null;
                 entranceStudent=null;
                 color=null;
                 colorSelected=0;
+                islandCanSelect=false;
             }
         });
 
