@@ -177,7 +177,7 @@ public class CharacterCard {
         )
             this.chosenStudents=Optional.of(chosenStudents);
         else{
-            throw new IllegalStateException("Unexpected number of chosen students: " + studentNumber);
+            throw new IllegalStateException("Unexpected number of chosen students");
         }
     }
 

@@ -73,8 +73,13 @@ public class UseCharacterCard implements ClientToServerMessage{
                throw new RuntimeException(e);
            }
        }catch (IllegalStateException e){
-           game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
-           game.sendTo(new GenericMessage(ANSI_RED+"you don't have enough money to play the card!"+ANSI_RESET),player);
+           if(e.getMessage().equals("Not enough money")) {
+               game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
+               game.sendTo(new GenericMessage(ANSI_RED + "you don't have enough money to play the card!" + ANSI_RESET), player);
+           }else if(e.getMessage().equals("Unexpected number of chosen students")){
+               game.sendTo(new Error(ErrorsType.CHOSENOTVALID),player);
+               game.sendTo(new GenericMessage(ANSI_RED + "you selected an incorrect number of students to play the card!" + ANSI_RESET), player);
+           }
        }
 
         game.getController().setState(game.getController().getStateToReturn());

@@ -28,6 +28,7 @@ public class VirtualModel {
     private boolean takeProfessorWhenTie=false;
 
 
+
     private int numOfInstance =0;
 
     public VirtualModel() {

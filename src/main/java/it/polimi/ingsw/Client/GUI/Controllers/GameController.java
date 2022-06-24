@@ -46,6 +46,7 @@ public class GameController implements GUIController{
     public AnchorPane cloudGrids;
     public HBox assistantCard;
     public HBox character;
+    public HBox hboxColorCharacter;
     public HBox charAndMoney;
     public AnchorPane secondSchoolPane;
     public AnchorPane thirdSchoolPane;
@@ -73,6 +74,8 @@ public class GameController implements GUIController{
     public GridPane cardGrid2;
     public GridPane cardGrid3;
 
+    public Button characterButton;
+
     private boolean firsTimeInMethod=true;
 
     private Integer posIsland=null;
@@ -82,6 +85,7 @@ public class GameController implements GUIController{
     private Color color=null;
     private int numOfStudentChoose=0;
     private boolean islandCanSelect = false;
+    private int numOfEntranceStudChoose=0;
 
 
     public void initialize() {
@@ -93,6 +97,8 @@ public class GameController implements GUIController{
         selectWizard.setVisible(false);
         waitForOtherWizard.setVisible(false);
         wizardAndMoney.setVisible(false);
+        characterButton.setVisible(false);
+        hboxColorCharacter.setVisible(false);
         currentPhase = GamePhase.WIZARD;
         for (Group islandGroup: islandGroupsList) {
             ImageView image = (ImageView) islandGroup.getChildren().get(0);
@@ -201,6 +207,7 @@ public class GameController implements GUIController{
                 @Override public void handle(Event event) {
                     if(currentPhase!=GamePhase.ANOTHERPLAYERTURN)
                         currentPhase=GamePhase.CHARACTER;
+                    showCharacterOptions(event);
                 }
             });
             List<String> characterStudentName = new ArrayList<>();
@@ -221,7 +228,7 @@ public class GameController implements GUIController{
                         studentImgview.setUserData(c);
                         studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                             @Override public void handle(MouseEvent mouseEvent) {
-                               setValueForCharacterCard(c);
+                               setValueForCharacterCard(mouseEvent);
                             }
                         });
                         cardGridList.get(countForCardGrid).add(studentImgview,j,k);
@@ -421,7 +428,7 @@ public class GameController implements GUIController{
 
                     islandClicked(mouseEvent);
                     if(currentPhase==GamePhase.CHARACTER){
-                        setValueForCharacterCard(actualGroup);
+                        //setValueForCharacterCard(actualGroup);
                     }
                 }
             });
@@ -488,24 +495,78 @@ public class GameController implements GUIController{
         }
     }
 
-    public void setValueForCharacterCard(Object parameter){
+    public void showCharacterOptions(Event event){
+        Node card= (Node) event.getSource();
+        String asset=(String) card.getUserData();
+        characterButton.setVisible(true);
+        characterButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
+                characterButton.setVisible(false);
+                posIsland=null;
+                choosenStudent=null;
+                entranceStudent=null;
+                color=null;
+            }
+        });
 
-       if(parameter instanceof Group) {
-           Group actualGroup=(Group) parameter;
-           posIsland = (Integer) actualGroup.getUserData();
-       }
-       if(parameter instanceof Color){
+        switch (asset) {
+            case "innkeeper.jpg":
+                islandCanSelect=true;
+                break;
+            case "clown.jpg":
+            case "princess.jpg":
+
+                break;
+            case "auctioneer.jpg":
+            case "herbalist.jpg":
+                //fare scegliere l'isola
+                islandCanSelect=true;
+            case "lumberjack.jpg":
+            case "thief.jpg":
+                //choose the color not to be considered
+                //choose the color to put back in the bag
+                for(Color c: Color.values()){
+                Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + c.getFileStudent()));
+                ImageView studentImgview = new ImageView(studentImg);
+                studentImgview.setFitHeight(15);
+                studentImgview.setPreserveRatio(true);
+
+                studentImgview.setUserData(c);
+                studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent mouseEvent) {
+                        color=c;
+                    }
+                });
+                hboxColorCharacter.getChildren().add(studentImgview);
+                }
+                hboxColorCharacter.setVisible(true);
+                break;
+            case "storyteller.jpg":
+                //scambio scuola entrata
+
+            default:
+                // case "merchant.jpg":
+                //case "postman.jpg":
+                //case "centaur.jpg":
+                //case "infantryman.jpg":
+            break;
+        }
+
+    }
+    public void setValueForCharacterCard(MouseEvent event){
+
            if(numOfStudentChoose==0){
                choosenStudent=new EnumMap<Color, Integer>(Color.class);
                for(Color c:Color.values())
                    choosenStudent.put(c,0);
                numOfStudentChoose++;
            }
-           ImageView actualImageStudent=(ImageView) parameter;
+           ImageView actualImageStudent=(ImageView) event.getSource();
            Color choosenColor=(Color)actualImageStudent.getUserData();
            choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
 
-       }
+
 
 
     }
@@ -746,7 +807,19 @@ public class GameController implements GUIController{
             }
 
         }
-
+        if(currentPhase.equals(GamePhase.CHARACTER)){
+            if(numOfEntranceStudChoose==0){
+                entranceStudent=new EnumMap<Color, Integer>(Color.class);
+                for(Color c:Color.values())
+                    entranceStudent.put(c,0);
+                numOfEntranceStudChoose++;
+            }
+            ImageView actualImageStudent=(ImageView) event.getSource();
+            Object[] data = (Object[]) actualImageStudent.getUserData();
+            Color choosenColor=(Color)data[2];
+            actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
+            entranceStudent.put(choosenColor,entranceStudent.get(choosenColor)+1);
+        }
     }
 
     public void setSelectedMotherNature(MouseEvent event){
