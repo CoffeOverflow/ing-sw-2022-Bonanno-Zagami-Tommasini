@@ -76,10 +76,12 @@ public class GameController implements GUIController{
     private boolean firsTimeInMethod=true;
 
     private Integer posIsland=null;
+    private ImageView imageSelectedIsland = null;
     private EnumMap<Color,Integer> choosenStudent=null;
     private EnumMap<Color,Integer> entranceStudent=null;
     private Color color=null;
     private int numOfStudentChoose=0;
+    private boolean islandCanSelect = false;
 
 
     public void initialize() {
@@ -92,6 +94,28 @@ public class GameController implements GUIController{
         waitForOtherWizard.setVisible(false);
         wizardAndMoney.setVisible(false);
         currentPhase = GamePhase.WIZARD;
+        for (Group islandGroup: islandGroupsList) {
+            ImageView image = (ImageView) islandGroup.getChildren().get(0);
+            image.setUserData(image);
+            image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent event) {
+                    islandClicked(event);
+                }
+            });
+        }
+    }
+
+    public void islandCliked(Event event){
+        if(currentPhase == GamePhase.CHARACTER && islandCanSelect){
+            if(imageSelectedIsland != null){
+                imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+            }
+            Node node = (Node) event.getSource();
+            imageSelectedIsland = (ImageView) node.getUserData();
+            posIsland = Integer.parseInt(imageSelectedIsland.getId().substring(6,7));
+            System.out.println(posIsland);
+            imageSelectedIsland.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
+        }
     }
 
     @Override
