@@ -412,12 +412,6 @@ public class GameModel {
      */
     public void moveToSchool (int player,Color studentColor){
         getPlayerByID(player).addStudentOf(studentColor);
-        if(getPlayerByID(player).getStudentsOf(studentColor) % 3 == 0 && coins.isPresent()){
-            if(coins.get() > 0){
-                coins = Optional.of(coins.get() - 1);
-                getPlayerByID(player).addMoney();
-            }
-        }
         getPlayerByID(player).removeEntryStudent(studentColor);
         int numOfColor=getPlayerByID(player).getStudentsOf(studentColor);
         int max=0;
@@ -433,6 +427,12 @@ public class GameModel {
         if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max) )
         {
             this.professors.get(studentColor).goToSchool(getPlayerByID(player));
+        }
+        if(getPlayerByID(player).getStudentsOf(studentColor) % 3 == 0 && coins.isPresent()){
+            if(coins.get() > 0){
+                coins = Optional.of(coins.get() - 1);
+                getPlayerByID(player).addMoney();
+            }
         }
     }
 

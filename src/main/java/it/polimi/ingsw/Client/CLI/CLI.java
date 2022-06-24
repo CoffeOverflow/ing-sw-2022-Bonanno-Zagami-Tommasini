@@ -24,6 +24,11 @@ public class CLI implements View, Runnable {
         this.serverHandler = serverHandler;
         this.vmodel=new VirtualModel();
     }
+
+    @Override
+    public VirtualModel getVmodel() {
+        return vmodel;
+    }
     public static void main(String[] args) {
         System.out.println("\n"+Constants.ERIANTYS);
         /*Scanner scanner = new Scanner(System.in);

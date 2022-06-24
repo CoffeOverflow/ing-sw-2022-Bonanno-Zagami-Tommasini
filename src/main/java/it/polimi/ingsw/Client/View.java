@@ -45,4 +45,5 @@ public interface View {
 
     void chooseOption(ChooseOption msg);
 
+    VirtualModel getVmodel();
 }
