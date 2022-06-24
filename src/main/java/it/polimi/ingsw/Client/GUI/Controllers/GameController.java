@@ -100,28 +100,6 @@ public class GameController implements GUIController{
         characterButton.setVisible(false);
         hboxColorCharacter.setVisible(false);
         currentPhase = GamePhase.WIZARD;
-        for (Group islandGroup: islandGroupsList) {
-            ImageView image = (ImageView) islandGroup.getChildren().get(0);
-            image.setUserData(image);
-            image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent event) {
-                    islandClicked(event);
-                }
-            });
-        }
-    }
-
-    public void islandCliked(Event event){
-        if(currentPhase == GamePhase.CHARACTER && islandCanSelect){
-            if(imageSelectedIsland != null){
-                imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
-            }
-            Node node = (Node) event.getSource();
-            imageSelectedIsland = (ImageView) node.getUserData();
-            posIsland = Integer.parseInt(imageSelectedIsland.getId().substring(6,7));
-            System.out.println(posIsland);
-            imageSelectedIsland.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
-        }
     }
 
     @Override
@@ -375,6 +353,15 @@ public class GameController implements GUIController{
             islandTowerGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(2));
         }
 
+       for (Group islandGroup: islandGroupsList) {
+            islandGroup.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent event) {
+                    islandClicked(event);
+                }
+            });
+
+        }
+
 
     }
     public void showBoard(){
@@ -422,7 +409,7 @@ public class GameController implements GUIController{
             actualGroup.setUserData(count);
 
             islandGridsList.get(count).setUserData(count);
-            islandGridsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+           /* islandGridsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
                 @Override public void handle(MouseEvent mouseEvent) {
 
@@ -431,7 +418,7 @@ public class GameController implements GUIController{
                         //setValueForCharacterCard(actualGroup);
                     }
                 }
-            });
+            });*/
             for(Color color:island.getStudents().keySet()){
                 for(int i=0; i<island.getStudents().get(color);i++){
                     Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
@@ -477,6 +464,14 @@ public class GameController implements GUIController{
             System.out.println("user data:"+((int)node.getUserData()));
             gui.send(new MoveMotherNature((int)(node.getUserData())-gui.getVmodel().getMotherNaturePosition()));
             currentPhase = GamePhase.GAME;
+        }else if(currentPhase == GamePhase.CHARACTER && islandCanSelect){
+            if(imageSelectedIsland != null){
+                imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+            }
+            imageSelectedIsland = (ImageView) ((Group)node).getChildren().get(0);
+            posIsland = (Integer) node.getUserData();
+            System.out.println(posIsland);
+            imageSelectedIsland.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
         }
     }
 
