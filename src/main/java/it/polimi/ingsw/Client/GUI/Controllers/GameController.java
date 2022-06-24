@@ -67,9 +67,10 @@ public class GameController implements GUIController{
     private Color colorOfSelectedStudent = null;
     private int numberOfMovedStudent = 0;
 
-    public List<GridPane> islandGridsList=new ArrayList<>();
-    public List<GridPane> islandTowerGridsList=new ArrayList<>();
-    public List<Group> islandGroupsList=new ArrayList<>();
+    private List<GridPane> islandGridsList=new ArrayList<>();
+    private List<GridPane> islandTowerGridsList=new ArrayList<>();
+    private List<Group> islandGroupsList=new ArrayList<>();
+    private List<GridPane> cardGridList=new ArrayList<>();
     public GridPane cardGrid1;
     public GridPane cardGrid2;
     public GridPane cardGrid3;
@@ -83,6 +84,7 @@ public class GameController implements GUIController{
     private EnumMap<Color,Integer> choosenStudent=null;
     private EnumMap<Color,Integer> entranceStudent=null;
     private Color color=null;
+    private List<Node> selectedNodes=new ArrayList<Node>();
     private int numOfStudentChoose=0;
     private boolean islandCanSelect = false;
     private int numOfEntranceStudChoose=0;
@@ -183,10 +185,7 @@ public class GameController implements GUIController{
     public void showCharacterCard(){
         character.getChildren().clear();
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
-        List<GridPane> cardGridList=new ArrayList<>();
-        cardGridList.add(cardGrid1);
-        cardGridList.add(cardGrid2);
-        cardGridList.add(cardGrid3);
+
         int countForCardGrid=0;
         for(CharacterCard charCard:characterCards){
             int j=0;
@@ -374,6 +373,9 @@ public class GameController implements GUIController{
             islandGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(1));
             islandTowerGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(2));
         }
+        cardGridList.add(cardGrid1);
+        cardGridList.add(cardGrid2);
+        cardGridList.add(cardGrid3);
 
 
     }
@@ -392,6 +394,9 @@ public class GameController implements GUIController{
             gridPane.getChildren().clear();
         for(GridPane gridPane: islandTowerGridsList)
             gridPane.getChildren().clear();
+        for(GridPane gridPane: cardGridList)
+            gridPane.getChildren().clear();
+
 
         this.showCloud();
         this.showSchool();
@@ -503,6 +508,7 @@ public class GameController implements GUIController{
             @Override public void handle(MouseEvent mouseEvent) {
                 gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
                 characterButton.setVisible(false);
+                currentPhase = GamePhase.GAME;
                 posIsland=null;
                 choosenStudent=null;
                 entranceStudent=null;
@@ -522,6 +528,7 @@ public class GameController implements GUIController{
             case "herbalist.jpg":
                 //fare scegliere l'isola
                 islandCanSelect=true;
+                break;
             case "lumberjack.jpg":
             case "thief.jpg":
                 //choose the color not to be considered
@@ -563,6 +570,7 @@ public class GameController implements GUIController{
                numOfStudentChoose++;
            }
            ImageView actualImageStudent=(ImageView) event.getSource();
+           actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
            Color choosenColor=(Color)actualImageStudent.getUserData();
            choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
 
