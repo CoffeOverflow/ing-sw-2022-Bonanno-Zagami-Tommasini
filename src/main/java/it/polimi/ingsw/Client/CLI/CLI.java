@@ -930,6 +930,11 @@ public class CLI implements View, Runnable {
     }
 
     @Override
+    public void playerPlayAssistantCard(int playerID, AssistantCard card) {
+        showMessage("Player "+getVmodel().getPlayerByID(playerID).getNickname()+" played card "+card.getName()+"\n");
+    }
+
+    @Override
     public void run() {
         while(true){
             ServerToClientMessage fromServer = null;

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serializable;
+
 /**
  * Assistant card class
  * @author Angelo Zagami
  */
-public class AssistantCard {
+public class AssistantCard implements Serializable {
 
     private final int value;
     private final int mothernaturesteps;

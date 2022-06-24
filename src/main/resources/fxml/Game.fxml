@@ -459,7 +459,7 @@
               </GridPane>
 
                       </AnchorPane>
-         <AnchorPane fx:id="secondSchoolPane" layoutX="13.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="182.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="12.0">
+         <AnchorPane fx:id="secondSchoolPane" layoutX="14.0" layoutY="38.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="182.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="38.0">
             <children>
                <ImageView fx:id="secondPlayerSchool" fitHeight="182.0" fitWidth="466.0" layoutX="-118.0" layoutY="132.0" preserveRatio="true" rotate="90.0" AnchorPane.leftAnchor="-118.0" AnchorPane.rightAnchor="-119.35413275824652" AnchorPane.topAnchor="132.0">
                   <image>
@@ -526,7 +526,7 @@
                 </GridPane>
             </children>
          </AnchorPane>
-          <AnchorPane fx:id="thirdSchoolPane" layoutX="1042.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="198.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="12.0">
+          <AnchorPane fx:id="thirdSchoolPane" layoutX="1068.0" layoutY="51.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="198.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="51.0">
               <children>
                   <ImageView fx:id="thirdPlayerSchool" fitHeight="182.0" fitWidth="466.0" layoutX="-105.0" layoutY="122.0" preserveRatio="true" rotate="90.0" AnchorPane.bottomAnchor="123.11111111111109" AnchorPane.leftAnchor="-105.42364501953125" AnchorPane.rightAnchor="-116.35413275824652" AnchorPane.topAnchor="122.0">
                       <image>
@@ -596,6 +596,12 @@
                </GridPane>
               </children>
           </AnchorPane>
+         <ImageView fx:id="player2Assistant" fitHeight="121.0" fitWidth="80.0" layoutX="202.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+         <ImageView fx:id="player3Assistant" fitHeight="121.0" fitWidth="80.0" layoutX="995.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+         <ImageView fx:id="player3Wizard" fitHeight="30.0" fitWidth="30.0" layoutX="1236.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+         <Text fx:id="player3Nickname" layoutX="1170.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player3" />
+         <ImageView fx:id="player2Wizard" fitHeight="30.0" fitWidth="30.0" layoutX="14.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+         <Text fx:id="player2Nickname" layoutX="44.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player2" />
       </children>
    </AnchorPane>
    <HBox fx:id="hboxColorCharacter1" layoutX="94.0" layoutY="500.0" prefHeight="40.0" prefWidth="200.0" />

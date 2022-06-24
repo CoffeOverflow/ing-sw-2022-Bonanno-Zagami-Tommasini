@@ -6,6 +6,7 @@ import it.polimi.ingsw.Client.GUI.Controllers.SetupController;
 import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Client.VirtualModel;
+import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import javafx.application.Application;
@@ -328,5 +329,19 @@ public class GUI extends Application implements Runnable, View
     @Override
     public VirtualModel getVmodel() {
         return vmodel;
+    }
+
+    @Override
+    public void playerPlayAssistantCard(int playerID, AssistantCard card) {
+        if(currentScene.equals(nameToScene.get("GAME"))){
+            GameController controller = (GameController) sceneToController.get(currentScene);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.playerPlayAssistantCard(playerID, card);
+                }
+            });
+
+        }
     }
 }

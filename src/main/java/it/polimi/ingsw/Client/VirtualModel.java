@@ -30,6 +30,12 @@ public class VirtualModel {
 
 
     private int numOfInstance =0;
+    public Player getPlayerByID(int id)  {
+        for(Player p:this.players)
+            if(p.getPlayerID()==id)
+                return p;
+        return null;
+    }
 
     public VirtualModel() {
         for(Color c:Color.values()){

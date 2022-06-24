@@ -89,6 +89,12 @@ public class GameController implements GUIController{
     private boolean islandCanSelect = false;
     private int numOfEntranceStudChoose=0;
     private int colorSelected=0;
+    public ImageView player2Wizard;
+    public ImageView player3Wizard;
+    public Text player2Nickname;
+    public Text player3Nickname;
+    public ImageView player2Assistant;
+    public ImageView player3Assistant;
 
     private HashMap<Integer,Integer> vModelPosGuiPos=new HashMap<>();
 
@@ -141,6 +147,15 @@ public class GameController implements GUIController{
 
     public void changePhase(GamePhase phase){
         currentPhase = phase;
+    }
+
+    public void playerPlayAssistantCard(int playerID, AssistantCard card){
+        if(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getPlayerID() == playerID){
+            player2Assistant.setImage(new Image(getClass().getResourceAsStream(card.getAsset())));
+        }
+        if(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(2)).getPlayerID() == playerID){
+            player3Assistant.setImage(new Image(getClass().getResourceAsStream(card.getAsset())));
+        }
     }
 
     @Override
@@ -266,6 +281,16 @@ public class GameController implements GUIController{
         money.setText(String.valueOf(gui.getVmodel().getClientPlayer().getMoney()));
         nickname.setText(gui.getVmodel().getClientPlayer().getNickname());
         wizardAndMoney.setVisible(true);
+        player2Nickname.setText(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getNickname());
+        player2Wizard.setImage(new Image(getClass().getResourceAsStream("/graphics/wizards/"+(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getWizard().getCutFile()))));
+        if(gui.getVmodel().getPlayers().size() > 2){
+            player3Nickname.setText(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(vModelPosGuiPos.get(2))).getNickname());
+        }
+        else{
+            player3Wizard.setVisible(false);
+            player3Nickname.setVisible(false);
+        }
+
     }
 
 
