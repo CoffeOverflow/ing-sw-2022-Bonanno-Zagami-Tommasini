@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameController implements GUIController{
@@ -88,6 +89,8 @@ public class GameController implements GUIController{
     private boolean islandCanSelect = false;
     private int numOfEntranceStudChoose=0;
     private int colorSelected=0;
+
+    private HashMap<Integer,Integer> vModelPosGuiPos=new HashMap<>();
 
 
     public void initialize() {
@@ -163,39 +166,45 @@ public class GameController implements GUIController{
     }
 
     public void showCharacterCard(){
-        character.getChildren().clear();
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
+        if(firsTimeInMethod){
+            for(CharacterCard charCard:characterCards){
+                int j=0;
+                int k=0;
+                Image characterImg = new Image(getClass().getResourceAsStream("/graphics/character/"+charCard.getAsset()));
+                ImageView characterImgview = new ImageView(characterImg);
+                characterImgview.setFitHeight(150);
+                characterImgview.setPreserveRatio(true);
+                //Creating a Button
+                Button characterButton = new Button();
+                //Setting the size of the button
+                characterButton.setPrefSize(60, 150);
+                //Setting a graphic to the button
+                characterButton.setGraphic(characterImgview);
+                characterButton.setUserData(charCard.getAsset());
+                characterButton.setOnAction(new EventHandler() {
 
+                    @Override public void handle(Event event) {
+                        if(currentPhase!=GamePhase.ANOTHERPLAYERTURN)
+                            currentPhase=GamePhase.CHARACTER;
+                        showCharacterOptions(event);
+                    }
+                });
+                character.getChildren().add(characterButton);
+            }
+            firsTimeInMethod=false;
+        }
         int countForCardGrid=0;
         for(CharacterCard charCard:characterCards){
             int j=0;
             int k=0;
-            Image characterImg = new Image(getClass().getResourceAsStream("/graphics/character/"+charCard.getAsset()));
-            ImageView characterImgview = new ImageView(characterImg);
-            characterImgview.setFitHeight(150);
-            characterImgview.setPreserveRatio(true);
-            //Creating a Button
-            Button characterButton = new Button();
-            //Setting the size of the button
-            characterButton.setPrefSize(60, 150);
-            //Setting a graphic to the button
-            characterButton.setGraphic(characterImgview);
-            characterButton.setUserData(charCard.getAsset());
-            characterButton.setOnAction(new EventHandler() {
-
-                @Override public void handle(Event event) {
-                    if(currentPhase!=GamePhase.ANOTHERPLAYERTURN)
-                        currentPhase=GamePhase.CHARACTER;
-                    showCharacterOptions(event);
-                }
-            });
             List<String> characterStudentName = new ArrayList<>();
             characterStudentName.add("innkeeper.jpg");
             characterStudentName.add("clown.jpg");
             characterStudentName.add("princess.jpg");
             EnumMap<Color,Integer> studentsOnCard=new EnumMap<Color, Integer>(Color.class);
             if (characterStudentName.contains(charCard.getAsset())) {
-                studentsOnCard=charCard.getStudents().get();
+                studentsOnCard=charCard.getStudents().get().clone();
                 for(Color c:Color.values()){
                     while(studentsOnCard.get(c)>0)
                     {
@@ -220,8 +229,6 @@ public class GameController implements GUIController{
                     }
                 }
             }
-
-
             if(charCard.getAsset().equals("herbalist.jpg")){
 
                     int noEntryTitles=charCard.getNoEntryTiles().get();
@@ -241,8 +248,6 @@ public class GameController implements GUIController{
                         noEntryTitles--;
                     }
             }
-
-            character.getChildren().add(characterButton);
 
             countForCardGrid++;
         }
@@ -331,6 +336,7 @@ public class GameController implements GUIController{
                 schoolDiningGridsList.add((GridPane) mySchoolPane.getChildren().get(2));
                 schoolTowersGridsList.add((GridPane) mySchoolPane.getChildren().get(3));
                 schoolProfGridsList.add((GridPane)mySchoolPane.getChildren().get(4));
+                vModelPosGuiPos.put(0,i);
             }else{
                 count++;
                 switch(count){
@@ -339,12 +345,14 @@ public class GameController implements GUIController{
                         schoolDiningGridsList.add((GridPane)secondSchoolPane.getChildren().get(2));
                         schoolTowersGridsList.add((GridPane)secondSchoolPane.getChildren().get(3));
                         schoolProfGridsList.add((GridPane)secondSchoolPane.getChildren().get(4));
+                        vModelPosGuiPos.put(1,0);
                         break;
                     case 3:
                         schoolEntranceGridsList.add((GridPane)thirdSchoolPane.getChildren().get(1));
                         schoolDiningGridsList.add((GridPane)thirdSchoolPane.getChildren().get(2));
                         schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
                         schoolProfGridsList.add((GridPane)thirdSchoolPane.getChildren().get(4));
+                        vModelPosGuiPos.put(2,i);
                 }
             }
         }
@@ -509,6 +517,8 @@ public class GameController implements GUIController{
                 hboxColorCharacter1.setVisible(false);
                 currentPhase = GamePhase.GAME;
                 posIsland=null;
+                imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+                imageSelectedIsland=null;
                 choosenStudent=null;
                 entranceStudent=null;
                 color=null;

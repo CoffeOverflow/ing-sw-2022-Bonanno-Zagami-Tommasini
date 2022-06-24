@@ -229,13 +229,18 @@ public class VirtualModel {
                 fillClouds(bchange);
                 break;
             case TAKECLOUD:
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                        System.out.println(p.getEntryStudents());
                 EnumMap<Color,Integer> noStudent=new EnumMap<Color, Integer>(Color.class);
                 for(Color c:Color.values())
                     noStudent.put(c,0);
                 clouds.get(bchange.getCloud()).setStudents(noStudent);
                 for(Player p:players)
-                    if(p.getPlayerID()== bchange.getPlayer())
+                    if(p.getPlayerID()== bchange.getPlayer()){
                         p.addEntryStudents(bchange.getStudents1());
+                        System.out.println(p.getEntryStudents());
+                    }
                 break;
             case PLAYCLOWN:
                 for(CharacterCard c: characterCards)
@@ -291,7 +296,6 @@ public class VirtualModel {
                 for(Player p:players)
                     if(p.getPlayerID()== bchange.getPlayer())
                     {
-                        p.addEntryStudents(bchange.getEntranceStudent());
                         for(CharacterCard card :characterCards)
                             if(card.getAsset().equals(bchange.getAsset()))
                             {

@@ -107,9 +107,9 @@ public class Player {
 
     /**
      *
-     * @param entryStudents EnumMap<Color, Integer> contains student that have to be added in the entry of player's school
+     * @param entranceStudents EnumMap<Color, Integer> contains student that have to be added in the entry of player's school
      */
-    public void addEntryStudents(EnumMap<Color, Integer> entryStudents){
+    public void addEntryStudents(EnumMap<Color, Integer> entranceStudents){
         entryStudents.forEach((k, v) -> this.entryStudents.merge(k, v, Integer::sum));
     }
 
