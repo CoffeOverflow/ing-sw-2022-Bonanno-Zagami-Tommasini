@@ -29,7 +29,7 @@ public class GameModel {
 
     private HashMap<String,Integer> charactersPositions=new HashMap<>();
     private List<Cloud> clouds=new ArrayList<Cloud>();
-    private Optional<Integer> coins;
+    private static Optional<Integer> coins;
     private List<Island> islands=new ArrayList<Island>();
     private EnumMap<Color,Integer> studentsBag=new EnumMap<>(Color.class);
     private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
@@ -759,6 +759,14 @@ public class GameModel {
 
     public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
         this.takeProfessorWhenTie = takeProfessorWhenTie;
+    }
+
+    public static boolean modelHaveMoney() {
+        return coins.get() > 0;
+    }
+
+    public static void getMoney(){
+        coins = Optional.of(coins.get() - 1);
     }
 }
 

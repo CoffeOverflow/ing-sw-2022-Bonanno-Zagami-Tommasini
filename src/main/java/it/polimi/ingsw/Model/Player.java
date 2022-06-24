@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import static it.polimi.ingsw.Model.GameModel.modelHaveMoney;
+
 /**
  * Player class
  * @author Angelo Zagami
@@ -127,7 +129,8 @@ public class Player {
      */
     public void addStudentOf(Color color){
         students.merge(color, 1, Integer::sum);
-        if((students.get(color) % 3) == 0 && expertMode){
+        if((students.get(color) % 3) == 0 && expertMode && modelHaveMoney()){
+            getMoney();
             money++;
         }
     }
