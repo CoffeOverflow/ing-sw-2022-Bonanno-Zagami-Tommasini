@@ -325,6 +325,7 @@ public class GUI extends Application implements Runnable, View
 
     }
 
+    @Override
     public VirtualModel getVmodel() {
         return vmodel;
     }
