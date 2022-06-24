@@ -376,6 +376,18 @@ public class VirtualModel {
                 break;
             case PLAYMERCHANT:
                 takeProfessorWhenTie=true;
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                    {
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
+                    }
+                break;
             case DEFAULT:
                 String asset= bchange.getAsset();
                 for(Player p:players)

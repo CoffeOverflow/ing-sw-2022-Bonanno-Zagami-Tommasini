@@ -82,7 +82,7 @@ public class GUI extends Application implements Runnable, View
                     fromServer.handle(this);
 
             } catch (IOException | ClassNotFoundException | RuntimeException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
                 showError("Connection error, maybe one player left the match. The app will now close!");
                 run = false;
             }

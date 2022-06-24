@@ -47,7 +47,7 @@ public class GameController implements GUIController{
     public HBox assistantCard;
     public HBox character;
     public HBox hboxColorCharacter;
-    public HBox charAndMoney;
+    public HBox hboxColorCharacter1;
     public AnchorPane secondSchoolPane;
     public AnchorPane thirdSchoolPane;
     public AnchorPane mySchoolPane;
@@ -70,7 +70,7 @@ public class GameController implements GUIController{
     private List<GridPane> islandGridsList=new ArrayList<>();
     private List<GridPane> islandTowerGridsList=new ArrayList<>();
     private List<Group> islandGroupsList=new ArrayList<>();
-    private List<GridPane> cardGridList=new ArrayList<>();
+    public  List<GridPane> cardGridList=new ArrayList<>();
     public GridPane cardGrid1;
     public GridPane cardGrid2;
     public GridPane cardGrid3;
@@ -84,10 +84,10 @@ public class GameController implements GUIController{
     private EnumMap<Color,Integer> choosenStudent=null;
     private EnumMap<Color,Integer> entranceStudent=null;
     private Color color=null;
-    private List<Node> selectedNodes=new ArrayList<Node>();
     private int numOfStudentChoose=0;
     private boolean islandCanSelect = false;
     private int numOfEntranceStudChoose=0;
+    private int colorSelected=0;
 
 
     public void initialize() {
@@ -505,11 +505,14 @@ public class GameController implements GUIController{
             @Override public void handle(MouseEvent mouseEvent) {
                 gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
                 characterButton.setVisible(false);
+                hboxColorCharacter.setVisible(false);
+                hboxColorCharacter1.setVisible(false);
                 currentPhase = GamePhase.GAME;
                 posIsland=null;
                 choosenStudent=null;
                 entranceStudent=null;
                 color=null;
+                colorSelected=0;
             }
         });
 
@@ -519,7 +522,6 @@ public class GameController implements GUIController{
                 break;
             case "clown.jpg":
             case "princess.jpg":
-
                 break;
             case "auctioneer.jpg":
             case "herbalist.jpg":
@@ -528,26 +530,12 @@ public class GameController implements GUIController{
                 break;
             case "lumberjack.jpg":
             case "thief.jpg":
-                //choose the color not to be considered
-                //choose the color to put back in the bag
-                for(Color c: Color.values()){
-                Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + c.getFileStudent()));
-                ImageView studentImgview = new ImageView(studentImg);
-                studentImgview.setFitHeight(15);
-                studentImgview.setPreserveRatio(true);
-
-                studentImgview.setUserData(c);
-                studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override public void handle(MouseEvent mouseEvent) {
-                        color=c;
-                    }
-                });
-                hboxColorCharacter.getChildren().add(studentImgview);
-                }
-                hboxColorCharacter.setVisible(true);
+                makeAppearTheColorHbox(hboxColorCharacter,false);
                 break;
             case "storyteller.jpg":
                 //scambio scuola entrata
+                makeAppearTheColorHbox(hboxColorCharacter,true);
+                makeAppearTheColorHbox(hboxColorCharacter1,true);
 
             default:
                 // case "merchant.jpg":
@@ -558,6 +546,43 @@ public class GameController implements GUIController{
         }
 
     }
+
+    public void makeAppearTheColorHbox(HBox box, boolean isStoryTeller){
+        box.getChildren().clear();
+        for(Color c: Color.values()){
+            Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + c.getFileStudent()));
+            ImageView studentImgview = new ImageView(studentImg);
+            studentImgview.setFitHeight(15);
+            studentImgview.setPreserveRatio(true);
+
+            studentImgview.setUserData(c);
+            studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                    if(colorSelected==0 && !isStoryTeller){
+                        color=c;
+                        ((Node)mouseEvent.getSource()).setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
+                        colorSelected++;
+                    }else if(isStoryTeller && colorSelected<2){
+                        if(colorSelected==0){
+                            choosenStudent=new EnumMap<Color, Integer>(Color.class);
+                            for(Color c:Color.values())
+                                choosenStudent.put(c,0);
+                        }
+                        ImageView actualImageStudent=(ImageView) mouseEvent.getSource();
+                        actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
+                        Color choosenColor=(Color)actualImageStudent.getUserData();
+                        choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
+                        colorSelected++;
+                    }
+
+                }
+            });
+            box.getChildren().add(studentImgview);
+        }
+        box.setVisible(true);
+
+    }
+
     public void setValueForCharacterCard(MouseEvent event){
 
            if(numOfStudentChoose==0){
