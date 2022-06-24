@@ -41,57 +41,6 @@ public class CLI implements View, Runnable {
         ServerHandler server = new ServerHandler();
         Thread cliThread = new Thread(new CLI(server));
         cliThread.start();
-        /*Scanner scanner = null;
-        try {
-            boolean confirmation = false;
-            do{
-                ServerToClientMessage fromServer = server.read();
-                if(fromServer instanceof  RequestNickname){
-                    RequestNickname msg = (RequestNickname) fromServer;
-                    System.out.print(msg.getMsg()+" > ");
-                    scanner = new Scanner(System.in);
-                    String nickname = scanner.nextLine();
-                    server.write(new ChooseNickname(nickname));
-                    fromServer.handle(this, server);
-                }
-                if(fromServer instanceof Error){
-                    Error msg = (Error) fromServer;
-                    System.err.println(msg.getMessage());
-                }
-                if(fromServer instanceof ActionValid){
-                    ActionValid msg = (ActionValid) fromServer;
-                    System.out.println(msg.getMsg());
-                }
-                if(fromServer instanceof ChooseMatch){
-                    System.out.println("\nAvailable match:");
-                    ChooseMatch msg = (ChooseMatch) fromServer;
-                    for(String match : msg.getAvailableMatchs())
-                        System.out.println(match);
-                    System.out.print("\n"+msg.getMsg());
-                    int game = scanner.nextInt();
-                    server.write(new SelectMatch(game));
-                }
-                if (fromServer instanceof GenericMessage){
-                    System.out.println(((GenericMessage) fromServer).getMessage());
-                }
-                if(fromServer instanceof WaitForOtherPlayer){
-                    WaitForOtherPlayer msg = (WaitForOtherPlayer) fromServer;
-                    System.out.println(msg.getMsg());
-                    confirmation = true;
-                }
-            }while(!confirmation);
-        } catch (IOException e) {
-            System.out.println("Server unreachable :c");
-            System.exit(-1);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        while(true){
-            String fromInput = scanner.nextLine();
-            if(fromInput.equals("Quit"))
-                break;
-        }*/
 
     }
 
