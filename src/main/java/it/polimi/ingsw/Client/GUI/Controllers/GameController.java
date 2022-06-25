@@ -153,8 +153,10 @@ public class GameController implements GUIController{
         if(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getPlayerID() == playerID){
             player2Assistant.setImage(new Image(getClass().getResourceAsStream(card.getAsset())));
         }
-        if(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(2)).getPlayerID() == playerID){
-            player3Assistant.setImage(new Image(getClass().getResourceAsStream(card.getAsset())));
+        if(gui.getVmodel().getPlayers().size()>2){
+            if(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(2)).getPlayerID() == playerID){
+                player3Assistant.setImage(new Image(getClass().getResourceAsStream(card.getAsset())));
+            }
         }
     }
 
@@ -432,6 +434,7 @@ public class GameController implements GUIController{
         int count=0;
         for(Island island: vmodel.getIslands()){
             if(vmodel.getMotherNaturePosition()==count){
+                System.out.println(vmodel.getMotherNaturePosition());
                 Image motherNatureImg=new Image(getClass().getResourceAsStream("/graphics/icons/mother_nature.png"));
                 ImageView motherNatureImgview = new ImageView(motherNatureImg);
                 motherNatureImgview.setFitHeight(20);
