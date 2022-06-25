@@ -913,6 +913,7 @@ public class GameController implements GUIController{
             double y=(y1+y2+y3)/3;
             if(mergedIsland1<mergedIsland2){
                 islandGridsList.remove(mergedIsland2);
+                islandTowerGridsList.remove(mergedIsland2);
                 islandGroupsList.get(mergedIsland2).getChildren().clear();
                 islandGroupsList.remove(mergedIsland2);
                 islandGroupsList.get(mergedIsland1).setLayoutX(x);
@@ -921,6 +922,7 @@ public class GameController implements GUIController{
                 //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland1).getScaleY()*1.2);
             }else{
                 islandGridsList.remove(mergedIsland1);
+                islandTowerGridsList.remove(mergedIsland1);
                 islandGroupsList.get(mergedIsland1).getChildren().clear();
                 islandGroupsList.remove(mergedIsland1);
                 islandGroupsList.get(mergedIsland2).setLayoutX(x);
@@ -929,6 +931,7 @@ public class GameController implements GUIController{
                 //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland2).getScaleY()*1.2);
             }
             islandGridsList.remove(conqueredIsland);
+            islandTowerGridsList.remove(conqueredIsland);
             islandGroupsList.get(conqueredIsland).getChildren().clear();
             islandGroupsList.remove(conqueredIsland);
         }else{
@@ -936,6 +939,7 @@ public class GameController implements GUIController{
             double y=(y1+y2)/2;
             if(mergedIsland1<conqueredIsland){
                 islandGridsList.remove(conqueredIsland);
+                islandTowerGridsList.remove(conqueredIsland);
                 islandGroupsList.get(conqueredIsland).getChildren().clear();
                 islandGroupsList.remove(conqueredIsland);
                 islandGroupsList.get(mergedIsland1).setLayoutX(x);
@@ -944,6 +948,7 @@ public class GameController implements GUIController{
                 //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland1).getScaleY()*1.1);
             }else{
                 islandGridsList.remove(mergedIsland1);
+                islandTowerGridsList.remove(mergedIsland1);
                 islandGroupsList.get(mergedIsland1).getChildren().clear();
                 islandGroupsList.remove(mergedIsland1);
                 islandGroupsList.get(conqueredIsland).setLayoutX(x);
