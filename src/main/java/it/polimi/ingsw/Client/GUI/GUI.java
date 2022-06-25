@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GUI;
 
+import it.polimi.ingsw.Client.GUI.Controllers.EndGameController;
 import it.polimi.ingsw.Client.GUI.Controllers.GUIController;
 import it.polimi.ingsw.Client.GUI.Controllers.GameController;
 import it.polimi.ingsw.Client.GUI.Controllers.SetupController;
@@ -238,12 +239,26 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void youWin() {
-        serverHandler.close();
+        changeScene("ENDGAME");
+        EndGameController controller = (EndGameController) sceneToController.get(currentScene);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.win();
+            }
+        });
     }
 
     @Override
     public void otherPlayerWins(OtherPlayerWins msg){
-        this.showMessage(msg.getMsg());
+        changeScene("ENDGAME");
+        EndGameController controller = (EndGameController) sceneToController.get(currentScene);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.lose(msg.getMsg());
+            }
+        });
     }
 
     @Override
