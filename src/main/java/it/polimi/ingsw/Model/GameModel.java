@@ -718,40 +718,34 @@ public class GameModel {
     }
 
     public List<Player> getWinner(){
-        Player winner=null;
-        Player winner2=null;
+        Player winner = null;
+        Player winner2 = null;
         ArrayList<Player> winners=new ArrayList<>();
         HashMap<Player,Integer> mapPlayerNumTowers=new HashMap<>();
-        for(Player p: players){
-            mapPlayerNumTowers.put(p,0);
+        for(Player player : players){
+            mapPlayerNumTowers.put(player,player.getNumberOfTower());
         }
-        for(Island i: islands){
-            if(i.getTower().isPresent()){
-                Player p=getPlayerByTower(i.getTower().get());
-                mapPlayerNumTowers.put(p,mapPlayerNumTowers.get(p)+i.getNumberOfTowers());
-            }
-        }
-        int key=0;
-        for(Player p: mapPlayerNumTowers.keySet()){
-            if(mapPlayerNumTowers.get(p)>key){
-                winner=p;
+        int tower = 99;
+        for(Player player : mapPlayerNumTowers.keySet()){
+            if(mapPlayerNumTowers.get(player) < tower){
+                winner = player;
                 if(winner2!=null) winner2=null;
-                key=mapPlayerNumTowers.get(p);
+                tower = mapPlayerNumTowers.get(player);
             }
-            else if(mapPlayerNumTowers.get(p)==key){
-                int numProfWinner=0;
-                int numProfP=0;
+            else if(mapPlayerNumTowers.get(player) == tower){
+                int numProfWinner = 0;
+                int numProfP = 0;
                 for(Professor pr: professors.values()){
-                    if(pr.getPlayer().equals(p))
+                    if(pr.getPlayer().equals(player))
                         numProfP++;
                     else if(pr.getPlayer().equals(winner))
                         numProfWinner++;
                 }
                 if(numProfP>numProfWinner) {
-                    winner = p;
+                    winner = player;
                     if(winner2!=null) winner2=null;
                 }else if(numProfP==numProfWinner){
-                    winner2=p;
+                    winner2=player;
                 }
             }
         }

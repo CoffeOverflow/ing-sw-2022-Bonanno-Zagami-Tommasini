@@ -30,6 +30,15 @@ public class MoveMotherNature implements ClientToServerMessage{
             game.checkConquest();
             if(!game.getController().checkEndGame()){
                 game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
+            }else {
+                System.out.println("ENDGAME");
+                game.getController().setWinners(game.getController().getModel().getWinner());
+                for (Player p : game.getController().getWinners()) {
+                    System.out.println(p.getNickname());
+                    game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
+                    game.sendAllExcept(new OtherPlayerWins(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
+                    //endGame();
+                }
             }
 
         }catch(IllegalArgumentException e){
