@@ -15,11 +15,20 @@ import java.util.*;
 
 import static it.polimi.ingsw.Constants.*;
 
+/***
+ * CLI implementation of UI
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ */
 public class CLI implements View, Runnable {
 
     private ServerHandler serverHandler;
     private VirtualModel vmodel;
 
+    /***
+     * CLI constructor
+     * @author Federica Tommasini, Angelo Zagami
+     * @param serverHandler Server Handler object used for server communications
+     */
     public CLI(ServerHandler serverHandler){
         this.serverHandler = serverHandler;
         this.vmodel=new VirtualModel();
@@ -29,6 +38,12 @@ public class CLI implements View, Runnable {
     public VirtualModel getVmodel() {
         return vmodel;
     }
+
+    /***
+     * Main class of CLI, ask for server IP and port then start the CLI
+     * @author Giuseppe Bonanno, Angelo Zagami
+     * @param args
+     */
     public static void main(String[] args) {
         System.out.println("\n"+Constants.ERIANTYS);
         /*Scanner scanner = new Scanner(System.in);
@@ -144,7 +159,8 @@ public class CLI implements View, Runnable {
 
     @Override
     public void youWin() {
-        serverHandler.close();
+        this.showMessage("YOU WIN!");
+        //serverHandler.close();
     }
 
     @Override

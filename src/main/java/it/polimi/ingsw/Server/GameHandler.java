@@ -244,9 +244,14 @@ public class GameHandler implements Runnable{
         if(controller.checkEndGame()){
             controller.setWinners(controller.getModel().getWinner());
             for (Player p : controller.getWinners()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 sendTo(new YouWin(), getClientByPlayerID(p.getPlayerID()));
-                sendAllExcept(new OtherWin(p.getNickname()), getClientByPlayerID(p.getPlayerID()));
-                endGame();
+                sendAllExcept(new OtherPlayerWins(p.getNickname()), getClientByPlayerID(p.getPlayerID()));
+                //endGame();
             }
         }
     }

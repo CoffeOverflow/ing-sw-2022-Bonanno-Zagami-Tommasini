@@ -38,8 +38,8 @@ public class ChooseCloud implements ClientToServerMessage{
             if (!game.getController().getWinners().isEmpty()) {
                 for (Player p : game.getController().getWinners()) {
                     game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
-                    game.sendAllExcept(new OtherWin(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
-                    game.endGame();
+                    game.sendAllExcept(new OtherPlayerWins(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
+                    //game.endGame();
                 }
             } else {
                 game.getController().getModel().endTurnOfPlayer();

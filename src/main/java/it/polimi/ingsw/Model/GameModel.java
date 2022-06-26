@@ -199,6 +199,9 @@ public class GameModel {
         }
 
     }
+    public void printBag(){
+        System.out.println(studentsBag.toString());
+    }
 
     public synchronized void addPlayer(int id,String nickname){
         Tower towers=Tower.values()[this.players.size()];

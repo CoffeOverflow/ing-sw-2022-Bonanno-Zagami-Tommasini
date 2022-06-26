@@ -9,11 +9,16 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Main class of Eriantys Game
+ * Main class of Eriantys Game, allows user to start the Server or the client (CLI or GUI)
  * @author Angelo Zagami
  */
 public class Eriantys
 {
+    /***
+     * Main of the game, it starts the server or the client (CLI or GUI)
+     * @author Angelo Zagami
+     * @param args
+     */
     public static void main( String[] args ) {
         int choose = 0;
         Scanner scanner = new Scanner(System.in);

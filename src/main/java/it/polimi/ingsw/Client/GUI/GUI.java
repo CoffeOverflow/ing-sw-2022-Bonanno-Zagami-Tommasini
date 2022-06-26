@@ -239,11 +239,11 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void youWin() {
-        changeScene("ENDGAME");
-        EndGameController controller = (EndGameController) sceneToController.get(currentScene);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                changeScene("ENDGAME");
+                EndGameController controller = (EndGameController) sceneToController.get(currentScene);
                 controller.win();
             }
         });
@@ -251,11 +251,11 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void otherPlayerWins(OtherPlayerWins msg){
-        changeScene("ENDGAME");
-        EndGameController controller = (EndGameController) sceneToController.get(currentScene);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                changeScene("ENDGAME");
+                EndGameController controller = (EndGameController) sceneToController.get(currentScene);
                 controller.lose(msg.getMsg());
             }
         });

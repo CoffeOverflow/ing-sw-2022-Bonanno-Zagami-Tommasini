@@ -17,7 +17,7 @@ public class EndGameController implements GUIController{
 
     public void initialize() {
         mainPane.setVisible(true);
-        win.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/win.jpeg")));
+        win.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/win.png")));
         win.setFitHeight(360);
         win.setPreserveRatio(true);
         win.setVisible(false);

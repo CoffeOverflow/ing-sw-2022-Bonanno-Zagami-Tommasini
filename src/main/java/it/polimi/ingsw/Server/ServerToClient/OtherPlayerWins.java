@@ -10,7 +10,7 @@ public class OtherPlayerWins implements ServerToClientMessage{
 
     public OtherPlayerWins(String winnerNickname) {
         this.winnerNickname = winnerNickname;
-        msg=winnerNickname+"won!";
+        msg=winnerNickname+" won!\n";
     }
 
     public String getWinnerNickname() {
