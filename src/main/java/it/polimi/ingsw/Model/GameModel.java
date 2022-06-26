@@ -436,7 +436,7 @@ public class GameModel {
         {
             this.professors.get(studentColor).goToSchool(getPlayerByID(player));
         }
-        if(getPlayerByID(player).getStudentsOf(studentColor) % 3 == 0 && coins.isPresent()){
+        if(getPlayerByID(player).getStudentsOf(studentColor) % 3 == 0 && expertMode){
             if(coins.get() > 0){
                 coins = Optional.of(coins.get() - 1);
                 getPlayerByID(player).addMoney();

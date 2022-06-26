@@ -12,6 +12,8 @@ public class AddMoney implements ServerToClientMessage{
     }
     @Override
     public void handle(View view) throws IOException {
+        System.out.println(playerID);
+        System.out.println(view.getVmodel().getPlayerByID(playerID).toString());
         view.getVmodel().getPlayerByID(playerID).addMoney();
     }
 }
