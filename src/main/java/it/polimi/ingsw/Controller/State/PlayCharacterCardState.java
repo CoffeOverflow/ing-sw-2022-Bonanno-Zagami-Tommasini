@@ -33,6 +33,7 @@ public class PlayCharacterCardState implements GameControllerState{
                 card.increaseCost();
             }
             card.useCard(action.getPosIsland(), model);
+
         }else{
             throw new IllegalStateException("Not enough money");
         }

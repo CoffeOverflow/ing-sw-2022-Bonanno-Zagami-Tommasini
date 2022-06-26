@@ -146,21 +146,8 @@ public class VirtualModel {
             {
                 p.addStudentOf(studentColor);
                 p.removeEntryStudent(studentColor);
-                int numOfColor=p.getStudentsOf(studentColor);
-                int max=0;
-                for(Player play: players)
-                {
-                    if(play.getPlayerID()!=p.getPlayerID()){
-                        if(play.getStudentsOf(studentColor)>max)
-                        {
-                            max=play.getStudentsOf(studentColor);
-                        }
-                    }
-                }
-                if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max))
-                {
-                    this.professors.get(studentColor).goToSchool(p);
-                }
+                checkToChangeProfessor(p,studentColor);
+
             }
     }
 
@@ -245,7 +232,6 @@ public class VirtualModel {
                 for(Player p:players)
                     if(p.getPlayerID()== bchange.getPlayer()){
                         p.addEntryStudents(bchange.getStudents1());
-                        System.out.println(p.getEntryStudents());
                     }
                 break;
             case PLAYCLOWN:
@@ -317,7 +303,8 @@ public class VirtualModel {
                         for(Player p:players)
                             if(p.getPlayerID()== bchange.getPlayer())
                             {
-                                moveToSchool(p.getPlayerID(),c);
+                                p.addStudentOf(c);
+                                checkToChangeProfessor(p,c);
                                 for(CharacterCard card :characterCards)
                                     if(card.getAsset().equals(bchange.getAsset()))
                                     {
@@ -457,4 +444,21 @@ public class VirtualModel {
         this.takeProfessorWhenTie = takeProfessorWhenTie;
     }
 
+    public void checkToChangeProfessor(Player p,Color c){
+        int numOfColor=p.getStudentsOf(c);
+        int max=0;
+        for(Player play: players)
+        {
+            if(play.getPlayerID()!=p.getPlayerID()){
+                if(play.getStudentsOf(c)>max)
+                {
+                    max=play.getStudentsOf(c);
+                }
+            }
+        }
+        if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max))
+        {
+            this.professors.get(c).goToSchool(p);
+        }
+    }
 }
