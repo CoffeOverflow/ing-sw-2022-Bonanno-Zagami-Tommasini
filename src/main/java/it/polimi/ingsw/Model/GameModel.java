@@ -156,10 +156,7 @@ public class GameModel {
         String[] characterAssets={"innkeeper.jpg","auctioneer.jpg","postman.jpg","herbalist.jpg","centaur.jpg",
                 "clown.jpg", "infantryman.jpg", "lumberjack.jpg", "storyteller.jpg","princess.jpg","thief.jpg","merchant.jpg"};
         int[] cardNumbers=new int[3];
-        cardNumbers[0]=3;
-        cardNumbers[1]=4;
-        cardNumbers[2]=5;
-        /*for(int i=0; i<3; i++){
+        for(int i=0; i<3; i++){
             switch(i){
                 case 0:
                     cardNumbers[i]=rand.nextInt(12);
@@ -175,7 +172,7 @@ public class GameModel {
                     }while(cardNumbers[i]==cardNumbers[0] || cardNumbers[i]==cardNumbers[1]);
                     break;
             }
-        }*/
+        }
         if(expertMode){
             try{
             for(int i=0; i<3;i++) {
@@ -284,18 +281,18 @@ public class GameModel {
      */
     public int getPlayerInfluence(int player,int island)
     {
-            int influence = 0;
-            for (Color c : Color.values()) {
-                if(!c.equals(notCountedColor)){
-                    if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
-                        influence += this.islands.get(island).getStudentsOf(c);
-                        if(player==currentPlayer && twoAdditionalPoints){
-                            influence+=2;
-                        }
-                    }
+        int influence = 0;
+        for (Color c : Color.values()) {
+            if(!c.equals(notCountedColor)){
+                if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
+                    influence += this.islands.get(island).getStudentsOf(c);
                 }
             }
-            return influence;
+        }
+        if(player==currentPlayer && twoAdditionalPoints){
+            influence+=2;
+        }
+        return influence;
     }
 
     public Conquest computeInfluence(int islandPosition){
@@ -315,13 +312,16 @@ public class GameModel {
                 key=influences.get(p.getPlayerID());
                 conqueror=Optional.of(p.getPlayerID());
             }
+            System.out.println(influences);
         }
-        //check if the higher value of influence is unique
+        //check if the higher value of influence is unique and if the island wasn't already his
         if(conqueror.isPresent()){
             for(Player p:players){
                 if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID()).equals(influences.get(conqueror.get()))){
                     conqueror=Optional.empty();
-                }
+                }else if(p.getPlayerID()==conqueror.get() && islands.get(islandPosition).getTower().isPresent()
+                        &&  islands.get(islandPosition).getTower().get().equals(p.getTower()))
+                    conqueror=Optional.empty();
             }
         }
 
@@ -440,6 +440,7 @@ public class GameModel {
     }
 
     public void removeFromSchool (int player,Color studentColor, int number){
+
         for(Player p:this.players) {
             if (p.getPlayerID() == player) {
                 p.getStudents().put(studentColor, p.getStudentsOf(studentColor) - number);
@@ -453,10 +454,14 @@ public class GameModel {
                 toGo=play;
             }
         }
-        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+
+        if ( null!=toGo &&!toGo.equals(professors.get(studentColor).getPlayer()))
             this.professors.get(studentColor).goToSchool(toGo);
+
+
         if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
             professors.get(studentColor).getPlayer().removeProfessor(studentColor);
+
     }
 
     /**
