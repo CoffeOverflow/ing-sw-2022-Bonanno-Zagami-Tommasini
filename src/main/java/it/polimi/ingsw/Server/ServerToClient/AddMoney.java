@@ -5,8 +5,13 @@ import it.polimi.ingsw.Client.View;
 import java.io.IOException;
 
 public class AddMoney implements ServerToClientMessage{
+    private int playerID;
+
+    public AddMoney(int playerID){
+        this.playerID = playerID;
+    }
     @Override
     public void handle(View view) throws IOException {
-        view.getVmodel().getClientPlayer().addMoney();
+        view.getVmodel().getPlayerByID(playerID).addMoney();
     }
 }
