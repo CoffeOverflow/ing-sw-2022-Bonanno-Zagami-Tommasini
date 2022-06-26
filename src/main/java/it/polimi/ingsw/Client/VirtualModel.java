@@ -29,6 +29,7 @@ public class VirtualModel {
 
 
 
+
     private int numOfInstance =0;
     public Player getPlayerByID(int id)  {
         for(Player p:this.players)
@@ -398,7 +399,6 @@ public class VirtualModel {
                     }
                 break;
             case DEFAULT:
-                String asset= bchange.getAsset();
                 for(Player p:players)
                     if(p.getPlayerID()==bchange.getPlayer())
                         for(CharacterCard card :characterCards)

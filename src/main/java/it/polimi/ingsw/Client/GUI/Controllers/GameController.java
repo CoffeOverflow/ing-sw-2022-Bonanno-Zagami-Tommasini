@@ -516,7 +516,7 @@ public class GameController implements GUIController{
                 numberOfMovedStudent = 0;
                 currentPhase = GamePhase.GAME;
             }
-        }else if(currentPhase== GamePhase.MOVEMOTHERNATURE && gui.getVmodel().getMotherNaturePosition()!=((int)node.getUserData())){
+        }else if(currentPhase== GamePhase.MOVEMOTHERNATURE && gui.getVmodel().getMotherNaturePosition()!=((int)node.getUserData()) ){
             System.out.println("user data:"+((int)node.getUserData()));
             gui.send(new MoveMotherNature((int)(node.getUserData())-gui.getVmodel().getMotherNaturePosition()));
             currentPhase = GamePhase.GAME;
@@ -650,8 +650,6 @@ public class GameController implements GUIController{
            actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
            Color choosenColor=(Color)actualImageStudent.getUserData();
            choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
-
-
 
 
     }
