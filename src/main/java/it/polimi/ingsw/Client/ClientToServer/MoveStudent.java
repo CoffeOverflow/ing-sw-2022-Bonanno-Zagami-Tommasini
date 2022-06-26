@@ -59,7 +59,7 @@ public class MoveStudent implements ClientToServerMessage{
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),player);
         }
         if(money != game.getController().getModel().getPlayerByID(game.getController().getModel().getCurrentPlayer()).getMoney()){
-            game.sendTo(new AddMoney(),player);
+            game.sendAll(new AddMoney(player.getPlayerID()));
         }
         BoardChange change=new BoardChange(moveTo,studentColor,islandPosition,game.getController().getModel().getCurrentPlayer());
         game.sendAll(new UpdateMessage(change));
