@@ -365,6 +365,7 @@ public class GameController implements GUIController{
                 schoolProfGridsList.add((GridPane)mySchoolPane.getChildren().get(4));
                 vModelPosGuiPos.put(0,i);
             }else{
+                count++;
                 switch(count){
                     case 1:
                         schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
@@ -381,7 +382,7 @@ public class GameController implements GUIController{
                         vModelPosGuiPos.put(2,i);
                 }
             }
-            count++;
+
         }
         for(int i=0; i<gui.getVmodel().getIslands().size();i++){
             islandGroupsList.add((Group)boardAndOthersSchool.getChildren().get(i));
