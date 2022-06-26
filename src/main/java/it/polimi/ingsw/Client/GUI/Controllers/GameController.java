@@ -568,6 +568,7 @@ public class GameController implements GUIController{
                 color=null;
                 colorSelected=0;
                 islandCanSelect=false;
+                numOfStudentChoose=0;
             }
         });
 
@@ -652,7 +653,6 @@ public class GameController implements GUIController{
            actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
            Color choosenColor=(Color)actualImageStudent.getUserData();
            choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
-
 
     }
 

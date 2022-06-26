@@ -45,6 +45,8 @@ public class ClientHandler implements Runnable{
                     server.removePlayer(getPlayerID());
                     if(game != null && server.getAvailableGames().contains(game))
                         server.removeAvailableGame(game.getGameID());
+                    else
+                        server.endGame(game.getGameID());
                     break;
                 }
             }
