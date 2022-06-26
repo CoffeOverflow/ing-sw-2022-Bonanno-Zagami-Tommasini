@@ -148,9 +148,11 @@ public class Server implements Runnable{
 
     public synchronized void endGame(int gameID){
         GameHandler game = activeGames.get(gameID);
-        for(ClientHandler player : game.getPlayers()){
-            nicknameByID.remove(player.getPlayerID());
-            player.close();
+        if(game !=null){
+            for(ClientHandler player : game.getPlayers()){
+                nicknameByID.remove(player.getPlayerID());
+                player.close();
+            }
         }
         activeGames.remove(gameID);
     }
