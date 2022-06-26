@@ -286,7 +286,7 @@ public class GameController implements GUIController{
         player2Nickname.setText(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getNickname());
         player2Wizard.setImage(new Image(getClass().getResourceAsStream("/graphics/wizards/"+(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getWizard().getCutFile()))));
         if(gui.getVmodel().getPlayers().size() > 2){
-            player3Nickname.setText(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(vModelPosGuiPos.get(2))).getNickname());
+            player3Nickname.setText(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(2)).getNickname());
             player3Wizard.setImage(new Image(getClass().getResourceAsStream("/graphics/wizards/"+(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(2)).getWizard().getCutFile()))));
         }
         else{
