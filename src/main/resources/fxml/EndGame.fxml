@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="mainPane" fx:id="mainPane" prefHeight="720.0" prefWidth="1228.0" stylesheets="@../css/endgame.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.EndGameController">
+   <children>
+      <ImageView fx:id="win" fitHeight="150.0" fitWidth="200.0" layoutX="514.0" layoutY="285.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="lose" layoutX="564.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Other Player win :c" />
+   </children>
+</AnchorPane>

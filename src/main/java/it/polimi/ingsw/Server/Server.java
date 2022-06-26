@@ -27,6 +27,11 @@ public class Server implements Runnable{
     private HashMap<Integer, String> nicknameByID;
     private HashMap<Integer, GameHandler> availableGames;
     private HashMap<Integer, GameHandler> activeGames;
+
+    /***
+     * Server Class constructor
+     * @param server The socket of Server
+     */
     public Server(ServerSocket server){
         this.server = server;
         this.clientExecutor = Executors.newCachedThreadPool();
@@ -37,6 +42,12 @@ public class Server implements Runnable{
         this.activeGames = new HashMap<Integer, GameHandler>();
 
     }
+
+    /***
+     *
+     * @author Angelo Zagami
+     * @param args
+     */
     public static void main(String[] args) {
         int port = -1;
         ServerSocket server = null;

@@ -4,7 +4,8 @@ public enum Scenes {
 
     MENU("MENU", "MainMenu.fxml"),
     SETUP("SETUP", "Setup.fxml"),
-    GAME("GAME", "Game.fxml");
+    GAME("GAME", "Game.fxml"),
+    ENDGAME("ENDGAME", "EndGame.fxml");
     private final String name;
     private final String file;
     private Scenes(String name, String file) {

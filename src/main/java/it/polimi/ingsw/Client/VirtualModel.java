@@ -264,7 +264,7 @@ public class VirtualModel {
                     if(p.getPlayerID()== bchange.getPlayer()) {
                         p.addEntryStudents(bchange.getChoosenStudent());
                         for(CharacterCard card :characterCards)
-                            if(card.equals(bchange.getAsset()))
+                            if(card.getAsset().equals(bchange.getAsset()))
                             {
                                 p.decreaseMoney(card.getCost());
                                 card.increaseCost();

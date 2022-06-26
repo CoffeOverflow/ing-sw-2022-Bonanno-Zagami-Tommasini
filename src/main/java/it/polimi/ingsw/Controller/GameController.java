@@ -81,6 +81,7 @@ public class GameController {
 
     public void doAction(Action action){
         state.turnAction(this, action);
+        model.printBag();
     }
 
     public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
