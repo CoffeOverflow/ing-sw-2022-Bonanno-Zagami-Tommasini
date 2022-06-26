@@ -448,6 +448,19 @@ public class GameController implements GUIController{
             }
             int k=0;
             int j=0;
+            int noEntryNumber=island.getNoEntryCard();
+            while(noEntryNumber>0){
+                Image noEntryImg = new Image(getClass().getResourceAsStream("/graphics/board/deny_island_icon.png"));
+                ImageView noEntryImgview = new ImageView(noEntryImg);
+                noEntryImgview.setFitHeight(15);
+                noEntryImgview.setPreserveRatio(true);
+                islandGridsList.get(count).add(noEntryImgview,j,k);
+                if(j==3){
+                    k++;
+                    j=0;
+                }else j++;
+                noEntryNumber--;
+            }
             Group actualGroup=islandGroupsList.get(count);
             actualGroup.setUserData(count);
 
@@ -576,6 +589,7 @@ public class GameController implements GUIController{
                 //scambio scuola entrata
                 makeAppearTheColorHbox(hboxColorCharacter,true);
                 makeAppearTheColorHbox(hboxColorCharacter1,true);
+                break;
 
             default:
                 // case "merchant.jpg":
@@ -612,6 +626,7 @@ public class GameController implements GUIController{
                         actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
                         Color choosenColor=(Color)actualImageStudent.getUserData();
                         choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
+                        System.out.println("chosen students: "+choosenStudent);
                         colorSelected++;
                     }
 
@@ -889,6 +904,7 @@ public class GameController implements GUIController{
             Color choosenColor=(Color)data[2];
             actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
             entranceStudent.put(choosenColor,entranceStudent.get(choosenColor)+1);
+            System.out.println("entrance students: "+entranceStudent);
         }
     }
 

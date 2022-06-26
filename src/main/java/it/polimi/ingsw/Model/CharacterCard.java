@@ -217,7 +217,6 @@ public class CharacterCard {
     public void useCard(Integer islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
-
         int count=0;
         if(chosenStudents!=null && chosenStudents.isPresent() && this.getStudents()!=null &&  this.getStudents().isPresent()) {
             for(Color c: chosenStudents.get().keySet()){
@@ -232,7 +231,7 @@ public class CharacterCard {
         if(chosenColor!=null && chosenColor.isPresent())
             chosenColor=null;
         if(noEntryTiles!=null && noEntryTiles.isPresent())
-            noEntryTiles=Optional.of(noEntryTiles.get());
+            noEntryTiles=Optional.of(noEntryTiles.get()-1);
 
         player.decreaseMoney(this.cost);
     }

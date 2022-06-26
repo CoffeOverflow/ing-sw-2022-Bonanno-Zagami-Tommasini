@@ -179,7 +179,7 @@ public class VirtualModel {
                 toGo=play;
             }
         }
-        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+        if (null!=toGo && !toGo.equals(professors.get(studentColor).getPlayer()))
             this.professors.get(studentColor).goToSchool(toGo);
         if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
             professors.get(studentColor).getPlayer().removeProfessor(studentColor);
@@ -363,7 +363,6 @@ public class VirtualModel {
                                 card.increaseCost();
                             }
                     }
-
                 break;
 
             case PLAYTHIEF:
