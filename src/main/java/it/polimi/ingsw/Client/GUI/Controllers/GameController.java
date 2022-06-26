@@ -381,6 +381,7 @@ public class GameController implements GUIController{
                         schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
                         schoolProfGridsList.add((GridPane)thirdSchoolPane.getChildren().get(4));
                         vModelPosGuiPos.put(2,i);
+                        break;
                 }
             }
 

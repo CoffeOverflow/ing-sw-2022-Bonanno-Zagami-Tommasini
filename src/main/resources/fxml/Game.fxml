@@ -604,8 +604,8 @@
          <Text fx:id="player2Nickname" layoutX="44.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player2" />
       </children>
    </AnchorPane>
-   <HBox fx:id="hboxColorCharacter1" layoutX="94.0" layoutY="500.0" prefHeight="40.0" prefWidth="200.0" />
-   <HBox fx:id="hboxColorCharacter" layoutX="94.0" layoutY="459.0" prefHeight="40.0" prefWidth="200.0" />
+   <HBox fx:id="hboxColorCharacter1" layoutX="94.0" layoutY="510.0" prefHeight="30.0" prefWidth="200.0" />
+   <HBox fx:id="hboxColorCharacter" layoutX="94.0" layoutY="478.0" prefHeight="30.0" prefWidth="200.0" />
    <Button fx:id="characterButton" layoutX="5.0" layoutY="492.0" mnemonicParsing="false" text="Play card" />
    <AnchorPane fx:id="mySchoolPane" centerShape="true" layoutX="415.0" layoutY="524.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="182.0" prefWidth="466.0" AnchorPane.bottomAnchor="13.0">
       <children>
