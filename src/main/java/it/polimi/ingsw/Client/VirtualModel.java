@@ -363,7 +363,6 @@ public class VirtualModel {
                                 card.increaseCost();
                             }
                     }
-                System.out.println("update arrivato");
                 break;
 
             case PLAYTHIEF:

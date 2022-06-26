@@ -315,7 +315,6 @@ public class GameModel {
                 key=influences.get(p.getPlayerID());
                 conqueror=Optional.of(p.getPlayerID());
             }
-            System.out.println(influences);
         }
         //check if the higher value of influence is unique and if the island wasn't already his
         if(conqueror.isPresent()){
