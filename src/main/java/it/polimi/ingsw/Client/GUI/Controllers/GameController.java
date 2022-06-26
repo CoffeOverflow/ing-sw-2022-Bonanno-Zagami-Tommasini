@@ -356,7 +356,7 @@ public class GameController implements GUIController{
                 schoolClicked(mouseEvent);
             }
         });
-        count=1;
+        count=0;
         for(int i=0; i<gui.getVmodel().getPlayers().size();i++){
             if(gui.getVmodel().getPlayers().get(i).equals(gui.getVmodel().getClientPlayer())) {
                 schoolEntranceGridsList.add((GridPane) mySchoolPane.getChildren().get(1));
@@ -365,16 +365,15 @@ public class GameController implements GUIController{
                 schoolProfGridsList.add((GridPane)mySchoolPane.getChildren().get(4));
                 vModelPosGuiPos.put(0,i);
             }else{
-                count++;
                 switch(count){
-                    case 2:
+                    case 1:
                         schoolEntranceGridsList.add((GridPane)secondSchoolPane.getChildren().get(1));
                         schoolDiningGridsList.add((GridPane)secondSchoolPane.getChildren().get(2));
                         schoolTowersGridsList.add((GridPane)secondSchoolPane.getChildren().get(3));
                         schoolProfGridsList.add((GridPane)secondSchoolPane.getChildren().get(4));
-                        vModelPosGuiPos.put(1,0);
+                        vModelPosGuiPos.put(1,i);
                         break;
-                    case 3:
+                    case 2:
                         schoolEntranceGridsList.add((GridPane)thirdSchoolPane.getChildren().get(1));
                         schoolDiningGridsList.add((GridPane)thirdSchoolPane.getChildren().get(2));
                         schoolTowersGridsList.add((GridPane)thirdSchoolPane.getChildren().get(3));
@@ -382,6 +381,7 @@ public class GameController implements GUIController{
                         vModelPosGuiPos.put(2,i);
                 }
             }
+            count++;
         }
         for(int i=0; i<gui.getVmodel().getIslands().size();i++){
             islandGroupsList.add((Group)boardAndOthersSchool.getChildren().get(i));
