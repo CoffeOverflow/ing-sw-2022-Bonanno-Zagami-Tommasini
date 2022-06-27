@@ -251,7 +251,6 @@ public class GameModel {
      * @param islandPosition
      * @param student
      */
-
     public void moveStudentToIsland(int islandPosition, Color student )
     {
         this.islands.get(islandPosition).addStudents(student,1);
@@ -298,8 +297,16 @@ public class GameModel {
         return influence;
     }
 
+    /**
+     * @author Federica Tommasini
+     * check if there is a player that has conquered the island on which mother nature ended up
+     * @param islandPosition island to check for conquering
+     * @return conquest object that contains information regarding the conquered island
+     */
     public Conquest computeInfluence(int islandPosition){
-        //take control of the island:
+        /*
+         * find the player with the higher influence on the island
+         */
         int key=0;
         HashMap<Integer, Integer> influences=new HashMap<>();
         Optional<Integer> conqueror=Optional.empty();
@@ -317,7 +324,9 @@ public class GameModel {
             }
         }
         System.out.println("DEBUG CI 0");
-        //check if the higher value of influence is unique and if the island wasn't already his
+        /*
+         * check if the higher value of influence is unique and if the island wasn't already his
+         */
         if(conqueror.isPresent()){
             for(Player p:players){
                 if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID()).equals(influences.get(conqueror.get()))){
@@ -333,8 +342,10 @@ public class GameModel {
         System.out.println("DEBUG CI 1");
         int mergeResult=0;
         int oldIslandsSize=islands.size();
-        //if the value is unique, conquer the island
 
+        /*
+         * if the value is unique, conquer the island placing the player's tower on it
+         */
         if(conqueror.isPresent()){
             Optional<Tower> oldTower= getTowerOnIsland(islandPosition);
             setTowerOnIsland(islandPosition,conqueror.get());
@@ -348,6 +359,10 @@ public class GameModel {
                     getPlayerTower(conqueror.get()));
         }
         System.out.println("DEBUG CI 2");
+        /*
+         * handle the results of the method that checks if there are islands to merge and set the attribute
+         * of the conquest, if the island isn't conquered, set conquest to null
+         */
         Conquest conquest;
         int mergeIsland1=0;
         int mergeIsland2=0;
@@ -388,6 +403,14 @@ public class GameModel {
     return null;
     }
 
+    /**
+     * @author Federica Tommasini
+     * check if there are near islands to merge
+     * @param island conquered island
+     * @param tower conqueror's tower
+     * @return an integer value which is -1 if the merged island precedes the conquered one,
+     * it is +1 if the merged islands follows the conquered one and 0 if there is no island to merge
+     */
     public int checkMergeIsland( int island, Tower tower){
         if(island==getIslandSize()-1 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island,tower);
@@ -409,9 +432,7 @@ public class GameModel {
             mergeIslands(island,island+1,tower);
             checkMergeIsland(island,tower);
             return +1;
-        }else{return 0;}
-
-
+        }else return 0;
 
     }
 
@@ -446,6 +467,14 @@ public class GameModel {
         }
     }
 
+    /**
+     * @author Federica Tommasini
+     * remove from the school a certain number of students of a specified color and check if the professor has to go to
+     * another player
+     * @param player
+     * @param studentColor
+     * @param number
+     */
     public void removeFromSchool (int player,Color studentColor, int number){
 
         for(Player p:this.players) {
@@ -511,6 +540,10 @@ public class GameModel {
     public void moveMotherNature(int steps){
         this.motherNaturePosition=(motherNaturePosition+steps)%this.islands.size();}
 
+    /**
+     * @author Federica Tommasini
+     * reset the attributes related to the character cards when the turn ends because the effect is no more active
+     */
     public void endTurnOfPlayer(){
         this.towersNotCounted=false;
         this.notCountedColor=null;
@@ -608,12 +641,23 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * @author Federica Tommasini
+     * put back some students in the bag
+     * @param c color of the students
+     * @param n number of the students
+     */
     public void addStudentsBag(Color c, int n){
         numberOfStudentBag+=n;
         int numberBefore=studentsBag.get(c);
         studentsBag.put(c,numberBefore+n);
     }
 
+    /**
+     * get the player associated to a tower
+     * @param tower color of the tower
+     * @return the player with that tower
+     */
     public Player getPlayerByTower(Tower tower){
         Player ret=null;
         for(Player p:players){
@@ -623,6 +667,10 @@ public class GameModel {
         return ret;
     }
 
+    /**
+     * @param position position of the island
+     * @return island associated with that position
+     */
     public Island getIslandByPosition(int position){
         return this.islands.get(position);
     }
@@ -723,6 +771,11 @@ public class GameModel {
         return clouds;
     }
 
+    /**
+     * @author Angelo Zagami, Federica Tommasini
+     * find the winners when the match ends (two winners when ends up in tie)
+     * @return a list of winners
+     */
     public List<Player> getWinner(){
         Player winner = null;
         Player winner2 = null;
