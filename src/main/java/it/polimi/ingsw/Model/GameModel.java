@@ -497,13 +497,6 @@ public class GameModel {
             }
             fillCloud(studentsOnClouds,i);
             }
-
-        for(Color color:Color.values())
-            numStudents+=studentsBag.get(color);
-        if(numStudents==0)
-            lastRound=true;
-        else
-            lastRound=false;
         return true;
         }
 
