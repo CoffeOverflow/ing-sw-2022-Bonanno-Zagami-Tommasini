@@ -128,9 +128,6 @@ public class VirtualModel {
 
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
-        for(Player p:this.players)
-            if(p.getTower().equals(tower))
-                p.setNumberOfTower(p.getNumberOfTower()-1);
         motherNaturePosition=islandPosNotDelete;
 
     }
@@ -205,7 +202,10 @@ public class VirtualModel {
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
                 if(bchange.getMergedIsland2()!=null)
-                    mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland2()-1,bchange.getConquerorTower());
+                    mergeIslands(bchange.getConquerIsland()-1, bchange.getMergedIsland2()-1,bchange.getConquerorTower());
+                for(Player p:this.players)
+                    if(p.getTower().equals(bchange.getConquerorTower()))
+                        p.setNumberOfTower(p.getNumberOfTower()-1);
                 break;
             case MOTHERNATURE:
                 moveMotherNature(bchange.getMotherNatureSteps());
