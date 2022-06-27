@@ -677,6 +677,7 @@
 
       </children>
    </AnchorPane>
+    <ImageView fx:id="player1Assistant" fitHeight="121.0" fitWidth="80.0" layoutX="880.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" />
     <AnchorPane layoutX="10.0" layoutY="525.0">
     <HBox fx:id="character" prefHeight="182.0" prefWidth="391.0" spacing="10" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
     <GridPane fx:id="cardGrid1" alignment="CENTER" layoutX="32.0" prefHeight="163.0" prefWidth="118.0" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="25.0">
@@ -720,5 +721,6 @@
         <Text fx:id="nickname" layoutX="1120.0" layoutY="670.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nickname" />
         <Text fx:id="money" layoutX="1180.0" layoutY="590.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" />
     </Group>
+
 
 </AnchorPane>

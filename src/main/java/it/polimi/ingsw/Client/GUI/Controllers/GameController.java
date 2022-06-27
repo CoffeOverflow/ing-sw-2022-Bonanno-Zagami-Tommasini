@@ -94,6 +94,7 @@ public class GameController implements GUIController{
     public ImageView player3Wizard;
     public Text player2Nickname;
     public Text player3Nickname;
+    public ImageView player1Assistant;
     public ImageView player2Assistant;
     public ImageView player3Assistant;
 
@@ -111,6 +112,7 @@ public class GameController implements GUIController{
         wizardAndMoney.setVisible(false);
         characterButton.setVisible(false);
         hboxColorCharacter.setVisible(false);
+        player1Assistant.setVisible(false);
         currentPhase = GamePhase.WIZARD;
     }
 
@@ -433,6 +435,7 @@ public class GameController implements GUIController{
         if(null!=gui.getVmodel().getCharacterCards())
             this.showCharacterCard();
         this.setWizardAndNickname();
+        player1Assistant.setVisible(true);
     }
 
     public void showIsland() {
@@ -860,8 +863,9 @@ public class GameController implements GUIController{
         int value = 0;
         for(int i=0; i<gui.getVmodel().getClientPlayer().getAssistantCards().size();i++) {
             if (gui.getVmodel().getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(assistant)) {
-                        value = gui.getVmodel().getClientPlayer().getAssistantCards().get(i).getValue();
-                        break;
+                value = gui.getVmodel().getClientPlayer().getAssistantCards().get(i).getValue();
+                player1Assistant.setImage(new Image(getClass().getResourceAsStream(gui.getVmodel().getClientPlayer().getAssistantCards().get(i).getAsset())));
+                break;
             }
 
         }
