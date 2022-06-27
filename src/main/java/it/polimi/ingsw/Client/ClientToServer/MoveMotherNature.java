@@ -38,9 +38,31 @@ public class MoveMotherNature implements ClientToServerMessage{
             game.sendAll(new UpdateMessage(new BoardChange(steps)));
             System.out.println("DEBUG MN 2");
             game.checkConquest();
-            if(game.getController().getModel().isLastRound()){
+            if(game.getController().getModel().isLastRound()
+                && game.getController().getModel().isEmptyClouds()){
                 //-----------------------
+                int pos = 0;
+                for (int i = 0; i < game.getController().getTurnOrder().length; i++) {
+                    if (game.getController().getTurnOrder()[i] == game.getController().getModel().getCurrentPlayer())
+                        pos = i;
+                }
 
+                if (pos == game.getController().getTurnOrder().length - 1 || game.getController().checkEndGame()) {
+                    game.getController().setWinners(game.getController().getModel().getWinner());
+                    for (Player p : game.getController().getWinners()) {
+                        game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
+                        game.sendAllExcept(new OtherPlayerWins(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
+                        //game.endGame();
+                    }
+                }else{
+                    game.getController().getModel().setCurrentPlayer(game.getController().getTurnOrder()[pos + 1]);
+                    game.sendAllExcept(new IsTurnOfPlayer(
+                                    game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()).getNickname()),
+                            game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+                    game.sendTo(new YourTurn(), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+                    game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS, game.isExpertMode()),
+                            game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
+                }
                 //----------------------
                 return;
             }
