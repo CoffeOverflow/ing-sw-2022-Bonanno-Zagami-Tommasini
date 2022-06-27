@@ -63,7 +63,7 @@ class PlayerTest {
 
     @Test
     public void testBuildTower(){
-        player1.buildTower();
+        player1.buildTower(1);
         assertEquals(player1.getNumberOfTower(), 7);
     }
 

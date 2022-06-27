@@ -337,9 +337,9 @@ public class GameModel {
             setTowerOnIsland(islandPosition,conqueror.get());
             if(oldTower.isPresent() && !getPlayerByTower(oldTower.get()).equals(getPlayerByID(conqueror.get())) ){
                 int oldNumberOfTower=getPlayerByTower(oldTower.get()).getNumberOfTower();
-                getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
+                getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+islands.get(islandPosition).getNumberOfTowers());
             }
-            getPlayerByID(conqueror.get()).buildTower();
+            getPlayerByID(conqueror.get()).buildTower(islands.get(islandPosition).getNumberOfTowers());
 
            mergeResult= checkMergeIsland(islandPosition,
                     getPlayerTower(conqueror.get()));
@@ -497,13 +497,6 @@ public class GameModel {
             }
             fillCloud(studentsOnClouds,i);
             }
-
-        for(Color color:Color.values())
-            numStudents+=studentsBag.get(color);
-        if(numStudents==0)
-            lastRound=true;
-        else
-            lastRound=false;
         return true;
         }
 
