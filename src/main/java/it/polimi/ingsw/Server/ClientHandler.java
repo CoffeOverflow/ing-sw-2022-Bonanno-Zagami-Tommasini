@@ -43,10 +43,12 @@ public class ClientHandler implements Runnable{
                 }catch (RuntimeException e){
                     System.out.println("Client "+getPlayerID()+" "+getNickname()+" disconnected!");
                     server.removePlayer(getPlayerID());
-                    if(game != null && server.getAvailableGames().contains(game))
-                        server.removeAvailableGame(game.getGameID());
-                    else
-                        server.endGame(game.getGameID());
+                    if(game != null){
+                        if(server.getAvailableGames().contains(game))
+                            server.removeAvailableGame(game.getGameID());
+                        else
+                            server.endGame(game.getGameID());
+                    }
                     break;
                 }
             }

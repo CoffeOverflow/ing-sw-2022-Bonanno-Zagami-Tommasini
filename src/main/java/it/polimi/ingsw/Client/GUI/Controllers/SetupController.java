@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
 import it.polimi.ingsw.Client.ClientToServer.ChooseNickname;
+import it.polimi.ingsw.Client.ClientToServer.RequestRefresh;
 import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
 import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Client.GUI.GUI;
@@ -142,6 +143,11 @@ public class SetupController implements GUIController{
             gui.showError("Some settings are missing, please select all the option!");
         }
 
+    }
+
+    public void refreshButtonClicked(){
+        listOfMatch.getChildren().clear();
+        gui.send(new RequestRefresh());
     }
 
     public void joinGame(Event event){

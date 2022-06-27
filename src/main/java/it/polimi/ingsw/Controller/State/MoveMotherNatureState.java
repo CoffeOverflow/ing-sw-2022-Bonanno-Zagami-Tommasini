@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Conquest;
 import it.polimi.ingsw.Model.GameModel;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Tower;
 
 import java.util.HashMap;
@@ -33,6 +34,9 @@ public class MoveMotherNatureState implements GameControllerState {
             m.getIslandByPosition(m.getMotherNaturePosition()).setNoEntryCard(noEntryCards-1);
             int n=m.getCharactersPositions().get("herbalist.jpg");
             m.getCharacterCards().get(n).setNoEntryTiles(Optional.of(m.getCharacterCards().get(n).getNoEntryTiles().get()+1));
+        }
+        for(Player player: m.getPlayers()){
+            System.out.println(player.getNickname() +  " Tower: " + player.getNumberOfTower());
         }
 
     }
