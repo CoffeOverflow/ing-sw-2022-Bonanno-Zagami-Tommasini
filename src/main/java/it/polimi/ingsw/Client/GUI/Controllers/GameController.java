@@ -204,9 +204,9 @@ public class GameController implements GUIController{
 
                     @Override public void handle(Event event) {
                         if(currentPhase!=GamePhase.ANOTHERPLAYERTURN)
-                            currentPhase=GamePhase.CHARACTER;
-                        showCharacterOptions(event);
-                    }
+                        {   currentPhase=GamePhase.CHARACTER;
+                            showCharacterOptions(event);
+                    }}
                 });
                 character.getChildren().add(characterButton);
             }
@@ -234,7 +234,8 @@ public class GameController implements GUIController{
                         studentImgview.setUserData(c);
                         studentImgview.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                             @Override public void handle(MouseEvent mouseEvent) {
-                               setValueForCharacterCard(mouseEvent);
+                               if(currentPhase==GamePhase.CHARACTER)
+                                    setValueForCharacterCard(mouseEvent);
                             }
                         });
                         cardGridList.get(countForCardGrid).add(studentImgview,j,k);
@@ -517,7 +518,7 @@ public class GameController implements GUIController{
             gui.send(new MoveStudent(MoveTo.ISLAND,colorOfSelectedStudent,(int) node.getUserData(),gui.getVmodel().getNumOfInstance()));
             colorOfSelectedStudent = null;
             selectedStudent = null;
-            if(++numberOfMovedStudent == 3){
+            if(++numberOfMovedStudent == (gui.getVmodel().getPlayers().size() == 3 ? 4:3)){
                 numberOfMovedStudent = 0;
                 currentPhase = GamePhase.GAME;
             }
@@ -563,11 +564,11 @@ public class GameController implements GUIController{
                 System.out.println(choosenStudent);
                 System.out.println(entranceStudent);
                 System.out.println(color);*/
-                gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
                 characterButton.setVisible(false);
                 hboxColorCharacter.setVisible(false);
                 hboxColorCharacter1.setVisible(false);
                 currentPhase = GamePhase.GAME;
+                gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
                 if(null!=imageSelectedIsland)
                     imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
                 imageSelectedIsland=null;

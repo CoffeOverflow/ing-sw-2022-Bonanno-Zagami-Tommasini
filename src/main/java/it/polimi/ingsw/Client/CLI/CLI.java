@@ -581,7 +581,6 @@ public class CLI implements View, Runnable {
                 catch (InputMismatchException e){
                     this.showMessage("Please insert an integer value\n");
                 }
-
             }else n=1;
             switch (n) {
                 case 1:
