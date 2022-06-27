@@ -207,7 +207,7 @@ public class GameController implements GUIController{
                 characterButton.setOnAction(new EventHandler() {
 
                     @Override public void handle(Event event) {
-                        if(currentPhase!=GamePhase.ANOTHERPLAYERTURN)
+                        if(currentPhase!=GamePhase.ANOTHERPLAYERTURN && !playedCharacterCard)
                         {   currentPhase=GamePhase.CHARACTER;
                             showCharacterOptions(event);
                     }}
