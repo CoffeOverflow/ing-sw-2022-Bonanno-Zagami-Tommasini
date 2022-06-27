@@ -201,9 +201,11 @@ public class VirtualModel {
             case MERGE:
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
-                if(bchange.getMergedIsland2()!=null)
-                    mergeIslands(bchange.getConquerIsland()-1, bchange.getMergedIsland2()-1,bchange.getConquerorTower());
-                for(Player p:this.players)
+                if(bchange.getMergedIsland2()!=null) {
+                    int island1=bchange.getConquerIsland()==0 ? islands.size()-1 : bchange.getConquerIsland() - 1;
+                    int island2=bchange.getMergedIsland2()==0 ? islands.size()-1 : bchange.getMergedIsland2() - 1;
+                    mergeIslands(island1, island2, bchange.getConquerorTower());
+                }for(Player p:this.players)
                     if(p.getTower().equals(bchange.getConquerorTower()))
                         p.setNumberOfTower(p.getNumberOfTower()-1);
                 break;
