@@ -24,8 +24,11 @@ public class GameModel {
     private List<CharacterCard> characterCards=new ArrayList<CharacterCard>();
 
 
-
     private boolean lastRound =false;
+
+
+
+    private boolean emptyClouds =false;
 
     private HashMap<String,Integer> charactersPositions=new HashMap<>();
     private List<Cloud> clouds=new ArrayList<Cloud>();
@@ -492,6 +495,7 @@ public class GameModel {
                 catch (IllegalArgumentException e){
                     System.out.println("There are no more students in the bag");
                     lastRound=true;
+                    emptyClouds=true;
                     return false;
                 }
             }
@@ -661,6 +665,9 @@ public class GameModel {
     public boolean isTowersNotCounted() {
         return towersNotCounted;
     }
+    public boolean isEmptyClouds() {
+        return emptyClouds;
+    }
 
     public void setTowersNotCounted(boolean towersNotCounted) {
         this.towersNotCounted = towersNotCounted;
@@ -753,6 +760,8 @@ public class GameModel {
         return winners;
     }
     public boolean isLastRound() {return lastRound;}
+
+    public void setLastRound(boolean lastRound) {this.lastRound = lastRound;}
 
     public Conquest getConquest() {
         return conquest;
