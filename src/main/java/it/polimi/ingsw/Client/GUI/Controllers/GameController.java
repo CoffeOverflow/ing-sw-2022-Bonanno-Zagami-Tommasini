@@ -100,6 +100,8 @@ public class GameController implements GUIController{
 
     private HashMap<Integer,Integer> vModelPosGuiPos=new HashMap<>();
 
+    private boolean playedCharacterCard=false;
+
 
     public void initialize() {
         mainPane.setVisible(true);
@@ -566,22 +568,25 @@ public class GameController implements GUIController{
                 System.out.println(choosenStudent);
                 System.out.println(entranceStudent);
                 System.out.println(color);*/
-                characterButton.setVisible(false);
-                hboxColorCharacter.setVisible(false);
-                hboxColorCharacter1.setVisible(false);
-                currentPhase = GamePhase.GAME;
-                gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
-                if(null!=imageSelectedIsland)
-                    imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
-                imageSelectedIsland=null;
-                posIsland=null;
-                choosenStudent=null;
-                entranceStudent=null;
-                color=null;
-                colorSelected=0;
-                islandCanSelect=false;
-                numOfStudentChoose=0;
-                asset=null;
+                if(!playedCharacterCard) {
+                    characterButton.setVisible(false);
+                    hboxColorCharacter1.setVisible(false);
+                    hboxColorCharacter.setVisible(false);
+                    currentPhase = GamePhase.GAME;
+                    gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
+                    playedCharacterCard=true;
+                    if(null!=imageSelectedIsland)
+                        imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
+                    imageSelectedIsland=null;
+                    posIsland=null;
+                    choosenStudent=null;
+                    entranceStudent=null;
+                    color=null;
+                    colorSelected=0;
+                    islandCanSelect=false;
+                    numOfStudentChoose=0;
+                    asset=null;
+                }
             }
         });
 
@@ -878,6 +883,7 @@ public class GameController implements GUIController{
             int cloudId=(int) node.getUserData();
             System.out.println("cloudId"+cloudId);
             gui.send((new ChooseCloud(cloudId)));
+            playedCharacterCard=false;
         }
     }
 
