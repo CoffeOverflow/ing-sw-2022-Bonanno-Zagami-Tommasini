@@ -175,10 +175,15 @@ public class VirtualModel {
         BoardChange bchange=msg.getChange();
         switch(bchange.getChange()){
             case CONQUER:
+                Optional<Tower> oldTower= islands.get(bchange.getConquerIsland()).getTower();
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
-                for(Player p:players)
+                for(Player p:players){
                     if(p.getTower().equals(bchange.getConquerorTower()))
-                        p.setNumberOfTower(p.getNumberOfTower()-1);
+                        p.buildTower(islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                    else if(oldTower.isPresent() && p.getTower().equals(oldTower.get()))
+                        p.buildTower(-islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                }
+
                 break;
             case MOVESTUDENT:
                 if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
@@ -199,15 +204,20 @@ public class VirtualModel {
                 }
                 break;
             case MERGE:
+                Optional<Tower> oldTower2= islands.get(bchange.getConquerIsland()).getTower();
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
+                for(Player p:players){
+                    if(p.getTower().equals(bchange.getConquerorTower()))
+                        p.buildTower(islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                    else if(oldTower2.isPresent() && p.getTower().equals(oldTower2.get()))
+                        p.buildTower(-islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                }
                 mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
                 if(bchange.getMergedIsland2()!=null) {
                     int island1=bchange.getConquerIsland()==0 ? islands.size()-1 : bchange.getConquerIsland() - 1;
                     int island2=bchange.getMergedIsland2()==0 ? islands.size()-1 : bchange.getMergedIsland2() - 1;
                     mergeIslands(island1, island2, bchange.getConquerorTower());
-                }for(Player p:this.players)
-                    if(p.getTower().equals(bchange.getConquerorTower()))
-                        p.setNumberOfTower(p.getNumberOfTower()-1);
+                }
                 break;
             case MOTHERNATURE:
                 moveMotherNature(bchange.getMotherNatureSteps());
