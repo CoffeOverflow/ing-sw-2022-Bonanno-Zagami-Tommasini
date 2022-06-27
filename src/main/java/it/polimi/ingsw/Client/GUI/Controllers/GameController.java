@@ -524,8 +524,8 @@ public class GameController implements GUIController{
             }
         }else if(currentPhase== GamePhase.MOVEMOTHERNATURE && gui.getVmodel().getMotherNaturePosition()!=((int)node.getUserData()) ){
             System.out.println("user data:"+((int)node.getUserData()));
-            gui.send(new MoveMotherNature((int)(node.getUserData())-gui.getVmodel().getMotherNaturePosition()));
             currentPhase = GamePhase.GAME;
+            gui.send(new MoveMotherNature((int)(node.getUserData())-gui.getVmodel().getMotherNaturePosition()));
         }else if(currentPhase == GamePhase.CHARACTER && islandCanSelect){
             if(imageSelectedIsland != null){
                 imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));

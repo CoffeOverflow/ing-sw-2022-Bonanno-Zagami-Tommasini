@@ -23,9 +23,11 @@ public class MoveMotherNature implements ClientToServerMessage{
         Action action=new Action();
         int previousIslandSize=game.getController().getModel().getIslandSize();
         try{
+            System.out.println("Old steps: "+steps);
             if(steps<=0){
                 steps+=game.getController().getModel().getIslandSize();
             }
+            System.out.println("New Steps: "+steps);
             action.setMotherNatureSteps(steps);
             game.getController().setState(new MoveMotherNatureState());
             game.getController().doAction(action);
