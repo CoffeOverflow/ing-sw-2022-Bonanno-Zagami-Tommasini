@@ -18,15 +18,21 @@ public class MoveMotherNatureState implements GameControllerState {
         if(m.isTwoAdditionalSteps() &&
                 action.getMotherNatureSteps()<=(m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()+2)){
             m.moveMotherNature(action.getMotherNatureSteps());
+            System.out.println("DEBUG MN 4");
         }
         else if(!m.isTwoAdditionalSteps() && action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()){
+            System.out.println("DEBUG MN 5");
             m.moveMotherNature(action.getMotherNatureSteps());
+            System.out.println("DEBUG MN 6");
         }else{
             throw new IllegalArgumentException("the number of steps chosen is higher than the one indicated by the assistant card");
         }
         int noEntryCards=m.getIslandByPosition(m.getMotherNaturePosition()).getNoEntryCard();
         if(noEntryCards==0){
+            System.out.println("DEBUG MN 7");
+            System.out.println(m.getMotherNaturePosition());
             Conquest c=m.computeInfluence(m.getMotherNaturePosition());
+            System.out.println("DEBUG MN 8");
             m.setConquest(c);
         }
         else{

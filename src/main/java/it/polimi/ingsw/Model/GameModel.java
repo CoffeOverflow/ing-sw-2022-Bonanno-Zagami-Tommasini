@@ -313,17 +313,19 @@ public class GameModel {
                 conqueror=Optional.of(p.getPlayerID());
             }
         }
+        System.out.println("DEBUG CI 0");
         //check if the higher value of influence is unique and if the island wasn't already his
         if(conqueror.isPresent()){
             for(Player p:players){
                 if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID()).equals(influences.get(conqueror.get()))){
                     conqueror=Optional.empty();
+                    break;
                 }else if(p.getPlayerID()==conqueror.get() && islands.get(islandPosition).getTower().isPresent()
                         &&  islands.get(islandPosition).getTower().get().equals(p.getTower()))
                     conqueror=Optional.empty();
             }
         }
-
+        System.out.println("DEBUG CI 1");
         int mergeResult=0;
         int oldIslandsSize=islands.size();
         //if the value is unique, conquer the island
@@ -340,7 +342,7 @@ public class GameModel {
            mergeResult= checkMergeIsland(islandPosition,
                     getPlayerTower(conqueror.get()));
         }
-
+        System.out.println("DEBUG CI 2");
         Conquest conquest;
         int mergeIsland1=0;
         int mergeIsland2=0;

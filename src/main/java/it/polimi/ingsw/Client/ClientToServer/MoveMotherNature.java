@@ -31,10 +31,13 @@ public class MoveMotherNature implements ClientToServerMessage{
             action.setMotherNatureSteps(steps);
             game.getController().setState(new MoveMotherNatureState());
             game.getController().doAction(action);
+            System.out.println("DEBUG MN 1");
             game.sendAll(new UpdateMessage(new BoardChange(steps)));
+            System.out.println("DEBUG MN 2");
             game.checkConquest();
             if(!game.getController().checkEndGame()){
                 game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
+                System.out.println("DEBUG MN 3");
             }else {
                 System.out.println("ENDGAME");
                 game.getController().setWinners(game.getController().getModel().getWinner());
