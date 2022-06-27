@@ -558,7 +558,6 @@ public class GameController implements GUIController{
         characterButton.setVisible(true);
         characterButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
-
                 /*System.out.println((asset));
                 System.out.println(posIsland);
                 System.out.println(choosenStudent);
