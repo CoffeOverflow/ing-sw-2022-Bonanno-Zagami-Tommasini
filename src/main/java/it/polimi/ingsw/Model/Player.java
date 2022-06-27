@@ -86,8 +86,8 @@ public class Player {
     public int getNumberOfTower() {
         return numberOfTower;
     }
-    public void buildTower() {
-        numberOfTower--;
+    public void buildTower(int num) {
+        numberOfTower-=num;
     }
     public void setNumberOfTower(int numberOfTower) {
         this.numberOfTower = numberOfTower;
