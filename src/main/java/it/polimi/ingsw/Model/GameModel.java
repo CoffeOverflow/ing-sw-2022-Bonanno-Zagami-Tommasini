@@ -528,7 +528,8 @@ public class GameModel {
                     return false;
                 }
             }
-            fillCloud(studentsOnClouds,i);
+            if(!lastRound)
+                fillCloud(studentsOnClouds,i);
             }
         return true;
         }
