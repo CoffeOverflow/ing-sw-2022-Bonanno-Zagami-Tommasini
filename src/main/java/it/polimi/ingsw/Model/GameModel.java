@@ -321,8 +321,10 @@ public class GameModel {
                     conqueror=Optional.empty();
                     break;
                 }else if(p.getPlayerID()==conqueror.get() && islands.get(islandPosition).getTower().isPresent()
-                        &&  islands.get(islandPosition).getTower().get().equals(p.getTower()))
+                        &&  islands.get(islandPosition).getTower().get().equals(p.getTower())){
                     conqueror=Optional.empty();
+                    break;
+                }
             }
         }
         System.out.println("DEBUG CI 1");
@@ -333,7 +335,7 @@ public class GameModel {
         if(conqueror.isPresent()){
             Optional<Tower> oldTower= getTowerOnIsland(islandPosition);
             setTowerOnIsland(islandPosition,conqueror.get());
-            if(oldTower.isPresent()){
+            if(oldTower.isPresent() && !getPlayerByTower(oldTower.get()).equals(getPlayerByID(conqueror.get())) ){
                 int oldNumberOfTower=getPlayerByTower(oldTower.get()).getNumberOfTower();
                 getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
             }
