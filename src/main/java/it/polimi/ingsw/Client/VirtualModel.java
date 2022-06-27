@@ -205,7 +205,7 @@ public class VirtualModel {
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
                 if(bchange.getMergedIsland2()!=null)
-                    mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland2(),bchange.getConquerorTower());
+                    mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland2()-1,bchange.getConquerorTower());
                 break;
             case MOTHERNATURE:
                 moveMotherNature(bchange.getMotherNatureSteps());
