@@ -552,18 +552,19 @@ public class CLI implements View, Runnable {
             do{
                 try {
                     n = scanner.nextInt();
+                    if(n>0 && n<=vmodel.getClouds().size()){
+                        for(Color c :vmodel.getClouds().get(n-1).getStudents().keySet()){
+                            if(vmodel.getClouds().get(n-1).getStudents().get(c)>0)
+                                checkIfNonEmptyCloud=true;
+                        }
+                    }
+                    if(!checkIfNonEmptyCloud)
+                        System.out.print("choose a valid number for the cloud: \n> ");
                 }
                 catch (InputMismatchException e){
                     this.showMessage("Please insert an integer value");
                 }
-                if(n>0 && n<=vmodel.getClouds().size()){
-                    for(Color c :vmodel.getClouds().get(n-1).getStudents().keySet()){
-                        if(vmodel.getClouds().get(n-1).getStudents().get(c)>0)
-                            checkIfNonEmptyCloud=true;
-                    }
-                }
-                if(!checkIfNonEmptyCloud)
-                    System.out.print("choose a valid number for the cloud: \n> ");
+
             }while(!checkIfNonEmptyCloud);
             serverHandler.send(new ChooseCloud(n-1));
             this.vmodel.setUseCharacterCard(false);

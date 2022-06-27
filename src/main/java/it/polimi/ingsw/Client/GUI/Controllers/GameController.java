@@ -89,6 +89,7 @@ public class GameController implements GUIController{
     private boolean islandCanSelect = false;
     private int numOfEntranceStudChoose=0;
     private int colorSelected=0;
+    private String asset;
     public ImageView player2Wizard;
     public ImageView player3Wizard;
     public Text player2Nickname;
@@ -427,7 +428,8 @@ public class GameController implements GUIController{
         this.showCloud();
         this.showSchool();
         this.showIsland();
-        this.showCharacterCard();
+        if(null!=gui.getVmodel().getCharacterCards())
+            this.showCharacterCard();
         this.setWizardAndNickname();
     }
 
@@ -550,10 +552,16 @@ public class GameController implements GUIController{
 
     public void showCharacterOptions(Event event){
         Node card= (Node) event.getSource();
-        String asset=(String) card.getUserData();
+        asset=(String) card.getUserData();
         characterButton.setVisible(true);
         characterButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
+
+                /*System.out.println((asset));
+                System.out.println(posIsland);
+                System.out.println(choosenStudent);
+                System.out.println(entranceStudent);
+                System.out.println(color);*/
                 gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
                 characterButton.setVisible(false);
                 hboxColorCharacter.setVisible(false);
@@ -569,6 +577,7 @@ public class GameController implements GUIController{
                 colorSelected=0;
                 islandCanSelect=false;
                 numOfStudentChoose=0;
+                asset=null;
             }
         });
 
@@ -809,9 +818,10 @@ public class GameController implements GUIController{
         cardGrid1.setVisible(false);
         cardGrid2.setVisible(false);
         cardGrid3.setVisible(false);
-        for(int i=0;i<3;i++){
-            character.getChildren().get(i).setDisable(true);
-        }
+        if(null!=gui.getVmodel().getCharacterCards())
+            for(int i=0;i<3;i++){
+                character.getChildren().get(i).setDisable(true);
+            }
 
         assistantCard.setVisible(true);
         currentPhase = GamePhase.ASSISTANT;

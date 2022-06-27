@@ -53,7 +53,9 @@ public class MoveStudent implements ClientToServerMessage{
         }
         int money = game.getController().getModel().getPlayerByID(game.getController().getModel().getCurrentPlayer()).getMoney();
         try{
+            //System.out.println("money: "+game.getController().getModel().getPlayerByID(player.getPlayerID()).getMoney());
             game.getController().doAction(action);
+            //System.out.println("money after: "+game.getController().getModel().getPlayerByID(player.getPlayerID()).getMoney());
         }catch(IllegalArgumentException e){
             game.sendTo(new ActionNonValid(), player);
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),player);

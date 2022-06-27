@@ -73,6 +73,7 @@ public class UseCharacterCard implements ClientToServerMessage{
                throw new RuntimeException(e);
            }
        }catch (IllegalStateException e){
+           e.printStackTrace();
            if(e.getMessage().equals("Not enough money")) {
                game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
                game.sendTo(new GenericMessage(ANSI_RED + "you don't have enough money to play the card!" + ANSI_RESET), player);
