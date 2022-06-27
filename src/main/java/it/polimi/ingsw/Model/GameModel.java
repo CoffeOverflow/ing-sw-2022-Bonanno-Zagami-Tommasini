@@ -228,10 +228,7 @@ public class GameModel {
         }
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
-        for(Player p: this.players)
-            if(p.getTower().equals(tower))
-                p.setNumberOfTower(p.getNumberOfTower()-1);
-        //motherNaturePosition=islandPosNotDelete;
+
     }
 
     /**
@@ -330,6 +327,7 @@ public class GameModel {
         int mergeResult=0;
         int oldIslandsSize=islands.size();
         //if the value is unique, conquer the island
+
         if(conqueror.isPresent()){
             Optional<Tower> oldTower= getTowerOnIsland(islandPosition);
             setTowerOnIsland(islandPosition,conqueror.get());
