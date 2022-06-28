@@ -141,8 +141,10 @@ public class GameController implements GUIController{
                 cardGrid1.setVisible(true);
                 cardGrid2.setVisible(true);
                 cardGrid3.setVisible(true);
-                for(int i=0;i<3;i++){
-                    character.getChildren().get(i).setDisable(false);
+                if (null!=gui.getVmodel().getCharacterCards()){
+                    for(int i=0;i<3;i++){
+                        character.getChildren().get(i).setDisable(false);
+                    }
                 }
                 currentPhase = GamePhase.GAME;
 

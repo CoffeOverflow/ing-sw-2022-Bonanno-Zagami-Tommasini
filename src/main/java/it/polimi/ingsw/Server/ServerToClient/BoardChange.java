@@ -96,9 +96,6 @@ public class BoardChange implements Serializable{
         if(color!=null)
             this.color=color;
         switch (asset){
-            case "auctioneer.jpg":
-                change=Change.MOTHERNATURE;
-                break;
             case "clown.jpg":
                 change=Change.PLAYCLOWN;
                 break;
