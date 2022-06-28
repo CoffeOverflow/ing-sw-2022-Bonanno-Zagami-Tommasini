@@ -102,7 +102,7 @@ public class Server implements Runnable{
 
     /**
      * When called returns the next client ID that can be used
-     * @return the next client ID that can be used
+     * @return The next client ID that can be used
      */
     public synchronized int getNewClientID(){
         return nextClientID++;
@@ -110,7 +110,7 @@ public class Server implements Runnable{
 
     /***
      * When called returns the next game ID that can be used
-     * @return the next game ID that can be used
+     * @return The next game ID that can be used
      */
     public synchronized int getNewGameID(){
         return nextGameID++;
