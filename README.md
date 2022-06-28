@@ -17,10 +17,11 @@ You can find the rules of the game [here](https://www.craniocreations.it/wp-cont
 | Basic rules                  |   ✅    |
 | Complete rules               |   ✅    |
 | Socket                       |   ✅    |
-| GUI                          |   ⚠️   |
-| CLI                          |   ⚠️   |
+| GUI                          |   ✅️   |
+| CLI                          |   ✅️   |
 | Multiple games               |   ✅    |
-| All character cards          |   ⚠️   |
+| All character cards          |   ✅    |
+| Rules for 4 players          |   ⛔    |
 | Persistence                  |   ⛔    |
 | Resilience to disconnections |   ⛔    |
 
