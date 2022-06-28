@@ -111,6 +111,7 @@ public class VirtualModel {
 
     public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
         Island deleteIsland,notDeleteIsland;
+        int maxNumberOfTower;
         int islandPosNotDelete;
         if(islandPos1<islandPos2){
             deleteIsland=this.islands.get(islandPos2);
@@ -125,9 +126,11 @@ public class VirtualModel {
             this.islands.remove(islandPos1);
             islandPosNotDelete=islandPos2;
         }
+        maxNumberOfTower= Math.max(notDeleteIsland.getNumberOfTowers(), deleteIsland.getNumberOfTowers());
+
 
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
-        notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
+        notDeleteIsland.setNumberOfTowers(maxNumberOfTower+1);
         motherNaturePosition=islandPosNotDelete;
 
     }
@@ -230,6 +233,7 @@ public class VirtualModel {
                         }
                     }
                 }
+
                 break;
             case CLOUD:
                 fillClouds(bchange);
@@ -248,6 +252,7 @@ public class VirtualModel {
                     }
                 break;
             case PLAYCLOWN:
+                System.out.println("arrived clown update");
                 for(CharacterCard c: characterCards)
                     if(c.getAsset().equals("clown.jpg"))
                         c.setStudents(bchange.getCardStudents());
@@ -270,8 +275,10 @@ public class VirtualModel {
                             }
 
                     }
+                System.out.println("done clown update");
                 break;
             case PLAYHERBALIST:
+                System.out.println("arrived herbalist update");
                 islands.get(bchange.getIslandPosition()).setNoEntryCard(islands.get(bchange.getIslandPosition()).getNoEntryCard()+1);
                 for(Player p:players){
                     if(p.getPlayerID()==bchange.getPlayer())
@@ -286,8 +293,10 @@ public class VirtualModel {
                         }
                     }
                 }
+                System.out.println("done herbalist update");
                 break;
             case PLAYINNKEEPER:
+                System.out.println("arrived innkeeper update");
                 for(Color c:Color.values())
                     if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0) {
                         islands.get(bchange.getIslandPosition()).addStudents(c, 1);
@@ -309,8 +318,10 @@ public class VirtualModel {
                             }
 
                     }
+                System.out.println("done inkeeper update");
                 break;
             case PLAYPRINCESS:
+                System.out.println("arrived princess update");
                 for(Color c:Color.values()) {
                     if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c) > 0)
                         for(Player p:players)
@@ -328,8 +339,10 @@ public class VirtualModel {
                             }
 
                 }
+                System.out.println("done princess update");
                 break;
             case PLAYSTORYTELLER:
+                System.out.println("arrived storyteller update");
                 EnumMap<Color,Integer> salaToEntrance=new EnumMap<Color, Integer>(Color.class);
                 for(Color c:Color.values())
                     salaToEntrance.put(c,0);
@@ -363,9 +376,11 @@ public class VirtualModel {
                                 card.increaseCost();
                             }
                     }
+                System.out.println("done storyteller update");
                 break;
 
             case PLAYTHIEF:
+                System.out.println("arrived thief update");
                 Color colorToPutOnTheBag=bchange.getColor();
                 for(Player p:players)
                 {
@@ -381,7 +396,7 @@ public class VirtualModel {
                                 p.decreaseMoney(card.getCost());
                                 card.increaseCost();
                             }
-
+                System.out.println("done thief update");
                 break;
             case PLAYMERCHANT:
                 takeProfessorWhenTie=true;
@@ -396,8 +411,10 @@ public class VirtualModel {
                             }
 
                     }
+                System.out.println("done merchant update");
                 break;
             case DEFAULT:
+                System.out.println("arrived default update");
                 for(Player p:players)
                     if(p.getPlayerID()==bchange.getPlayer())
                         for(CharacterCard card :characterCards)
@@ -406,6 +423,7 @@ public class VirtualModel {
                                 p.decreaseMoney(card.getCost());
                                 card.increaseCost();
                             }
+                System.out.println("done default update");
                 break;
         }
     }
