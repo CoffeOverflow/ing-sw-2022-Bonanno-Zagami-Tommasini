@@ -3,32 +3,35 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.ClientToServer.ClientHeartbeat;
 import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Server.ServerToClient.ServerToClientMessage;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
 import static it.polimi.ingsw.Constants.*;
 
+/***
+ * Server Handler Class
+ * @author Angelo Zagami
+ */
 public class ServerHandler {
-    private Socket server;
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+    private final Socket server;
+    private final ObjectInputStream inputStream;
+    private final ObjectOutputStream outputStream;
 
 
+    /***
+     * Class construct. The method create the server socket and retrieve input and output stream for recive and send messages.
+     * It also starts the Heartbeat thread.
+     */
     public ServerHandler() {
         try{
-            //this.server=new Socket("127.0.0.1",2000);
-            this.server=new Socket(Constants.getIP(),Constants.getPort());
+            this.server = new Socket(Constants.getIP(),Constants.getPort());
             inputStream = new ObjectInputStream(server.getInputStream());
-            outputStream= new ObjectOutputStream(server.getOutputStream());
+            outputStream = new ObjectOutputStream(server.getOutputStream());
             this.server.setSoTimeout(timeout);
         }catch (Exception e){
             throw new RuntimeException(e);
         }
-
-
         new Thread(() -> { //Client to Server
             while(true){
                 try {
@@ -43,10 +46,15 @@ public class ServerHandler {
                     System.exit(-1);
                 }
             }
-
         }).start();
     }
 
+    /***
+     * Recive a message from server
+     * @return The message received
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public ServerToClientMessage read() throws IOException, ClassNotFoundException {
         try{
             return (ServerToClientMessage) inputStream.readObject();
@@ -55,20 +63,31 @@ public class ServerHandler {
            throw new RuntimeException(e);
         }
     }
-    public synchronized void send(Object msg){
+
+    /***
+     * Send a message to Server
+     * @param message The message to send
+     */
+    public synchronized void send(Object message){
         try {
             outputStream.reset();
-            outputStream.writeObject(msg);
+            outputStream.writeObject(message);
             outputStream.flush();
         }catch(Exception e){
             throw new RuntimeException(e);
         }
     }
 
+    /***
+     * Send a Heartbeat to the Server
+     */
     public void sendHeartbeat(){
         send(new ClientHeartbeat());
     }
 
+    /***
+     * Close server connection
+     */
     public void close(){
         try {
             server.close();

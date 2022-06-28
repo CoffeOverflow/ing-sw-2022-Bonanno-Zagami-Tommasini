@@ -5,8 +5,6 @@ import it.polimi.ingsw.Client.ClientToServer.RequestRefresh;
 import it.polimi.ingsw.Client.ClientToServer.SelectMatch;
 import it.polimi.ingsw.Client.ClientToServer.SelectModeAndPlayers;
 import it.polimi.ingsw.Client.GUI.GUI;
-import it.polimi.ingsw.Server.ServerToClient.ChooseMatch;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,15 +14,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-
 import java.util.Scanner;
-import java.util.regex.Pattern;
-
 import static javafx.scene.paint.Color.RED;
 import static javafx.scene.paint.Color.WHITE;
 
+/***
+ * Controller for SetUp phase
+ * @author Angelo Zagami
+ * @see GUIController
+ */
 public class SetupController implements GUIController{
     private GUI gui;
     @FXML public AnchorPane mainPane;
@@ -61,6 +59,10 @@ public class SetupController implements GUIController{
         alert.showAndWait();
     }
 
+    /***
+     * Method automatically called when the scene is loaded.
+     * Initializes the scene.
+     */
     public void initialize() {
         requestNickname.setVisible(false);
         chooseMatch.setVisible(false);
@@ -68,9 +70,17 @@ public class SetupController implements GUIController{
         wait.setVisible(false);
     }
 
+    /***
+     * Shows the nickname field
+     */
     public void showNicknameField(){
         requestNickname.setVisible(true);
     }
+
+    /***
+     * Show chose match form
+     * @param games Available games
+     */
     public void showChooseMatch(String games){
         requestNickname.setVisible(false);
         chooseMatch.setVisible(true);
@@ -125,31 +135,47 @@ public class SetupController implements GUIController{
         scanner.close();
     }
 
+    /***
+     * Handler of send button
+     */
     public void sendButtonClicked(){
         gui.send(new ChooseNickname(nickname.getText()));
     }
+
+    /***
+     * Handler of newgame button
+     */
     public void newgameButtonClicked(){
         chooseMatch.setVisible(false);
         newgameform.setVisible(true);
         gui.send(new SelectMatch(0));
     }
+
+    /***
+     * Handler create new game button
+     */
     public void createnewgameButtonClicked(){
         if((twoPlayers.isSelected() || threePlayers.isSelected()) && (expertmode.isSelected() || normalmode.isSelected())){
             newgameform.setVisible(false);
             gui.send(new SelectModeAndPlayers(twoPlayers.isSelected() ? 2:3, expertmode.isSelected()));
-            System.out.println(twoPlayers.isSelected() ? 2:3);
         }
         else{
             gui.showError("Some settings are missing, please select all the option!");
         }
-
     }
 
+    /***
+     * Handler refresh button
+     */
     public void refreshButtonClicked(){
         listOfMatch.getChildren().clear();
         gui.send(new RequestRefresh());
     }
 
+    /***
+     * Join the select match
+     * @param event Event that cause the method launch
+     */
     public void joinGame(Event event){
         chooseMatch.setVisible(false);
         Node node = (Node) event.getSource() ;
@@ -158,6 +184,9 @@ public class SetupController implements GUIController{
 
     }
 
+    /***
+     * Show wait for other players
+     */
     public void waitForOtherPlayers(){
         chooseMatch.setVisible(false);
         wait.setVisible(true);

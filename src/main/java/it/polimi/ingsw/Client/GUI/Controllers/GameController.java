@@ -24,12 +24,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
+/***
+ * Controller for main Game phase
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ * @see GUIController
+ */
 public class GameController implements GUIController{
     private GUI gui;
     private GamePhase currentPhase;

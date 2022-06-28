@@ -77,6 +77,12 @@ public class GameController {
         model.printBag();
     }
 
+
+    /***
+     * Check the condition to determinate if the game have to finish immediately or not. The game ends when there are
+     * only 2 or 3 groups of island, according to the number of player, and if a player built all tower.
+     * @return True if the game have to finish, false otherwise
+     */
     public boolean checkEndGame(){
         if(model.getIslandSize() == model.getNumberOfPlayers())
             return true;

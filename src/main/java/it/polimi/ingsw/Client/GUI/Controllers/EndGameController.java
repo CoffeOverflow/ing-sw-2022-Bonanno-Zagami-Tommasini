@@ -1,13 +1,17 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
 import it.polimi.ingsw.Client.GUI.GUI;
-import it.polimi.ingsw.Client.GUI.GamePhase;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
+/***
+ * Controller for EndGame phase
+ * @author Angelo Zagami
+ * @see GUIController
+ */
 public class EndGameController implements GUIController{
     private GUI gui;
 
@@ -15,6 +19,9 @@ public class EndGameController implements GUIController{
     public ImageView win;
     public Text lose;
 
+    /***
+     * Initialization method
+     */
     public void initialize() {
         mainPane.setVisible(true);
         win.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/win.png")));
@@ -30,10 +37,17 @@ public class EndGameController implements GUIController{
         this.gui = gui;
     }
 
+    /***
+     * Show the "you win" phase
+     */
     public void win(){
         win.setVisible(true);
     }
 
+    /***
+     * Show the "lose" message
+     * @param message Lose message
+     */
     public void lose(String message){
         lose.setText(message);
         lose.setVisible(true);

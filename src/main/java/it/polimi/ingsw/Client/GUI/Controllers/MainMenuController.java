@@ -12,8 +12,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 
-/**
- *  Scene controller class for the scene TestScene
+/***
+ * Controller for MainMenu phase
+ * @author Angelo Zagami
+ * @see GUIController
  */
 public class MainMenuController implements GUIController
 {
@@ -59,6 +61,10 @@ public class MainMenuController implements GUIController
     }
 
 
+    /***
+     * Handler of play button
+     * @param actionEvent Event that launch the method
+     */
     public void playButtonClicked(ActionEvent actionEvent)
     {
         button.setVisible(false);
@@ -66,6 +72,10 @@ public class MainMenuController implements GUIController
         connection.setVisible(true);
     }
 
+    /***
+     * Handler of connect button, it checks IP and Port parameter and connect to the server
+     * @param actionEvent Event that launch the method
+     */
     public void connectButtonClicked(ActionEvent actionEvent){
         if(!(address.getText().equals("")) && !(port.getText().equals(""))){
             int portNumber = 0;

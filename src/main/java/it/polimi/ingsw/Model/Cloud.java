@@ -7,7 +7,7 @@ import java.util.EnumMap;
  * @author Angelo Zagami
  */
 public class Cloud {
-    //I controlli per non scegliere due volte la stessa nuovola dovrebbero andare nel controller credo
+
     private EnumMap<Color, Integer> students = new EnumMap<Color, Integer>(Color.class);
 
     /**
@@ -18,10 +18,10 @@ public class Cloud {
         for (Color color : Color.values()) {
             this.students.put(color, 0);
         }
-        //this.students.forEach((k, v) -> this.students.put(k, 0));
     }
 
     /**
+     * Set student on the cloud
      * @param students EnumMap<Color, Integer> that contains students to assign to cloud
      */
     public void setStudents(EnumMap<Color, Integer> students){
@@ -29,6 +29,7 @@ public class Cloud {
     }
 
     /**
+     * Get students on the cloud
      * @return EnumMap<Color, Integer> Return students that are on cloud
      */
     public EnumMap<Color, Integer> getStudents(){

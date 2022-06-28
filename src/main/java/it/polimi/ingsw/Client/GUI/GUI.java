@@ -8,7 +8,6 @@ import it.polimi.ingsw.Client.ServerHandler;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Client.VirtualModel;
 import it.polimi.ingsw.Model.AssistantCard;
-import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -24,6 +22,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 
+/***
+ * GUI main class
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ * @see View
+ */
 public class GUI extends Application implements Runnable, View
 {
     private ServerHandler serverHandler;
@@ -35,18 +38,34 @@ public class GUI extends Application implements Runnable, View
 
     private boolean firstUpdate=true;
 
+    /***
+     * Class constructor
+     */
     public GUI(){
         this.vmodel = new VirtualModel();
     }
 
+    /***
+     * Send a message to server
+     * @param message Message to send
+     */
     public void send(Object message){
         serverHandler.send(message);
     }
 
+    /***
+     * Main of the class
+     * @param args Main args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /***
+     * This method load the scenes set the stage and display the scene
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         setup();
@@ -55,6 +74,9 @@ public class GUI extends Application implements Runnable, View
         displayScene();
     }
 
+    /***
+     * Setup of fxml files of the application. This method load the files of each scenes
+     */
     public void setup(){
         Font.loadFont(getClass().getResourceAsStream("/fonts/newborough.ttf"), 14);
         try {
@@ -73,6 +95,9 @@ public class GUI extends Application implements Runnable, View
 
     }
 
+    /***
+     * Main loop of the GUI, it recive messages from server and execute the handle
+     */
     @Override
     public void run() {
         boolean run = true;
@@ -91,6 +116,9 @@ public class GUI extends Application implements Runnable, View
         }
     }
 
+    /***
+     * Display scene on screen
+     */
     public void displayScene() {
         stage.setScene(currentScene);
         stage.sizeToScene();
@@ -100,6 +128,10 @@ public class GUI extends Application implements Runnable, View
         stage.show();
     }
 
+    /***
+     * Change displayed scene
+     * @param scene The scene to show
+     */
     public void changeScene(String scene){
         this.currentScene = nameToScene.get(scene);
         stage.setScene(currentScene);
@@ -109,10 +141,17 @@ public class GUI extends Application implements Runnable, View
         stage.show();
     }
 
+    /***
+     * Set the server handler
+     * @param serverHandler
+     */
     public void setServerHandler(ServerHandler serverHandler) {
         this.serverHandler = serverHandler;
     }
 
+    /***
+     * Set wait for other players scene
+     */
     public void waitForOtherPlayers(){
         if(currentScene.equals(nameToScene.get("SETUP"))){
             SetupController controller = (SetupController) sceneToController.get(currentScene);
@@ -126,6 +165,9 @@ public class GUI extends Application implements Runnable, View
         }
     }
 
+    /***
+     * Change scene to GAME
+     */
     public void startGame(){
         Platform.runLater(new Runnable() {
             @Override
@@ -135,6 +177,7 @@ public class GUI extends Application implements Runnable, View
         });
     }
 
+
     @Override
     public void requestNickname() throws IOException {
         if(currentScene.equals(nameToScene.get("SETUP"))){
@@ -143,6 +186,10 @@ public class GUI extends Application implements Runnable, View
         }
     }
 
+    /***
+     * Show error on the screen with a popup
+     * @param error The error message
+     */
     @Override
     public void showError(String error) {
         Platform.runLater(new Runnable() {

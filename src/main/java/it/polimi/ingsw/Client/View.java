@@ -1,13 +1,19 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Model.AssistantCard;
-import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.io.IOException;
 
+/** View interface
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ */
 public interface View {
 
+    /***
+     * Request nickname to player
+     * @throws IOException
+     */
     void requestNickname() throws IOException;
 
     void showError(String error);
