@@ -5,9 +5,7 @@ import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Conquest;
 import it.polimi.ingsw.Model.GameModel;
 import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Model.Tower;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 /**
@@ -32,11 +30,11 @@ public class MoveMotherNatureState implements GameControllerState {
          * card which allows him to move mother nature of two additional steps and then move mother nature
          */
         if(m.isTwoAdditionalSteps() &&
-                action.getMotherNatureSteps()<=(m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()+2)){
+                action.getMotherNatureSteps()<=(m.getCurrentCardPlayers().get(currentPlayer).getMothernaturesteps()+2)){
             m.moveMotherNature(action.getMotherNatureSteps());
             System.out.println("DEBUG MN 4");
         }
-        else if(!m.isTwoAdditionalSteps() && action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernatureSteps()){
+        else if(!m.isTwoAdditionalSteps() && action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernaturesteps()){
             System.out.println("DEBUG MN 5");
             m.moveMotherNature(action.getMotherNatureSteps());
             System.out.println("DEBUG MN 6");

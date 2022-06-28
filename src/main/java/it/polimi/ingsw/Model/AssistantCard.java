@@ -9,19 +9,19 @@ import java.io.Serializable;
 public class AssistantCard implements Serializable {
 
     private final int value;
-    private final int mothernatureSteps;
+    private final int mothernaturesteps;
     private final String name;
     private final String asset;
 
     /**
      * Class constructor
      * @param value Value of card
-     * @param mothernatureSteps Number of possible steps of Mother nature
+     * @param mothernaturesteps Number of possible steps of Mother nature
      * @param asset Path of graphical asset
      */
-    public AssistantCard(int value, int mothernatureSteps, String name, String asset){
+    public AssistantCard(int value, int mothernaturesteps, String name, String asset){
         this.value = value;
-        this.mothernatureSteps = mothernatureSteps;
+        this.mothernaturesteps = mothernaturesteps;
         this.name = name;
         this.asset = asset;
     }
@@ -38,8 +38,8 @@ public class AssistantCard implements Serializable {
      * Get mothernature steps
      * @return Mothernature steps
      */
-    public int getMothernatureSteps() {
-        return mothernatureSteps;
+    public int getMothernaturesteps() {
+        return mothernaturesteps;
     }
 
     /***
@@ -67,7 +67,7 @@ public class AssistantCard implements Serializable {
     public String toString() {
         return "AssistantCard{" +
                 "value=" + value +
-                ", mothernatureSteps=" + mothernatureSteps +
+                ", mothernatureSteps=" + mothernaturesteps +
                 ", name='" + name + '\'' +
                 ", asset='" + asset + '\'' +
                 '}' + '\n';

@@ -178,7 +178,7 @@ public class CLI implements View, Runnable {
                 for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
                     if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(s)) {
                         value = vmodel.getClientPlayer().getAssistantCards().get(i).getValue();
-                        steps = vmodel.getClientPlayer().getAssistantCards().get(i).getMothernatureSteps();
+                        steps = vmodel.getClientPlayer().getAssistantCards().get(i).getMothernaturesteps();
                         break;
                     }
                 }

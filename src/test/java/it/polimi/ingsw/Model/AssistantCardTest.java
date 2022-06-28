@@ -10,7 +10,7 @@ class AssistantCardTest {
     public void testClassCreation() {
         AssistantCard card = new AssistantCard(2, 5, "Lion", "lion.png");
         assertEquals(card.getValue(), 2);
-        assertEquals(card.getMothernatureSteps(), 5);
+        assertEquals(card.getMothernaturesteps(), 5);
         assertEquals(card.getName(), "Lion");
         assertEquals(card.getAsset(), "lion.png");
 
