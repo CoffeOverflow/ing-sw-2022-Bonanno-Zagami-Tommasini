@@ -69,7 +69,10 @@ public class UseCharacterCard implements ClientToServerMessage{
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
+           System.out.println(change.getChange());
+           System.out.println("sending update character card");
            game.sendAll(new UpdateMessage(change));
+           System.out.println("update sent");
            try {
                Thread.sleep(500);
            } catch (InterruptedException e) {
