@@ -20,22 +20,15 @@ public class GameController {
 
     private Integer firstPlayer;
 
-
-
     private GameControllerState stateToReturn;
 
-
-
     private HashMap<Integer, AssistantCard> currentCardPlayers=new HashMap<>();
-
 
     private List<Player> winners=new ArrayList<Player>();
 
     public GameController(boolean expertMode,int numberOfPlayers){
         model=new GameModel(expertMode,numberOfPlayers);
         this.turnOrder=new Integer[numberOfPlayers];
-
-
     }
 
     public HashMap<Integer, AssistantCard> getCurrentCardPlayers() {
@@ -83,11 +76,6 @@ public class GameController {
         state.turnAction(this, action);
         model.printBag();
     }
-
-    public void setCurrentCardPlayers(HashMap<Integer, AssistantCard> currentCardPlayers) {
-        this.currentCardPlayers = currentCardPlayers;
-    }
-
 
     public boolean checkEndGame(){
         if(model.getIslandSize() == model.getNumberOfPlayers())

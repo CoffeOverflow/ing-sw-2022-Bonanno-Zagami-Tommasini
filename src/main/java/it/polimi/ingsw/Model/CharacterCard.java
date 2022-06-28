@@ -18,7 +18,7 @@ public class CharacterCard {
 
     private Optional<EnumMap<Color, Integer>> entranceStudents;
 
-    private Optional<Integer> chosenNumberOfSteps;
+   // private Optional<Integer> chosenNumberOfSteps;
     private Optional<Color> chosenColor;
     private Optional<Integer> noEntryTiles;
 
@@ -125,39 +125,53 @@ public class CharacterCard {
     }
 
 
+    /**
+     * @return the chosen students associated with the card
+     */
     public Optional<EnumMap<Color, Integer>> getChosenStudents() {
         return chosenStudents;
     }
 
-    public void setChosenNumberOfSteps(Optional<Integer> chosenNumberOfSteps) {
-        this.chosenNumberOfSteps = chosenNumberOfSteps;
-    }
-
-    public Optional<Integer> getChosenNumberOfSteps() {
-        return chosenNumberOfSteps;
-    }
-
-
+    /**
+     * @return the students from the entrance to swap
+     */
     public Optional<EnumMap<Color, Integer>> getEntranceStudents() {
         return entranceStudents;
     }
 
+    /**
+     * @return the cost of the card
+     */
     public int getCost(){
         return cost;
     }
 
+    /**
+     * @return the asset associated to the card
+     */
     public String getAsset(){
         return asset;
     }
 
+    /**
+     * method that takes new students from the bag and place them on the card
+     * @param studentsToAdd students to add
+     */
     public void addStudents(EnumMap<Color, Integer> studentsToAdd){
         studentsToAdd.forEach((k, v) -> this.students.get().merge(k, v, Integer::sum));
     }
 
+    /**
+     * method that sets the student to place on the card
+     * @param students students to place
+     */
     public void setStudents(EnumMap<Color, Integer> students) {
         this.students=Optional.of(students);
     }
 
+    /**
+     * @return the students placed on the card
+     */
     public Optional<EnumMap<Color, Integer>> getStudents() {
         return students;
     }
@@ -165,7 +179,7 @@ public class CharacterCard {
     /**
      * set the students that the player chose to take from the character card
      * @param chosenStudents students taken from the character card
-     * @throws IllegalStateException if the card doesn't contain students or if the number of chosen student is wrong
+     * @throws IllegalStateException if the card doesn't contain students or if the number of chosen students is wrong
      */
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents) throws IllegalStateException{
         int studentNumber=0;
@@ -181,6 +195,13 @@ public class CharacterCard {
         }
     }
 
+    /**
+     * set the students associated with the effect on the card in the case in which also some from the entrance
+     * of the player's school have to be selected
+     * @param chosenStudents students to take from the card or from the school's dining hall (in the case of "storyteller" card)
+     * @param entranceStudents students to take from the school's entrance
+     * @throws IllegalStateException if if the card doesn't contain students or if the number of chosen/entrance students is wrong
+     */
     public void setChosenStudents(EnumMap<Color, Integer> chosenStudents,EnumMap<Color, Integer> entranceStudents)throws IllegalStateException{
         int studentNumber=0;
         int entranceNumber=0;
@@ -201,10 +222,17 @@ public class CharacterCard {
 
     }
 
+    /**
+     * @return the color chosen for the effect of the card
+     */
     public Optional<Color> getChosenColor() {
         return chosenColor;
     }
 
+    /**
+     * associated with the cards "thief" and "lumberjack"
+     * @param chosenColor color that has to be considered for the effect
+     */
     public void setChosenColor(Optional<Color> chosenColor) {
         this.chosenColor = chosenColor;
     }
@@ -226,8 +254,8 @@ public class CharacterCard {
         }
         if(entranceStudents!=null && entranceStudents.isPresent())
             entranceStudents=null;
-        if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())
-            chosenNumberOfSteps=null;
+        //if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())
+          //  chosenNumberOfSteps=null;
         if(chosenColor!=null && chosenColor.isPresent())
             chosenColor=null;
         if(noEntryTiles!=null && noEntryTiles.isPresent())
@@ -236,15 +264,32 @@ public class CharacterCard {
         player.decreaseMoney(this.cost);
     }
 
+    /**
+     * method that increases the cost of the card after its first usage
+     */
     public void increaseCost(){
         cost++;
     }
 
+    /**
+     * @return the number of no-entry tiles placed on the "herbalist" card
+     */
     public Optional<Integer> getNoEntryTiles() {
         return noEntryTiles;
     }
 
+    /**
+     * @param noEntryTiles number of no-entry tiles placed on the "herbalist" card
+     */
     public void setNoEntryTiles(Optional<Integer> noEntryTiles) {
         this.noEntryTiles = noEntryTiles;
     }
+
+    /*public void setChosenNumberOfSteps(Optional<Integer> chosenNumberOfSteps) {
+        this.chosenNumberOfSteps = chosenNumberOfSteps;
+    }
+
+    public Optional<Integer> getChosenNumberOfSteps() {
+        return chosenNumberOfSteps;
+    }*/
 }

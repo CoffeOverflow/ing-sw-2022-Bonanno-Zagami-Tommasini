@@ -8,8 +8,17 @@ import it.polimi.ingsw.Model.GameModel;
 
 import java.util.Optional;
 
+/**
+ * @author Federica Tommasini
+ * implementation of the state interface of the game controller
+ */
 public class PlayCharacterCardState implements GameControllerState{
-
+    /**
+     * play the character card chosen by the player
+     * @param gc instance of the controller
+     * @param action object containing parameters for the action
+     * @throws IllegalStateException if the player doesn't have enough money to play the card
+     */
     public void turnAction(GameController gc, Action action) throws IllegalStateException{
         GameModel model=gc.getModel();
         int cardPos=model.getCharactersPositions().get(action.getAsset());
@@ -28,9 +37,9 @@ public class PlayCharacterCardState implements GameControllerState{
             if (action.getEntranceStudents() != null && action.getChosenStudents() != null ) {
                 card.setChosenStudents(action.getChosenStudents(),action.getEntranceStudents());
             }
-            if (action.getChosenNumberOfSteps() != 0) {
+            /*if (action.getChosenNumberOfSteps() != 0) {
                 card.setChosenNumberOfSteps(Optional.of(action.getChosenNumberOfSteps()));
-            }
+            }*/
             card.useCard(action.getPosIsland(), model);
             if (!model.getFirstUseCharacters()[cardPos]) {
                 model.setFirstUseCharacters(cardPos);
