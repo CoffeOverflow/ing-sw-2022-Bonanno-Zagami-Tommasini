@@ -6,32 +6,41 @@ import it.polimi.ingsw.Exceptions.InvalidNicknameException;
 import it.polimi.ingsw.Exceptions.MatchFullException;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-
 import static it.polimi.ingsw.Constants.halfTimeout;
 import static it.polimi.ingsw.Constants.timeout;
 
+/***
+ * Client Handler Class
+ * @author Angelo Zagami
+ */
 public class ClientHandler implements Runnable{
-    private Socket clientSocket;
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
-    private Server server;
-    private int playerID;
+    private final Socket clientSocket;
+    private final ObjectInputStream inputStream;
+    private final ObjectOutputStream outputStream;
+    private final Server server;
+    private final int playerID;
     private String nickname;
     private GameHandler game;
 
 
+    /***
+     * Class construcotr
+     * @param clientSocket The client socket
+     * @param server The server
+     * @param playerID The player ID
+     * @throws IOException If there is a network error
+     */
     public ClientHandler(Socket clientSocket, Server server, int playerID) throws IOException {
         this.clientSocket = clientSocket;
         this.server = server;
         this.playerID = playerID;
         this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
-        //this.clientSocket.setSoTimeout(timeout);
-        /*new Thread(() -> { //Server to Client
+        this.clientSocket.setSoTimeout(timeout);
+        new Thread(() -> { //Server to Client
             while(true){
                 try {
                     Thread.sleep(halfTimeout);
@@ -42,25 +51,49 @@ public class ClientHandler implements Runnable{
                     sendHeartbeat();
                 }catch (RuntimeException e){
                     System.out.println("Client "+getPlayerID()+" "+getNickname()+" disconnected!");
+                    server.removePlayer(getPlayerID());
+                    if(game != null){
+                        if(server.getAvailableGames().contains(game))
+                            server.removeAvailableGame(game.getGameID());
+                        else
+                            server.endGame(game.getGameID());
+                    }
                     break;
                 }
             }
 
-        }).start();*/
+        }).start();
     }
 
+    /***
+     * Set the game of the client
+     * @param game The game
+     */
     public void setGame(GameHandler game){
         this.game = game;
     }
 
+    /***
+     * Return the ID of the players
+     * @return Player ID
+     */
     public int getPlayerID(){
         return playerID;
     }
 
+    /***
+     * Get the player nickname
+     * @return The player nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+
+    /***
+     * Send a message to the client
+     * @param message The message to send
+     */
     public synchronized void send(ServerToClientMessage message){
         try {
             outputStream.reset();
@@ -71,23 +104,33 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /***
+     * Send Heartbeat to client in order to be sure that it is connected
+     */
     public synchronized void sendHeartbeat(){
         send(new ServerHeartbeat());
     }
 
+
+    /***
+     * Receive message from the client
+     * @return The message received
+     */
     public Object answer(){
         try {
-            Object answer = inputStream.readObject();
-            return answer;
+            return inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /***
+     * This method ask client nickname and allows client to choose or create a new game
+     */
     public void setup(){
         boolean confirmation = false;
         String state = "Nickname";
-        Object answer = null;
+        Object answer;
         do{
             switch (state){
                 case "Nickname":
@@ -112,9 +155,9 @@ public class ClientHandler implements Runnable{
                     }
                     break;
                 case "Match":
-                    ArrayList<Integer> availableIDs = new ArrayList<Integer>();
+                    ArrayList<Integer> availableIDs = new ArrayList<>();
                     if(server.isAvailableGame()){
-                        ArrayList<String> availableGames = new ArrayList<String>();
+                        ArrayList<String> availableGames = new ArrayList<>();
                         for(GameHandler game : server.getAvailableGames()){
                             availableGames.add(game.toString());
                             availableIDs.add(game.getGameID());
@@ -170,6 +213,9 @@ public class ClientHandler implements Runnable{
         }while(!confirmation);
     }
 
+    /***
+     * Close the client connection
+     */
     public void close(){
         try {
             clientSocket.close();
@@ -178,24 +224,25 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /***
+     * Main loop of the client handler, it receives the message and execute the handle
+     */
     @Override
     public void run() {
         System.out.println("Client "+getPlayerID()+ " handler started!");
         setup();
         System.out.println("Client "+getPlayerID()+" select game setup complete!");
-        ClientToServerMessage answer = null;
+        ClientToServerMessage answer;
         while (true){
             try{
                 answer = (ClientToServerMessage) answer();
             }catch (RuntimeException e){
                 server.endGame(game.getGameID());
+                server.removeAvailableGame(game.getGameID());
                 break;
             }
             if(!(answer instanceof ClientHeartbeat))
                 answer.handleMessage(game, this);
         }
-
-
-
     }
 }

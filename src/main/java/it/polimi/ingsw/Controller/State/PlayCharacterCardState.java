@@ -8,13 +8,25 @@ import it.polimi.ingsw.Model.GameModel;
 
 import java.util.Optional;
 
+/**
+ * @author Federica Tommasini
+ * implementation of the state interface of the game controller
+ */
 public class PlayCharacterCardState implements GameControllerState{
-
+    /**
+     * play the character card chosen by the player
+     * @param gc instance of the controller
+     * @param action object containing parameters for the action
+     * @throws IllegalStateException if the player doesn't have enough money to play the card
+     */
     public void turnAction(GameController gc, Action action) throws IllegalStateException{
         GameModel model=gc.getModel();
         int cardPos=model.getCharactersPositions().get(action.getAsset());
         CharacterCard card=model.getCharacterCards().get(cardPos);
-
+        System.out.print("money: ");
+        System.out.println(model.getPlayerByID(model.getCurrentPlayer()).getMoney());
+        System.out.print("asset: "+card.getAsset() +"\n");
+        System.out.println("cost: "+card.getCost());
         if(model.getPlayerByID(model.getCurrentPlayer()).getMoney()>=card.getCost()) {
             if (action.getChosenColor() != null) {
                 card.setChosenColor(Optional.of(action.getChosenColor()));
@@ -25,16 +37,16 @@ public class PlayCharacterCardState implements GameControllerState{
             if (action.getEntranceStudents() != null && action.getChosenStudents() != null ) {
                 card.setChosenStudents(action.getChosenStudents(),action.getEntranceStudents());
             }
-            if (action.getChosenNumberOfSteps() != 0) {
+            /*if (action.getChosenNumberOfSteps() != 0) {
                 card.setChosenNumberOfSteps(Optional.of(action.getChosenNumberOfSteps()));
-            }
+            }*/
+            card.useCard(action.getPosIsland(), model);
             if (!model.getFirstUseCharacters()[cardPos]) {
                 model.setFirstUseCharacters(cardPos);
                 card.increaseCost();
             }
-            card.useCard(action.getPosIsland(), model);
         }else{
-            throw new IllegalStateException();
+            throw new IllegalStateException("Not enough money");
         }
 
     }

@@ -15,78 +15,47 @@ import java.util.*;
 
 import static it.polimi.ingsw.Constants.*;
 
+/***
+ * CLI implementation of UI
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ */
 public class CLI implements View, Runnable {
 
     private ServerHandler serverHandler;
     private VirtualModel vmodel;
 
+    /***
+     * CLI constructor
+     * @author Federica Tommasini, Angelo Zagami
+     * @param serverHandler Server Handler object used for server communications
+     */
     public CLI(ServerHandler serverHandler){
         this.serverHandler = serverHandler;
         this.vmodel=new VirtualModel();
     }
+
+    @Override
+    public VirtualModel getVmodel() {
+        return vmodel;
+    }
+
+    /***
+     * Main class of CLI, ask for server IP and port then start the CLI
+     * @author Giuseppe Bonanno, Angelo Zagami
+     * @param args
+     */
     public static void main(String[] args) {
         System.out.println("\n"+Constants.ERIANTYS);
-        /*Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.print("\nInsert the server IP address > ");
         String ip = scanner.nextLine();
         System.out.print("Insert the server port > ");
-        int port = scanner.nextInt();*/
-        Constants.setIP("127.0.0.1");
-        Constants.setPort(2000);
+        int port = scanner.nextInt();
+        Constants.setIP(ip);
+        Constants.setPort(port);
         ServerHandler server = new ServerHandler();
         Thread cliThread = new Thread(new CLI(server));
         cliThread.start();
-        /*Scanner scanner = null;
-        try {
-            boolean confirmation = false;
-            do{
-                ServerToClientMessage fromServer = server.read();
-                if(fromServer instanceof  RequestNickname){
-                    RequestNickname msg = (RequestNickname) fromServer;
-                    System.out.print(msg.getMsg()+" > ");
-                    scanner = new Scanner(System.in);
-                    String nickname = scanner.nextLine();
-                    server.write(new ChooseNickname(nickname));
-                    fromServer.handle(this, server);
-                }
-                if(fromServer instanceof Error){
-                    Error msg = (Error) fromServer;
-                    System.err.println(msg.getMessage());
-                }
-                if(fromServer instanceof ActionValid){
-                    ActionValid msg = (ActionValid) fromServer;
-                    System.out.println(msg.getMsg());
-                }
-                if(fromServer instanceof ChooseMatch){
-                    System.out.println("\nAvailable match:");
-                    ChooseMatch msg = (ChooseMatch) fromServer;
-                    for(String match : msg.getAvailableMatchs())
-                        System.out.println(match);
-                    System.out.print("\n"+msg.getMsg());
-                    int game = scanner.nextInt();
-                    server.write(new SelectMatch(game));
-                }
-                if (fromServer instanceof GenericMessage){
-                    System.out.println(((GenericMessage) fromServer).getMessage());
-                }
-                if(fromServer instanceof WaitForOtherPlayer){
-                    WaitForOtherPlayer msg = (WaitForOtherPlayer) fromServer;
-                    System.out.println(msg.getMsg());
-                    confirmation = true;
-                }
-            }while(!confirmation);
-        } catch (IOException e) {
-            System.out.println("Server unreachable :c");
-            System.exit(-1);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        while(true){
-            String fromInput = scanner.nextLine();
-            if(fromInput.equals("Quit"))
-                break;
-        }*/
 
     }
 
@@ -165,8 +134,6 @@ public class CLI implements View, Runnable {
     @Override
     public void matchCreated(MatchCreated msg) {
         this.vmodel.setIslandsAndMotherNature(msg);
-       // System.out.println("mother nature position: "+ vmodel.getMotherNaturePosition());
-        //this.showBoard();
     }
 
     @Override
@@ -192,7 +159,8 @@ public class CLI implements View, Runnable {
 
     @Override
     public void youWin() {
-        serverHandler.close();
+        this.showMessage("YOU WIN!");
+        //serverHandler.close();
     }
 
     @Override
@@ -241,215 +209,7 @@ public class CLI implements View, Runnable {
     @Override
     public void update(UpdateMessage msg){
 
-        List<CharacterCard> characterCards =this.vmodel.getCharacterCards();
-        BoardChange bchange=msg.getChange();
-        switch(bchange.getChange()){
-            case CONQUER:
-                this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
-                for(Player p:this.vmodel.getPlayers())
-                    if(p.getTower().equals(bchange.getConquerorTower()))
-                        p.setNumberOfTower(p.getNumberOfTower()-1);
-                break;
-            case MOVESTUDENT:
-                if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
-                    for(Player p: vmodel.getPlayers()){
-                        if(p.getPlayerID() == bchange.getPlayer()){
-                            this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(bchange.getStudentColor(),1);
-                            p.getEntryStudents().put(bchange.getStudentColor(),p.getEntryStudents().get(bchange.getStudentColor())-1);
-                        }
-                    }
-                }
-                else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
-                    for(Player p: this.vmodel.getPlayers())
-                    {
-                        if(p.getPlayerID()==bchange.getPlayer()){
-                            this.vmodel.moveToSchool(p.getPlayerID(),bchange.getStudentColor());
-                        }
-                    }
-                }
-                break;
-            case MERGE:
-                this.vmodel.getIslands().get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
-                this.vmodel.mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
-                if(bchange.getMergedIsland2()!=null)
-                    this.vmodel.mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland2(),bchange.getConquerorTower());
-                   break;
-            case MOTHERNATURE:
-                this.vmodel.moveMotherNature(bchange.getMotherNatureSteps());
-                if(this.vmodel.getIslands().get(this.vmodel.getMotherNaturePosition()).getNoEntryCard()>0){
-                    this.vmodel.getIslands().get(this.vmodel.getMotherNaturePosition()).setNoEntryCard(this.vmodel.getIslands().get(this.vmodel.getMotherNaturePosition()).getNoEntryCard()-1);
-                    for(CharacterCard card:this.vmodel.getCharacterCards()){
-                        if(card.getAsset().equals("herbalist.jpg")){
-                            int noEntryTitlesOnCard=card.getNoEntryTiles().get()+Integer.valueOf(1);
-                            card.setNoEntryTiles(Optional.of(noEntryTitlesOnCard));
-                        }
-                    }
-                }
-                break;
-            case CLOUD:
-                this.vmodel.fillClouds(bchange);
-                break;
-            case TAKECLOUD:
-                EnumMap<Color,Integer> noStudent=new EnumMap<Color, Integer>(Color.class);
-                for(Color c:Color.values())
-                    noStudent.put(c,0);
-                this.vmodel.getClouds().get(bchange.getCloud()).setStudents(noStudent);
-                for(Player p:this.vmodel.getPlayers())
-                    if(p.getPlayerID()== bchange.getPlayer())
-                         p.addEntryStudents(bchange.getStudents1());
-                break;
-            case PLAYCLOWN:
-                for(CharacterCard c: characterCards)
-                    if(c.getAsset().equals("clown.jpg"))
-                        c.setStudents(bchange.getCardStudents());
-                for(Color c:Color.values()) {
-                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
-                        for(Player p:this.vmodel.getPlayers())
-                            if(p.getPlayerID()== bchange.getPlayer()) {
-                                for(int i=0; i<bchange.getEntranceStudent().get(c);i++)
-                                    p.removeEntryStudent(c);
-                            }
-                }
-                for(Player p:this.vmodel.getPlayers())
-                    if(p.getPlayerID()== bchange.getPlayer()) {
-                        p.addEntryStudents(bchange.getChoosenStudent());
-                        for(CharacterCard card :characterCards)
-                            if(card.equals(bchange.getAsset()))
-                            {
-                                p.decreaseMoney(card.getCost());
-                                card.increaseCost();
-                            }
-
-                    }
-                break;
-            case PLAYHERBALIST:
-                this.vmodel.getIslands().get(bchange.getIslandPosition()).setNoEntryCard(this.vmodel.getIslands().get(bchange.getIslandPosition()).getNoEntryCard()+1);
-                for(Player p:this.vmodel.getPlayers()){
-                    if(p.getPlayerID()==bchange.getPlayer())
-                    {
-                        for(CharacterCard card :characterCards){
-                            if(card.getAsset().equals(bchange.getAsset())){
-                                p.decreaseMoney(card.getCost());
-                                card.increaseCost();
-                                int entryTitles=card.getNoEntryTiles().get();
-                                card.setNoEntryTiles(Optional.of(entryTitles-1));
-                            }
-                        }
-                    }
-                }
-                break;
-            case PLAYINNKEEPER:
-                for(Color c:Color.values())
-                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0) {
-                        this.vmodel.getIslands().get(bchange.getIslandPosition()).addStudents(c, 1);
-                        for(CharacterCard card:this.vmodel.getCharacterCards()){
-                            if(card.getAsset().equals("innkeeper.jpg")) {
-                                card.getStudents().get().put(c, card.getStudents().get().get(c) - 1);
-                                card.setStudents(bchange.getCardStudents());
-                            }
-                        }
-                    }
-                for(Player p:this.vmodel.getPlayers())
-                    if(p.getPlayerID()== bchange.getPlayer())
-                    {
-                        p.addEntryStudents(bchange.getEntranceStudent());
-                        for(CharacterCard card :characterCards)
-                            if(card.getAsset().equals(bchange.getAsset()))
-                            {
-                                p.decreaseMoney(card.getCost());
-                                card.increaseCost();
-                            }
-
-                    }
-                break;
-            case PLAYPRINCESS:
-                for(Color c:Color.values()) {
-                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c) > 0)
-                        for(Player p:this.vmodel.getPlayers())
-                            if(p.getPlayerID()== bchange.getPlayer())
-                            {
-                                vmodel.moveToSchool(p.getPlayerID(),c);
-                                for(CharacterCard card :characterCards)
-                                    if(card.getAsset().equals(bchange.getAsset()))
-                                    {
-                                        card.setStudents(bchange.getCardStudents());
-                                        p.decreaseMoney(card.getCost());
-                                        card.increaseCost();
-                                    }
-                            }
-
-                }
-                break;
-            case PLAYSTORYTELLER:
-                EnumMap<Color,Integer> salaToEntrance=new EnumMap<Color, Integer>(Color.class);
-                for(Color c:Color.values())
-                    salaToEntrance.put(c,0);
-                for(Color c:Color.values()) {
-                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
-                    {
-                        for(Player p:this.vmodel.getPlayers())
-                            if(p.getPlayerID()== bchange.getPlayer())
-                                for(int i=0; i<bchange.getEntranceStudent().get(c) ; i++){
-                                    vmodel.moveToSchool(p.getPlayerID(),c);
-                                }
-                    }
-
-                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
-                    {
-                        for(Player p:this.vmodel.getPlayers())
-                            if(p.getPlayerID()== bchange.getPlayer())
-                                vmodel.removeFromSchool(p.getPlayerID(),c,bchange.getChoosenStudent().get(c));
-                        salaToEntrance.put(c,bchange.getChoosenStudent().get(c));
-                    }
-                }
-
-                for(Player p:this.vmodel.getPlayers())
-                    if(p.getPlayerID()== bchange.getPlayer())
-                    {
-                        p.addEntryStudents(salaToEntrance);
-                        for(CharacterCard card :characterCards)
-                            if(card.getAsset().equals(bchange.getAsset()))
-                            {
-                                p.decreaseMoney(card.getCost());
-                                card.increaseCost();
-                            }
-                    }
-
-                break;
-
-            case PLAYTHIEF:
-                Color colorToPutOnTheBag=bchange.getColor();
-                for(Player p:this.vmodel.getPlayers())
-                {
-                    p.removeThreeStudentOf(colorToPutOnTheBag);
-                }
-                for(Player p:this.vmodel.getPlayers())
-                    if(p.getPlayerID()== bchange.getPlayer())
-                        for(CharacterCard card :characterCards)
-                            if(card.getAsset().equals(bchange.getAsset()))
-                            {   Player hasProfessor=vmodel.getProfessors().get(bchange.getColor()).getPlayer();
-                                if(null!=hasProfessor && hasProfessor.getStudentsOf(bchange.getColor())==0)
-                                    hasProfessor.removeProfessor(bchange.getColor());
-                                p.decreaseMoney(card.getCost());
-                                card.increaseCost();
-                            }
-
-                break;
-            case PLAYMERCHANT:
-                vmodel.setTakeProfessorWhenTie(true);
-            case DEFAULT:
-                String asset= bchange.getAsset();
-                for(Player p:this.vmodel.getPlayers())
-                    if(p.getPlayerID()==bchange.getPlayer())
-                        for(CharacterCard card :characterCards)
-                            if(card.getAsset().equals(bchange.getAsset()))
-                            {
-                                p.decreaseMoney(card.getCost());
-                                card.increaseCost();
-                            }
-                break;
-        }
-
+        vmodel.update(msg);
         this.showBoard();
     }
 
@@ -511,8 +271,6 @@ public class CLI implements View, Runnable {
 
     }
 
-
-    @Override
     public void showCharacterCard(){
         List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
         if(!characterCards.equals(null)) {
@@ -549,7 +307,6 @@ public class CLI implements View, Runnable {
         }
     }
 
-    @Override
     public void showIsland(){
 
         EnumMap<Color,Integer> students;
@@ -624,7 +381,6 @@ public class CLI implements View, Runnable {
         }
     }
 
-    @Override
     public void showSchool(Player p,String colorTower){
 
         char[][] boardElement = new char[5][14];
@@ -728,7 +484,6 @@ public class CLI implements View, Runnable {
 
     }
 
-    @Override
     public void showClouds() {
         List<Cloud> clouds = this.vmodel.getClouds();
         EnumMap<Color, Integer> students;
@@ -797,18 +552,19 @@ public class CLI implements View, Runnable {
             do{
                 try {
                     n = scanner.nextInt();
+                    if(n>0 && n<=vmodel.getClouds().size()){
+                        for(Color c :vmodel.getClouds().get(n-1).getStudents().keySet()){
+                            if(vmodel.getClouds().get(n-1).getStudents().get(c)>0)
+                                checkIfNonEmptyCloud=true;
+                        }
+                    }
+                    if(!checkIfNonEmptyCloud)
+                        System.out.print("choose a valid number for the cloud: \n> ");
                 }
                 catch (InputMismatchException e){
                     this.showMessage("Please insert an integer value");
                 }
-                if(n>0 && n<=vmodel.getClouds().size()){
-                    for(Color c :vmodel.getClouds().get(n-1).getStudents().keySet()){
-                        if(vmodel.getClouds().get(n-1).getStudents().get(c)>0)
-                            checkIfNonEmptyCloud=true;
-                    }
-                }
-                if(!checkIfNonEmptyCloud)
-                    System.out.print("choose a valid number for the cloud: \n> ");
+
             }while(!checkIfNonEmptyCloud);
             serverHandler.send(new ChooseCloud(n-1));
             this.vmodel.setUseCharacterCard(false);
@@ -825,7 +581,6 @@ public class CLI implements View, Runnable {
                 catch (InputMismatchException e){
                     this.showMessage("Please insert an integer value\n");
                 }
-
             }else n=1;
             switch (n) {
                 case 1:
@@ -1188,6 +943,11 @@ public class CLI implements View, Runnable {
     @Override
     public void setUseCharcaterCard(){
         this.vmodel.setUseCharacterCard(false);
+    }
+
+    @Override
+    public void playerPlayAssistantCard(int playerID, AssistantCard card) {
+        showMessage("Player "+getVmodel().getPlayerByID(playerID).getNickname()+" played card "+card.getName()+"\n");
     }
 
     @Override

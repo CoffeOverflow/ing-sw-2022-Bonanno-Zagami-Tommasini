@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Controller.State.MoveTo;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class VirtualModel {
 
@@ -30,7 +28,15 @@ public class VirtualModel {
     private boolean takeProfessorWhenTie=false;
 
 
+
+
     private int numOfInstance =0;
+    public Player getPlayerByID(int id)  {
+        for(Player p:this.players)
+            if(p.getPlayerID()==id)
+                return p;
+        return null;
+    }
 
     public VirtualModel() {
         for(Color c:Color.values()){
@@ -105,6 +111,7 @@ public class VirtualModel {
 
     public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
         Island deleteIsland,notDeleteIsland;
+        int maxNumberOfTower;
         int islandPosNotDelete;
         if(islandPos1<islandPos2){
             deleteIsland=this.islands.get(islandPos2);
@@ -119,12 +126,11 @@ public class VirtualModel {
             this.islands.remove(islandPos1);
             islandPosNotDelete=islandPos2;
         }
+        maxNumberOfTower= Math.max(notDeleteIsland.getNumberOfTowers(), deleteIsland.getNumberOfTowers());
+
 
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
-        notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
-        for(Player p:this.players)
-            if(p.getTower().equals(tower))
-                p.setNumberOfTower(p.getNumberOfTower()-1);
+        notDeleteIsland.setNumberOfTowers(maxNumberOfTower+1);
         motherNaturePosition=islandPosNotDelete;
 
     }
@@ -141,21 +147,8 @@ public class VirtualModel {
             {
                 p.addStudentOf(studentColor);
                 p.removeEntryStudent(studentColor);
-                int numOfColor=p.getStudentsOf(studentColor);
-                int max=0;
-                for(Player play: players)
-                {
-                    if(play.getPlayerID()!=p.getPlayerID()){
-                        if(play.getStudentsOf(studentColor)>max)
-                        {
-                            max=play.getStudentsOf(studentColor);
-                        }
-                    }
-                }
-                if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max))
-                {
-                    this.professors.get(studentColor).goToSchool(p);
-                }
+                checkToChangeProfessor(p,studentColor);
+
             }
     }
 
@@ -174,10 +167,250 @@ public class VirtualModel {
                 toGo=play;
             }
         }
-        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+        if (null!=toGo && !toGo.equals(professors.get(studentColor).getPlayer()))
             this.professors.get(studentColor).goToSchool(toGo);
         if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
             professors.get(studentColor).getPlayer().removeProfessor(studentColor);
+    }
+
+    public void update(UpdateMessage msg){
+
+        BoardChange bchange=msg.getChange();
+        switch(bchange.getChange()){
+            case CONQUER:
+                Optional<Tower> oldTower= islands.get(bchange.getConquerIsland()).getTower();
+                islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
+                for(Player p:players){
+                    if(p.getTower().equals(bchange.getConquerorTower()))
+                        p.buildTower(islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                    else if(oldTower.isPresent() && p.getTower().equals(oldTower.get()))
+                        p.buildTower(-islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                }
+
+                break;
+            case MOVESTUDENT:
+                if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
+                    for(Player p: players){
+                        if(p.getPlayerID() == bchange.getPlayer()){
+                            islands.get(bchange.getIslandPosition()).addStudents(bchange.getStudentColor(),1);
+                            p.getEntryStudents().put(bchange.getStudentColor(),p.getEntryStudents().get(bchange.getStudentColor())-1);
+                        }
+                    }
+                }
+                else if(bchange.getMoveTo().equals(MoveTo.SCHOOL)){
+                    for(Player p: players)
+                    {
+                        if(p.getPlayerID()==bchange.getPlayer()){
+                            moveToSchool(p.getPlayerID(),bchange.getStudentColor());
+                        }
+                    }
+                }
+                break;
+            case MERGE:
+                Optional<Tower> oldTower2= islands.get(bchange.getConquerIsland()).getTower();
+                islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
+                for(Player p:players){
+                    if(p.getTower().equals(bchange.getConquerorTower()))
+                        p.buildTower(islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                    else if(oldTower2.isPresent() && p.getTower().equals(oldTower2.get()))
+                        p.buildTower(-islands.get(bchange.getConquerIsland()).getNumberOfTowers());
+                }
+                mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
+                if(bchange.getMergedIsland2()!=null) {
+                    int island1=bchange.getConquerIsland()==0 ? islands.size()-1 : bchange.getConquerIsland() - 1;
+                    int island2=bchange.getMergedIsland2()==0 ? islands.size()-1 : bchange.getMergedIsland2() - 1;
+                    mergeIslands(island1, island2, bchange.getConquerorTower());
+                }
+                break;
+            case MOTHERNATURE:
+                moveMotherNature(bchange.getMotherNatureSteps());
+                if(islands.get(motherNaturePosition).getNoEntryCard()>0){
+                    islands.get(motherNaturePosition).setNoEntryCard(islands.get(motherNaturePosition).getNoEntryCard()-1);
+                    for(CharacterCard card:characterCards){
+                        if(card.getAsset().equals("herbalist.jpg")){
+                            int noEntryTitlesOnCard=card.getNoEntryTiles().get()+Integer.valueOf(1);
+                            card.setNoEntryTiles(Optional.of(noEntryTitlesOnCard));
+                        }
+                    }
+                }
+
+                break;
+            case CLOUD:
+                fillClouds(bchange);
+                break;
+            case TAKECLOUD:
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                        System.out.println(p.getEntryStudents());
+                EnumMap<Color,Integer> noStudent=new EnumMap<Color, Integer>(Color.class);
+                for(Color c:Color.values())
+                    noStudent.put(c,0);
+                clouds.get(bchange.getCloud()).setStudents(noStudent);
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer()){
+                        p.addEntryStudents(bchange.getStudents1());
+                    }
+                break;
+            case PLAYCLOWN:
+                for(CharacterCard c: characterCards)
+                    if(c.getAsset().equals("clown.jpg"))
+                        c.setStudents(bchange.getCardStudents());
+                for(Color c:Color.values()) {
+                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer()) {
+                                for(int i=0; i<bchange.getEntranceStudent().get(c);i++)
+                                    p.removeEntryStudent(c);
+                            }
+                }
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer()) {
+                        p.addEntryStudents(bchange.getChoosenStudent());
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
+                    }
+                break;
+            case PLAYHERBALIST:
+                islands.get(bchange.getIslandPosition()).setNoEntryCard(islands.get(bchange.getIslandPosition()).getNoEntryCard()+1);
+                for(Player p:players){
+                    if(p.getPlayerID()==bchange.getPlayer())
+                    {
+                        for(CharacterCard card :characterCards){
+                            if(card.getAsset().equals(bchange.getAsset())){
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                                int entryTitles=card.getNoEntryTiles().get();
+                                card.setNoEntryTiles(Optional.of(entryTitles-1));
+                            }
+                        }
+                    }
+                }
+                break;
+            case PLAYINNKEEPER:
+                for(Color c:Color.values())
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0) {
+                        islands.get(bchange.getIslandPosition()).addStudents(c, 1);
+                        for(CharacterCard card:characterCards){
+                            if(card.getAsset().equals("innkeeper.jpg")) {
+                                card.getStudents().get().put(c, card.getStudents().get().get(c) - 1);
+                                card.setStudents(bchange.getCardStudents());
+                            }
+                        }
+                    }
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                    {
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
+                    }
+                break;
+            case PLAYPRINCESS:
+                for(Color c:Color.values()) {
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c) > 0)
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer())
+                            {
+                                p.addStudentOf(c);
+                                checkToChangeProfessor(p,c);
+                                for(CharacterCard card :characterCards)
+                                    if(card.getAsset().equals(bchange.getAsset()))
+                                    {
+                                        card.setStudents(bchange.getCardStudents());
+                                        p.decreaseMoney(card.getCost());
+                                        card.increaseCost();
+                                    }
+                            }
+
+                }
+                break;
+            case PLAYSTORYTELLER:
+                EnumMap<Color,Integer> salaToEntrance=new EnumMap<Color, Integer>(Color.class);
+                for(Color c:Color.values())
+                    salaToEntrance.put(c,0);
+                for(Color c:Color.values()) {
+                    if(bchange.getEntranceStudent().containsKey(c) && bchange.getEntranceStudent().get(c) > 0)
+                    {
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                for(int i=0; i<bchange.getEntranceStudent().get(c) ; i++){
+                                    moveToSchool(p.getPlayerID(),c);
+                                }
+                    }
+
+                    if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
+                    {
+                        for(Player p:players)
+                            if(p.getPlayerID()== bchange.getPlayer())
+                                removeFromSchool(p.getPlayerID(),c,bchange.getChoosenStudent().get(c));
+                        salaToEntrance.put(c,bchange.getChoosenStudent().get(c));
+                    }
+                }
+
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                    {
+                        p.addEntryStudents(salaToEntrance);
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+                    }
+                break;
+
+            case PLAYTHIEF:
+                Color colorToPutOnTheBag=bchange.getColor();
+                for(Player p:players)
+                {
+                    p.removeThreeStudentOf(colorToPutOnTheBag);
+                }
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {   Player hasProfessor=professors.get(bchange.getColor()).getPlayer();
+                                if(null!=hasProfessor && hasProfessor.getStudentsOf(bchange.getColor())==0)
+                                    hasProfessor.removeProfessor(bchange.getColor());
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+                break;
+            case PLAYMERCHANT:
+                takeProfessorWhenTie=true;
+                for(Player p:players)
+                    if(p.getPlayerID()== bchange.getPlayer())
+                    {
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+
+                    }
+                break;
+            case DEFAULT:
+                for(Player p:players)
+                    if(p.getPlayerID()==bchange.getPlayer())
+                        for(CharacterCard card :characterCards)
+                            if(card.getAsset().equals(bchange.getAsset()))
+                            {
+                                p.decreaseMoney(card.getCost());
+                                card.increaseCost();
+                            }
+                break;
+        }
     }
 
 
@@ -212,7 +445,7 @@ public class VirtualModel {
     }
 
     public void moveMotherNature(int steps){
-        this.motherNaturePosition=(motherNaturePosition+steps)%12;
+        this.motherNaturePosition=(motherNaturePosition+steps)%this.islands.size();
     }
 
     public boolean isUseCharacterCard() { return useCharacterCard;}
@@ -221,14 +454,26 @@ public class VirtualModel {
 
     public int getNumOfInstance() {return numOfInstance++;}
     public void resetNumOfInstance(){this.numOfInstance=0;}
-    public void setMotherNaturePosition(int motherNaturePosition) {
 
-        this.motherNaturePosition = motherNaturePosition;
-    }
     public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
         this.takeProfessorWhenTie = takeProfessorWhenTie;
     }
-    public EnumMap<Color, Professor> getProfessors() {
-        return professors;
+
+    public void checkToChangeProfessor(Player p,Color c){
+        int numOfColor=p.getStudentsOf(c);
+        int max=0;
+        for(Player play: players)
+        {
+            if(play.getPlayerID()!=p.getPlayerID()){
+                if(play.getStudentsOf(c)>max)
+                {
+                    max=play.getStudentsOf(c);
+                }
+            }
+        }
+        if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max))
+        {
+            this.professors.get(c).goToSchool(p);
+        }
     }
 }

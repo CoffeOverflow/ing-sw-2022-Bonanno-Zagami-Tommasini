@@ -23,13 +23,13 @@ public class GameModel {
     private List<Player> players=new ArrayList<Player>();
     private List<CharacterCard> characterCards=new ArrayList<CharacterCard>();
 
-
-
     private boolean lastRound =false;
+
+    private boolean emptyClouds =false;
 
     private HashMap<String,Integer> charactersPositions=new HashMap<>();
     private List<Cloud> clouds=new ArrayList<Cloud>();
-    private Optional<Integer> coins;
+    private static Optional<Integer> coins;
     private List<Island> islands=new ArrayList<Island>();
     private EnumMap<Color,Integer> studentsBag=new EnumMap<>(Color.class);
     private EnumMap <Color,Professor> professors=new EnumMap<Color,Professor>(Color.class);
@@ -173,6 +173,7 @@ public class GameModel {
                     break;
             }
         }
+        cardNumbers[0]=1;
         if(expertMode){
             try{
             for(int i=0; i<3;i++) {
@@ -195,6 +196,9 @@ public class GameModel {
             }
         }
 
+    }
+    public void printBag(){
+        System.out.println(studentsBag.toString());
     }
 
     public synchronized void addPlayer(int id,String nickname){
@@ -225,10 +229,7 @@ public class GameModel {
         }
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+1);
-        for(Player p: this.players)
-            if(p.getTower().equals(tower))
-                p.setNumberOfTower(p.getNumberOfTower()-1);
-        //motherNaturePosition=islandPosNotDelete;
+
     }
 
     /**
@@ -248,7 +249,6 @@ public class GameModel {
      * @param islandPosition
      * @param student
      */
-
     public void moveStudentToIsland(int islandPosition, Color student )
     {
         this.islands.get(islandPosition).addStudents(student,1);
@@ -281,22 +281,30 @@ public class GameModel {
      */
     public int getPlayerInfluence(int player,int island)
     {
-            int influence = 0;
-            for (Color c : Color.values()) {
-                if(!c.equals(notCountedColor)){
-                    if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
-                        influence += this.islands.get(island).getStudentsOf(c);
-                        if(player==currentPlayer && twoAdditionalPoints){
-                            influence+=2;
-                        }
-                    }
+        int influence = 0;
+        for (Color c : Color.values()) {
+            if(!c.equals(notCountedColor)){
+                if (getPlayerByID(player).equals(this.professors.get(c).getPlayer())) {
+                    influence += this.islands.get(island).getStudentsOf(c);
                 }
             }
-            return influence;
+        }
+        if(player==currentPlayer && twoAdditionalPoints){
+            influence+=2;
+        }
+        return influence;
     }
 
+    /**
+     * @author Federica Tommasini
+     * check if there is a player that has conquered the island on which mother nature ended up
+     * @param islandPosition island to check for conquering
+     * @return conquest object that contains information regarding the conquered island
+     */
     public Conquest computeInfluence(int islandPosition){
-        //take control of the island:
+        /*
+         * find the player with the higher influence on the island
+         */
         int key=0;
         HashMap<Integer, Integer> influences=new HashMap<>();
         Optional<Integer> conqueror=Optional.empty();
@@ -313,31 +321,46 @@ public class GameModel {
                 conqueror=Optional.of(p.getPlayerID());
             }
         }
-        //check if the higher value of influence is unique
+        System.out.println("DEBUG CI 0");
+        /*
+         * check if the higher value of influence is unique and if the island wasn't already his
+         */
         if(conqueror.isPresent()){
             for(Player p:players){
                 if(p.getPlayerID()!=conqueror.get() && influences.get(p.getPlayerID()).equals(influences.get(conqueror.get()))){
                     conqueror=Optional.empty();
+                    break;
+                }else if(p.getPlayerID()==conqueror.get() && islands.get(islandPosition).getTower().isPresent()
+                        &&  islands.get(islandPosition).getTower().get().equals(p.getTower())){
+                    conqueror=Optional.empty();
+                    break;
                 }
             }
         }
-
+        System.out.println("DEBUG CI 1");
         int mergeResult=0;
         int oldIslandsSize=islands.size();
-        //if the value is unique, conquer the island
+
+        /*
+         * if the value is unique, conquer the island placing the player's tower on it
+         */
         if(conqueror.isPresent()){
             Optional<Tower> oldTower= getTowerOnIsland(islandPosition);
             setTowerOnIsland(islandPosition,conqueror.get());
-            if(oldTower.isPresent()){
+            if(oldTower.isPresent() && !getPlayerByTower(oldTower.get()).equals(getPlayerByID(conqueror.get())) ){
                 int oldNumberOfTower=getPlayerByTower(oldTower.get()).getNumberOfTower();
-                getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+1);
+                getPlayerByTower(oldTower.get()).setNumberOfTower(oldNumberOfTower+islands.get(islandPosition).getNumberOfTowers());
             }
-            getPlayerByID(conqueror.get()).buildTower();
+            getPlayerByID(conqueror.get()).buildTower(islands.get(islandPosition).getNumberOfTowers());
 
            mergeResult= checkMergeIsland(islandPosition,
                     getPlayerTower(conqueror.get()));
         }
-
+        System.out.println("DEBUG CI 2");
+        /*
+         * handle the results of the method that checks if there are islands to merge and set the attribute
+         * of the conquest, if the island isn't conquered, set conquest to null
+         */
         Conquest conquest;
         int mergeIsland1=0;
         int mergeIsland2=0;
@@ -378,6 +401,14 @@ public class GameModel {
     return null;
     }
 
+    /**
+     * @author Federica Tommasini
+     * check if there are near islands to merge
+     * @param island conquered island
+     * @param tower conqueror's tower
+     * @return an integer value which is -1 if the merged island precedes the conquered one,
+     * it is +1 if the merged islands follows the conquered one and 0 if there is no island to merge
+     */
     public int checkMergeIsland( int island, Tower tower){
         if(island==getIslandSize()-1 && getTowerOnIsland(island-1).isPresent() && getTowerOnIsland(island-1).get().equals(tower)){
             mergeIslands(island-1,island,tower);
@@ -399,9 +430,7 @@ public class GameModel {
             mergeIslands(island,island+1,tower);
             checkMergeIsland(island,tower);
             return +1;
-        }else{return 0;}
-
-
+        }else return 0;
 
     }
 
@@ -428,9 +457,24 @@ public class GameModel {
         {
             this.professors.get(studentColor).goToSchool(getPlayerByID(player));
         }
+        if(getPlayerByID(player).getStudentsOf(studentColor) % 3 == 0 && expertMode){
+            if(coins.get() > 0){
+                coins = Optional.of(coins.get() - 1);
+                getPlayerByID(player).addMoney();
+            }
+        }
     }
 
+    /**
+     * @author Federica Tommasini
+     * remove from the school a certain number of students of a specified color and check if the professor has to go to
+     * another player
+     * @param player
+     * @param studentColor
+     * @param number
+     */
     public void removeFromSchool (int player,Color studentColor, int number){
+
         for(Player p:this.players) {
             if (p.getPlayerID() == player) {
                 p.getStudents().put(studentColor, p.getStudentsOf(studentColor) - number);
@@ -444,10 +488,14 @@ public class GameModel {
                 toGo=play;
             }
         }
-        if (!toGo.equals(professors.get(studentColor).getPlayer()))
+
+        if ( null!=toGo &&!toGo.equals(professors.get(studentColor).getPlayer()))
             this.professors.get(studentColor).goToSchool(toGo);
+
+
         if(professors.get(studentColor).getPlayer().getPlayerID()==player && professors.get(studentColor).getPlayer().getStudentsOf(studentColor)==0)
             professors.get(studentColor).getPlayer().removeProfessor(studentColor);
+
     }
 
     /**
@@ -474,18 +522,13 @@ public class GameModel {
                 catch (IllegalArgumentException e){
                     System.out.println("There are no more students in the bag");
                     lastRound=true;
+                    emptyClouds=true;
                     return false;
                 }
             }
-            fillCloud(studentsOnClouds,i);
+            if(!lastRound)
+                fillCloud(studentsOnClouds,i);
             }
-
-        for(Color color:Color.values())
-            numStudents+=studentsBag.get(color);
-        if(numStudents==0)
-            lastRound=true;
-        else
-            lastRound=false;
         return true;
         }
 
@@ -494,8 +537,12 @@ public class GameModel {
     }
 
     public void moveMotherNature(int steps){
-        this.motherNaturePosition=(motherNaturePosition+steps)%12;}
+        this.motherNaturePosition=(motherNaturePosition+steps)%this.islands.size();}
 
+    /**
+     * @author Federica Tommasini
+     * reset the attributes related to the character cards when the turn ends because the effect is no more active
+     */
     public void endTurnOfPlayer(){
         this.towersNotCounted=false;
         this.notCountedColor=null;
@@ -593,12 +640,23 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * @author Federica Tommasini
+     * put back some students in the bag
+     * @param c color of the students
+     * @param n number of the students
+     */
     public void addStudentsBag(Color c, int n){
         numberOfStudentBag+=n;
         int numberBefore=studentsBag.get(c);
         studentsBag.put(c,numberBefore+n);
     }
 
+    /**
+     * get the player associated to a tower
+     * @param tower color of the tower
+     * @return the player with that tower
+     */
     public Player getPlayerByTower(Tower tower){
         Player ret=null;
         for(Player p:players){
@@ -608,6 +666,10 @@ public class GameModel {
         return ret;
     }
 
+    /**
+     * @param position position of the island
+     * @return island associated with that position
+     */
     public Island getIslandByPosition(int position){
         return this.islands.get(position);
     }
@@ -649,6 +711,9 @@ public class GameModel {
 
     public boolean isTowersNotCounted() {
         return towersNotCounted;
+    }
+    public boolean isEmptyClouds() {
+        return emptyClouds;
     }
 
     public void setTowersNotCounted(boolean towersNotCounted) {
@@ -705,41 +770,40 @@ public class GameModel {
         return clouds;
     }
 
+    /**
+     * @author Angelo Zagami, Federica Tommasini
+     * find the winners when the match ends (two winners when ends up in tie)
+     * @return a list of winners
+     */
     public List<Player> getWinner(){
-        Player winner=null;
-        Player winner2=null;
+        Player winner = null;
+        Player winner2 = null;
         ArrayList<Player> winners=new ArrayList<>();
         HashMap<Player,Integer> mapPlayerNumTowers=new HashMap<>();
-        for(Player p: players){
-            mapPlayerNumTowers.put(p,0);
+        for(Player player : players){
+            mapPlayerNumTowers.put(player,player.getNumberOfTower());
         }
-        for(Island i: islands){
-            if(i.getTower().isPresent()){
-                Player p=getPlayerByTower(i.getTower().get());
-                mapPlayerNumTowers.put(p,mapPlayerNumTowers.get(p)+i.getNumberOfTowers());
-            }
-        }
-        int key=0;
-        for(Player p: mapPlayerNumTowers.keySet()){
-            if(mapPlayerNumTowers.get(p)>key){
-                winner=p;
+        int tower = 99;
+        for(Player player : mapPlayerNumTowers.keySet()){
+            if(mapPlayerNumTowers.get(player) < tower){
+                winner = player;
                 if(winner2!=null) winner2=null;
-                key=mapPlayerNumTowers.get(p);
+                tower = mapPlayerNumTowers.get(player);
             }
-            else if(mapPlayerNumTowers.get(p)==key){
-                int numProfWinner=0;
-                int numProfP=0;
+            else if(mapPlayerNumTowers.get(player) == tower){
+                int numProfWinner = 0;
+                int numProfP = 0;
                 for(Professor pr: professors.values()){
-                    if(pr.getPlayer().equals(p))
+                    if(pr.getPlayer().equals(player))
                         numProfP++;
                     else if(pr.getPlayer().equals(winner))
                         numProfWinner++;
                 }
                 if(numProfP>numProfWinner) {
-                    winner = p;
+                    winner = player;
                     if(winner2!=null) winner2=null;
                 }else if(numProfP==numProfWinner){
-                    winner2=p;
+                    winner2=player;
                 }
             }
         }
@@ -748,6 +812,8 @@ public class GameModel {
         return winners;
     }
     public boolean isLastRound() {return lastRound;}
+
+    public void setLastRound(boolean lastRound) {this.lastRound = lastRound;}
 
     public Conquest getConquest() {
         return conquest;

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane fx:id="mainPane" id="mainPane" prefHeight="600" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.MainMenuController" stylesheets="@../css/mainmenu.css">
+   <children>
+      <!--Eriantys Logo-->
+      <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+         <Label fx:id="title" alignment="TOP_CENTER"  styleClass="Eriantys"  style="-fx-font-size: 70" text="Eriantys" textFill="WHITE">
+         </Label>
+      </HBox>
+      <!--Play button-->
+      <HBox alignment="CENTER"  prefWidth="600.0" layoutY="450"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+         <children>
+            <Button fx:id="button" styleClass="Eriantys" style="-fx-font-size: 38" prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#playButtonClicked" text="-&gt;" >
+            </Button>
+
+         </children>
+      </HBox>
+      <!--Cranio logo-->
+      <ImageView fx:id="cranio_logo" fitHeight="100" fitWidth="100" layoutY="500" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/logos/cranio_logo.png" />
+         </image>
+      </ImageView>
+      <!--Caduti in battaglia durante lo sviluppo di questo progetto-->
+      <HBox alignment="CENTER"  prefWidth="600.0" layoutY="580"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+         <children>
+            <Label fx:id="team" alignment="CENTER"  styleClass="Eriantys" style="-fx-font-size: 18"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE"/>
+         </children>
+      </HBox>
+
+      <!--Connection: IP and Port fields-->
+      <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
+         <VBox fx:id="connection" alignment="CENTER" layoutX="300" spacing="5">
+            <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert server IP address" />
+            <TextField fx:id="address" />
+            <Label styleClass="inputLabels"  prefHeight="21.0" prefWidth="333.0" text="Insert server port" />
+            <TextField fx:id="port"/>
+            <spacing/>
+            <children >
+               <Button fx:id="connect" style="-fx-font-size: 18" prefHeight="60" prefWidth="150" mnemonicParsing="false"  onAction="#connectButtonClicked" text="-&gt;" />
+            </children>
+         </VBox>
+      </HBox>
+
+   </children>
+</AnchorPane>

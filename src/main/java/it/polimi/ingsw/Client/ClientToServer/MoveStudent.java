@@ -51,13 +51,18 @@ public class MoveStudent implements ClientToServerMessage{
         if(!(game.getController().getState() instanceof MoveStudentsState)){
             game.getController().setState(new MoveStudentsState());
         }
+        int money = game.getController().getModel().getPlayerByID(game.getController().getModel().getCurrentPlayer()).getMoney();
         try{
+            //System.out.println("money: "+game.getController().getModel().getPlayerByID(player.getPlayerID()).getMoney());
             game.getController().doAction(action);
+            //System.out.println("money after: "+game.getController().getModel().getPlayerByID(player.getPlayerID()).getMoney());
         }catch(IllegalArgumentException e){
             game.sendTo(new ActionNonValid(), player);
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()),player);
         }
-
+        if(money != game.getController().getModel().getPlayerByID(game.getController().getModel().getCurrentPlayer()).getMoney()){
+            game.sendAll(new AddMoney(game.getController().getModel().getCurrentPlayer()));
+        }
         BoardChange change=new BoardChange(moveTo,studentColor,islandPosition,game.getController().getModel().getCurrentPlayer());
         game.sendAll(new UpdateMessage(change));
         try {

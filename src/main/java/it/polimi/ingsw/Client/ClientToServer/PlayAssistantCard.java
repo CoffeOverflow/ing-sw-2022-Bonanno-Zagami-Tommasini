@@ -33,6 +33,7 @@ public class PlayAssistantCard implements ClientToServerMessage{
         contr.setState(new DecideFirstPlayerState());
         try{
             contr.doAction(null);
+            game.sendAllExcept(new PlayerPlayAssistantCard(player.getPlayerID(), card), player);
             if(contr.getCurrentCardPlayers().size()==game.getNumberOfPlayers()) {
                 contr.getCurrentCardPlayers().clear();
                 game.sendTo(new YourTurn(),game.getClientByPlayerID(contr.getTurnOrder()[0]));
@@ -60,6 +61,7 @@ public class PlayAssistantCard implements ClientToServerMessage{
                 }
                 game.sendTo(new SelectAssistantCard(cards),game.getPlayers().get(game.getCurrentPlayerPosition()));
             }
+
         }catch(IllegalArgumentException e){
             String[] cards=new String[model.getPlayerByID(playerId).getAssistantCards().size()];
             for(int i=0; i<cards.length;i++){

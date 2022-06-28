@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ServerToClient.*;
 
@@ -43,13 +44,8 @@ public interface View {
 
     void showBoard();
 
-    void showIsland();
-
-    void showSchool(Player p,String colorTower);
-
-    void showClouds();
-
     void chooseOption(ChooseOption msg);
 
-    void showCharacterCard();
+    void playerPlayAssistantCard(int playerID, AssistantCard card);
+    VirtualModel getVmodel();
 }

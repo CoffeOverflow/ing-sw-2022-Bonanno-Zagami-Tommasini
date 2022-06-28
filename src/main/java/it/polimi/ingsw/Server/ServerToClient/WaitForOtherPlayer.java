@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
+import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
@@ -16,6 +17,11 @@ public class WaitForOtherPlayer implements ServerToClientMessage {
 
     @Override
     public void handle(View view) throws IOException {
+        if(view instanceof GUI){
+            GUI gui = (GUI) view;
+            gui.waitForOtherPlayers();
+            return;
+        }
         view.showMessage(msg + "\n");
     }
 }

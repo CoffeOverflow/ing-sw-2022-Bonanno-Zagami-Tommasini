@@ -23,13 +23,13 @@ public class ServerHandler {
             this.server=new Socket(Constants.getIP(),Constants.getPort());
             inputStream = new ObjectInputStream(server.getInputStream());
             outputStream= new ObjectOutputStream(server.getOutputStream());
-            //this.server.setSoTimeout(timeout);
+            this.server.setSoTimeout(timeout);
         }catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
 
-        /*new Thread(() -> { //Client to Server
+        new Thread(() -> { //Client to Server
             while(true){
                 try {
                     Thread.sleep(halfTimeout);
@@ -44,7 +44,7 @@ public class ServerHandler {
                 }
             }
 
-        }).start();*/
+        }).start();
     }
 
     public ServerToClientMessage read() throws IOException, ClassNotFoundException {

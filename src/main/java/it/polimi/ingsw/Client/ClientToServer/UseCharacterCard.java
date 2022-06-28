@@ -51,13 +51,16 @@ public class UseCharacterCard implements ClientToServerMessage{
            if(!(game.getController().getState() instanceof PlayCharacterCardState))
                 game.getController().setStateToReturn(game.getController().getState());
            game.getController().setState(new PlayCharacterCardState());
+           System.out.println("DEBUG CC 1");
            game.getController().doAction(action);
+           System.out.println("DEBUG CC 2");
            EnumMap<Color,Integer> cardStudents=new EnumMap<Color, Integer>(Color.class);
            for(CharacterCard c:game.getController().getModel().getCharacterCards()){
                if(c.getAsset().equals(asset) && null!=c.getStudents() && c.getStudents().isPresent())
                    cardStudents=c.getStudents().get().clone();
            }
            game.checkConquest();
+           System.out.println("DEBUG CC 3");
            BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
            String[] nameCard=asset.split("\\.");
            game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+nameCard[0]+ANSI_RESET),player);
@@ -66,22 +69,31 @@ public class UseCharacterCard implements ClientToServerMessage{
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
+           System.out.println(change.getChange());
+           System.out.println("sending update character card");
            game.sendAll(new UpdateMessage(change));
+           System.out.println("update sent");
            try {
                Thread.sleep(500);
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
        }catch (IllegalStateException e){
-           game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
-           game.sendTo(new GenericMessage(ANSI_RED+"you don't have enough money to play the card!"+ANSI_RESET),player);
-       }
 
+           if(e.getMessage().equals("Not enough money")) {
+               game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
+               game.sendTo(new GenericMessage(ANSI_RED + "you don't have enough money to play the card!" + ANSI_RESET), player);
+           }else if(e.getMessage().equals("Unexpected number of chosen students")){
+               game.sendTo(new Error(ErrorsType.CHOSENOTVALID),player);
+               game.sendTo(new GenericMessage(ANSI_RED + "you selected an incorrect number of students to play the card!" + ANSI_RESET), player);
+           }
+       }
+        System.out.println("DEBUG CC 4");
         game.getController().setState(game.getController().getStateToReturn());
         if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState || game.getController().getState() instanceof TakeStudentsState)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
         else
             game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
-
+        System.out.println("DEBUG CC 5");
     }
 }

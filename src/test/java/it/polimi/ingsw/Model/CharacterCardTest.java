@@ -91,6 +91,7 @@ class CharacterCardTest {
         chosenStudents=null;
         entranceStudentsSwap=null;
         entranceStudents=null;
+        gm=null;
     }
     @Test
     void testSetChosenStudents() {
@@ -130,6 +131,12 @@ class CharacterCardTest {
     @Test
     void testUseCard2(){
         //test effect of card 2
+        if(!gm.getCharacterCards().stream().anyMatch(card->card.getAsset().equals("herbalist"))){
+            gm.getCharacterCards().remove(2);
+            CharacterCard card =new CharacterCard("herbalist.jpg");
+            gm.getCharacterCards().add(card);
+            gm.getCharactersPositions().put("herbalist.jpg",2);
+        }
         Optional<Tower> towerOld=gm.getTowerOnIsland(1);
         gm.getIslandByPosition(1).setNoEntryCard(1);
         cards[1].useCard(1,gm);
