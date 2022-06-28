@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Client.ClientToServer.ChooseWizard;
 import it.polimi.ingsw.Controller.GameController;
-import it.polimi.ingsw.Controller.State.DecideFirstPlayerState;
-import it.polimi.ingsw.Controller.State.GameControllerState;
 import it.polimi.ingsw.Exceptions.MatchFullException;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
@@ -11,13 +8,15 @@ import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import static it.polimi.ingsw.Constants.*;
 
+/***
+ * Game Handler Class
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ */
 public class GameHandler implements Runnable{
     private final int gameID;
     private final String name;
@@ -29,9 +28,17 @@ public class GameHandler implements Runnable{
     private int currentPlayerPosition;
     private final Server server;
     private final GameController controller;
-    private ArrayList<Wizards> wizards = new ArrayList<>(List.of(Wizards.values()));
+    private final ArrayList<Wizards> wizards = new ArrayList<>(List.of(Wizards.values()));
     private int ready = 0;
 
+    /***
+     * Class constructor
+     * @param gameID The ID of the game
+     * @param name The name of the game
+     * @param numberOfPlayers The number of player
+     * @param expertMode The mode of the game, true if is expert mode, false otherwise
+     * @param server The server
+     */
     public GameHandler(int gameID, String name, int numberOfPlayers, boolean expertMode, Server server){
         this.gameID = gameID;
         this.name = name;
@@ -42,10 +49,19 @@ public class GameHandler implements Runnable{
         this.controller = new GameController(expertMode, numberOfPlayers);
     }
 
+    /***
+     * Get the controller
+     * @return The controller of thr game
+     */
     public GameController getController() {
         return controller;
     }
 
+    /***
+     * Add player to the game
+     * @param player The player to add
+     * @throws MatchFullException If the game is full
+     */
     public synchronized void addPlayer(ClientHandler player) throws MatchFullException {
         if(players.size() >= numberOfPlayers)
             throw new MatchFullException();
@@ -69,12 +85,21 @@ public class GameHandler implements Runnable{
         return gameID;
     }
 
+    /***
+     * Send a message to all the player in the game
+     * @param message The message to send
+     */
     public synchronized void sendAll(ServerToClientMessage message){
         for(ClientHandler client: players){
             client.send(message);
         }
     }
 
+    /***
+     * Send a message to all player in the game except the one that is indicated
+     * @param message The message to send
+     * @param player The player to exclude
+     */
     public synchronized void sendAllExcept(ServerToClientMessage message, ClientHandler player){
         for(ClientHandler client: players){
             if(!client.equals(player))
@@ -82,6 +107,11 @@ public class GameHandler implements Runnable{
         }
     }
 
+    /***
+     * Send a message to a player
+     * @param message The message to send
+     * @param player The player
+     */
     public synchronized void sendTo(ServerToClientMessage message, ClientHandler player){
         for(ClientHandler client: players){
             if(client.equals(player))
@@ -89,6 +119,11 @@ public class GameHandler implements Runnable{
         }
     }
 
+    /***
+     * Set the wizard chosen by the player
+     * @param wizard The wizard chosen
+     * @param player The player
+     */
     public synchronized void playerChooseWizard(Wizards wizard, ClientHandler player){
         if(wizards.contains(wizard)){
             wizards.remove(wizard);
@@ -102,6 +137,9 @@ public class GameHandler implements Runnable{
         }
     }
 
+    /***
+     * Setup the game. The method is called when the game starts in order to setup the students, assistant and character card, clouds, islands.
+     */
     public void setup(){
         sendAll(new GameIsStarting("The game is starting..."));
         try {
@@ -127,7 +165,7 @@ public class GameHandler implements Runnable{
                     check = true;
                 }
             }
-            if(check==false)
+            if(!check)
                 mapStudentIsland.put(i,null);
         }
         sendAll(new MatchCreated(controller.getModel().getMotherNaturePosition(),mapStudentIsland) );
@@ -184,28 +222,45 @@ public class GameHandler implements Runnable{
                     controller.getModel().getClouds().get(2).getStudents());
         }
         sendAll(new UpdateMessage(change));
-
-        /*while(true){
-
-        }*/
     }
 
+    /***
+     * Get the number of players that are playing the game
+     * @return The number of players
+     */
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
+    /***
+     *
+     * @return
+     */
     public int getCurrentPlayerPosition() {
         return currentPlayerPosition;
     }
 
+    /***
+     *
+     * @param currentPlayerPosition
+     */
     public void setCurrentPlayerPosition(int currentPlayerPosition) {
         this.currentPlayerPosition = currentPlayerPosition;
     }
 
+    /***
+     * Return the ClientHandlers of the player in the game
+     * @return The list of ClientHandler of the players
+     */
     public List<ClientHandler> getPlayers() {
         return players;
     }
 
+    /***
+     * Get the ClientHandler of the player that have the ID passed
+     * @param playerID The ID of player
+     * @return The ClientHandler of the player
+     */
     public ClientHandler getClientByPlayerID(int playerID){
         ClientHandler ret=null;
         for(ClientHandler c: players){
@@ -215,10 +270,16 @@ public class GameHandler implements Runnable{
         return ret;
     }
 
+    /***
+     * @see Server
+     */
     public void endGame(){
         server.endGame(this.gameID);
     }
 
+    /***
+     *
+     */
     public void checkConquest(){
         if(controller.getModel().getConquest()!=null && controller.getModel().getConquest().getMergedIsland1()==null
                 && controller.getModel().getConquest().getMergedIsland2()==null){
@@ -241,17 +302,11 @@ public class GameHandler implements Runnable{
                 sendAll(new UpdateMessage((new BoardChange(-1))));
         }
         controller.getModel().setConquest(null);
-        /*if(controller.checkEndGame()){
-            System.out.println("ENDGAME");
-            controller.setWinners(controller.getModel().getWinner());
-            for (Player p : controller.getWinners()) {
-                sendTo(new YouWin(), getClientByPlayerID(p.getPlayerID()));
-                sendAllExcept(new OtherPlayerWins(p.getNickname()), getClientByPlayerID(p.getPlayerID()));
-                //endGame();
-            }
-        }*/
     }
 
+    /***
+     *
+     */
     @Override
     public void run() {
         setup();
@@ -268,12 +323,20 @@ public class GameHandler implements Runnable{
 
     }
 
+    /***
+     * Get the game information, the name, number of players and mode
+     * @return The information of the fame
+     */
     @Override
     public String toString() {
         return gameID + ". " + name + " " + players.size() + "/" + numberOfPlayers + " players " + (expertMode ? ANSI_RED + "Expert mode" + ANSI_RESET : ANSI_GREEN + "Base mode" + ANSI_RESET);
     }
-    public boolean isExpertMode() {
 
+    /***
+     * Get the mode of the game
+     * @return True if the game is expert mode, false otherwise
+     */
+    public boolean isExpertMode() {
         return expertMode;
     }
 }

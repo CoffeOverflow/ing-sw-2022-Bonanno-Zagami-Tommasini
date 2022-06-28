@@ -2,6 +2,10 @@ package it.polimi.ingsw;
 
 import java.lang.reflect.Array;
 
+/***
+ * Class that contains constants used in the whole project.
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ */
 public class Constants {
     private static String ip;
     private static int port;
@@ -112,18 +116,34 @@ public class Constants {
     public static final int timeout = 14000;
     public static final int halfTimeout = 7000;
 
+    /***
+     * Set the server IP
+     * @param ip The IP of the server
+     */
     public static void setIP(String ip) {
         Constants.ip = ip;
     }
 
+    /***
+     * Get the server IP
+     * @return The server IP
+     */
     public static String getIP() {
         return ip;
     }
 
+    /***
+     * Get the server port
+     * @return The server port
+     */
     public static int getPort() {
         return port;
     }
 
+    /***
+     * Set the server port
+     * @param port The port of the server
+     */
     public static void setPort(int port) {
         Constants.port = port;
     }
