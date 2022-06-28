@@ -16,7 +16,6 @@ public class Eriantys
 {
     /***
      * Main of the game, it starts the server or the client (CLI or GUI)
-     * @author Angelo Zagami
      * @param args
      */
     public static void main( String[] args ) {
