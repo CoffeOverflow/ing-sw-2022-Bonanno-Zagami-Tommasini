@@ -336,6 +336,7 @@ public class GUI extends Application implements Runnable, View
         if(msg.getType()==OptionType.MOVESTUDENTS)
             controller.setCurrentPhase(GamePhase.MOVESTUDENT);
         else if(msg.getType()==OptionType.MOVENATURE){
+            System.out.println("arrived mother nature message");
             vmodel.resetNumOfInstance();
             controller.setCurrentPhase(GamePhase.MOVEMOTHERNATURE);}
         else if(msg.getType()== OptionType.CHOOSECLOUD)

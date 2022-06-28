@@ -73,6 +73,9 @@ public class DecideFirstPlayerState implements GameControllerState {
          * the one that played the card with the lower value goes first
          */
         if(gc.getCurrentCardPlayers().size()==gc.getModel().getNumberOfPlayers()) {
+            Player p=gc.getModel().getPlayerByID(players[0]);
+            if(p.getAssistantCards().isEmpty())
+                gc.getModel().setLastRound(true);
             gc.getModel().setCurrentCardPlayers((HashMap<Integer, AssistantCard>) gc.getCurrentCardPlayers().clone());
             String[] cards = {"Turtle", "Elephant", "Dog", "Octopus", "Lizard", "Fox", "Eagle", "Cat", "Turkey", "Lion"};
             for (int i = 0; i < players.length; i++) {

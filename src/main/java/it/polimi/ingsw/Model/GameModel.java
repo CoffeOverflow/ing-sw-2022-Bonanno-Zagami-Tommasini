@@ -23,10 +23,7 @@ public class GameModel {
     private List<Player> players=new ArrayList<Player>();
     private List<CharacterCard> characterCards=new ArrayList<CharacterCard>();
 
-
     private boolean lastRound =false;
-
-
 
     private boolean emptyClouds =false;
 
