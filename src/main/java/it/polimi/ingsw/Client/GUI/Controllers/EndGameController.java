@@ -18,6 +18,7 @@ public class EndGameController implements GUIController{
     public AnchorPane mainPane;
     public ImageView win;
     public Text lose;
+    public ImageView loseImage;
 
     /***
      * Initialization method
@@ -29,7 +30,10 @@ public class EndGameController implements GUIController{
         win.setPreserveRatio(true);
         win.setVisible(false);
         lose.setVisible(false);
-
+        loseImage.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/lose.png")));
+        loseImage.setFitHeight(360);
+        loseImage.setPreserveRatio(true);
+        loseImage.setVisible(false);
     }
 
     @Override
@@ -50,6 +54,7 @@ public class EndGameController implements GUIController{
      */
     public void lose(String message){
         lose.setText(message);
+        loseImage.setVisible(true);
         lose.setVisible(true);
     }
 
