@@ -215,7 +215,6 @@ public class CLI implements View, Runnable {
 
     @Override
     public void update(UpdateMessage msg){
-
         vmodel.update(msg);
         this.showBoard();
     }
