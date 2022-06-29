@@ -4,6 +4,11 @@ import it.polimi.ingsw.Model.Wizards;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
 
+/**
+ * ChooseWizard class
+ * implementation of a message from client to server to indicate the nickname chosen by the player
+ * @author Federica Tommasini, Angelo Zagami
+ */
 public class ChooseWizard implements ClientToServerMessage{
     private Wizards wizard;
 
