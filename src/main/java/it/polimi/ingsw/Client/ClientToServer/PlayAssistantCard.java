@@ -1,5 +1,4 @@
 package it.polimi.ingsw.Client.ClientToServer;
-
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Controller.State.DecideFirstPlayerState;
 import it.polimi.ingsw.Model.AssistantCard;
@@ -16,9 +15,6 @@ public class PlayAssistantCard implements ClientToServerMessage{
         cardValue=card;
     }
 
-    public int getCardName() {
-        return cardValue;
-    }
 
     public void handleMessage(GameHandler game, ClientHandler player){
         GameController contr=game.getController();
