@@ -957,6 +957,18 @@ public class GameController implements GUIController{
             double y3 = islandGroupsList.get(mergedIsland2).getLayoutY();
             double x=(x1+x2+x3)/3;
             double y=(y1+y2+y3)/3;
+
+            if(x>436 && x<844 && y>135 && y<372){
+                if(x<572)
+                    x=236;
+                else if(x<=708){
+                    if(y<=253)
+                        y=0;
+                    else y=372;
+                }
+                else x=844;
+            }
+
             if(mergedIsland1<mergedIsland2){
                 islandGridsList.remove(mergedIsland2);
                 islandTowerGridsList.remove(mergedIsland2);
@@ -984,6 +996,16 @@ public class GameController implements GUIController{
         }else{
             double x=(x1+x2)/2;
             double y=(y1+y2)/2;
+            if(x>436 && x<844 && y>135 && y<372){
+                if(x<572)
+                    x=236;
+                else if(x<=708){
+                    if(y<=253)
+                        y=0;
+                    else y=372;
+                }
+                else x=844;
+            }
             if(mergedIsland1<conqueredIsland){
                 islandGridsList.remove(conqueredIsland);
                 islandTowerGridsList.remove(conqueredIsland);
