@@ -175,6 +175,9 @@ public class CLI implements View, Runnable {
         do{
             this.showMessage(SelectAssistantCard.getMsg());
             int steps=0;
+            /*
+             * show the names of the assistant cards, the values and the steps
+             */
             for(String s: msg.getAvailableCards()){
                 for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
                     if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(s)) {
@@ -185,6 +188,9 @@ public class CLI implements View, Runnable {
                 }
                 this.showMessage("Card: "+ s + " value: " + value + " steps: " + steps+ "\n" );
             }
+            /*
+             * let the player insert the name of the card that he wants to play
+             */
             System.out.print("> ");
             Scanner scanner = new Scanner(System.in);
             String card = scanner.next();
