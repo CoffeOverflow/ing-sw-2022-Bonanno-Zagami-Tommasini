@@ -2,14 +2,10 @@ package it.polimi.ingsw.Client.ClientToServer;
 
 import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.State.MoveMotherNatureState;
-import it.polimi.ingsw.Controller.State.MoveStudentsState;
-import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
 import it.polimi.ingsw.Server.ServerToClient.*;
-
-import java.util.EnumMap;
 
 public class MoveMotherNature implements ClientToServerMessage{
     private int steps;
@@ -18,13 +14,8 @@ public class MoveMotherNature implements ClientToServerMessage{
         this.steps=steps;
     }
 
-    public int getSteps() {
-        return steps;
-    }
-
     public void handleMessage(GameHandler game, ClientHandler player){
         Action action=new Action();
-        int previousIslandSize=game.getController().getModel().getIslandSize();
         try{
             System.out.println("Old steps: "+steps);
             if(steps<=0){
@@ -40,7 +31,6 @@ public class MoveMotherNature implements ClientToServerMessage{
             game.checkConquest();
             if(game.getController().getModel().isLastRound()
                 && game.getController().getModel().isEmptyClouds()){
-                //-----------------------
                 int pos = 0;
                 for (int i = 0; i < game.getController().getTurnOrder().length; i++) {
                     if (game.getController().getTurnOrder()[i] == game.getController().getModel().getCurrentPlayer())
@@ -63,7 +53,6 @@ public class MoveMotherNature implements ClientToServerMessage{
                     game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS, game.isExpertMode()),
                             game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
                 }
-                //----------------------
                 return;
             }
             if(!game.getController().checkEndGame()){

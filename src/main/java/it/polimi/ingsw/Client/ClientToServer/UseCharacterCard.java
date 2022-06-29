@@ -5,7 +5,6 @@ import it.polimi.ingsw.Controller.State.DecideFirstPlayerState;
 import it.polimi.ingsw.Controller.State.MoveStudentsState;
 import it.polimi.ingsw.Controller.State.PlayCharacterCardState;
 import it.polimi.ingsw.Controller.State.TakeStudentsState;
-import it.polimi.ingsw.Exceptions.MoneyException;
 import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Server.ClientHandler;
