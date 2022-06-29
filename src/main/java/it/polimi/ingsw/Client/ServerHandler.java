@@ -42,8 +42,10 @@ public class ServerHandler {
                 try{
                     sendHeartbeat();
                 }catch (RuntimeException e){
-                    System.out.println(ANSI_RED+"\nConnection error, server unreachable!"+ANSI_RESET);
-                    System.exit(-1);
+                    if(!endGame){
+                        System.out.println(ANSI_RED+"\nConnection error, server unreachable!"+ANSI_RESET);
+                        System.exit(-1);
+                    }
                 }
             }
         }).start();

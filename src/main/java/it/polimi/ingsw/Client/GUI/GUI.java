@@ -114,6 +114,7 @@ public class GUI extends Application implements Runnable, View
                 showError("Connection error, maybe one player left the match. The app will now close!");
             }
         }
+        serverHandler.close();
     }
 
     /***
