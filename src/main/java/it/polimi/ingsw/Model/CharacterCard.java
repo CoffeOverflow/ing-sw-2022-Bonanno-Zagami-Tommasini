@@ -254,8 +254,6 @@ public class CharacterCard {
         }
         if(entranceStudents!=null && entranceStudents.isPresent())
             entranceStudents=null;
-        //if( chosenNumberOfSteps!=null && chosenNumberOfSteps.isPresent())
-          //  chosenNumberOfSteps=null;
         if(chosenColor!=null && chosenColor.isPresent())
             chosenColor=null;
         if(noEntryTiles!=null && noEntryTiles.isPresent())
@@ -285,11 +283,4 @@ public class CharacterCard {
         this.noEntryTiles = noEntryTiles;
     }
 
-    /*public void setChosenNumberOfSteps(Optional<Integer> chosenNumberOfSteps) {
-        this.chosenNumberOfSteps = chosenNumberOfSteps;
-    }
-
-    public Optional<Integer> getChosenNumberOfSteps() {
-        return chosenNumberOfSteps;
-    }*/
 }

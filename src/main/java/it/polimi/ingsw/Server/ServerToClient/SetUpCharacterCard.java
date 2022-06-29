@@ -10,9 +10,6 @@ import java.util.HashMap;
 public class SetUpCharacterCard implements ServerToClientMessage{
 
     private String[] characterCards;
-
-    private HashMap<String,Integer> mapCostCard;
-
     private EnumMap<Color, Integer> firstCardStudents;
 
     private EnumMap<Color, Integer> secondCardStudents;
@@ -21,7 +18,6 @@ public class SetUpCharacterCard implements ServerToClientMessage{
 
     public SetUpCharacterCard(String[] characterCards,HashMap<String,Integer> mapCostCard) {
         this.characterCards = characterCards;
-        this.mapCostCard=mapCostCard;
     }
 
     public void setFirstCardStudents(EnumMap<Color, Integer> firstCardStudents) {

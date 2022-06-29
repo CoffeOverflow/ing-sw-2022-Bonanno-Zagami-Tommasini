@@ -311,9 +311,9 @@ class CharacterCardTest {
     void useCard12(){
         //test effect of card 12
         gm.setCurrentPlayer(2);
-        gm.moveToSchool(1,Color.RED);
         gm.getPlayerByID(2).setStudents(Color.RED,gm.getPlayerByID(1).getStudentsOf(Color.RED));
         cards[11].useCard(0,gm);
+        gm.moveToSchool(1,Color.RED);
         assertEquals(gm.getProfessors().get(Color.RED).getPlayer(),gm.getPlayerByID(2));
     }
 
