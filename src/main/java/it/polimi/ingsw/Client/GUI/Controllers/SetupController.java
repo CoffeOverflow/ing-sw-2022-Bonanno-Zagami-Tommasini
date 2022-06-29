@@ -33,6 +33,7 @@ public class SetupController implements GUIController{
     public VBox wait;
     public TextField nickname;
     public Button send;
+    public Button back;
     public RadioButton twoPlayers;
     public RadioButton threePlayers;
     public RadioButton expertmode;
@@ -148,13 +149,23 @@ public class SetupController implements GUIController{
     public void newgameButtonClicked(){
         chooseMatch.setVisible(false);
         newgameform.setVisible(true);
-        gui.send(new SelectMatch(0));
+    }
+
+    /***
+     * Go back to the chose game form when the scene is create new game
+     */
+    public void backButtonClicked(){
+        newgameform.setVisible(false);
+        chooseMatch.setVisible(true);
+        listOfMatch.getChildren().clear();
+        gui.send(new RequestRefresh());
     }
 
     /***
      * Handler create new game button
      */
     public void createnewgameButtonClicked(){
+        gui.send(new SelectMatch(0));
         if((twoPlayers.isSelected() || threePlayers.isSelected()) && (expertmode.isSelected() || normalmode.isSelected())){
             newgameform.setVisible(false);
             gui.send(new SelectModeAndPlayers(twoPlayers.isSelected() ? 2:3, expertmode.isSelected()));
