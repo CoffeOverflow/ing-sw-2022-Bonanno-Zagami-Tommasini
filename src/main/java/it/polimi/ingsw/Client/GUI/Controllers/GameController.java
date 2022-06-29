@@ -127,6 +127,15 @@ public class GameController implements GUIController{
         this.gui = gui;
     }
 
+    public void showStudentsAndTowers(boolean show){
+        schoolEntranceGridsList.get((vModelPosGuiPos.get(0))).setVisible(show);
+        schoolDiningGridsList.get((vModelPosGuiPos.get(0))).setVisible(show);
+        schoolProfGridsList.get((vModelPosGuiPos.get(0))).setVisible(show);
+        schoolTowersGridsList.get((vModelPosGuiPos.get(0))).setVisible(show);
+        player1Assistant.setVisible(show);
+
+    }
+
     public void changePhase(){
         switch (currentPhase){
             case WIZARD:
@@ -140,6 +149,7 @@ public class GameController implements GUIController{
             case ASSISTANT:
                 assistantCard.setVisible(false);
                 mySchool.setVisible(true);
+                showStudentsAndTowers(true);
                 wizardAndMoney.setVisible(true);
                 character.setVisible(true);
                 cardGrid1.setVisible(true);
@@ -293,6 +303,10 @@ public class GameController implements GUIController{
         moneyImg.setPreserveRatio(true);
         firsTimeInMethod=false;
         money.setText(String.valueOf(gui.getVmodel().getClientPlayer().getMoney()));
+        if(gui.getVmodel().getCharacterCards() == null){
+            money.setVisible(false);
+            moneyImg.setVisible(false);
+        }
         nickname.setText(gui.getVmodel().getClientPlayer().getNickname());
         wizardAndMoney.setVisible(true);
         player2Nickname.setText(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getNickname());
@@ -828,6 +842,7 @@ public class GameController implements GUIController{
 
     public void selectAssistantCard(SelectAssistantCard msg){
         mySchool.setVisible(false);
+        showStudentsAndTowers(false);
         wizardAndMoney.setVisible(false);
         character.setVisible(false);
         cardGrid1.setVisible(false);
