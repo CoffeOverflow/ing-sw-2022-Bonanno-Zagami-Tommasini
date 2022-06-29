@@ -533,7 +533,8 @@ public class GameModel {
         }
 
     public void fillCloud(EnumMap<Color,Integer> students,int cloud){
-        this.clouds.get(cloud).setStudents(students);
+        if(!emptyClouds)
+            this.clouds.get(cloud).setStudents(students);
     }
 
     public void moveMotherNature(int steps){
