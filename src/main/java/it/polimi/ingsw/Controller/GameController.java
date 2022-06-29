@@ -86,7 +86,7 @@ public class GameController {
     public boolean checkEndGame(){
         if(model.getIslandSize() == model.getNumberOfPlayers())
             return true;
-        if(model.getPlayerByID(model.getCurrentPlayer()).getNumberOfTower() == 7)
+        if(model.getPlayerByID(model.getCurrentPlayer()).getNumberOfTower() == 0)
             return true;
         return false;
     }

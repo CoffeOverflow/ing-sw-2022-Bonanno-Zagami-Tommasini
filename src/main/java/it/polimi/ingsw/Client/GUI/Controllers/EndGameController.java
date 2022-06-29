@@ -16,24 +16,15 @@ public class EndGameController implements GUIController{
     private GUI gui;
 
     public AnchorPane mainPane;
-    public ImageView win;
+    public ImageView endImg;
     public Text lose;
-    public ImageView loseImage;
 
     /***
      * Initialization method
      */
     public void initialize() {
         mainPane.setVisible(true);
-        win.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/win.png")));
-        win.setFitHeight(360);
-        win.setPreserveRatio(true);
-        win.setVisible(false);
         lose.setVisible(false);
-        loseImage.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/lose.png")));
-        loseImage.setFitHeight(360);
-        loseImage.setPreserveRatio(true);
-        loseImage.setVisible(false);
     }
 
     @Override
@@ -45,7 +36,10 @@ public class EndGameController implements GUIController{
      * Show the "you win" phase
      */
     public void win(){
-        win.setVisible(true);
+        endImg.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/win.png")));
+        endImg.setFitHeight(360);
+        endImg.setPreserveRatio(true);
+        endImg.setVisible(true);
     }
 
     /***
@@ -54,8 +48,11 @@ public class EndGameController implements GUIController{
      */
     public void lose(String message){
         lose.setText(message);
-        loseImage.setVisible(true);
         lose.setVisible(true);
+        endImg.setImage(new Image(getClass().getResourceAsStream("/graphics/additionalElement/lose.png")));
+        endImg.setFitHeight(400);
+        endImg.setPreserveRatio(true);
+        endImg.setVisible(true);
     }
 
     @Override

@@ -2,12 +2,15 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="mainPane" fx:id="mainPane" prefHeight="720.0" prefWidth="1228.0" stylesheets="@../css/endgame.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.EndGameController">
    <children>
-      <ImageView fx:id="win" fitHeight="150.0" fitWidth="200.0" layoutX="514.0" layoutY="285.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="514.0" />
-      <Text fx:id="lose" layoutX="564.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Other Player win :c" AnchorPane.bottomAnchor="253.0" AnchorPane.topAnchor="500.0" />
-      <ImageView fx:id="loseImage" fitHeight="150.0" fitWidth="200.0" layoutX="513.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="513.0" />
+      <ImageView fx:id="endImg" fitHeight="150.0" fitWidth="200.0" layoutX="526.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="329.3984375" AnchorPane.leftAnchor="526.0" />
+      <Text fx:id="lose" layoutX="1.0" layoutY="548.8046875" strokeType="OUTSIDE" strokeWidth="0.0" text="Other Player win :c" textAlignment="CENTER" wrappingWidth="1225.8992309570312" AnchorPane.bottomAnchor="239.0" AnchorPane.topAnchor="514.0">
+         <font>
+            <Font size="36.0" />
+         </font></Text>
    </children>
 </AnchorPane>
