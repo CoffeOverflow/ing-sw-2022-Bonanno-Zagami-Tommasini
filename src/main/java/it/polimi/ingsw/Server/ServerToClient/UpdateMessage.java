@@ -4,6 +4,10 @@ import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
 
+/**
+ * Update message that is sent at every change of the game model
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ */
 public class UpdateMessage implements ServerToClientMessage{
 
      private BoardChange change;

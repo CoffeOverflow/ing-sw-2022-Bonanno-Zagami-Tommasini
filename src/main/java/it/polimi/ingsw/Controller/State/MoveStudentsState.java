@@ -30,7 +30,7 @@ public class MoveStudentsState implements GameControllerState{
         else if(action.getMove().equals(MoveTo.SCHOOL)){
             if(m.getPlayerByID(m.getCurrentPlayer()).studentIsPresent(action.getColorStudent()))
             {
-                if(m.getPlayerByID(m.getCurrentPlayer()).getStudentsOf(action.getColorStudent())<10)
+                if(m.getPlayerByID(m.getCurrentPlayer()).getStudentsOf(action.getColorStudent())<9)
                     m.moveToSchool(m.getCurrentPlayer(),action.getColorStudent());
                 else
                     throw new IllegalArgumentException("You have the maximum number of students of this color in your school");

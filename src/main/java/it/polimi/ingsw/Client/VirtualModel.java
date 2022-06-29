@@ -6,6 +6,11 @@ import it.polimi.ingsw.Server.ServerToClient.*;
 
 import java.util.*;
 
+/**
+ * @author Giuseppe Bonanno, Federica Tommasini
+ * This class represents a copy of the main attributes of the model that each client will have,
+ * the values will be set when the game starts and will be modified by the update messages
+ */
 public class VirtualModel {
 
     private List<Island> islands =new ArrayList<>();
@@ -27,10 +32,13 @@ public class VirtualModel {
 
     private boolean takeProfessorWhenTie=false;
 
-
-
-
     private int numOfInstance =0;
+
+    /**
+     * Return the Player with the specific id
+     * @param id
+     * @return
+     */
     public Player getPlayerByID(int id)  {
         for(Player p:this.players)
             if(p.getPlayerID()==id)
@@ -38,6 +46,9 @@ public class VirtualModel {
         return null;
     }
 
+    /**
+     * Constructor of the class
+     */
     public VirtualModel() {
         for(Color c:Color.values()){
             Professor p=new Professor(c);
@@ -174,7 +185,6 @@ public class VirtualModel {
     }
 
     public void update(UpdateMessage msg){
-
         BoardChange bchange=msg.getChange();
         switch(bchange.getChange()){
             case CONQUER:

@@ -11,8 +11,9 @@ import java.sql.Array;
 import java.util.*;
 
 /**
- *
+ * The whole game is modeled in this class
  * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+ *
  *
  * */
 
@@ -51,7 +52,7 @@ public class GameModel {
 
 
     /**
-     * Initializes the whole game based on players and expert mode
+     * Initializes the  game based on players and expert mode
      * @param expertMode
      * @param numberOfPlayers
      */
@@ -63,7 +64,7 @@ public class GameModel {
         /**
          * setting parameters based on the number of players
          */
-        if(numberOfPlayers==2 || numberOfPlayers==4){
+        if(numberOfPlayers==2){
             this.numberOfStudent=7;
             this.numberOfTowers=8;
             this.numberOfStudentBag=3;
@@ -145,8 +146,9 @@ public class GameModel {
         for(Color c:Color.values())
             colorValues.add(c);
 
-        EnumMap<Color,Integer> entryStudentPerPlayer=new EnumMap<Color, Integer>(Color.class);
-
+        /**
+         * This variable, colorsOnBag, tells us which colors are present inside the bag
+         */
         for(Color c:Color.values())
             colorsOnBag.add(c);
 
@@ -202,6 +204,11 @@ public class GameModel {
         System.out.println(studentsBag.toString());
     }
 
+    /***
+     * Add players to the game, it is only called upon initialization of the game
+     * @param id
+     * @param nickname
+     */
     public synchronized void addPlayer(int id,String nickname){
         Tower towers=Tower.values()[this.players.size()];
         Player player = new Player(id,nickname,this.expertMode,towers,this.numberOfTowers);
@@ -436,7 +443,7 @@ public class GameModel {
     }
 
     /**
-     * Add
+     * Move a student from the entrance to the school of the player, check the professors and allows you to earn coins for character cards
      * @param player
      * @param studentColor
      */
@@ -504,7 +511,6 @@ public class GameModel {
      * @return
      */
     public boolean getStudentsFromBag()  {
-        int numStudents=0;
         for(int i=0;i<clouds.size();i++){
             EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
             for (Color c: Color.values())
@@ -514,6 +520,9 @@ public class GameModel {
             for(int j=0;j<numberOfStudentBag;j++)
             {
                 try {
+                    /*
+                     * Check if the randomly generated color is contained in the bag, if not delete it from the colorsBag
+                     */
                     col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
                     if(studentsBag.get(col)==1)
                         colorsOnBag.remove(col);
@@ -521,6 +530,9 @@ public class GameModel {
                     studentsOnClouds.put(col,studentsOnClouds.get(col)+1);
                 }
                 catch (IllegalArgumentException e){
+                    /**
+                     * there are not enough students to fill the clouds, the game is about to end!
+                     */
                     System.out.println("There are no more students in the bag");
                     lastRound=true;
                     emptyClouds=true;
@@ -738,6 +750,11 @@ public class GameModel {
         firstUseCharacters[position]=true;
     }
 
+    /***
+     * Get a specific (random) number of students from the bag
+     * @param numStudent
+     * @return
+     */
     public EnumMap<Color,Integer> getStudentsFromBag(int numStudent){
         EnumMap<Color,Integer> studentsFromBag=new EnumMap<Color, Integer>(Color.class);
 
@@ -750,6 +767,9 @@ public class GameModel {
         for(int j=0;j<numStudent;j++)
             {
                 try {
+                    /*
+                    Check if the randomly generated color is contained in the bag, if not delete it from the colorsBag
+                     */
                     col = colorsOnBag.get(rand.nextInt(colorsOnBag.size()));
                     if(studentsBag.get(col)==1)
                         colorsOnBag.remove(col);

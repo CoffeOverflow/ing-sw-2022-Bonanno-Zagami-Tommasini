@@ -8,7 +8,13 @@ import it.polimi.ingsw.Model.Tower;
 import java.io.Serializable;
 import java.util.EnumMap;
 
+/**
+ * Specify the board change.
+ * The class is managed through different constructors based on the type of change the necessary variables will be initialized.
+ * @author Giuseppe Bonanno, Federica Tommasini
+ */
 public class BoardChange implements Serializable{
+
     private MoveTo moveTo;
 
     private Color studentColor;
@@ -36,6 +42,13 @@ public class BoardChange implements Serializable{
 
     private Change change;
 
+    /**
+     * Constructor to move Student to Island or School
+     * @param moveTo
+     * @param studentColor
+     * @param islandPosition
+     * @param playerID
+     */
     public BoardChange(MoveTo moveTo, Color studentColor, int islandPosition,int playerID) {
         this.moveTo = moveTo;
         this.studentColor = studentColor;
@@ -44,17 +57,33 @@ public class BoardChange implements Serializable{
         this.change=Change.MOVESTUDENT;
     }
 
+    /**
+     * Constructor to change the position of mother nature
+     * @param motherNatureSteps
+     */
     public BoardChange(int motherNatureSteps) {
         this.motherNatureSteps = motherNatureSteps;
         this.change=Change.MOTHERNATURE;
     }
 
+    /**
+     * Constructor to conquer the island
+     * @param conquerorTower color of the tower
+     * @param conquerIsland  number of the island
+     */
     public BoardChange(Tower conquerorTower,Integer conquerIsland) {
         this.conquerorTower = conquerorTower;
         this.conquerIsland=conquerIsland;
         this.change=Change.CONQUER;
     }
 
+    /**
+     * Constructor to merge two islands
+     * @param conquerorTower
+     * @param conquerIsland
+     * @param mergedIsland1
+     * @param mergedIsland2
+     */
     public BoardChange(Tower conquerorTower,Integer conquerIsland,Integer mergedIsland1, Integer mergedIsland2) {
         this.conquerorTower = conquerorTower;
         this.conquerIsland=conquerIsland;
@@ -63,6 +92,12 @@ public class BoardChange implements Serializable{
         this.change=Change.MERGE;
     }
 
+    /**
+     * Constructor to fill the clouds with 3 players
+     * @param students1
+     * @param students2
+     * @param students3
+     */
     public BoardChange(EnumMap<Color, Integer> students1,EnumMap<Color, Integer> students2,EnumMap<Color, Integer> students3){
         this.students1=students1;
         this.students2=students2;
@@ -70,12 +105,23 @@ public class BoardChange implements Serializable{
         this.change=Change.CLOUD;
     }
 
+    /**
+     * Constructor to fill the clouds with 2 players
+     * @param students1
+     * @param students2
+     */
     public BoardChange(EnumMap<Color, Integer> students1,EnumMap<Color, Integer> students2){
         this.students1=students1;
         this.students2=students2;
         this.change=Change.CLOUD;
     }
 
+    /**
+     * Constructor to take the students from the clouds
+     * @param students1
+     * @param cloud
+     * @param player
+     */
     public BoardChange(EnumMap<Color, Integer> students1,int cloud,int player){
         this.cloud=cloud;
         this.students1=students1;
@@ -83,7 +129,18 @@ public class BoardChange implements Serializable{
         this.change=Change.TAKECLOUD;
     }
 
-
+    /**
+     * Constructor to play the character card.
+     * Some of them need to manage special cases, so they have their value in the enum,
+     * for others there is the enum value of DEFAULT
+     * @param asset
+     * @param posIsland
+     * @param color
+     * @param cardStudents
+     * @param choosenStudent
+     * @param entranceStudent
+     * @param playerID
+     */
 
     public BoardChange(String asset,Integer posIsland,Color color, EnumMap<Color,Integer> cardStudents,EnumMap<Color,Integer> choosenStudent, EnumMap<Color,Integer> entranceStudent,int playerID){
         this.asset=asset;
