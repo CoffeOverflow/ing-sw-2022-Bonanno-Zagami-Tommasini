@@ -11,12 +11,15 @@ import it.polimi.ingsw.Server.ClientHandler;
 import it.polimi.ingsw.Server.GameHandler;
 import it.polimi.ingsw.Server.ServerToClient.*;
 import it.polimi.ingsw.Server.ServerToClient.Error;
-
 import java.util.EnumMap;
-
 import static it.polimi.ingsw.Constants.ANSI_RED;
 import static it.polimi.ingsw.Constants.ANSI_RESET;
 
+/**
+ * UseCharacterCard class
+ * implementation of a message from client to server to indicate the character card that the player chose to use
+ * @author Federica Tommasini, Giuseppe Bonanno
+ */
 public class UseCharacterCard implements ClientToServerMessage{
 
     private String asset;
@@ -47,19 +50,22 @@ public class UseCharacterCard implements ClientToServerMessage{
             action.setPosIsland(posIsland);
 
        try{
+           /*
+            * set the state of the controller to implement the effect of the character card chosen by the player,
+            * check if the effected provokes the conquest of an island
+            * send an update messages with the changes applied
+            * and send also a message to inform other players of the card that has been played
+            */
            if(!(game.getController().getState() instanceof PlayCharacterCardState))
                 game.getController().setStateToReturn(game.getController().getState());
            game.getController().setState(new PlayCharacterCardState());
-           System.out.println("DEBUG CC 1");
            game.getController().doAction(action);
-           System.out.println("DEBUG CC 2");
            EnumMap<Color,Integer> cardStudents=new EnumMap<Color, Integer>(Color.class);
            for(CharacterCard c:game.getController().getModel().getCharacterCards()){
                if(c.getAsset().equals(asset) && null!=c.getStudents() && c.getStudents().isPresent())
                    cardStudents=c.getStudents().get().clone();
            }
            game.checkConquest(true);
-           System.out.println("DEBUG CC 3");
            BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
            String[] nameCard=asset.split("\\.");
            game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+nameCard[0]+ANSI_RESET),player);
@@ -68,17 +74,16 @@ public class UseCharacterCard implements ClientToServerMessage{
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
-           System.out.println(change.getChange());
-           System.out.println("sending update character card");
            game.sendAll(new UpdateMessage(change));
-           System.out.println("update sent");
            try {
                Thread.sleep(500);
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
        }catch (IllegalStateException e){
-
+           /*
+            * if the player doesn't have enough money to play the card, he will receive back an error
+            */
            if(e.getMessage().equals("Not enough money")) {
                game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
                game.sendTo(new GenericMessage(ANSI_RED + "you don't have enough money to play the card!" + ANSI_RESET), player);
@@ -87,12 +92,15 @@ public class UseCharacterCard implements ClientToServerMessage{
                game.sendTo(new GenericMessage(ANSI_RED + "you selected an incorrect number of students to play the card!" + ANSI_RESET), player);
            }
        }
-        System.out.println("DEBUG CC 4");
+
+       /*
+        * go back to the phase of the game in which the player was before using the card, sending either a message to
+        * move the students or to move mother nature
+        */
         game.getController().setState(game.getController().getStateToReturn());
         if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState || game.getController().getState() instanceof TakeStudentsState)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
         else
             game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
-        System.out.println("DEBUG CC 5");
     }
 }
