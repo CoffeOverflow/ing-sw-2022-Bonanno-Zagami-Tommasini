@@ -16,6 +16,10 @@ public interface View {
      */
     void requestNickname() throws IOException;
 
+    /**
+     * prints an error
+     * @param error error text
+     */
     void showError(String error);
 
     void setUseCharcaterCard();
@@ -42,6 +46,10 @@ public interface View {
 
     void otherPlayerWins(OtherPlayerWins msg);
 
+    /**
+     * shows the assistant cards available in the player's deck
+     * @param msg message containing the assets of the cards available 
+     */
     void selectAssistantCard(SelectAssistantCard msg);
 
     void update(UpdateMessage msg);
@@ -50,6 +58,11 @@ public interface View {
 
     void showBoard();
 
+    /**
+     * make the player choose between doing an action (that can be either to move a student or to move mother nature
+     * depending on the phase of the game) and playing a character card if the match is set to expert mode
+     * @param msg message that provide the options
+     */
     void chooseOption(ChooseOption msg);
 
     void playerPlayAssistantCard(int playerID, AssistantCard card);

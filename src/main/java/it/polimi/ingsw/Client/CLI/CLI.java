@@ -175,6 +175,9 @@ public class CLI implements View, Runnable {
         do{
             this.showMessage(SelectAssistantCard.getMsg());
             int steps=0;
+            /*
+             * show the names of the assistant cards, the values and the steps
+             */
             for(String s: msg.getAvailableCards()){
                 for(int i=0; i<vmodel.getClientPlayer().getAssistantCards().size();i++) {
                     if (vmodel.getClientPlayer().getAssistantCards().get(i).getName().equalsIgnoreCase(s)) {
@@ -185,6 +188,9 @@ public class CLI implements View, Runnable {
                 }
                 this.showMessage("Card: "+ s + " value: " + value + " steps: " + steps+ "\n" );
             }
+            /*
+             * let the player insert the name of the card that he wants to play
+             */
             System.out.print("> ");
             Scanner scanner = new Scanner(System.in);
             String card = scanner.next();
@@ -209,7 +215,6 @@ public class CLI implements View, Runnable {
 
     @Override
     public void update(UpdateMessage msg){
-
         vmodel.update(msg);
         this.showBoard();
     }
@@ -546,6 +551,10 @@ public class CLI implements View, Runnable {
     public void chooseOption(ChooseOption message){
         int characterOrMove=0;
         Scanner scanner=new Scanner(System.in);
+        /*
+         * make the player choose the number of the cloud that he wants to take the students from
+         * at the end of his turn
+         */
         if(message.getType()==OptionType.CHOOSECLOUD){
 
             boolean checkIfNonEmptyCloud=false;
@@ -574,8 +583,15 @@ public class CLI implements View, Runnable {
             }while(!checkIfNonEmptyCloud);
             serverHandler.send(new ChooseCloud(characterOrMove-1));
             this.vmodel.setUseCharacterCard(false);
-        }else{
+        } else{
+
             do {
+                /*
+                 * if the expert mode is set, depending on the phase of the game, make the player choose between
+                 * playing a character card or moving the students and moving mother nature
+                 * the message contains the valid first option in the specific phase, either "Move students" or
+                 * "Move mother nature"
+                 */
                 if(message.isExpertMode() && this.vmodel.isUseCharacterCard()==false){
                     String msg= message.getMsg();
                     showMessage("Choose an option: \n 1."+msg+" 2.Play a character card \n" );
@@ -593,13 +609,24 @@ public class CLI implements View, Runnable {
 
             switch (characterOrMove) {
                 case 1:
+                    /*
+                     * the player selects the first option
+                     */
                     if (message.getType()==OptionType.MOVESTUDENTS) {
+                        /*
+                         * the first option, according to the game phase, allows the player to move a student at a time
+                         */
                             int islandOrSchool = 0;
                             String col=null;
                             Color color=null;
                             boolean boolWhile;
                             boolean breakDoWhile=false;
                             do {
+                                /*
+                                 * choose whether to move the students to an island or to the dining hall of the school
+                                 * if the number is not a valid choice (1 or 2) or it is not an integer value, the
+                                 * player has to provide an input again
+                                 */
                                 try {
                                     System.out.print("Choose where to move the student: \n 1.school\n 2.island \n> ");
                                     islandOrSchool = scanner.nextInt();
@@ -611,6 +638,11 @@ public class CLI implements View, Runnable {
 
                             do{
                                 do{
+                                    /*
+                                     * choose the color of the student to move, if the string is not a valid color for
+                                     * a student, or if such student is not present in the player's school entrance,
+                                     * the player has to provide an input again
+                                     */
                                     System.out.print("Choose the color of the student: \n> ");
                                     col=scanner.next();
                                     try{
@@ -627,9 +659,17 @@ public class CLI implements View, Runnable {
                             }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(color) ||
                                     vmodel.getClientPlayer().getEntryStudents().get(color)==0);
 
+
                             if (islandOrSchool == 1) {
+                                /*
+                                 * move the student to the school dining hall
+                                 */
                                 serverHandler.send(new MoveStudent(MoveTo.SCHOOL,color,this.vmodel.getNumOfInstance()));
                             } else if (islandOrSchool == 2) {
+                                /*
+                                 * choose the number of the island to which move the student, if the value is not valid
+                                 * the player has to provide an inout again
+                                 */
                                 int islandPosition=-1;
                                 do{
                                     System.out.print("Choose the number of the island: \n> ");
@@ -643,6 +683,11 @@ public class CLI implements View, Runnable {
                                 serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,this.vmodel.getNumOfInstance()));
                             }
                     } else if (message.getType()==OptionType.MOVENATURE) {
+                        /*
+                         * the first option, according to the game phase, allows the player to move mother nature,
+                         * indicating the steps, if he doesn't provide an integer value, he has to provide an input
+                         * again
+                         */
                         this.vmodel.resetNumOfInstance();
                         int steps=-1;
                         boolean mothernatureInput=false;
@@ -661,6 +706,11 @@ public class CLI implements View, Runnable {
                     }
                     break;
                 case 2:
+                    /*
+                     * the player chooses the second option, i.e. to use a character card, he has to indicate the name
+                     * of the card he wants to play, if he insert a string which does not correspond to a card, he
+                     * has to provide an input again
+                     */
                     List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
                     String[] characterCardsName;
                     List<String> charcaterName=new ArrayList<>();
