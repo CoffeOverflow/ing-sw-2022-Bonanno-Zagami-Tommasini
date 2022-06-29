@@ -2,7 +2,6 @@ package it.polimi.ingsw.Controller.State;
 
 import it.polimi.ingsw.Controller.Action;
 import it.polimi.ingsw.Controller.GameController;
-import it.polimi.ingsw.Exceptions.MoneyException;
 import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.GameModel;
 
@@ -37,9 +36,6 @@ public class PlayCharacterCardState implements GameControllerState{
             if (action.getEntranceStudents() != null && action.getChosenStudents() != null ) {
                 card.setChosenStudents(action.getChosenStudents(),action.getEntranceStudents());
             }
-            /*if (action.getChosenNumberOfSteps() != 0) {
-                card.setChosenNumberOfSteps(Optional.of(action.getChosenNumberOfSteps()));
-            }*/
             card.useCard(action.getPosIsland(), model);
             if (!model.getFirstUseCharacters()[cardPos]) {
                 model.setFirstUseCharacters(cardPos);

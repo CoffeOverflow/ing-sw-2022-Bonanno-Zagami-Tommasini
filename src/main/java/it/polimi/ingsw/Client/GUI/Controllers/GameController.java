@@ -496,16 +496,7 @@ public class GameController implements GUIController{
             actualGroup.setUserData(count);
 
             islandGridsList.get(count).setUserData(count);
-           /* islandGridsList.get(count).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
-                @Override public void handle(MouseEvent mouseEvent) {
-
-                    islandClicked(mouseEvent);
-                    if(currentPhase==GamePhase.CHARACTER){
-                        //setValueForCharacterCard(actualGroup);
-                    }
-                }
-            });*/
             for(Color color:island.getStudents().keySet()){
                 for(int i=0; i<island.getStudents().get(color);i++){
                     Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
@@ -612,14 +603,8 @@ public class GameController implements GUIController{
 
         switch (asset) {
             case "innkeeper.jpg":
-                islandCanSelect=true;
-                break;
-            case "clown.jpg":
-            case "princess.jpg":
-                break;
             case "auctioneer.jpg":
             case "herbalist.jpg":
-                //fare scegliere l'isola
                 islandCanSelect=true;
                 break;
             case "lumberjack.jpg":
@@ -631,12 +616,7 @@ public class GameController implements GUIController{
                 makeAppearTheColorHbox(hboxColorCharacter,true);
                 makeAppearTheColorHbox(hboxColorCharacter1,true);
                 break;
-
             default:
-                // case "merchant.jpg":
-                //case "postman.jpg":
-                //case "centaur.jpg":
-                //case "infantryman.jpg":
             break;
         }
 
@@ -991,8 +971,6 @@ public class GameController implements GUIController{
                 islandGroupsList.remove(mergedIsland2);
                 islandGroupsList.get(mergedIsland1).setLayoutX(x);
                 islandGroupsList.get(mergedIsland1).setLayoutY(y);
-                //islandGroupsList.get(mergedIsland1).setScaleX( islandGroupsList.get(mergedIsland1).getScaleX()*1.2);
-                //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland1).getScaleY()*1.2);
             }else{
                 islandGridsList.remove(mergedIsland1);
                 islandTowerGridsList.remove(mergedIsland1);
@@ -1000,8 +978,6 @@ public class GameController implements GUIController{
                 islandGroupsList.remove(mergedIsland1);
                 islandGroupsList.get(mergedIsland2).setLayoutX(x);
                 islandGroupsList.get(mergedIsland2).setLayoutY(y);
-                //islandGroupsList.get(mergedIsland1).setScaleX( islandGroupsList.get(mergedIsland2).getScaleX()*1.2);
-                //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland2).getScaleY()*1.2);
             }
             conqueredIsland= (conqueredIsland==islandGridsList.size()) ? conqueredIsland-1 : conqueredIsland;
             islandGridsList.remove(conqueredIsland);
@@ -1028,8 +1004,6 @@ public class GameController implements GUIController{
                 islandGroupsList.remove(conqueredIsland);
                 islandGroupsList.get(mergedIsland1).setLayoutX(x);
                 islandGroupsList.get(mergedIsland1).setLayoutY(y);
-                //islandGroupsList.get(mergedIsland1).setScaleX( islandGroupsList.get(mergedIsland1).getScaleX()*1.1);
-                //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland1).getScaleY()*1.1);
             }else{
                 islandGridsList.remove(mergedIsland1);
                 islandTowerGridsList.remove(mergedIsland1);
@@ -1037,10 +1011,7 @@ public class GameController implements GUIController{
                 islandGroupsList.remove(mergedIsland1);
                 islandGroupsList.get(conqueredIsland).setLayoutX(x);
                 islandGroupsList.get(conqueredIsland).setLayoutY(y);
-                //islandGroupsList.get(conqueredIsland).setScaleX( islandGroupsList.get(conqueredIsland).getScaleX()*1.1);
-                //islandGroupsList.get(conqueredIsland).setScaleY( islandGroupsList.get(conqueredIsland).getScaleY()*1.1);
             }
         }
-        //System.out.println(islandGroupsList);
     }
 }
