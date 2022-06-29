@@ -207,6 +207,9 @@ public class VirtualModel {
                 }
                 break;
             case MERGE:
+                System.out.println("conquered"+bchange.getConquerIsland());
+                System.out.println("merged1"+bchange.getMergedIsland1());
+                System.out.println("merged2"+bchange.getMergedIsland2());
                 Optional<Tower> oldTower2= islands.get(bchange.getConquerIsland()).getTower();
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 for(Player p:players){

@@ -976,6 +976,7 @@ public class GameController implements GUIController{
                 //islandGroupsList.get(mergedIsland1).setScaleX( islandGroupsList.get(mergedIsland2).getScaleX()*1.2);
                 //islandGroupsList.get(mergedIsland1).setScaleY( islandGroupsList.get(mergedIsland2).getScaleY()*1.2);
             }
+            conqueredIsland= (conqueredIsland==islandGridsList.size()) ? conqueredIsland-1 : conqueredIsland;
             islandGridsList.remove(conqueredIsland);
             islandTowerGridsList.remove(conqueredIsland);
             islandGroupsList.get(conqueredIsland).getChildren().clear();
