@@ -28,7 +28,7 @@ public class MoveMotherNature implements ClientToServerMessage{
             System.out.println("DEBUG MN 1");
             game.sendAll(new UpdateMessage(new BoardChange(steps)));
             System.out.println("DEBUG MN 2");
-            game.checkConquest();
+            game.checkConquest(false);
             if(game.getController().getModel().isLastRound()
                 && game.getController().getModel().isEmptyClouds()){
                 int pos = 0;
