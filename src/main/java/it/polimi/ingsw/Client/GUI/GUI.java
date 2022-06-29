@@ -344,7 +344,15 @@ public class GUI extends Application implements Runnable, View
                     }
                     if(msg.getChange().getChange()==Change.MERGE) {
                         controller.handleMerge(msg);
-                    }
+                    }else if(msg.getChange().getChange()==Change.PLAYCLOWN
+                            || msg.getChange().getChange()==Change.PLAYHERBALIST
+                            || msg.getChange().getChange()==Change.PLAYINNKEEPER
+                            || msg.getChange().getChange()==Change.PLAYPRINCESS
+                            || msg.getChange().getChange()==Change.PLAYSTORYTELLER
+                            || msg.getChange().getChange()==Change.PLAYTHIEF
+                            || msg.getChange().getChange()==Change.PLAYMERCHANT
+                            || msg.getChange().getChange()==Change.DEFAULT)
+                        controller.setPlayedCharacterCard(true);
 
                 }
             });
