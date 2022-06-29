@@ -58,7 +58,7 @@ public class UseCharacterCard implements ClientToServerMessage{
                if(c.getAsset().equals(asset) && null!=c.getStudents() && c.getStudents().isPresent())
                    cardStudents=c.getStudents().get().clone();
            }
-           game.checkConquest();
+           game.checkConquest(true);
            System.out.println("DEBUG CC 3");
            BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
            String[] nameCard=asset.split("\\.");

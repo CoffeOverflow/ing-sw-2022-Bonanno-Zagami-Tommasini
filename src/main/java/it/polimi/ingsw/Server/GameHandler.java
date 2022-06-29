@@ -280,7 +280,7 @@ public class GameHandler implements Runnable{
     /***
      *
      */
-    public void checkConquest(){
+    public void checkConquest(boolean characterIsUsed){
         if(controller.getModel().getConquest()!=null && controller.getModel().getConquest().getMergedIsland1()==null
                 && controller.getModel().getConquest().getMergedIsland2()==null){
             BoardChange change=new BoardChange(controller.getModel().getConquest().getConqueror(),
@@ -298,7 +298,7 @@ public class GameHandler implements Runnable{
                     controller.getModel().getConquest().getMergedIsland2()<controller.getModel().getConquest().getConqueredIsland())
                 minPosition=controller.getModel().getConquest().getMergedIsland2();
             else minPosition=controller.getModel().getConquest().getConqueredIsland();
-            if(Math.abs(controller.getModel().getMotherNaturePosition()-minPosition)%controller.getModel().getIslandSize()==1)
+            if(!characterIsUsed && controller.getModel().getMotherNaturePosition()!=minPosition)
                 sendAll(new UpdateMessage((new BoardChange(-1))));
         }
         controller.getModel().setConquest(null);
