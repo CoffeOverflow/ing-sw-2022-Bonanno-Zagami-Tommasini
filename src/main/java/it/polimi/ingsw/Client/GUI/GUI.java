@@ -102,8 +102,7 @@ public class GUI extends Application implements Runnable, View
      */
     @Override
     public void run() {
-        boolean run = true;
-        while(run){
+        while(!endGame){
             ServerToClientMessage fromServer = null;
             try {
                 fromServer = serverHandler.read();
@@ -113,7 +112,6 @@ public class GUI extends Application implements Runnable, View
             } catch (IOException | ClassNotFoundException | RuntimeException e) {
                 e.printStackTrace();
                 showError("Connection error, maybe one player left the match. The app will now close!");
-                run = false;
             }
         }
     }
