@@ -274,11 +274,6 @@ public class GameHandler implements Runnable{
      * @see Server
      */
     public void endGame(){
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         server.endGame(this.gameID);
     }
 

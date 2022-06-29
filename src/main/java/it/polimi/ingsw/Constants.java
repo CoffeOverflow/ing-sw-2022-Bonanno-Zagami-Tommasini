@@ -115,6 +115,7 @@ public class Constants {
     public static final String[] cloud = {"   __   _    ", " _(  )_( )_  ", "(_   _", "_) ", "  (_) (__)   "};
     public static final int timeout = 14000;
     public static final int halfTimeout = 7000;
+    public static boolean endGame = false;
 
     /***
      * Set the server IP

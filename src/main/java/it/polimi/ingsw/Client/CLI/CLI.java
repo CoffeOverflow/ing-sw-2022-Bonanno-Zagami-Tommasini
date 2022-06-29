@@ -159,12 +159,14 @@ public class CLI implements View, Runnable {
 
     @Override
     public void youWin() {
+        endGame = true;
         serverHandler.close();
         this.showMessage("YOU WIN!");
     }
 
     @Override
     public void otherPlayerWins(OtherPlayerWins msg){
+        endGame = true;
         serverHandler.close();
         this.showMessage(msg.getMsg());
     }
@@ -953,7 +955,7 @@ public class CLI implements View, Runnable {
 
     @Override
     public void run() {
-        while(true){
+        while(!endGame){
             ServerToClientMessage fromServer = null;
             try {
                 fromServer = serverHandler.read();

@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static it.polimi.ingsw.Constants.endGame;
+
 /***
  * GUI main class
  * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
@@ -287,6 +289,7 @@ public class GUI extends Application implements Runnable, View
     @Override
     public void youWin() {
         System.out.println("ENDGAME");
+        endGame = true;
         serverHandler.close();
         Platform.runLater(new Runnable() {
             @Override
@@ -301,6 +304,7 @@ public class GUI extends Application implements Runnable, View
     @Override
     public void otherPlayerWins(OtherPlayerWins msg){
         System.out.println("ENDGAME");
+        endGame = true;
         serverHandler.close();
         Platform.runLater(new Runnable() {
             @Override

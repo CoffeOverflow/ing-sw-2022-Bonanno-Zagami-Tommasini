@@ -33,7 +33,7 @@ public class ServerHandler {
             throw new RuntimeException(e);
         }
         new Thread(() -> { //Client to Server
-            while(true){
+            while(!endGame){
                 try {
                     Thread.sleep(halfTimeout);
                 } catch (InterruptedException e) {
