@@ -30,7 +30,10 @@ public class MoveStudentsState implements GameControllerState{
         }
         else if(action.getMove().equals(MoveTo.SCHOOL)){
             if(m.getPlayerByID(m.getCurrentPlayer()).studentIsPresent(action.getColorStudent()))
-                m.moveToSchool(m.getCurrentPlayer(),action.getColorStudent());
+            {
+                if(m.getPlayerByID(m.getCurrentPlayer()).getStudentsOf(action.getColorStudent())<10)
+                    m.moveToSchool(m.getCurrentPlayer(),action.getColorStudent());
+            }
             else
                 throw new IllegalArgumentException("You don't have students of this color at your entrance");
         }

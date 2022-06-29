@@ -266,7 +266,7 @@ public class CLI implements View, Runnable {
             else if(tower.equals(Tower.BLACK))
                 colorTower=ANSI_BLACK;
             else
-                colorTower=ANSI_GRAY;
+                colorTower=ANSI_PURPLE;
             showSchool(p,colorTower);
         }
 
@@ -352,14 +352,14 @@ public class CLI implements View, Runnable {
                             studentOnIsland.append(ANSI_BLACK);
                             break;
                         case GRAY:
-                            studentOnIsland.append(ANSI_GRAY);
+                            studentOnIsland.append(ANSI_PURPLE);
                             break;
                         case WHITE:
                             studentOnIsland.append(ANSI_WHITE);
                             break;
 
                     }
-                    studentOnIsland.append(" "+ANSI_BACKGROUND_PURPLE+filledRect+ANSI_RESET);
+                    studentOnIsland.append(" "+CYAN_BACKGROUND+filledRect+ANSI_RESET);
                  }
             }
 
@@ -653,9 +653,9 @@ public class CLI implements View, Runnable {
                                 mothernatureInput=false;
                             }catch (InputMismatchException e){
                                 mothernatureInput=true;
+                                scanner.nextLine();
                                 showError("Please insert an integer value");
                             }
-                            scanner.nextLine();
                         }while (mothernatureInput);
                         serverHandler.send(new MoveMotherNature(steps));
                     }
