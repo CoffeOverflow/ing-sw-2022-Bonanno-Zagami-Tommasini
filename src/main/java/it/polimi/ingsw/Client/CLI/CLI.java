@@ -591,23 +591,27 @@ public class CLI implements View, Runnable {
                             String col=null;
                             Color color=null;
                             boolean boolWhile;
+                            boolean breakDoWhyle=false;
                             do {
                                 try {
                                     n2 = scanner.nextInt();
                                 }catch (InputMismatchException e){
-                                    this.showMessage("Please insert an integer value\n");
+                                    this.showMessage("Please insert an integer value\n>");
+                                    breakDoWhyle=true;
                                 }
 
                                 do{
                                     do{
-                                        System.out.print("Choose the color of the student: \n> ");
+                                        if(!breakDoWhyle)
+                                            System.out.print("Choose the color of the student: \n> ");
                                         col=scanner.next();
                                         try{
                                             Color color2=Color.valueOf(col.toUpperCase());
                                             boolWhile=Arrays.asList(Color.values()).contains(color2);
                                         }catch(Exception e){
                                             boolWhile=false;
-                                            System.out.print("Choose a valid color\n");
+                                            if(!breakDoWhyle)
+                                                System.out.print("Choose a valid color\n");
                                         }
                                     }while (!boolWhile);
                                     color=Color.valueOf(col.toUpperCase());
