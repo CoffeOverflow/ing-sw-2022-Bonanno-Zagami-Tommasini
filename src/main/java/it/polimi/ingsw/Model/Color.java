@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Model;
 
+/**
+ * @author Giuseppe Bonanno
+ * The enum of the towers with the relative image that will be used for the GUI
+ */
 public enum Color {
     PINK("student_pink.png","teacher_pink.png"),
     RED("student_red.png","teacher_red.png"),
