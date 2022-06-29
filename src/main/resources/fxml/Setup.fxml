@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
-<?import javafx.geometry.Insets?>
-<AnchorPane fx:id="mainPane" id="mainPane"
-            xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.polimi.ingsw.Client.GUI.Controllers.SetupController"
-            prefHeight="600.0" prefWidth="600.0"
-            stylesheets="@../css/setup.css">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="mainPane" fx:id="mainPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../css/setup.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.Controllers.SetupController">
     <children>
         <!--Eriantys Logo-->
-        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="25"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
-            <Label fx:id="title" alignment="TOP_CENTER"  style="-fx-font-size: 70" styleClass="Eriantys"  text="Eriantys" textFill="WHITE"/>
+        <HBox alignment="CENTER" layoutY="25" prefWidth="600.0" xmlns="http://javafx.com/javafx/2.2" xmlns:fx="http://javafx.com/fxml/1">
+            <Label fx:id="title" alignment="TOP_CENTER" style="-fx-font-size: 70" styleClass="Eriantys" text="Eriantys" textFill="WHITE" />
         </HBox>
         <!--Cranio logo-->
         <ImageView fx:id="cranio_logo" fitHeight="100" fitWidth="100" layoutY="500" pickOnBounds="true" preserveRatio="true">
@@ -28,26 +24,26 @@
             </image>
         </ImageView>
         <!--Caduti in battaglia durante lo sviluppo di questo progetto-->
-        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="580"  xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" >
+        <HBox alignment="CENTER" layoutY="580" prefWidth="600.0" xmlns="http://javafx.com/javafx/2.2" xmlns:fx="http://javafx.com/fxml/1">
             <children>
-                <Label fx:id="team" alignment="CENTER"  styleClass="Eriantys" style="-fx-font-size: 18"  text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE"/>
+                <Label fx:id="team" alignment="CENTER" style="-fx-font-size: 18" styleClass="Eriantys" text="Giuseppe Bonanno, Federica Tommasini, Angelo Zagami" textFill="WHITE" />
             </children>
         </HBox>
 
         <!--Nickname-->
-        <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
+        <HBox alignment="CENTER" layoutY="250" prefWidth="600.0">
             <VBox fx:id="requestNickname" alignment="CENTER" layoutX="300" spacing="5">
-                <Label  styleClass="inputLabels" prefHeight="21.0" prefWidth="333.0" text="Insert a nickname" />
+                <Label prefHeight="21.0" prefWidth="333.0" styleClass="inputLabels" text="Insert a nickname" />
                 <TextField fx:id="nickname" />
 
-                    <Button fx:id="send" style="-fx-font-size: 18" prefHeight="60" prefWidth="150" mnemonicParsing="false" onAction="#sendButtonClicked" text="Send" />
+                    <Button fx:id="send" mnemonicParsing="false" onAction="#sendButtonClicked" prefHeight="60" prefWidth="150" style="-fx-font-size: 18" text="Send" />
 
             </VBox>
         </HBox>
         <!--Match-->
         <VBox fx:id="chooseMatch" alignment="CENTER" layoutY="250" spacing="30">
-            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Lista partite" />
-            <HBox alignment="CENTER"  prefWidth="600.0" layoutY="250">
+            <Label alignment="CENTER" layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Lista partite" />
+            <HBox alignment="CENTER" layoutY="250" prefWidth="600.0">
                 <VBox fx:id="listOfMatch" alignment="CENTER" spacing="10">
                     <!--<HBox alignment="CENTER" >
                         <Label  prefHeight="21.0" prefWidth="333.0" text="PARTITA" textFill="WHITE"/>
@@ -55,54 +51,59 @@
                     </HBox>-->
                 </VBox>
             </HBox>
-            <HBox alignment="CENTER"  prefWidth="600.0" layoutY="550" spacing="15">
-                <Button fx:id="newgame" prefHeight="30" prefWidth="100" mnemonicParsing="false" onAction="#newgameButtonClicked" text="New game" />
-                <Button fx:id="refresh" prefHeight="30" prefWidth="100" mnemonicParsing="false" onAction="#refreshButtonClicked" text="Refresh" />
+            <HBox alignment="CENTER" layoutY="550" prefWidth="600.0" spacing="15">
+                <Button fx:id="newgame" mnemonicParsing="false" onAction="#newgameButtonClicked" prefHeight="30" prefWidth="100" text="New game" />
+                <Button fx:id="refresh" mnemonicParsing="false" onAction="#refreshButtonClicked" prefHeight="30" prefWidth="100" text="Refresh" />
             </HBox>
 
         </VBox>
 
         <!--New game-->
         <VBox fx:id="newgameform" alignment="CENTER" layoutY="250" spacing="15">
-            <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Impostazioni partita" />
-            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Number of players:" />
-            <HBox alignment="CENTER" prefWidth="600.0" layoutY="250" spacing="10">
+            <Label alignment="CENTER" layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Impostazioni partita" />
+            <Label layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Number of players:" />
+            <HBox alignment="CENTER" layoutY="250" prefWidth="600.0" spacing="10">
                 <RadioButton fx:id="twoPlayers" text="2 Players">
 
                     <toggleGroup>
-                        <ToggleGroup fx:id="players"/>
+                        <ToggleGroup fx:id="players" />
                     </toggleGroup>
                 </RadioButton>
                 <RadioButton fx:id="threePlayers" text="3 Players">
 
                     <toggleGroup>
-                        <fx:reference source="players"/>
+                        <fx:reference source="players" />
                     </toggleGroup>
                 </RadioButton>
             </HBox>
-            <Label   styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Mode:" />
-            <HBox alignment="CENTER" prefWidth="600.0" layoutY="300" spacing="10">
+            <Label layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Mode:" />
+            <HBox alignment="CENTER" layoutY="300" prefWidth="600.0" spacing="10">
                 <RadioButton fx:id="expertmode" text="Expert mode">
 
                     <toggleGroup>
-                        <ToggleGroup fx:id="mode"/>
+                        <ToggleGroup fx:id="mode" />
                     </toggleGroup>
                 </RadioButton>
                 <RadioButton fx:id="normalmode" text="Normal mode">
 
                     <toggleGroup>
-                        <fx:reference source="mode"/>
+                        <fx:reference source="mode" />
                     </toggleGroup>
                 </RadioButton>
             </HBox>
-
-            <Button fx:id="createnewgame" prefHeight="30" prefWidth="100" mnemonicParsing="false" onAction="#createnewgameButtonClicked" text="Create game" />
+         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+            <children>
+      
+                <Button fx:id="back" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="30" prefWidth="100" text="Back" />
+               <Button fx:id="createnewgame" mnemonicParsing="false" onAction="#createnewgameButtonClicked" prefHeight="30" prefWidth="100" text="Create game" />
+            </children>
+         </HBox>
         </VBox>
 
         <!--Wait for other players-->
         <VBox fx:id="wait" alignment="CENTER" layoutY="250" spacing="30">
-            <HBox alignment="CENTER" prefWidth="600.0" layoutY="250" spacing="10">
-                <Label  alignment="CENTER" styleClass="inputLabels" layoutY="230" prefHeight="21.0" text="Wait for other players.."  style="-fx-font-size: 26px;"/>
+            <HBox alignment="CENTER" layoutY="250" prefWidth="600.0" spacing="10">
+                <Label alignment="CENTER" layoutY="230" prefHeight="21.0" style="-fx-font-size: 26px;" styleClass="inputLabels" text="Wait for other players.." />
             </HBox>
         </VBox>
 
