@@ -83,7 +83,7 @@ class Effect4 implements Effect{
      * @param card character card that is used
      */
     public void effect(Player player, Integer islandPosition, GameModel model, CharacterCard card){
-        int noEntryCards=model.getIslandByPosition(model.getMotherNaturePosition()).getNoEntryCard();
+        int noEntryCards=model.getIslandByPosition(islandPosition).getNoEntryCard();
         model.getIslandByPosition(islandPosition).setNoEntryCard(noEntryCards+1);
         int n=model.getCharactersPositions().get("herbalist.jpg");
         model.getCharacterCards().get(n).setNoEntryTiles(Optional.of(model.getCharacterCards().get(n).getNoEntryTiles().get()-1));
