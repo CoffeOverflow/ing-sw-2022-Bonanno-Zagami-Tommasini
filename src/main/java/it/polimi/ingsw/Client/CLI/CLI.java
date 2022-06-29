@@ -626,6 +626,7 @@ public class CLI implements View, Runnable {
                                     islandPosition= scanner.nextInt();}while(islandPosition<=0 || islandPosition>vmodel.getIslands().size());
                                     serverHandler.send(new MoveStudent(MoveTo.ISLAND,Color.valueOf(col.toUpperCase()),islandPosition-1,this.vmodel.getNumOfInstance()));
                                     //vmodel.getClientPlayer().getEntryStudents().put(color,vmodel.getClientPlayer().getEntryStudents().get(color)-1);
+                                breakDoWhyle=false;
                                 }
                             } while (n2 != 1 && n2 != 2);
                     } else if (message.getType()==OptionType.MOVENATURE) {
