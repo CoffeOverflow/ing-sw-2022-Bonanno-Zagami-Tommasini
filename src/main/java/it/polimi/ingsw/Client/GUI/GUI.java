@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static it.polimi.ingsw.Constants.endGame;
+import static it.polimi.ingsw.Constants.*;
 
 /***
  * GUI main class
@@ -110,8 +110,11 @@ public class GUI extends Application implements Runnable, View
                     fromServer.handle(this);
 
             } catch (IOException | ClassNotFoundException | RuntimeException e) {
-                e.printStackTrace();
-                showError("Connection error, maybe one player left the match. The app will now close!");
+                if(!endGame){
+                    e.printStackTrace();
+                    showError("Connection error, maybe one player left the match. The app will now close!");
+                    endGame = true;
+                }
             }
         }
         serverHandler.close();
