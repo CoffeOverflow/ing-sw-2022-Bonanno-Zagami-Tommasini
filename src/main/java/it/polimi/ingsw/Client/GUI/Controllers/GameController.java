@@ -1014,4 +1014,8 @@ public class GameController implements GUIController{
             }
         }
     }
+
+    public void setPlayedCharacterCard(boolean playedCharacterCard) {
+        this.playedCharacterCard = playedCharacterCard;
+    }
 }
