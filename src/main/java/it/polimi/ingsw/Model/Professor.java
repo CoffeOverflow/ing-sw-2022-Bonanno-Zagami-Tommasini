@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -13,7 +12,7 @@ public class Professor {
     private Optional<Player> player;
 
     /**
-     *
+     * Class constructor
      * @param color Color of professor
      */
     public Professor(Color color){
@@ -32,18 +31,17 @@ public class Professor {
     }
 
     /**
-     *
-     * @return Optional<Player>
-     * @throws NoSuchElementException
+     * Get the player that controls the professor
+     * @return Optional<Player> The player if there is one, null otherwise
      */
-    public Player getPlayer() throws NoSuchElementException {
-        if(player.isPresent())
-            return player.get();
-        else
-            return null;
-            //throw new NoSuchElementException();
+    public Player getPlayer(){
+        return player.orElse(null);
     }
 
+    /***
+     * Get the color of the professor
+     * @return Professor's color
+     */
     public Color getColor(){ return color; }
 
 }
