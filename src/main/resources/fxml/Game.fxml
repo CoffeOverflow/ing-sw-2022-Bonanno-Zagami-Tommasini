@@ -242,8 +242,8 @@
                   </GridPane>
                <GridPane fx:id="towerIslandgrid7" layoutX="44.0">
                   <columnConstraints>
-                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                   </columnConstraints>
                   <rowConstraints>
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
