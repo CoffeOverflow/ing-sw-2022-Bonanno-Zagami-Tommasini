@@ -37,7 +37,7 @@ In windows, for a correct visualization of CLI you have to run the following com
 ```
 chcp 65001
 ```
-## The Team
+## I tre maghettieri 🧙‍♂️🎩🪄
 * [Giuseppe Bonanno](https://github.com/bonnyAL99)
 * [Federica Tommasini](https://github.com/federicatommasini)
 * [Angelo Zagami](https://github.com/CoffeOverflow)
