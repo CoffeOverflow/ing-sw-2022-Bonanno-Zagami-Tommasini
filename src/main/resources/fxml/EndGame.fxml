@@ -8,6 +8,6 @@
    <children>
       <ImageView fx:id="win" fitHeight="150.0" fitWidth="200.0" layoutX="514.0" layoutY="285.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="514.0" />
       <Text fx:id="lose" layoutX="564.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Other Player win :c" AnchorPane.bottomAnchor="253.0" AnchorPane.topAnchor="500.0" />
-      <ImageView id="lose" fitHeight="150.0" fitWidth="200.0" layoutX="513.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="513.0" />
+      <ImageView fx:id="loseImage" fitHeight="150.0" fitWidth="200.0" layoutX="513.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="513.0" />
    </children>
 </AnchorPane>
