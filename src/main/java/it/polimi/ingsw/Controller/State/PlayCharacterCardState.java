@@ -22,10 +22,6 @@ public class PlayCharacterCardState implements GameControllerState{
         GameModel model=gc.getModel();
         int cardPos=model.getCharactersPositions().get(action.getAsset());
         CharacterCard card=model.getCharacterCards().get(cardPos);
-        System.out.print("money: ");
-        System.out.println(model.getPlayerByID(model.getCurrentPlayer()).getMoney());
-        System.out.print("asset: "+card.getAsset() +"\n");
-        System.out.println("cost: "+card.getCost());
         if(model.getPlayerByID(model.getCurrentPlayer()).getMoney()>=card.getCost()) {
             if (action.getChosenColor() != null) {
                 card.setChosenColor(Optional.of(action.getChosenColor()));

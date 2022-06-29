@@ -25,7 +25,6 @@ public class Action {
     private String asset;
     private EnumMap<Color, Integer> chosenStudents;
     private EnumMap<Color, Integer> entranceStudents;
-    //private int chosenNumberOfSteps;
     private Color chosenColor;
 
 
@@ -104,10 +103,4 @@ public class Action {
         this.chosenColor = chosenColor;
     }
 
-    /*public int getChosenNumberOfSteps() {
-        return chosenNumberOfSteps;
-    }
-       public void setChosenNumberOfSteps(int chosenNumberOfSteps) {
-        this.chosenNumberOfSteps = chosenNumberOfSteps;
-    }*/
 }

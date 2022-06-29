@@ -98,7 +98,8 @@ public class UseCharacterCard implements ClientToServerMessage{
         * move the students or to move mother nature
         */
         game.getController().setState(game.getController().getStateToReturn());
-        if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState || game.getController().getState() instanceof TakeStudentsState)
+        if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState
+                || game.getController().getState() instanceof TakeStudentsState)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
         else
             game.sendTo(new ChooseOption(OptionType.MOVENATURE,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));

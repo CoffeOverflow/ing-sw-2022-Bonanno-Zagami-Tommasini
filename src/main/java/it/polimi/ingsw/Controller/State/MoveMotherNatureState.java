@@ -32,12 +32,9 @@ public class MoveMotherNatureState implements GameControllerState {
         if(m.isTwoAdditionalSteps() &&
                 action.getMotherNatureSteps()<=(m.getCurrentCardPlayers().get(currentPlayer).getMothernaturesteps()+2)){
             m.moveMotherNature(action.getMotherNatureSteps());
-            System.out.println("DEBUG MN 4");
         }
         else if(!m.isTwoAdditionalSteps() && action.getMotherNatureSteps()<=m.getCurrentCardPlayers().get(currentPlayer).getMothernaturesteps()){
-            System.out.println("DEBUG MN 5");
             m.moveMotherNature(action.getMotherNatureSteps());
-            System.out.println("DEBUG MN 6");
         }else{
             throw new IllegalArgumentException("the number of steps chosen is higher than the one indicated by the assistant card");
         }
@@ -47,10 +44,7 @@ public class MoveMotherNatureState implements GameControllerState {
          */
         int noEntryCards=m.getIslandByPosition(m.getMotherNaturePosition()).getNoEntryCard();
         if(noEntryCards==0){
-            System.out.println("DEBUG MN 7");
-            System.out.println(m.getMotherNaturePosition());
             Conquest c=m.computeInfluence(m.getMotherNaturePosition());
-            System.out.println("DEBUG MN 8");
             m.setConquest(c);
         }
         else{
@@ -58,9 +52,6 @@ public class MoveMotherNatureState implements GameControllerState {
             m.getIslandByPosition(m.getMotherNaturePosition()).setNoEntryCard(noEntryCards-1);
             int n=m.getCharactersPositions().get("herbalist.jpg");
             m.getCharacterCards().get(n).setNoEntryTiles(Optional.of(m.getCharacterCards().get(n).getNoEntryTiles().get()+1));
-        }
-        for(Player player: m.getPlayers()){
-            System.out.println(player.getNickname() +  " Tower: " + player.getNumberOfTower());
         }
 
     }
