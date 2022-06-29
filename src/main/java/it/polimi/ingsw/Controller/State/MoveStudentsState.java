@@ -16,7 +16,6 @@ public class MoveStudentsState implements GameControllerState{
     @Override
     public void turnAction(GameController gc, Action action)throws IllegalArgumentException{
         m=gc.getModel();
-        Tower towerOnIsland;
         if(action.getMove().equals(MoveTo.ISLAND)){
 
                     if(m.isPresentEntryPlayer(action.getColorStudent())){
@@ -33,6 +32,8 @@ public class MoveStudentsState implements GameControllerState{
             {
                 if(m.getPlayerByID(m.getCurrentPlayer()).getStudentsOf(action.getColorStudent())<10)
                     m.moveToSchool(m.getCurrentPlayer(),action.getColorStudent());
+                else
+                    throw new IllegalArgumentException("You have the maximum number of students of this color in your school");
             }
             else
                 throw new IllegalArgumentException("You don't have students of this color at your entrance");

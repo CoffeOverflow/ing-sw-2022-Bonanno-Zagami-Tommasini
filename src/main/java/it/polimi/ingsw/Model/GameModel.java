@@ -12,7 +12,7 @@ import java.util.*;
 
 /**
  *
- * @author Giuseppe Bonanno
+ * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
  *
  * */
 
@@ -136,7 +136,7 @@ public class GameModel {
         }
 
         /**
-         * Fill the Bag of the game with the remaining students
+         * Fill bag of the game with the remaining students
          */
         for(Color c: Color.values()){
             studentsBag.put(c,24);
@@ -197,6 +197,7 @@ public class GameModel {
         }
 
     }
+
     public void printBag(){
         System.out.println(studentsBag.toString());
     }
