@@ -298,10 +298,19 @@ public class GameHandler implements Runnable{
                     controller.getModel().getConquest().getMergedIsland2()<controller.getModel().getConquest().getConqueredIsland())
                 minPosition=controller.getModel().getConquest().getMergedIsland2();
             else minPosition=controller.getModel().getConquest().getConqueredIsland();
-            if(controller.getModel().getMotherNaturePosition()!=minPosition)
+            if(Math.abs(controller.getModel().getMotherNaturePosition()-minPosition)%controller.getModel().getIslandSize()==1)
                 sendAll(new UpdateMessage((new BoardChange(-1))));
         }
         controller.getModel().setConquest(null);
+        if(controller.checkEndGame()){
+            System.out.println("ENDGAME");
+            controller.setWinners(controller.getModel().getWinner());
+            for (Player p : controller.getWinners()) {
+                sendTo(new YouWin(), getClientByPlayerID(p.getPlayerID()));
+                sendAllExcept(new OtherPlayerWins(p.getNickname()), getClientByPlayerID(p.getPlayerID()));
+                //endGame();
+            }
+        }
     }
 
     /***
@@ -337,6 +346,7 @@ public class GameHandler implements Runnable{
      * @return True if the game is expert mode, false otherwise
      */
     public boolean isExpertMode() {
+
         return expertMode;
     }
 }

@@ -69,7 +69,7 @@ public class MoveMotherNature implements ClientToServerMessage{
             if(!game.getController().checkEndGame()){
                 game.sendTo(new ChooseOption(OptionType.CHOOSECLOUD,game.isExpertMode()),player);
                 System.out.println("DEBUG MN 3");
-            }else {
+            }/*else {
                 System.out.println("ENDGAME");
                 game.getController().setWinners(game.getController().getModel().getWinner());
                 for (Player p : game.getController().getWinners()) {
@@ -78,7 +78,7 @@ public class MoveMotherNature implements ClientToServerMessage{
                     game.sendAllExcept(new OtherPlayerWins(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
                     //endGame();
                 }
-            }
+            }*/
 
         }catch(IllegalArgumentException e){
             e.printStackTrace();

@@ -217,8 +217,8 @@ public class VirtualModel {
                 }
                 mergeIslands(bchange.getConquerIsland(), bchange.getMergedIsland1(),bchange.getConquerorTower());
                 if(bchange.getMergedIsland2()!=null) {
-                    int island1=bchange.getConquerIsland()==0 ? islands.size()-1 : bchange.getConquerIsland() - 1;
-                    int island2=bchange.getMergedIsland2()==0 ? islands.size()-1 : bchange.getMergedIsland2() - 1;
+                    int island1=bchange.getConquerIsland()==0 ? 0 : bchange.getConquerIsland() - 1;
+                    int island2=bchange.getMergedIsland2()==0 ? 0 : bchange.getMergedIsland2() - 1;
                     mergeIslands(island1, island2, bchange.getConquerorTower());
                 }
                 break;

@@ -35,13 +35,13 @@ public class ChooseCloud implements ClientToServerMessage{
             game.getController().doAction(action);
             //GESTIRE SE è ULTIMO GIOCATORE SETTARE I VALORI SULLE CLOUD!
             game.sendAll(new UpdateMessage(clearChange));
-            if (!game.getController().getWinners().isEmpty()) {
+            /*if (!game.getController().getWinners().isEmpty()) {
                 for (Player p : game.getController().getWinners()) {
                     game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
                     game.sendAllExcept(new OtherPlayerWins(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
                     //game.endGame();
                 }
-            } else {
+            } else {*/
                 game.getController().getModel().endTurnOfPlayer();
                 int pos = 0;
                 for (int i = 0; i < game.getController().getTurnOrder().length; i++) {
@@ -52,6 +52,11 @@ public class ChooseCloud implements ClientToServerMessage{
                 if (pos == game.getController().getTurnOrder().length - 1) {
                     if(game.getController().getModel().isLastRound()){
                         game.getController().setWinners(game.getController().getModel().getWinner());
+                        for (Player p : game.getController().getWinners()) {
+                            game.sendTo(new YouWin(), game.getClientByPlayerID(p.getPlayerID()));
+                            game.sendAllExcept(new OtherPlayerWins(p.getNickname()), game.getClientByPlayerID(p.getPlayerID()));
+                            //game.endGame();
+                        }
                     }
                     game.getController().fillCloud();
                     BoardChange fillChange=null;
@@ -87,7 +92,7 @@ public class ChooseCloud implements ClientToServerMessage{
                     game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS, game.isExpertMode()),
                             game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));
                 }
-            }
+            //}
         }
         catch (IllegalArgumentException e){
             game.sendTo(new ActionNonValid(),player);
