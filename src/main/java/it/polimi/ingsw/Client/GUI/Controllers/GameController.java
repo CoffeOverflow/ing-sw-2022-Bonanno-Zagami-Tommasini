@@ -222,6 +222,9 @@ public class GameController implements GUIController{
 
     }
 
+    /***
+     * Show the Character cards on the screen with the students and no entry cards
+     */
     public void showCharacterCard(){
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
         if(firsTimeInMethod){
@@ -468,7 +471,7 @@ public class GameController implements GUIController{
     }
 
     /**
-     * show thecurrent instance of the board
+     * show the current instance of the board
      */
     public void showBoard(){
         for(GridPane gridPane: schoolEntranceGridsList)
@@ -846,7 +849,7 @@ public class GameController implements GUIController{
     }
 
     /**
-     * show the students on the cloud, filling the grids
+     * show the students on the cloud on screen, filling the grids
      */
     public void showCloud(){
         VirtualModel vmodel=gui.getVmodel();
@@ -930,7 +933,7 @@ public class GameController implements GUIController{
     }
 
     /***
-     * Send the choosen assistant card to Server
+     * Send the chosen assistant card to Server
      * @param event The assistant card event
      */
     public void chooseAssistant(Event event){
@@ -949,6 +952,10 @@ public class GameController implements GUIController{
         changePhase();
     }
 
+    /***
+     * Send to server the cloud chosen by the player
+     * @param event The event associate to the cloud
+     */
     public void chooseCloud(MouseEvent event){
         if(currentPhase==GamePhase.CHOOSECLOUD){
             Node node=(Node) event.getSource();
