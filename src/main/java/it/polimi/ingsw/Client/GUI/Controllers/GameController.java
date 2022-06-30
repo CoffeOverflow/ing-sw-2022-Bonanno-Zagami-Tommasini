@@ -712,6 +712,9 @@ public class GameController implements GUIController{
 
     }
 
+    /***
+     * Show the schools on screen
+     */
     public void showSchool(){
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
@@ -825,6 +828,9 @@ public class GameController implements GUIController{
 
     }
 
+    /***
+     * Show the clouds on screen
+     */
     public void showCloud(){
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
@@ -927,6 +933,10 @@ public class GameController implements GUIController{
         changePhase();
     }
 
+    /***
+     * Send to server the cloud choosen by the player
+     * @param event The event associate to the cloud
+     */
     public void chooseCloud(MouseEvent event){
         if(currentPhase==GamePhase.CHOOSECLOUD){
             Node node=(Node) event.getSource();
