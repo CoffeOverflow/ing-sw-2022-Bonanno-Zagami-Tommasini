@@ -17,13 +17,12 @@ public class StateTest {
     private GameControllerState state;
     private GameController gc;
     private Action a=new Action();
-    private Object IllegalArgumentException;
 
 
     public void MoveMotherNatureTurnAction(){
         gc.setState(new MoveMotherNatureState());
         int oldMotherNaturePosition=gc.getModel().getMotherNaturePosition();
-        Random rand = new Random();
+        /*Random rand = new Random();
         int cardNumber1 = rand.nextInt(gc.getModel().getPlayerByID(1).getAssistantCards().size());
         int cardNumber2 = rand.nextInt(gc.getModel().getPlayerByID(2).getAssistantCards().size());
 
@@ -31,18 +30,20 @@ public class StateTest {
         AssistantCard card2=gc.getModel().getPlayerByID(2).getAssistantCards().get(cardNumber2);
         gc.addCurrentAssistantCard(1,card1);
         gc.addCurrentAssistantCard(2,card2);
-
+*/
         Action action=new Action();
         gc.getModel().setCurrentPlayer(1);
-        action.setMotherNatureSteps(card1.getMothernaturesteps());
+        action.setMotherNatureSteps(gc.getCurrentCardPlayers().get(1).getMothernaturesteps());
         gc.getState().turnAction(gc,action);
-        assertEquals(gc.getModel().getMotherNaturePosition(),oldMotherNaturePosition+card1.getMothernaturesteps()-1);
+        assertEquals(gc.getModel().getMotherNaturePosition(),(oldMotherNaturePosition+gc.getCurrentCardPlayers().get(1).getMothernaturesteps())
+                %gc.getModel().getIslandSize());
         oldMotherNaturePosition=gc.getModel().getMotherNaturePosition();
         gc.getModel().setCurrentPlayer(2);
         gc.getModel().setTwoAdditionalSteps(true);
-        action.setMotherNatureSteps(card2.getMothernaturesteps()+2);
+        action.setMotherNatureSteps(gc.getCurrentCardPlayers().get(2).getMothernaturesteps()+2);
         gc.getState().turnAction(gc,action);
-        assertEquals(gc.getModel().getMotherNaturePosition(),oldMotherNaturePosition+card2.getMothernaturesteps()+2);
+        assertEquals(gc.getModel().getMotherNaturePosition(),
+                (oldMotherNaturePosition+gc.getCurrentCardPlayers().get(2).getMothernaturesteps()+2)%gc.getModel().getIslandSize());
     }
 
     @BeforeEach
@@ -60,17 +61,56 @@ public class StateTest {
         Action action=new Action();
         EnumMap<Color,Integer> entrance=new EnumMap<Color, Integer>(Color.class);
         EnumMap<Color,Integer> choosen=new EnumMap<Color, Integer>(Color.class);
+        EnumMap<Color,Integer> cardStudents=new EnumMap<Color, Integer>(Color.class);
         Integer posisland;
         Color color;
         state=new PlayCharacterCardState();
-        for(CharacterCard card:cards){
-            action.setAsset(card.getAsset());
-            action.setChosenColor(Color.RED);
-            state.turnAction(gc,action);
-            //assertTrue();
-            action=new Action();
-
+        cards.remove(2);
+        CharacterCard card= new CharacterCard("thief.jpg");
+        cards.add(card);
+        gc.getModel().getCharactersPositions().put("thief.jpg",2);
+        for(Player p:this.gc.getModel().getPlayers()){
+            for(int i=0;i<15;i++){
+                p.addMoney();
+            }
         }
+
+        action.setChosenColor(Color.RED);
+        action.setAsset("thief.jpg");
+        int [] studentsRed=new int[3];
+        int num=0;
+        for(Player p: gc.getModel().getPlayers())
+        {
+            studentsRed[num]=p.getStudentsOf(Color.RED);
+            num++;
+        }
+        state.turnAction(gc,action);
+        num=0;
+        for(Player p: gc.getModel().getPlayers())
+        {
+            if(studentsRed[num]>3)
+                assertEquals(p.getStudentsOf(Color.RED),studentsRed[num]-3);
+            else
+                assertEquals(p.getStudentsOf(Color.RED),0);
+            num++;
+        }
+
+        cardStudents.put(Color.RED,4);
+        choosen.put(Color.RED,1);
+        card = new CharacterCard("innkeeper.jpg",cardStudents);
+        cards.remove(2);
+        cards.add(card);
+        gc.getModel().getCharactersPositions().put("innkeeper.jpg",2);
+        action=new Action();
+        action.setAsset("innkeeper.jpg");
+        action.setChosenStudents(choosen);
+        action.setPosIsland(1);
+        EnumMap<Color,Integer> islandStudents=new EnumMap<Color, Integer>(Color.class);
+        islandStudents.put(Color.GREEN,1);
+        gc.getModel().getIslandByPosition(1).setStudents(islandStudents);
+        state.turnAction(gc,action);
+        assertEquals(gc.getModel().getIslandByPosition(1).getStudentsOf(Color.RED),1);
+
 
     }
     @Test

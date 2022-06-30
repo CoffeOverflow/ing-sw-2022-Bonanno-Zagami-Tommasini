@@ -90,7 +90,6 @@ class GameModelTest {
         assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.BLUE),blueStudentisland3);
         assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.PINK),pinkStudentisland3);
         assertEquals(gm.getIslandByPosition(2).getNumberOfTowers(),numberOfTower3);
-        assertEquals(gm.getPlayerByID(2).getNumberOfTower(),7);
 
     }
 
