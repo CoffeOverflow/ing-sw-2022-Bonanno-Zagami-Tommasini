@@ -4,8 +4,8 @@ import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.AssistantCard;
 import java.io.IOException;
 
-/***
- * Message sent to the players to tell the assistant card played by other player
+/**
+ * implementation of a message from server to client to inform other players of an assistant card played by a player
  * @author Angelo Zagami
  */
 public class PlayerPlayAssistantCard implements ServerToClientMessage{

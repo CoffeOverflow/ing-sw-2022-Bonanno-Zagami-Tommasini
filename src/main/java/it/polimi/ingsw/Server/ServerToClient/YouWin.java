@@ -3,9 +3,9 @@ package it.polimi.ingsw.Server.ServerToClient;
 import it.polimi.ingsw.Client.View;
 import java.io.IOException;
 
-/***
- * Message sent to the player who win the game
- * @author Giuseppe Bonanno, Federica Tommasini, Angelo Zagami
+/**
+ * implementation of a message from server to client to inform the client that he won
+ * @author Federica Tommasini
  */
 public class YouWin implements ServerToClientMessage{
 

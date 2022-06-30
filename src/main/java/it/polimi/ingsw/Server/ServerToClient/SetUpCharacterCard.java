@@ -2,11 +2,14 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Color;
-
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.HashMap;
 
+/**
+ * implementation of a message from server to client to set up the character cards and eventual students on them
+ * @author Federica Tommasini
+ */
 public class SetUpCharacterCard implements ServerToClientMessage{
 
     private String[] characterCards;

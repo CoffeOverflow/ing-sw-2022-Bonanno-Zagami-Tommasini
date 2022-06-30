@@ -7,7 +7,7 @@ import static it.polimi.ingsw.Constants.ANSI_RESET;
 
 /**
  * implementation of a message from server to client to inform the client of an invalid action
- * @author Federica Tommasini
+ * @author Federica Tommasini, Angelo Zagami
  */
 public class ActionNonValid implements ServerToClientMessage{
     private static String msg="the action is not valid \n";

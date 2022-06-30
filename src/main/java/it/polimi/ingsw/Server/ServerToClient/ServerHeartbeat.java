@@ -1,10 +1,11 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
+
 import java.io.IOException;
 
-/***
- * Message sent to the client to be sure that is connected
+/**
+ * implementation of a message from server to client to check if the connection is still on
  * @author Angelo Zagami
  */
 public class ServerHeartbeat implements ServerToClientMessage{
