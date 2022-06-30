@@ -114,8 +114,8 @@ public class StateTest {
         entry.put(Color.BLUE,2);
         entry.put(Color.PINK,3);
         entry.put(Color.YELLOW,2);
-        entry.put(Color.RED,0);
-        entry.put(Color.GREEN,0);
+        entry.put(Color.RED,1);
+        entry.put(Color.GREEN,1);
         this.gc.getModel().getPlayerByID(1).setEntryStudents(entry);
         state=new MoveStudentsState();
         a.setMove(MoveTo.ISLAND);
@@ -131,6 +131,9 @@ public class StateTest {
         a.setMove(MoveTo.SCHOOL);
         a.setColorStudent(Color.BLUE);
         state.turnAction(gc,a);
+        a.setMove(MoveTo.SCHOOL);
+        a.setColorStudent(Color.PINK);
+        state.turnAction(gc,a);
 
         System.out.println("Students "+this.gc.getModel().getPlayerByID(1).getEntryStudents());
         System.out.println(gc.getModel().getPlayerByID(1).getStudents());
@@ -142,7 +145,6 @@ public class StateTest {
     public void TakeStudentTurnAction() {
         state=new TakeStudentsState();
         this.gc.setState(state);
-
         a.setChooseCloud(1);
         this.gc.getModel().getStudentsFromBag();
         state.turnAction(gc,a);
