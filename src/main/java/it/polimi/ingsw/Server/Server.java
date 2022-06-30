@@ -199,7 +199,11 @@ public class Server implements Runnable{
      * @param gameID The ID of the game to remove
      */
     public synchronized void endGame(int gameID){
-        GameHandler game = activeGames.get(gameID);
+        GameHandler game = null;
+        if(availableGames.containsKey(gameID))
+            game = availableGames.get(gameID);
+        else
+            game = activeGames.get(gameID);
         if(game !=null){
             for(ClientHandler player : game.getPlayers()){
                 nicknameByID.remove(player.getPlayerID());
@@ -207,6 +211,7 @@ public class Server implements Runnable{
             }
         }
         activeGames.remove(gameID);
+        availableGames.remove(gameID);
     }
 
     /***

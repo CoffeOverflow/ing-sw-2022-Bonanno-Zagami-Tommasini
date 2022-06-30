@@ -39,6 +39,8 @@ public class MainMenuController implements GUIController
         alert.setHeaderText(message);
         //alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
         alert.showAndWait();
+        if(message.equals("Connection error, maybe one player left the match. The app will now close!"))
+            System.exit(-1);
     }
 
     @Override
