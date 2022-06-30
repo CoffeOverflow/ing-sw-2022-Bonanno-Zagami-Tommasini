@@ -4,6 +4,10 @@ import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
 
+/**
+ * implementation of a message from server to client to inform the client of the increasing of player's money
+ * @author Angelo Zagami
+ */
 public class AddMoney implements ServerToClientMessage{
     private int playerID;
 
@@ -12,8 +16,6 @@ public class AddMoney implements ServerToClientMessage{
     }
     @Override
     public void handle(View view) throws IOException {
-        System.out.println(playerID);
-        System.out.println(view.getVmodel().getPlayerByID(playerID).toString());
         view.getVmodel().getPlayerByID(playerID).addMoney();
     }
 }

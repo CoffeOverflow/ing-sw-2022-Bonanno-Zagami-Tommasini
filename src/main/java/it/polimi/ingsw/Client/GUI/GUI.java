@@ -339,6 +339,9 @@ public class GUI extends Application implements Runnable, View
                 @Override
                 public void run() {
                     if(firstUpdate) {
+                        /*
+                         * first update: set up the grids to visualize students in the board
+                         */
                         controller.setGrids();
                         firstUpdate=false;
                     }
@@ -352,8 +355,10 @@ public class GUI extends Application implements Runnable, View
                             || msg.getChange().getChange()==Change.PLAYTHIEF
                             || msg.getChange().getChange()==Change.PLAYMERCHANT
                             || msg.getChange().getChange()==Change.DEFAULT)
+                        /*
+                         * the update regards a character card, so the player in that turn will not be able to play another card
+                         */
                         controller.setPlayedCharacterCard(true);
-
                 }
             });
 
@@ -399,10 +404,9 @@ public class GUI extends Application implements Runnable, View
         if(msg.getType()==OptionType.MOVESTUDENTS)
             controller.setCurrentPhase(GamePhase.MOVESTUDENT);
         else if(msg.getType()==OptionType.MOVENATURE){
-            System.out.println("arrived mother nature message");
             vmodel.resetNumOfInstance();
-            controller.setCurrentPhase(GamePhase.MOVEMOTHERNATURE);}
-        else if(msg.getType()== OptionType.CHOOSECLOUD)
+            controller.setCurrentPhase(GamePhase.MOVEMOTHERNATURE);
+        }else if(msg.getType()== OptionType.CHOOSECLOUD)
             controller.setCurrentPhase(GamePhase.CHOOSECLOUD);
 
     }

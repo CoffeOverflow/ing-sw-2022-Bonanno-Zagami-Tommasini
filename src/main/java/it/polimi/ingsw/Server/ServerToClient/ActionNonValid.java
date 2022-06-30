@@ -1,12 +1,14 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
-
 import java.io.IOException;
-
 import static it.polimi.ingsw.Constants.ANSI_RED;
 import static it.polimi.ingsw.Constants.ANSI_RESET;
 
+/**
+ * implementation of a message from server to client to inform the client of an invalid action
+ * @author Federica Tommasini
+ */
 public class ActionNonValid implements ServerToClientMessage{
     private static String msg="the action is not valid \n";
 
