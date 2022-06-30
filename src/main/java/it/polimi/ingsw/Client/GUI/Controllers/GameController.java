@@ -152,7 +152,6 @@ public class GameController implements GUIController{
             case WIZARD:
                 selectWizard.setVisible(false);
                 waitForOtherWizard.setVisible(true);
-                //boardAndOthersSchool.setVisible(true);
                 mySchool.setVisible(true);
                 currentPhase = GamePhase.GAME;
                 break;
@@ -612,6 +611,12 @@ public class GameController implements GUIController{
         }
     }
 
+    /**
+     * when the player clicks on a character card, a button to play the card appears,
+     * after selecting the parameters related to the specific card the player can click
+     * on the button and send the message to play the card
+     * @param event click on the card
+     */
     public void showCharacterOptions(Event event){
         Node card= (Node) event.getSource();
         asset=(String) card.getUserData();
@@ -640,6 +645,11 @@ public class GameController implements GUIController{
             }
         });
 
+        /*
+         * if the card requires to select an island, a boolean variable is set to true in order to set the parameter
+         * of the message when clicking on the island, if the card requires to select a color, it appears a list of
+         * students from which the player can choose
+         */
         switch (asset) {
             case "innkeeper.jpg":
             case "auctioneer.jpg":
@@ -661,6 +671,13 @@ public class GameController implements GUIController{
 
     }
 
+    /**
+     * a box containing the students of all the colors among which the player can choose is set to visible
+     * in the case of the storyteller card the box is used to select the students from the dining hall, so the box is
+     * duplicated, since the player can choose more up to two students, also of the same color
+     * @param box list of color
+     * @param isStoryTeller boolean variable
+     */
     public void makeAppearTheColorHbox(HBox box, boolean isStoryTeller){
         box.getChildren().clear();
         for(Color c: Color.values()){
@@ -712,6 +729,9 @@ public class GameController implements GUIController{
 
     }
 
+    /**
+     * show the schools of the players, filling the grids with the students, the professors and the towers
+     */
     public void showSchool(){
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
@@ -825,6 +845,9 @@ public class GameController implements GUIController{
 
     }
 
+    /**
+     * show the students on the cloud, filling the grids
+     */
     public void showCloud(){
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
@@ -836,7 +859,6 @@ public class GameController implements GUIController{
                     Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
                     ImageView studentImgview = new ImageView(studentImg);
                     studentImgview.setFitHeight(15);
-                    //wizardImgview.setFitWidth(494);
                     studentImgview.setPreserveRatio(true);
                     cloudGridsList.get(count).add(studentImgview, j, k);
 
@@ -853,7 +875,7 @@ public class GameController implements GUIController{
     }
 
     /***
-     * Method used for send to the Server the wizard choosen
+     * Method used for send to the Server the wizard chosen
      * @param event
      */
     public void chooseWizard(Event event){
@@ -980,6 +1002,10 @@ public class GameController implements GUIController{
         }
     }
 
+    /**
+     * set an effect on mother nature's image to indicate that is selected to be moved
+     * @param event click on mother nature
+     */
     public void setSelectedMotherNature(MouseEvent event){
         if(currentPhase.equals(GamePhase.MOVEMOTHERNATURE)){
             Node node = (Node) event.getSource();
@@ -988,6 +1014,10 @@ public class GameController implements GUIController{
         }
     }
 
+    /**
+     * reposition of the islands after merge, and remove the ones that have been merged with others
+     * @param msg message containing info about the islands merged
+     */
     public void handleMerge(UpdateMessage msg){
         int conqueredIsland=msg.getChange().getConquerIsland();
         int mergedIsland1=msg.getChange().getMergedIsland1();
@@ -1065,6 +1095,11 @@ public class GameController implements GUIController{
         }
     }
 
+    /**
+     * set a boolean variable to true when the player uses a character card in during a turn, so that he will not be
+     * able to use another one in the same turn
+     * @param playedCharacterCard
+     */
     public void setPlayedCharacterCard(boolean playedCharacterCard) {
         this.playedCharacterCard = playedCharacterCard;
     }
