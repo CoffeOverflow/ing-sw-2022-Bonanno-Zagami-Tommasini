@@ -60,6 +60,12 @@ public class VirtualModel {
         return clouds;
     }
 
+    /**
+     * set in the virtual model the initial configuration of the islands
+     * (one student per island and the position of mother nature)
+     * @param msg message containing a map associating colors and position of the islands and an integer for the postion
+     *            of mother nature
+     */
     public void setIslandsAndMotherNature(MatchCreated msg)  {
         HashMap<Integer, Color> mapStudentIsland = msg.getMapStudentIsland();
         for(int i=0; i<12; i++) {
@@ -68,11 +74,13 @@ public class VirtualModel {
                 isl.addStudents(mapStudentIsland.get(i), 1);
             islands.add(isl);
         }
-
-
         motherNaturePosition=msg.getMotherNaturePosition();
     }
 
+    /**
+     * set values in the virtual model for the nicknames, wizards and towers of the players
+     * @param msg message containing info about the players
+     */
     public void setPlayersInfo(PlayersInfo msg){
         int j=0;
         for(Integer i: msg.getMapIDNickname().keySet()){
@@ -85,6 +93,10 @@ public class VirtualModel {
         }
     }
 
+    /**
+     * set in the virtual model the initial configuration of the school (entrance students)
+     * @param msg message containing students of the school and the id of the player
+     */
     public void setSchoolStudents(SetUpSchoolStudent msg){
         for(Player p: players){
             if(p.getPlayerID()==msg.getPlayerID())
@@ -92,9 +104,12 @@ public class VirtualModel {
         }
     }
 
+    /**
+     * set in the virtual model the character cards randomly selected at the beginning of the match
+     * @param msg message containing an array of strings corresponding to the assets of the cards
+     */
     public void setCharacterCards(SetUpCharacterCard msg){
         characterCards=new ArrayList<>();
-        int numberOfCard;
         for(int i=0; i<msg.getCharacterCards().length;i++){
             CharacterCard card=null;
             if(msg.getCharacterCards()[i].equals("innkeeper.jpg")
@@ -117,7 +132,6 @@ public class VirtualModel {
             }
             characterCards.add(card);
         }
-
     }
 
     public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
@@ -138,7 +152,6 @@ public class VirtualModel {
             islandPosNotDelete=islandPos2;
         }
         maxNumberOfTower= Math.max(notDeleteIsland.getNumberOfTowers(), deleteIsland.getNumberOfTowers());
-
 
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
         notDeleteIsland.setNumberOfTowers(maxNumberOfTower+1);
@@ -163,8 +176,13 @@ public class VirtualModel {
             }
     }
 
+    /**
+     * remove some students from the school of a player and check if the professors have to be moved
+     * @param player player's ID
+     * @param studentColor color of the students to remove
+     * @param number number of students to remove
+     */
     public void removeFromSchool (int player,Color studentColor, int number){
-
         for(Player p:this.players) {
             if (p.getPlayerID() == player) {
                 p.getStudents().put(studentColor, p.getStudentsOf(studentColor) - number);
@@ -184,10 +202,18 @@ public class VirtualModel {
             professors.get(studentColor).getPlayer().removeProfessor(studentColor);
     }
 
+    /**
+     * set in the virtual model the changes that have been made on the board
+     * @param msg update message
+     */
     public void update(UpdateMessage msg){
         BoardChange bchange=msg.getChange();
         switch(bchange.getChange()){
             case CONQUER:
+                /*
+                 * the update regards a conquest of an island: set the new tower on the island
+                 * and give back the eventual towers of another player present on the island
+                 */
                 Optional<Tower> oldTower= islands.get(bchange.getConquerIsland()).getTower();
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 for(Player p:players){
@@ -196,9 +222,12 @@ public class VirtualModel {
                     else if(oldTower.isPresent() && p.getTower().equals(oldTower.get()))
                         p.buildTower(-islands.get(bchange.getConquerIsland()).getNumberOfTowers());
                 }
-
                 break;
+
             case MOVESTUDENT:
+                /*
+                 * the update regards the moving of a student: can be either of an island or on a school
+                 */
                 if(bchange.getMoveTo().equals(MoveTo.ISLAND)){
                     for(Player p: players){
                         if(p.getPlayerID() == bchange.getPlayer()){
@@ -216,10 +245,11 @@ public class VirtualModel {
                     }
                 }
                 break;
+
             case MERGE:
-                System.out.println("conquered"+bchange.getConquerIsland());
-                System.out.println("merged1"+bchange.getMergedIsland1());
-                System.out.println("merged2"+bchange.getMergedIsland2());
+                /*
+                 * the update regards the conquest of an island and the merging of such island with one or two other islands
+                 */
                 Optional<Tower> oldTower2= islands.get(bchange.getConquerIsland()).getTower();
                 islands.get(bchange.getConquerIsland()).setTower(bchange.getConquerorTower());
                 for(Player p:players){
@@ -235,7 +265,12 @@ public class VirtualModel {
                     mergeIslands(island1, island2, bchange.getConquerorTower());
                 }
                 break;
+
             case MOTHERNATURE:
+                /*
+                 * the update sets mother nature to a new position, if there was a no entry card on the island, it is put
+                 * back on the card
+                 */
                 moveMotherNature(bchange.getMotherNatureSteps());
                 if(islands.get(motherNaturePosition).getNoEntryCard()>0){
                     islands.get(motherNaturePosition).setNoEntryCard(islands.get(motherNaturePosition).getNoEntryCard()-1);
@@ -246,12 +281,19 @@ public class VirtualModel {
                         }
                     }
                 }
-
                 break;
+
             case CLOUD:
+                /*
+                 * update fills the clouds with new students
+                 */
                 fillClouds(bchange);
                 break;
+
             case TAKECLOUD:
+                /*
+                 * the update takes the student from a cloud and puts them on a school
+                 */
                 for(Player p:players)
                     if(p.getPlayerID()== bchange.getPlayer())
                         System.out.println(p.getEntryStudents());
@@ -264,7 +306,12 @@ public class VirtualModel {
                         p.addEntryStudents(bchange.getStudents1());
                     }
                 break;
+
             case PLAYCLOWN:
+                /*
+                 * update that switch students from the card clown with student in the entrance of the player who played it,
+                 * decreasing also his money
+                 */
                 for(CharacterCard c: characterCards)
                     if(c.getAsset().equals("clown.jpg"))
                         c.setStudents(bchange.getCardStudents());
@@ -288,7 +335,12 @@ public class VirtualModel {
 
                     }
                 break;
+
             case PLAYHERBALIST:
+                /*
+                 * update that puts a noEntry tile on an island and removes it from the card, it also decreases the money
+                 * of the player who played it
+                 */
                 islands.get(bchange.getIslandPosition()).setNoEntryCard(islands.get(bchange.getIslandPosition()).getNoEntryCard()+1);
                 for(Player p:players){
                     if(p.getPlayerID()==bchange.getPlayer())
@@ -304,7 +356,12 @@ public class VirtualModel {
                     }
                 }
                 break;
+
             case PLAYINNKEEPER:
+                /*
+                 * update that takes a student from the card and puts it on an island and decreases the money of the
+                 * player
+                 */
                 for(Color c:Color.values())
                     if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0) {
                         islands.get(bchange.getIslandPosition()).addStudents(c, 1);
@@ -327,17 +384,20 @@ public class VirtualModel {
 
                     }
                 break;
+
             case PLAYPRINCESS:
+                /*
+                 * update that takes a student from the card and puts it in the dining hall of the school and
+                 * decreases the money of the player
+                 */
                 for(Color c:Color.values()) {
                     if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c) > 0)
                         for(Player p:players)
-                            if(p.getPlayerID()== bchange.getPlayer())
-                            {
+                            if(p.getPlayerID()== bchange.getPlayer()) {
                                 p.addStudentOf(c);
                                 checkToChangeProfessor(p,c);
                                 for(CharacterCard card :characterCards)
-                                    if(card.getAsset().equals(bchange.getAsset()))
-                                    {
+                                    if(card.getAsset().equals(bchange.getAsset())) {
                                         card.setStudents(bchange.getCardStudents());
                                         p.decreaseMoney(card.getCost());
                                         card.increaseCost();
@@ -346,7 +406,12 @@ public class VirtualModel {
 
                 }
                 break;
+
             case PLAYSTORYTELLER:
+                /*
+                 * update that switch students from the entrance of the school with students in the dining hall
+                 * and decreases the money of the player
+                 */
                 EnumMap<Color,Integer> salaToEntrance=new EnumMap<Color, Integer>(Color.class);
                 for(Color c:Color.values())
                     salaToEntrance.put(c,0);
@@ -359,7 +424,6 @@ public class VirtualModel {
                                     moveToSchool(p.getPlayerID(),c);
                                 }
                     }
-
                     if(bchange.getChoosenStudent().containsKey(c) && bchange.getChoosenStudent().get(c)>0)
                     {
                         for(Player p:players)
@@ -368,7 +432,6 @@ public class VirtualModel {
                         salaToEntrance.put(c,bchange.getChoosenStudent().get(c));
                     }
                 }
-
                 for(Player p:players)
                     if(p.getPlayerID()== bchange.getPlayer())
                     {
@@ -383,6 +446,9 @@ public class VirtualModel {
                 break;
 
             case PLAYTHIEF:
+                /*
+                 * update that removes three students of a color from all the schools
+                 */
                 Color colorToPutOnTheBag=bchange.getColor();
                 for(Player p:players)
                 {
@@ -391,29 +457,36 @@ public class VirtualModel {
                 for(Player p:players)
                     if(p.getPlayerID()== bchange.getPlayer())
                         for(CharacterCard card :characterCards)
-                            if(card.getAsset().equals(bchange.getAsset()))
-                            {   Player hasProfessor=professors.get(bchange.getColor()).getPlayer();
+                            if(card.getAsset().equals(bchange.getAsset())){
+                                Player hasProfessor=professors.get(bchange.getColor()).getPlayer();
                                 if(null!=hasProfessor && hasProfessor.getStudentsOf(bchange.getColor())==0)
                                     hasProfessor.removeProfessor(bchange.getColor());
                                 p.decreaseMoney(card.getCost());
                                 card.increaseCost();
                             }
                 break;
+
             case PLAYMERCHANT:
+                /*
+                 * set a boolean to make the player takes the professor even with the same number of students that somebody else has
+                 * and decreases the money of the player
+                 */
                 takeProfessorWhenTie=true;
                 for(Player p:players)
-                    if(p.getPlayerID()== bchange.getPlayer())
-                    {
+                    if(p.getPlayerID()== bchange.getPlayer()){
                         for(CharacterCard card :characterCards)
-                            if(card.getAsset().equals(bchange.getAsset()))
-                            {
+                            if(card.getAsset().equals(bchange.getAsset())) {
                                 p.decreaseMoney(card.getCost());
                                 card.increaseCost();
                             }
 
                     }
                 break;
+
             case DEFAULT:
+                /*
+                 * decreases the money of the player after he played a character card
+                 */
                 for(Player p:players)
                     if(p.getPlayerID()==bchange.getPlayer())
                         for(CharacterCard card :characterCards)
@@ -426,13 +499,16 @@ public class VirtualModel {
         }
     }
 
-
+    /**
+     * fill the clouds of the virtual model with new students
+     * @param bChange board change containing the new students for the clouds
+     */
     public void fillClouds(BoardChange bChange){
 
         if(clouds.isEmpty()){
-            for(int i=0; i< players.size(); i++){
+            for(int i=0; i< players.size(); i++)
                 clouds.add(new Cloud());
-        }}
+        }
         if(players.size()==2){
             clouds.get(0).setStudents(bChange.getStudents1());
             clouds.get(1).setStudents(bChange.getStudents2());
@@ -441,7 +517,6 @@ public class VirtualModel {
             clouds.get(1).setStudents(bChange.getStudents2());
             clouds.get(2).setStudents(bChange.getStudents3());
         }
-
     }
 
     public List<Island> getIslands() {return islands;}
@@ -452,11 +527,18 @@ public class VirtualModel {
 
     public List<Player> getPlayers() {return players;}
 
-
+    /**
+     * get an instance of the player corresponding to the client on which the view is
+     * @return the player
+     */
     public Player getClientPlayer() {
         return clientPlayer;
     }
 
+    /**
+     * move mother nature in the virtual model
+     * @param steps number of steps of mother nature
+     */
     public void moveMotherNature(int steps){
         this.motherNaturePosition=(motherNaturePosition+steps)%this.islands.size();
     }
@@ -468,25 +550,32 @@ public class VirtualModel {
     public int getNumOfInstance() {return numOfInstance++;}
     public void resetNumOfInstance(){this.numOfInstance=0;}
 
+    /**
+     * set a boolean variable to indicate that professor can be taken even with the same number of students of the player
+     * who holds them
+     * @param takeProfessorWhenTie boolean variable
+     */
     public void setTakeProfessorWhenTie(boolean takeProfessorWhenTie) {
         this.takeProfessorWhenTie = takeProfessorWhenTie;
     }
 
-    public void checkToChangeProfessor(Player p,Color c){
-        int numOfColor=p.getStudentsOf(c);
+    /**
+     * check if a player can gain a professor of a certain color
+     * @param player player
+     * @param color color of the professor
+     */
+    public void checkToChangeProfessor(Player player,Color color){
+        int numOfColor=player.getStudentsOf(color);
         int max=0;
-        for(Player play: players)
-        {
-            if(play.getPlayerID()!=p.getPlayerID()){
-                if(play.getStudentsOf(c)>max)
-                {
-                    max=play.getStudentsOf(c);
+        for(Player play: players) {
+            if(play.getPlayerID()!=player.getPlayerID()){
+                if(play.getStudentsOf(color)>max) {
+                    max=play.getStudentsOf(color);
                 }
             }
         }
-        if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max))
-        {
-            this.professors.get(c).goToSchool(p);
+        if((!takeProfessorWhenTie && numOfColor>max) || (takeProfessorWhenTie && numOfColor>=max)) {
+            this.professors.get(color).goToSchool(player);
         }
     }
 }

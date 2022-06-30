@@ -138,7 +138,8 @@ public class GameHandler implements Runnable{
     }
 
     /***
-     * Setup the game. The method is called when the game starts in order to setup the students, assistant and character card, clouds, islands.
+     * Setup the game. The method is called when the game starts in order to setup the students, assistant and
+     * character cards, clouds, islands.
      */
     public void setup(){
         sendAll(new GameIsStarting("The game is starting..."));
@@ -147,6 +148,9 @@ public class GameHandler implements Runnable{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        /*
+         * send message to make the players choose the wizard
+         */
         sendAll(new SelectWizard(wizards));
         while(ready < numberOfPlayers){
             try {
@@ -156,6 +160,10 @@ public class GameHandler implements Runnable{
             }
         }
         sendAll(new GenericMessage("Match is starting..."));
+        /*
+         * send message containing initial configuration of the board (position of mother nature and students
+         * on islands)
+         */
         HashMap<Integer, Color> mapStudentIsland=new HashMap<>();
         for(int i=0; i<12; i++){
             boolean check=false;
@@ -169,6 +177,10 @@ public class GameHandler implements Runnable{
                 mapStudentIsland.put(i,null);
         }
         sendAll(new MatchCreated(controller.getModel().getMotherNaturePosition(),mapStudentIsland) );
+        /*
+         * send messages to communicate other players' information and the initial configuration of the schools
+         * (entrance students and towers)
+         */
         HashMap<Integer, Wizards> mapPlayerWizard=new HashMap<>();
         HashMap<Integer, Tower> mapTowerToPlayer=new HashMap<>();
         HashMap<Integer,String> mapIDNickname=new HashMap<>();
@@ -183,6 +195,10 @@ public class GameHandler implements Runnable{
         for(Player p: controller.getModel().getPlayers()){
             sendAll(new SetUpSchoolStudent(p.getEntryStudents(),p.getPlayerID()));
         }
+        /*
+         * if the match is set to expert mode, send message to initialize the character cards, chosen randomly
+         * at the beginning of the match
+         */
         if(expertMode){
             String[] characterCards= new String[3];
             HashMap<String,Integer> mapCostCard=new HashMap<>();
@@ -210,6 +226,9 @@ public class GameHandler implements Runnable{
             }
             sendAll(msg);
         }
+        /*
+         * initialize the students on the clouds
+         */
         controller.fillCloud();
         BoardChange change=null;
         if(numberOfPlayers==2){
@@ -233,16 +252,17 @@ public class GameHandler implements Runnable{
     }
 
     /***
-     *
-     * @return
+     * get the position in the list of players of the current player (needed in the planning phase to make the players
+     * play in order after the first one)
+     * @return the position of the current player
      */
     public int getCurrentPlayerPosition() {
         return currentPlayerPosition;
     }
 
     /***
-     *
-     * @param currentPlayerPosition
+     * set the position in the list of players of the current player
+     * @param currentPlayerPosition position of the player
      */
     public void setCurrentPlayerPosition(int currentPlayerPosition) {
         this.currentPlayerPosition = currentPlayerPosition;
@@ -278,19 +298,32 @@ public class GameHandler implements Runnable{
     }
 
     /***
-     *
+     * check if an island has been conquered and if any island has been merged, in such case send a message to the
+     * clients to inform about the changes in the board
+     * @param characterIsUsed boolean value that specify if the method is called as a consequence of using a character
+     *                        card (true) or of moving mother nature (false)
      */
     public void checkConquest(boolean characterIsUsed){
         if(controller.getModel().getConquest()!=null && controller.getModel().getConquest().getMergedIsland1()==null
                 && controller.getModel().getConquest().getMergedIsland2()==null){
+            /*
+             * island conquered, no island to merge
+             */
             BoardChange change=new BoardChange(controller.getModel().getConquest().getConqueror(),
                     controller.getModel().getConquest().getConqueredIsland());
             sendAll(new UpdateMessage(change));
         }else if(controller.getModel().getConquest()!=null && (controller.getModel().getConquest().getMergedIsland1()!=null
                 || controller.getModel().getConquest().getMergedIsland2()!=null)){
+            /*
+             * island conquered, one or two islands to merge
+             */
             sendAll(new UpdateMessage((new BoardChange(controller.getModel().getConquest().getConqueror(),
                     controller.getModel().getConquest().getConqueredIsland(),controller.getModel().getConquest().getMergedIsland1(),
                     controller.getModel().getConquest().getMergedIsland2()))));
+            /*
+             * minPosition: island to which mother nature has to be placed at the end of the merge if the variable
+             * characterIsUsed is set to false
+             */
             int minPosition;
             if(controller.getModel().getConquest().getMergedIsland1()<controller.getModel().getConquest().getConqueredIsland())
                 minPosition=controller.getModel().getConquest().getMergedIsland1();
@@ -301,6 +334,10 @@ public class GameHandler implements Runnable{
             if(!characterIsUsed && controller.getModel().getMotherNaturePosition()!=minPosition)
                 sendAll(new UpdateMessage((new BoardChange(-1))));
         }
+        /*
+         * reset conquest variable in model and check if any condition of immediate ending of the game is verified,
+         * in such case send final messages and end the match
+         */
         controller.getModel().setConquest(null);
         if(controller.checkEndGame()){
             System.out.println("ENDGAME");
@@ -308,13 +345,15 @@ public class GameHandler implements Runnable{
             for (Player p : controller.getWinners()) {
                 sendTo(new YouWin(), getClientByPlayerID(p.getPlayerID()));
                 sendAllExcept(new OtherPlayerWins(p.getNickname()), getClientByPlayerID(p.getPlayerID()));
-                //endGame();
+                endGame();
             }
         }
     }
 
+
     /***
-     *
+     * method that calls the setup method and then let the first player begin the game sending him a message to select
+     * an assistant card
      */
     @Override
     public void run() {
