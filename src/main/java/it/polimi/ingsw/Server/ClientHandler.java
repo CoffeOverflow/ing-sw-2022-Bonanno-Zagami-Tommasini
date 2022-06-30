@@ -183,8 +183,10 @@ public class ClientHandler implements Runnable{
                                 }
 
                             }
-                            else
-                                send(new Error(ErrorsType.CHOSENOTVALID, "Please enter a valid game id!"));
+                            else{
+                                if(((SelectMatch) answer).getMatch() != -1)
+                                    send(new Error(ErrorsType.CHOSENOTVALID, "Please enter a valid game id!"));
+                            }
                         }
 
                     }

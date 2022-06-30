@@ -14,9 +14,9 @@ import static it.polimi.ingsw.Constants.*;
  * @author Angelo Zagami
  */
 public class ServerHandler {
-    private final Socket server;
-    private final ObjectInputStream inputStream;
-    private final ObjectOutputStream outputStream;
+    private Socket server;
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
 
 
     /***
@@ -30,7 +30,8 @@ public class ServerHandler {
             outputStream = new ObjectOutputStream(server.getOutputStream());
             this.server.setSoTimeout(timeout);
         }catch (Exception e){
-            throw new RuntimeException(e);
+            System.out.println(ANSI_RED + "Server at " + ANSI_YELLOW + Constants.getIP() + ":" + Constants.getPort() + ANSI_RED + " is offline or the insert IP and port are not valid.\nThe app will now close!" + ANSI_RESET);
+            System.exit(-1);
         }
         new Thread(() -> { //Client to Server
             while(!endGame){
@@ -43,7 +44,7 @@ public class ServerHandler {
                     sendHeartbeat();
                 }catch (RuntimeException e){
                     if(!endGame){
-                        System.out.println(ANSI_RED+"\nConnection error, server unreachable!"+ANSI_RESET);
+                        System.out.println(ANSI_RED+"\nConnection error, maybe one player left the match. The app will now close!"+ANSI_RESET);
                         System.exit(-1);
                     }
                 }

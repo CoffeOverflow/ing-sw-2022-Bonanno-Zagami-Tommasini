@@ -96,7 +96,7 @@ public class CLI implements View, Runnable {
         System.out.println(games);
         boolean confirmation = false;
         do{
-            System.out.print("Select a match to join or type 0 for create new match > ");
+            System.out.print("Select a match to join or type 0 for create new match or -1 to refresh> ");
             Scanner scanner = new Scanner(System.in);
             try{
                 int game = scanner.nextInt();
