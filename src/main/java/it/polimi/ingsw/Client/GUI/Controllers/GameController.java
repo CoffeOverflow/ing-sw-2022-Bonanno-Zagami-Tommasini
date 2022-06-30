@@ -859,7 +859,7 @@ public class GameController implements GUIController{
     }
 
     /***
-     * Method used for send to the Server the wizard choosen
+     * Method used for send to the Server the wizard chosen
      * @param event
      */
     public void chooseWizard(Event event){
@@ -914,7 +914,7 @@ public class GameController implements GUIController{
     }
 
     /***
-     * Send the choosen assistant card to Server
+     * Send the chosen assistant card to Server
      * @param event The assistant card event
      */
     public void chooseAssistant(Event event){
@@ -934,7 +934,7 @@ public class GameController implements GUIController{
     }
 
     /***
-     * Send to server the cloud choosen by the player
+     * Send to server the cloud chosen by the player
      * @param event The event associate to the cloud
      */
     public void chooseCloud(MouseEvent event){
