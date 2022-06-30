@@ -510,7 +510,7 @@ public class GameModel {
      * Get random students from the Bag and fill clouds
      * @return
      */
-    public boolean getStudentsFromBag()  {
+    public boolean getStudentsFromBag(){
         for(int i=0;i<clouds.size();i++){
             EnumMap<Color,Integer> studentsOnClouds=new EnumMap<Color, Integer>(Color.class);
             for (Color c: Color.values())
