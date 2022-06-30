@@ -79,6 +79,7 @@ class GameModelTest {
         gm.getIslandByPosition(1).setTower(Tower.BLACK);
         assertEquals(gm.getIslandByPosition(1).getNumberOfTowers(),1);
         assertEquals(gm.getPlayerByID(2).getNumberOfTower(),8); //PLAYER 2 HAS BLACK TOWER
+        System.out.println(gm.getPlayerByID(2).getTower());
         gm.mergeIslands(1,2,Tower.BLACK);
         int size=gm.getIslandSize();
         assertEquals(size,11);
@@ -90,7 +91,7 @@ class GameModelTest {
         assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.BLUE),blueStudentisland3);
         assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.PINK),pinkStudentisland3);
         assertEquals(gm.getIslandByPosition(2).getNumberOfTowers(),numberOfTower3);
-        assertEquals(gm.getPlayerByID(2).getNumberOfTower(),7);
+        assertEquals(gm.getPlayerByID(2).getNumberOfTower(),8);
         for(int i=0;i<gm.getIslandSize();i++)
         {
             System.out.println("Island "+i+" students: "+gm.getIslandByPosition(i).getStudents());
@@ -183,14 +184,17 @@ class GameModelTest {
         for (Color c: Color.values()) {
             studentOnIsland.put(c,0);
         }
+        gm.getIslandByPosition(2).setStudents(studentOnIsland);
         studentOnIsland.put(Color.BLUE,3);
         gm.moveStudentsToIsland(2,studentOnIsland);
         gm.computeInfluence(2);
+        System.out.println(gm.getIslandByPosition(2).getStudents().toString());
         assertEquals(gm.getTowerOnIsland(2).get(),gm.getPlayerByID(1).getTower());
         studentOnIsland.put(Color.BLUE,0);
         studentOnIsland.put(Color.PINK,5);
         gm.moveStudentsToIsland(2,studentOnIsland);
         gm.computeInfluence(2);
+        System.out.println(gm.getIslandByPosition(2).getStudents().toString());
         assertEquals(gm.getTowerOnIsland(2).get(),gm.getPlayerByID(2).getTower());
         gm.moveStudentsToIsland(1,studentOnIsland);
         gm.computeInfluence(1);
