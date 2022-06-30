@@ -2,6 +2,10 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
 
+/**
+ * implementation of a message from server to client to ask the client to choose the next action to make
+ * @author Federica Tommasini, Giuseppe Bonanno
+ */
 public class ChooseOption implements ServerToClientMessage{
 
     private boolean    expertMode;

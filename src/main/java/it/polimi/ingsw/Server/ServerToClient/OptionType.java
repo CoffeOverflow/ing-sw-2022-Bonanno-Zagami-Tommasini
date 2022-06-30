@@ -1,4 +1,11 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
-public enum OptionType {MOVESTUDENTS,MOVENATURE,CHOOSECLOUD
+/**
+ * Enum to specify the type of options
+ * @author Federica Tommasini
+ */
+public enum OptionType {
+    MOVESTUDENTS,
+    MOVENATURE,
+    CHOOSECLOUD
 }
