@@ -229,8 +229,6 @@ public class GameController implements GUIController{
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
         if(firsTimeInMethod){
             for(CharacterCard charCard:characterCards){
-                int j=0;
-                int k=0;
                 Image characterImg = new Image(getClass().getResourceAsStream("/graphics/character/"+charCard.getAsset()));
                 ImageView characterImgview = new ImageView(characterImg);
                 characterImgview.setFitHeight(150);
@@ -245,6 +243,9 @@ public class GameController implements GUIController{
                 characterButton.setOnAction(new EventHandler() {
 
                     @Override public void handle(Event event) {
+                        /**
+                         * Set the phase to CHARACTER if is your turn
+                         */
                         if(currentPhase!=GamePhase.ANOTHERPLAYERTURN && !playedCharacterCard)
                         {   currentPhase=GamePhase.CHARACTER;
                             showCharacterOptions(event);
@@ -252,6 +253,9 @@ public class GameController implements GUIController{
                 });
                 character.getChildren().add(characterButton);
             }
+            /**
+             * Use this variable to avoid to use 2 times a character card in one turn
+             */
             firsTimeInMethod=false;
         }
         int countForCardGrid=0;
@@ -263,6 +267,9 @@ public class GameController implements GUIController{
             characterStudentName.add("clown.jpg");
             characterStudentName.add("princess.jpg");
             EnumMap<Color,Integer> studentsOnCard=new EnumMap<Color, Integer>(Color.class);
+            /**
+             * Show student on this cards
+             */
             if (characterStudentName.contains(charCard.getAsset())) {
                 studentsOnCard=charCard.getStudents().get().clone();
                 for(Color c:Color.values()){
@@ -290,6 +297,9 @@ public class GameController implements GUIController{
                     }
                 }
             }
+            /**
+             * Show no entry tiles on herbalist card
+             */
             if(charCard.getAsset().equals("herbalist.jpg")){
 
                     int noEntryTitles=charCard.getNoEntryTiles().get();
