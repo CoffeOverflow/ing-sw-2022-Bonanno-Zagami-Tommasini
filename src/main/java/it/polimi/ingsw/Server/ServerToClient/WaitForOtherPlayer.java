@@ -2,12 +2,14 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.View;
-
 import java.io.IOException;
-
 import static it.polimi.ingsw.Constants.ANSI_RESET;
 import static it.polimi.ingsw.Constants.ANSI_YELLOW;
 
+/***
+ * Message sent when a player join in a match and have to wait for other players
+ * @author Federica Tommasini, Angelo Zagami
+ */
 public class WaitForOtherPlayer implements ServerToClientMessage {
     private static String msg= ANSI_YELLOW + "Wait for other players..." + ANSI_RESET;
 

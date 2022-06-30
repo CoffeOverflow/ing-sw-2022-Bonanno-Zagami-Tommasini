@@ -1,9 +1,12 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
-
 import java.io.IOException;
 
+/***
+ * Message sent when is the turn of player
+ * @author Federica Tommasini, Angelo Zagami
+ */
 public class YourTurn implements ServerToClientMessage{
 
     private static String msg="it's your turn \n";

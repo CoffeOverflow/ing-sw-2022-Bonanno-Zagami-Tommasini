@@ -490,6 +490,9 @@ public class CLI implements View, Runnable {
 
     }
 
+    /***
+     * This method shows the clouds on the CLI
+     */
     public void showClouds() {
         List<Cloud> clouds = this.vmodel.getClouds();
         EnumMap<Color, Integer> students;
@@ -1015,6 +1018,9 @@ public class CLI implements View, Runnable {
         showMessage("Player "+getVmodel().getPlayerByID(playerID).getNickname()+" played card "+card.getName()+"\n");
     }
 
+    /***
+     * Main loop of the CLI, the method recives the message from the server and launch the handle.
+     */
     @Override
     public void run() {
         while(!endGame){

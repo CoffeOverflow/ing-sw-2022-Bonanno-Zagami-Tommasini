@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import java.lang.reflect.Array;
 
 /***
  * Class that contains constants used in the whole project.

@@ -231,7 +231,7 @@ public class ClientHandler implements Runnable{
     public void run() {
         System.out.println("Client "+getPlayerID()+ " handler started!");
         setup();
-        System.out.println("Client "+getPlayerID()+" select game setup complete!");
+        System.out.println("Client ID: " + getPlayerID() + " Nickname: " + getNickname() +" > Game setup completed!");
         ClientToServerMessage answer;
         while (true){
             try{

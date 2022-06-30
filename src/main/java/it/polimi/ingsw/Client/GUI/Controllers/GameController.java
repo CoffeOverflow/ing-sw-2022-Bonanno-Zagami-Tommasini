@@ -107,6 +107,10 @@ public class GameController implements GUIController{
     private boolean playedCharacterCard=false;
 
 
+    /***
+     * Method automatically called when the scene is loaded.
+     * Initializes the scene.
+     */
     public void initialize() {
         mainPane.setVisible(true);
         boardAndOthersSchool.setVisible(false);
@@ -127,6 +131,10 @@ public class GameController implements GUIController{
         this.gui = gui;
     }
 
+    /***
+     * Method used to show and hide the students and tower on the school in select assistant card phase
+     * @param show True if the students and towers have to show, false otherwise
+     */
     public void showStudentsAndTowers(boolean show){
         schoolEntranceGridsList.get((vModelPosGuiPos.get(0))).setVisible(show);
         schoolDiningGridsList.get((vModelPosGuiPos.get(0))).setVisible(show);
@@ -136,6 +144,9 @@ public class GameController implements GUIController{
 
     }
 
+    /***
+     * Method for change phase depending on the different phases
+     */
     public void changePhase(){
         switch (currentPhase){
             case WIZARD:
@@ -166,10 +177,19 @@ public class GameController implements GUIController{
         }
     }
 
+    /***
+     * Change the game phase with the one passed
+     * @param phase The new game phase
+     */
     public void changePhase(GamePhase phase){
         currentPhase = phase;
     }
 
+    /***
+     * Method used to show the assistant card played by other players
+     * @param playerID The player ID
+     * @param card The card
+     */
     public void playerPlayAssistantCard(int playerID, AssistantCard card){
         if(gui.getVmodel().getPlayers().get(vModelPosGuiPos.get(1)).getPlayerID() == playerID){
             player2Assistant.setImage(new Image(getClass().getResourceAsStream(card.getAsset())));
@@ -293,6 +313,9 @@ public class GameController implements GUIController{
 
     }
 
+    /***
+     * Show Wizards, Nickname and money of the players
+     */
     public void setWizardAndNickname(){
         wizardImg.setImage(new Image(getClass().getResourceAsStream(
                 "/graphics/wizards/" + gui.getVmodel().getClientPlayer().getWizard().getCutFile())));
@@ -323,6 +346,10 @@ public class GameController implements GUIController{
     }
 
 
+    /***
+     * Method used for select player's Wizard
+     * @param wizards The list of Wizards available
+     */
     public void selectWizard(SelectWizard wizards){
 
         listOfWizards.getChildren().clear();
@@ -524,7 +551,10 @@ public class GameController implements GUIController{
         }
     }
 
-
+    /***
+     * Method used for select island in move Mothernature and character card phase
+     * @param event The event associated to the island clicked
+     */
     public void islandClicked(MouseEvent event){
         Node node = (Node) event.getSource();
         if(currentPhase == GamePhase.MOVESTUDENT && selectedStudent!=null){
@@ -553,6 +583,10 @@ public class GameController implements GUIController{
         }
     }
 
+    /***
+     * Method used to manage click on the school in Move students phase
+     * @param event The event associated to school
+     */
     public void schoolClicked(MouseEvent event){
         if(currentPhase == GamePhase.MOVESTUDENT && selectedStudent!=null){
             Node node = (Node) event.getSource();
@@ -814,12 +848,21 @@ public class GameController implements GUIController{
             count++;
         }
     }
+
+    /***
+     * Method used for send to the Server the wizard choosen
+     * @param event
+     */
     public void chooseWizard(Event event){
         Node node = (Node) event.getSource() ;
         String wizard = (String) node.getUserData();
         gui.send(new ChooseWizard(Wizards.valueOf(Wizards.class,wizard.replaceAll(" ", "").toUpperCase())));
     }
 
+    /***
+     * Show the available assistant card and let player choose one
+     * @param msg The message contains the list of assistant cards available
+     */
     public void selectAssistantCard(SelectAssistantCard msg){
         mySchool.setVisible(false);
         showStudentsAndTowers(false);
@@ -841,7 +884,6 @@ public class GameController implements GUIController{
             Image assistantImg = new Image(getClass().getResourceAsStream("/graphics/assistants/"+assistant.toLowerCase()+".png"));
             ImageView assistantImgview = new ImageView(assistantImg);
             assistantImgview.setFitHeight(150);
-            //wizardImgview.setFitWidth(494);
             assistantImgview.setPreserveRatio(true);
             //Creating a Button
             Button assistantButton = new Button();
@@ -862,6 +904,10 @@ public class GameController implements GUIController{
 
     }
 
+    /***
+     * Send the choosen assistant card to Server
+     * @param event The assistant card event
+     */
     public void chooseAssistant(Event event){
         Node node = (Node) event.getSource() ;
         String assistant = (String) node.getUserData();
@@ -893,6 +939,10 @@ public class GameController implements GUIController{
     }
 
 
+    /***
+     * Make the selected student glow and set the value in Move Student phase
+     * @param event The event associated to student
+     */
     public void setSelectedStudent(MouseEvent event){
         System.out.println(currentPhase);
         if(currentPhase.equals(GamePhase.MOVESTUDENT)){

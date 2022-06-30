@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Client.GUI;
 
+/***
+ * Enum class for FXML scenes for the GUI implementation
+ * @author Angelo Zagami
+ */
 public enum Scenes {
 
     MENU("MENU", "MainMenu.fxml"),
