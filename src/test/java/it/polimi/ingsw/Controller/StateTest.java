@@ -1,9 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.State.*;
-import it.polimi.ingsw.Model.AssistantCard;
-import it.polimi.ingsw.Model.Color;
-import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,13 +44,32 @@ public class StateTest {
 
     @BeforeEach
     public void setUp(){
-        gc=new GameController(false,3);
+        gc=new GameController(true,3);
         gc.getModel().addPlayer(1,"player1");
         gc.getModel().addPlayer(2,"player2");
         gc.getModel().addPlayer(3,"player3");
         this.gc.getModel().setCurrentPlayer(1);
     }
 
+    @Test
+    public void PlayCharactherCardTurnAction(){
+        List<CharacterCard> cards=gc.getModel().getCharacterCards();
+        Action action=new Action();
+        EnumMap<Color,Integer> entrance=new EnumMap<Color, Integer>(Color.class);
+        EnumMap<Color,Integer> choosen=new EnumMap<Color, Integer>(Color.class);
+        Integer posisland;
+        Color color;
+        state=new PlayCharacterCardState();
+        for(CharacterCard card:cards){
+            action.setAsset(card.getAsset());
+            action.setChosenColor(Color.RED);
+            state.turnAction(gc,action);
+            assertTrue();
+            action=new Action();
+
+        }
+
+    }
     @Test
     public void DecideFirstPlayerTurnAction() {
         boolean assertBoolean=false;
@@ -81,11 +98,6 @@ public class StateTest {
         assertTrue(turnOrder[0]==1);
         assertTrue(turnOrder[1]==3);
         assertTrue(turnOrder[2]==2);
-
-
-
-
-
     }
 
 

@@ -167,7 +167,6 @@ public class GameModel {
                     break;
             }
         }
-        cardNumbers[0]=10;
         if(expertMode){
             try{
             for(int i=0; i<3;i++) {
