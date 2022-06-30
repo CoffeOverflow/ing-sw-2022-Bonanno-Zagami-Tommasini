@@ -1,13 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import it.polimi.ingsw.Controller.GameController;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.sql.Array;
 import java.util.*;
 
 /**
@@ -19,7 +11,7 @@ import java.util.*;
 
 public class GameModel {
 
-    private int numberOfPlayers,numberOfStudent,numberOfTowers,motherNaturePosition,numberOfStudentBag;
+    private int numberOfPlayers,numberOfStudent,numberOfTowers,motherNaturePosition, numberOfStudentToTakeFromBag;
     private boolean expertMode;
     private List<Player> players=new ArrayList<Player>();
     private List<CharacterCard> characterCards=new ArrayList<CharacterCard>();
@@ -67,13 +59,13 @@ public class GameModel {
         if(numberOfPlayers==2){
             this.numberOfStudent=7;
             this.numberOfTowers=8;
-            this.numberOfStudentBag=3;
+            this.numberOfStudentToTakeFromBag =3;
         }
         else
         {
             this.numberOfStudent=9;
             this.numberOfTowers=6;
-            this.numberOfStudentBag=4;
+            this.numberOfStudentToTakeFromBag =4;
         }
 
         if(expertMode)
@@ -517,7 +509,7 @@ public class GameModel {
                 studentsOnClouds.put(c,0);
             Random rand=new Random();
             Color col;
-            for(int j=0;j<numberOfStudentBag;j++)
+            for(int j = 0; j< numberOfStudentToTakeFromBag; j++)
             {
                 try {
                     /*
@@ -587,7 +579,7 @@ public class GameModel {
     }
 
     public int getNumberOfStudentBag() {
-        return numberOfStudentBag;
+        return numberOfStudentToTakeFromBag;
     }
 
     public boolean isExpertMode() {
@@ -661,11 +653,10 @@ public class GameModel {
      * @param n number of the students
      */
     public void addStudentsBag(Color c, int n){
-        numberOfStudentBag+=n;
-        int numberBefore=studentsBag.get(c);
-        studentsBag.put(c,numberBefore+n);
         if(!colorsOnBag.contains(c))
             colorsOnBag.add(c);
+        int numberBefore=studentsBag.get(c);
+        studentsBag.put(c,numberBefore+n);
     }
 
     /**
