@@ -21,6 +21,29 @@ public class StateTest {
     private Action a=new Action();
     private Object IllegalArgumentException;
 
+    @Test
+    public void MoveMotherNatureTurnAction(){
+        gc.setState(new MoveMotherNatureState());
+        int oldMotherNaturePosition=gc.getModel().getMotherNaturePosition();
+        Random rand = new Random();
+        int cardNumber1 = rand.nextInt(gc.getModel().getPlayerByID(1).getAssistantCards().size());
+        int cardNumber2 = rand.nextInt(gc.getModel().getPlayerByID(1).getAssistantCards().size());
+
+        AssistantCard card1=gc.getModel().getPlayerByID(1).getAssistantCards().get(cardNumber1);
+        AssistantCard card2=gc.getModel().getPlayerByID(1).getAssistantCards().get(cardNumber2);
+        gc.addCurrentAssistantCard(1,card1);
+        gc.addCurrentAssistantCard(2,card2);
+
+        Action action=new Action();
+        gc.getModel().setCurrentPlayer(1);
+        action.setMotherNatureSteps(card1.getMothernaturesteps()-1);
+        gc.getState().turnAction(gc,action);
+        assertEquals(gc.getModel().getMotherNaturePosition(),oldMotherNaturePosition+card1.getMothernaturesteps()-1);
+
+        action.setMotherNatureSteps(card2.getMothernaturesteps()+2);
+
+    }
+
     @BeforeEach
     public void setUp(){
         gc=new GameController(false,3);

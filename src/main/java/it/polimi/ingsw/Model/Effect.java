@@ -195,8 +195,7 @@ class Effect10 implements Effect{
                 }
             }
         }
-        if(numOfColor>max)
-        {
+        if(numOfColor>max){
             model.getProfessors().get(studentColor).goToSchool(player);
         }
         EnumMap<Color,Integer> newStudents=model.getStudentsFromBag(1);

@@ -381,6 +381,9 @@ public class GameController implements GUIController{
 
     }
 
+    /**
+     * set up the grids to visualize the students on the board
+     */
     public void setGrids(){
         waitForOtherWizard.setVisible(false);
         boardAndOthersSchool.setVisible(true);
@@ -388,6 +391,7 @@ public class GameController implements GUIController{
             thirdPlayerSchool.setVisible(false);
             cloud3.setVisible(false);
         }
+        /* set the grids for the students on the clouds*/
         int count=3;
         for(Cloud cloud:gui.getVmodel().getClouds()){
             cloudGrids.getChildren().get(count).setUserData(count-3);
@@ -404,21 +408,23 @@ public class GameController implements GUIController{
             count++;
         }
 
-
         mySchoolPane.getChildren().get(2).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
                 schoolClicked(mouseEvent);
             }
         });
+
         count=0;
         for(int i=0; i<gui.getVmodel().getPlayers().size();i++){
             if(gui.getVmodel().getPlayers().get(i).equals(gui.getVmodel().getClientPlayer())) {
+                /* set the grids for the students and the towers on the school of the player corresponding to the client */
                 schoolEntranceGridsList.add((GridPane) mySchoolPane.getChildren().get(1));
                 schoolDiningGridsList.add((GridPane) mySchoolPane.getChildren().get(2));
                 schoolTowersGridsList.add((GridPane) mySchoolPane.getChildren().get(3));
                 schoolProfGridsList.add((GridPane)mySchoolPane.getChildren().get(4));
                 vModelPosGuiPos.put(0,i);
             }else{
+                /* set the grids for the students and the towers of the other two players*/
                 count++;
                 switch(count){
                     case 1:
@@ -437,13 +443,15 @@ public class GameController implements GUIController{
                         break;
                 }
             }
-
         }
+        /* set the grids for the students on the islands*/
         for(int i=0; i<gui.getVmodel().getIslands().size();i++){
             islandGroupsList.add((Group)boardAndOthersSchool.getChildren().get(i));
             islandGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(1));
             islandTowerGridsList.add((GridPane)islandGroupsList.get(i).getChildren().get(2));
         }
+
+        /* set the grids for the students on the character cards*/
         cardGridList.add(cardGrid1);
         cardGridList.add(cardGrid2);
         cardGridList.add(cardGrid3);
@@ -459,6 +467,10 @@ public class GameController implements GUIController{
 
 
     }
+
+    /**
+     * show thecurrent instance of the board
+     */
     public void showBoard(){
         for(GridPane gridPane: schoolEntranceGridsList)
             gridPane.getChildren().clear();
@@ -477,7 +489,6 @@ public class GameController implements GUIController{
         for(GridPane gridPane: cardGridList)
             gridPane.getChildren().clear();
 
-
         this.showCloud();
         this.showSchool();
         this.showIsland();
@@ -487,6 +498,9 @@ public class GameController implements GUIController{
         player1Assistant.setVisible(true);
     }
 
+    /**
+     * place the students, the towers and the no entry tiles on the islands and visualize them
+     */
     public void showIsland() {
         VirtualModel vmodel=gui.getVmodel();
         int count=0;
@@ -721,7 +735,6 @@ public class GameController implements GUIController{
                     Image studentImg = new Image(getClass().getResourceAsStream("/graphics/board/" + color.getFileStudent()));
                     ImageView studentImgview = new ImageView(studentImg);
                     studentImgview.setFitHeight(15);
-                    //wizardImgview.setFitWidth(494);
                     studentImgview.setPreserveRatio(true);
                     if(player.equals(vmodel.getClientPlayer())){
                         studentImgview.setUserData(new Object[]{j, k, color});

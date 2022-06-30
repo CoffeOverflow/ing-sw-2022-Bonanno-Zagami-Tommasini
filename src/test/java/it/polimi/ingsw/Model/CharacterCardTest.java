@@ -160,6 +160,12 @@ class CharacterCardTest {
     @Test
     void testUseCard4(){
         //test effect of card 4
+        if(!gm.getCharacterCards().stream().anyMatch(card->card.getAsset().equals("herbalist"))){
+            gm.getCharacterCards().remove(2);
+            CharacterCard card =new CharacterCard("herbalist.jpg");
+            gm.getCharacterCards().add(card);
+            gm.getCharactersPositions().put("herbalist.jpg",2);
+        }
         int noEntry=gm.getIslandByPosition(1).getNoEntryCard();
         cards[3].useCard(1,gm);
         assertEquals(gm.getIslandByPosition(1).getNoEntryCard(),noEntry+1);
@@ -313,7 +319,7 @@ class CharacterCardTest {
         gm.setCurrentPlayer(2);
         gm.getPlayerByID(2).setStudents(Color.RED,gm.getPlayerByID(1).getStudentsOf(Color.RED));
         cards[11].useCard(0,gm);
-        gm.moveToSchool(1,Color.RED);
+        gm.moveToSchool(2,Color.RED);
         assertEquals(gm.getProfessors().get(Color.RED).getPlayer(),gm.getPlayerByID(2));
     }
 
@@ -322,5 +328,24 @@ class CharacterCardTest {
         int n=cards[1].getCost();
         cards[1].increaseCost();
         assertEquals(cards[1].getCost(),n+1);
+    }
+
+    @Test
+    void testSetStudents(){
+        EnumMap<Color, Integer> students=new EnumMap<>(Color.class);
+        for(Color c: Color.values()){
+            students.put(c,1);
+        }
+        students.put(Color.RED,2);
+        CharacterCard card=new CharacterCard("clown.jpg",students);
+        students.put(Color.BLUE,2);
+        students.put(Color.PINK,2);
+        students.put(Color.GREEN,2);
+        students.put(Color.RED,0);
+        students.put(Color.YELLOW,0);
+        card.setStudents(students);
+        assertEquals(2,card.getStudents().get().get(Color.BLUE));
+        assertEquals(2,card.getStudents().get().get(Color.PINK));
+        assertEquals(2,card.getStudents().get().get(Color.GREEN));
     }
 }
