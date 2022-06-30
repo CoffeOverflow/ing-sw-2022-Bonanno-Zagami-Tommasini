@@ -663,6 +663,8 @@ public class GameModel {
         numberOfStudentBag+=n;
         int numberBefore=studentsBag.get(c);
         studentsBag.put(c,numberBefore+n);
+        if(!colorsOnBag.contains(c))
+            colorsOnBag.add(c);
     }
 
     /**
