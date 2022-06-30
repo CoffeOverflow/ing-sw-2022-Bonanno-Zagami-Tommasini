@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class UpdateMessage implements ServerToClientMessage{
 
-     private BoardChange change;
+     private final BoardChange change;
 
     public UpdateMessage(BoardChange change) {
         this.change = change;

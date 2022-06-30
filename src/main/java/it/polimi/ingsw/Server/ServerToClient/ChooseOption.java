@@ -8,9 +8,9 @@ import it.polimi.ingsw.Client.View;
  */
 public class ChooseOption implements ServerToClientMessage{
 
-    private boolean    expertMode;
+    private final boolean    expertMode;
     private String     msg;
-    private OptionType type;
+    private final OptionType type;
 
     public ChooseOption(OptionType type,boolean expertMode){
         this.type=type;

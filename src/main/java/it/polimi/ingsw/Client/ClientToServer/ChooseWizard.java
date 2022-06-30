@@ -10,7 +10,7 @@ import it.polimi.ingsw.Server.GameHandler;
  * @author Federica Tommasini, Angelo Zagami
  */
 public class ChooseWizard implements ClientToServerMessage{
-    private Wizards wizard;
+    private final Wizards wizard;
 
     public ChooseWizard(Wizards wizardName){
         wizard = wizardName;

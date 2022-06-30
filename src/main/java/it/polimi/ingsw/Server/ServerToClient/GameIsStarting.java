@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author Angelo Zagami
  */
 public class GameIsStarting implements ServerToClientMessage{
-    private String message;
+    private final String message;
 
     public GameIsStarting(String message){
         this.message = message;

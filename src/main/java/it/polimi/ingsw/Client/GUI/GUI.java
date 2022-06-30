@@ -111,7 +111,6 @@ public class GUI extends Application implements Runnable, View
 
             } catch (IOException | ClassNotFoundException | RuntimeException e) {
                 if(!endGame){
-                    e.printStackTrace();
                     showError("Connection error, maybe one player left the match. The app will now close!");
                     endGame = true;
                 }

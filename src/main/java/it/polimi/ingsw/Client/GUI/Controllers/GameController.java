@@ -37,37 +37,37 @@ import java.util.List;
 public class GameController implements GUIController{
     private GUI gui;
     private GamePhase currentPhase;
-    @FXML public AnchorPane mainPane;
-    public VBox selectWizard;
-    public VBox waitForOtherWizard;
-    public HBox listOfWizards;
+    @FXML private AnchorPane mainPane;
+    @FXML private VBox selectWizard;
+    @FXML private VBox waitForOtherWizard;
+    @FXML private HBox listOfWizards;
 
-    public AnchorPane boardAndOthersSchool;
+    @FXML private AnchorPane boardAndOthersSchool;
 
-    public ImageView thirdPlayerSchool;
-    public ImageView cloud3;
-    public ImageView mySchool;
+    @FXML private ImageView thirdPlayerSchool;
+    @FXML private ImageView cloud3;
+    @FXML private ImageView mySchool;
 
-    public AnchorPane cloudGrids;
-    public HBox assistantCard;
-    public HBox character;
-    public HBox hboxColorCharacter;
-    public HBox hboxColorCharacter1;
-    public AnchorPane secondSchoolPane;
-    public AnchorPane thirdSchoolPane;
-    public AnchorPane mySchoolPane;
-    public ImageView wizardImg;
-    public ImageView moneyImg;
-    public Text nickname;
-    public Text money;
-    public Group wizardAndMoney;
+    @FXML private AnchorPane cloudGrids;
+    @FXML private HBox assistantCard;
+    @FXML private HBox character;
+    @FXML private HBox hboxColorCharacter;
+    @FXML private HBox hboxColorCharacter1;
+    @FXML private AnchorPane secondSchoolPane;
+    @FXML private AnchorPane thirdSchoolPane;
+    @FXML private AnchorPane mySchoolPane;
+    @FXML private ImageView wizardImg;
+    @FXML private ImageView moneyImg;
+    @FXML private Text nickname;
+    @FXML private Text money;
+    @FXML private Group wizardAndMoney;
 
-    public List<GridPane> cloudGridsList=new ArrayList<>();
-    public List<GridPane> schoolEntranceGridsList=new ArrayList<>();
-    public List<GridPane> schoolDiningGridsList=new ArrayList<>();
+    private List<GridPane> cloudGridsList=new ArrayList<>();
+    private List<GridPane> schoolEntranceGridsList=new ArrayList<>();
+    private List<GridPane> schoolDiningGridsList=new ArrayList<>();
 
-    public List<GridPane> schoolProfGridsList=new ArrayList<>();
-    public List<GridPane> schoolTowersGridsList=new ArrayList<>();
+    private List<GridPane> schoolProfGridsList=new ArrayList<>();
+    private List<GridPane> schoolTowersGridsList=new ArrayList<>();
     private Integer[] selectedStudent = null;
     private Color colorOfSelectedStudent = null;
     private int numberOfMovedStudent = 0;
@@ -75,12 +75,12 @@ public class GameController implements GUIController{
     private List<GridPane> islandGridsList=new ArrayList<>();
     private List<GridPane> islandTowerGridsList=new ArrayList<>();
     private List<Group> islandGroupsList=new ArrayList<>();
-    public  List<GridPane> cardGridList=new ArrayList<>();
-    public GridPane cardGrid1;
-    public GridPane cardGrid2;
-    public GridPane cardGrid3;
+    private  List<GridPane> cardGridList=new ArrayList<>();
+    @FXML private GridPane cardGrid1;
+    @FXML private GridPane cardGrid2;
+    @FXML private GridPane cardGrid3;
 
-    public Button characterButton;
+    @FXML private Button characterButton;
 
     private boolean firsTimeInMethod=true;
 
@@ -94,13 +94,13 @@ public class GameController implements GUIController{
     private int numOfEntranceStudChoose=0;
     private int colorSelected=0;
     private String asset;
-    public ImageView player2Wizard;
-    public ImageView player3Wizard;
-    public Text player2Nickname;
-    public Text player3Nickname;
-    public ImageView player1Assistant;
-    public ImageView player2Assistant;
-    public ImageView player3Assistant;
+    @FXML private ImageView player2Wizard;
+    @FXML private ImageView player3Wizard;
+    @FXML private Text player2Nickname;
+    @FXML private Text player3Nickname;
+    @FXML private ImageView player1Assistant;
+    @FXML private ImageView player2Assistant;
+    @FXML private ImageView player3Assistant;
 
     private HashMap<Integer,Integer> vModelPosGuiPos=new HashMap<>();
 

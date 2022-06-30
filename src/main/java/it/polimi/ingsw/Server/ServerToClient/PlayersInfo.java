@@ -12,17 +12,17 @@ import java.util.HashMap;
  */
 public class PlayersInfo implements ServerToClientMessage{
 
-    private HashMap<Integer,String> mapIDNickname;
+    private final HashMap<Integer,String> mapIDNickname;
 
-    private int numberOfTowers;
+    private final int numberOfTowers;
 
-    private boolean expertMode;
+    private final boolean expertMode;
 
-    private HashMap<Integer, Wizards> mapPlayerWizard;
+    private final HashMap<Integer, Wizards> mapPlayerWizard;
 
-    private HashMap<Integer, Tower> mapTowerToPlayer;
+    private final HashMap<Integer, Tower> mapTowerToPlayer;
 
-    private int yourPlayerID;
+    private final int yourPlayerID;
 
     public PlayersInfo(boolean expertMode, int numberOfTowers, HashMap<Integer, Wizards> mapPlayerWizard,
                        HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname, int yourPlayerID) {

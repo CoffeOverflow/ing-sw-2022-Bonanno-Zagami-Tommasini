@@ -9,8 +9,8 @@ import java.io.IOException;
  * @author Angelo Zagami
  */
 public class PlayerPlayAssistantCard implements ServerToClientMessage{
-    private int playerID;
-    private AssistantCard card;
+    private final int playerID;
+    private final AssistantCard card;
 
     public PlayerPlayAssistantCard(int playerID, AssistantCard card){
         this.playerID = playerID;

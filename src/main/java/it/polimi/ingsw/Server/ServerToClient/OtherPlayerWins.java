@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author Federica Tommasini, Angelo Zagami, Giuseppe Bonanno
  */
 public class OtherPlayerWins implements ServerToClientMessage{
-    private String msg;
+    private final String msg;
 
     public OtherPlayerWins(String winnerNickname) {
         msg=winnerNickname+" won!\n";

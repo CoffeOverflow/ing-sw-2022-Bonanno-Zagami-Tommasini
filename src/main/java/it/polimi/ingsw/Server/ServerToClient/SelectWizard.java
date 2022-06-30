@@ -14,7 +14,7 @@ public class SelectWizard implements ServerToClientMessage {
 
     private String msg="Select a wizard among the ones available:\n";
 
-    private List<Wizards> availableWizards;
+    private final List<Wizards> availableWizards;
 
     public SelectWizard(List<Wizards> availableWizards){
         this.availableWizards=availableWizards;

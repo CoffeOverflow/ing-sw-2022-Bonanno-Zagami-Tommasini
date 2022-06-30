@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class IsTurnOfPlayer implements ServerToClientMessage{
 
-    private String msg;
+    private final String msg;
 
     public IsTurnOfPlayer(String playerNickname){
         msg="it's the turn of "+playerNickname+'\n';

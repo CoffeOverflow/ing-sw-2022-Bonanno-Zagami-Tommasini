@@ -13,7 +13,7 @@ import static it.polimi.ingsw.Constants.*;
  */
 public class ChooseMatch implements ServerToClientMessage{
     private static String msg="Select a match to join or type 0 for create new match > ";
-    private List<String> availableMatches;
+    private final List<String> availableMatches;
 
     public ChooseMatch(List<String> matches){
         availableMatches=matches;

@@ -16,7 +16,7 @@ import java.util.EnumMap;
  */
 public class ChooseCloud implements ClientToServerMessage{
 
-    private int cloud;
+    private final int cloud;
 
     public ChooseCloud(int cloud){
         this.cloud=cloud;

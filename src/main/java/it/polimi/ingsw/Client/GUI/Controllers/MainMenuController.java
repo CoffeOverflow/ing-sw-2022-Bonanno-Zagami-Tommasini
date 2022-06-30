@@ -20,12 +20,12 @@ import javafx.scene.layout.VBox;
 public class MainMenuController implements GUIController
 {
     private GUI gui;
-    @FXML public AnchorPane mainPane;
-    public Button button;
-    public Button connect;
-    public VBox connection;
-    public TextField address;
-    public TextField port;
+    @FXML private AnchorPane mainPane;
+    @FXML private Button button;
+    @FXML private Button connect;
+    @FXML private VBox connection;
+    @FXML private TextField address;
+    @FXML private TextField port;
 
 
     public void setGui(GUI gui) {
@@ -39,6 +39,8 @@ public class MainMenuController implements GUIController
         alert.setHeaderText(message);
         //alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
         alert.showAndWait();
+        if(message.equals("Connection error, maybe one player left the match. The app will now close!"))
+            System.exit(-1);
     }
 
     @Override

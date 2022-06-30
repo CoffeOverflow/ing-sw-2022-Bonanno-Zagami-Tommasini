@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author Angelo Zagami
  */
 public class AddMoney implements ServerToClientMessage{
-    private int playerID;
+    private final int playerID;
 
     public AddMoney(int playerID){
         this.playerID = playerID;

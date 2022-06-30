@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author Angelo Zagami
  */
 public class GenericMessage implements ServerToClientMessage{
-    private String message;
+    private final String message;
 
     public GenericMessage(String message){
         this.message = message;

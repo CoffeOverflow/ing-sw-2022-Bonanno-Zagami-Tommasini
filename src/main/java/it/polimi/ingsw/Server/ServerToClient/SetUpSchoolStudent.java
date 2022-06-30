@@ -12,9 +12,9 @@ import java.util.EnumMap;
  */
 public class SetUpSchoolStudent implements ServerToClientMessage{
 
-    private EnumMap<Color, Integer> entranceStudents;
+    private final EnumMap<Color, Integer> entranceStudents;
 
-    private Integer playerID;
+    private final Integer playerID;
 
     public SetUpSchoolStudent(EnumMap<Color, Integer> entranceStudents, Integer playerID) {
         this.entranceStudents = entranceStudents;

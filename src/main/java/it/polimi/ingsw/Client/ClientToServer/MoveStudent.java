@@ -16,10 +16,10 @@ import it.polimi.ingsw.Server.ServerToClient.*;
  */
 public class MoveStudent implements ClientToServerMessage{
 
-    private int numOfInstances;
-    private MoveTo moveTo;
+    private final int numOfInstances;
+    private final MoveTo moveTo;
 
-    private Color studentColor;
+    private final Color studentColor;
 
     private int islandPosition;
 
