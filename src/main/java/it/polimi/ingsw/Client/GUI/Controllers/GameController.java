@@ -223,6 +223,9 @@ public class GameController implements GUIController{
 
     }
 
+    /***
+     * Show the Character cards on the screen with the students and no entry cards
+     */
     public void showCharacterCard(){
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
         if(firsTimeInMethod){
