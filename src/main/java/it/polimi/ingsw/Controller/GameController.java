@@ -91,8 +91,11 @@ public class GameController {
         return false;
     }
 
-    public boolean fillCloud(){
-        return model.getStudentsFromBag();
+    /***
+     * Method used to fill Cloud
+     */
+    public void fillCloud(){
+        model.getStudentsFromBag();
     }
 
     public List<Player> getWinners() {
