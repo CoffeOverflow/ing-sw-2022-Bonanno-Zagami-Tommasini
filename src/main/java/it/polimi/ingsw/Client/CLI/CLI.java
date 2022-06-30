@@ -66,7 +66,13 @@ public class CLI implements View, Runnable {
         }while(port<1024);
         Constants.setIP(ip);
         Constants.setPort(port);
-        ServerHandler server = new ServerHandler();
+        ServerHandler server = null;
+        try{
+            server = new ServerHandler();
+        }catch (RuntimeException e){
+            System.out.println(ANSI_RED + "Server at " + ANSI_YELLOW + Constants.getIP() + ":" + Constants.getPort() + ANSI_RED + " is offline or the insert IP and port are not valid.\nThe app will now close!" + ANSI_RESET);
+            System.exit(-1);
+        }
         Thread cliThread = new Thread(new CLI(server));
         cliThread.start();
 

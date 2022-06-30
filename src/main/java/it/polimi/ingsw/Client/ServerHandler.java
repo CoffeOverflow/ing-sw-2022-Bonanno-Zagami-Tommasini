@@ -30,8 +30,7 @@ public class ServerHandler {
             outputStream = new ObjectOutputStream(server.getOutputStream());
             this.server.setSoTimeout(timeout);
         }catch (Exception e){
-            System.out.println(ANSI_RED + "Server at " + ANSI_YELLOW + Constants.getIP() + ":" + Constants.getPort() + ANSI_RED + " is offline or the insert IP and port are not valid.\nThe app will now close!" + ANSI_RESET);
-            System.exit(-1);
+            throw new RuntimeException(e);
         }
         new Thread(() -> { //Client to Server
             while(!endGame){
