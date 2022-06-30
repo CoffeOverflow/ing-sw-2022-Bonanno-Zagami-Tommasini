@@ -311,9 +311,6 @@ public class VirtualModel {
                 /*
                  * the update takes the student from a cloud and puts them on a school
                  */
-                for(Player p:players)
-                    if(p.getPlayerID()== bchange.getPlayer())
-                        System.out.println(p.getEntryStudents());
                 EnumMap<Color,Integer> noStudent=new EnumMap<Color, Integer>(Color.class);
                 for(Color c:Color.values())
                     noStudent.put(c,0);

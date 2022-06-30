@@ -340,7 +340,6 @@ public class GameHandler implements Runnable{
          */
         controller.getModel().setConquest(null);
         if(controller.checkEndGame()){
-            System.out.println("ENDGAME");
             controller.setWinners(controller.getModel().getWinner());
             for (Player p : controller.getWinners()) {
                 sendTo(new YouWin(), getClientByPlayerID(p.getPlayerID()));

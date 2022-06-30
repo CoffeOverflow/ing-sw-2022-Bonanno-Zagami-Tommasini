@@ -191,10 +191,7 @@ public class GameModel {
         }
 
     }
-
-    public void printBag(){
-        System.out.println(studentsBag.toString());
-    }
+    
 
     /***
      * Add players to the game, it is only called upon initialization of the game
@@ -321,7 +318,6 @@ public class GameModel {
                 conqueror=Optional.of(p.getPlayerID());
             }
         }
-        System.out.println("DEBUG CI 0");
         /*
          * check if the higher value of influence is unique and if the island wasn't already his
          */
@@ -337,7 +333,6 @@ public class GameModel {
                 }
             }
         }
-        System.out.println("DEBUG CI 1");
         int mergeResult=0;
         int oldIslandsSize=islands.size();
 
@@ -356,7 +351,6 @@ public class GameModel {
            mergeResult= checkMergeIsland(islandPosition,
                     getPlayerTower(conqueror.get()));
         }
-        System.out.println("DEBUG CI 2");
         /*
          * handle the results of the method that checks if there are islands to merge and set the attribute
          * of the conquest, if the island isn't conquered, set conquest to null

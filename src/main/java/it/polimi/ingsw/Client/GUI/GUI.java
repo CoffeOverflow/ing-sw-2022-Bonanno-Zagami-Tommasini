@@ -289,7 +289,6 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void youWin() {
-        System.out.println("ENDGAME");
         endGame = true;
         serverHandler.close();
         Platform.runLater(new Runnable() {
@@ -304,7 +303,6 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void otherPlayerWins(OtherPlayerWins msg){
-        System.out.println("ENDGAME");
         endGame = true;
         serverHandler.close();
         Platform.runLater(new Runnable() {
