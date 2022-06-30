@@ -86,16 +86,16 @@ class GameModelTest {
         assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.PINK),pinkStudentisland1+4+pinkStudentisland2);
         assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.GREEN),greenStudentisland1+2+greenStudentisland2);
         assertEquals(gm.getIslandByPosition(1).getNumberOfTowers(),2);
-        assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.GREEN),greenStudentisland3);
-        assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.BLUE),blueStudentisland3);
-        assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.PINK),pinkStudentisland3);
-        assertEquals(gm.getIslandByPosition(2).getNumberOfTowers(),numberOfTower3);
-        assertEquals(gm.getPlayerByID(2).getNumberOfTower(),7);
         for(int i=0;i<gm.getIslandSize();i++)
         {
             System.out.println("Island "+i+" students: "+gm.getIslandByPosition(i).getStudents());
             System.out.println("Tower: "+gm.getIslandByPosition(i).getNumberOfTowers());
         }
+        assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.GREEN),greenStudentisland3);
+        assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.BLUE),blueStudentisland3);
+        assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.PINK),pinkStudentisland3);
+        assertEquals(gm.getIslandByPosition(2).getNumberOfTowers(),numberOfTower3);
+        assertEquals(gm.getPlayerByID(2).getNumberOfTower(),7);
 
     }
 

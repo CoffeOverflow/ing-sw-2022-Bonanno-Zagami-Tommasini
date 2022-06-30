@@ -304,13 +304,20 @@ class CharacterCardTest {
         cards[10].setChosenColor(Optional.of(Color.BLUE));
         int numberBlueStud1=gm.getPlayerByID(1).getStudentsOf(Color.BLUE);
         int numberBlueStud2=gm.getPlayerByID(2).getStudentsOf(Color.BLUE);
-        if(numberBlueStud1>3)
-            numberBlueStud1=3;
-        if(numberBlueStud2>3)
-            numberBlueStud2=3;
-        int key=gm.getNumberOfStudentBag();
+
         cards[10].useCard(0,gm);
-        assertEquals(gm.getNumberOfStudentBag(),key+numberBlueStud2+numberBlueStud1);
+
+        if(numberBlueStud1>3){
+            assertEquals(gm.getPlayerByID(1).getStudentsOf(Color.BLUE), numberBlueStud1-3);
+        }else{
+            assertEquals(gm.getPlayerByID(1).getStudentsOf(Color.BLUE),0);
+        }
+
+        if(numberBlueStud2>3){
+            assertEquals(gm.getPlayerByID(2).getStudentsOf(Color.BLUE), numberBlueStud2-3);
+        }else{
+            assertEquals(gm.getPlayerByID(2).getStudentsOf(Color.BLUE), 0);
+        }
     }
 
     @Test
