@@ -3,10 +3,13 @@ package it.polimi.ingsw.Server.ServerToClient;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Tower;
 import it.polimi.ingsw.Model.Wizards;
-
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * implementation of a message from server to client to inform the client of other players' info (nicknames, towers, wizards)
+ * @author Federica Tommasini
+ */
 public class PlayersInfo implements ServerToClientMessage{
 
     private HashMap<Integer,String> mapIDNickname;
@@ -20,8 +23,6 @@ public class PlayersInfo implements ServerToClientMessage{
     private HashMap<Integer, Tower> mapTowerToPlayer;
 
     private int yourPlayerID;
-
-
 
     public PlayersInfo(boolean expertMode, int numberOfTowers, HashMap<Integer, Wizards> mapPlayerWizard,
                        HashMap<Integer, Tower> mapTowerToPlayer,HashMap<Integer,String> mapIDNickname, int yourPlayerID) {

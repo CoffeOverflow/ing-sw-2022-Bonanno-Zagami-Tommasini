@@ -2,7 +2,6 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.AssistantCard;
-
 import java.io.IOException;
 
 public class PlayerPlayAssistantCard implements ServerToClientMessage{

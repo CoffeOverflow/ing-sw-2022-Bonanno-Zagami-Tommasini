@@ -1,12 +1,15 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
-import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Wizards;
 
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * implementation of a message from server to client to ask the client to choose a wizard
+ * @author Angelo Zagami
+ */
 public class SelectWizard implements ServerToClientMessage {
 
     private String msg="Select a wizard among the ones available:\n";

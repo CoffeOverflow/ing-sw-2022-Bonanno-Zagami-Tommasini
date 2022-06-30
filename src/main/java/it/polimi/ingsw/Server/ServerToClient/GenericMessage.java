@@ -1,9 +1,12 @@
 package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
-
 import java.io.IOException;
 
+/**
+ * implementation of a message from server to client to send a generic text message to the client
+ * @author Angelo Zagami
+ */
 public class GenericMessage implements ServerToClientMessage{
     private String message;
 

@@ -4,6 +4,10 @@ import it.polimi.ingsw.Client.View;
 
 import java.io.IOException;
 
+/**
+ * implementation of a message from server to client to inform the client of the turn of another player
+ * @author Federica Tommasini
+ */
 public class IsTurnOfPlayer implements ServerToClientMessage{
 
     private String msg;

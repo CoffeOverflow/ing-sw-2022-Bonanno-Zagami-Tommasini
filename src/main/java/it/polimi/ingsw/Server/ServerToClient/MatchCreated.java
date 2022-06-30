@@ -2,23 +2,23 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.View;
 import it.polimi.ingsw.Model.Color;
-
 import java.io.IOException;
-import java.util.EnumMap;
 import java.util.HashMap;
 
+/**
+ * implementation of a message from server to client to inform the client of the initial configuration of the islands and mother nature
+ * @author Federica Tommasini
+ */
 public class MatchCreated implements ServerToClientMessage{
-
-
 
     private int motherNaturePosition;
 
-    private HashMap<Integer, Color> mapStudentIsland=new HashMap<>(); //at the beginning one student put on each island
-
-
+    /*
+     * at the beginning one student for each island is set
+     */
+    private HashMap<Integer, Color> mapStudentIsland;
 
     public MatchCreated(int motherNaturePosition, HashMap<Integer, Color> mapStudentIsland) {
-
         this.motherNaturePosition = motherNaturePosition;
         this.mapStudentIsland = mapStudentIsland;
 

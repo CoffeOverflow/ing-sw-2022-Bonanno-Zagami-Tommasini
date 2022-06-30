@@ -2,9 +2,12 @@ package it.polimi.ingsw.Server.ServerToClient;
 
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Client.View;
-
 import java.io.IOException;
 
+/**
+ * implementation of a message from server to client to make the game start
+ * @author Angelo Zagami
+ */
 public class GameIsStarting implements ServerToClientMessage{
     private String message;
 
