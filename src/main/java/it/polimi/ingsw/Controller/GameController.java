@@ -74,7 +74,6 @@ public class GameController {
 
     public void doAction(Action action){
         state.turnAction(this, action);
-        model.printBag();
     }
 
 

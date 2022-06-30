@@ -86,11 +86,6 @@ class GameModelTest {
         assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.PINK),pinkStudentisland1+4+pinkStudentisland2);
         assertEquals(gm.getIslandByPosition(1).getStudentsOf(Color.GREEN),greenStudentisland1+2+greenStudentisland2);
         assertEquals(gm.getIslandByPosition(1).getNumberOfTowers(),2);
-        for(int i=0;i<gm.getIslandSize();i++)
-        {
-            System.out.println("Island "+i+" students: "+gm.getIslandByPosition(i).getStudents());
-            System.out.println("Tower: "+gm.getIslandByPosition(i).getNumberOfTowers());
-        }
         assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.GREEN),greenStudentisland3);
         assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.BLUE),blueStudentisland3);
         assertEquals(gm.getIslandByPosition(2).getStudentsOf(Color.PINK),pinkStudentisland3);
@@ -183,6 +178,7 @@ class GameModelTest {
         for (Color c: Color.values()) {
             studentOnIsland.put(c,0);
         }
+        gm.getIslandByPosition(2).setStudents(studentOnIsland);
         studentOnIsland.put(Color.BLUE,3);
         gm.moveStudentsToIsland(2,studentOnIsland);
         gm.computeInfluence(2);

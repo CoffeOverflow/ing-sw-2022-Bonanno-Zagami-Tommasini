@@ -583,7 +583,6 @@ public class GameController implements GUIController{
                 currentPhase = GamePhase.GAME;
             }
         }else if(currentPhase== GamePhase.MOVEMOTHERNATURE && gui.getVmodel().getMotherNaturePosition()!=((int)node.getUserData()) ){
-            System.out.println("user data:"+((int)node.getUserData()));
             currentPhase = GamePhase.GAME;
             gui.send(new MoveMotherNature((int)(node.getUserData())-gui.getVmodel().getMotherNaturePosition()));
         }else if(currentPhase == GamePhase.CHARACTER && islandCanSelect){
@@ -592,7 +591,6 @@ public class GameController implements GUIController{
             }
             imageSelectedIsland = (ImageView) ((Group)node).getChildren().get(0);
             posIsland = (Integer) node.getUserData();
-            System.out.println(posIsland);
             imageSelectedIsland.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
         }
     }
@@ -604,8 +602,6 @@ public class GameController implements GUIController{
     public void schoolClicked(MouseEvent event){
         if(currentPhase == GamePhase.MOVESTUDENT && selectedStudent!=null){
             Node node = (Node) event.getSource();
-            System.out.println(colorOfSelectedStudent);
-            System.out.println(selectedStudent[0]+" "+selectedStudent[1]);
             gui.send(new MoveStudent(MoveTo.SCHOOL,colorOfSelectedStudent,gui.getVmodel().getNumOfInstance()));
             colorOfSelectedStudent = null;
             selectedStudent = null;
@@ -622,11 +618,6 @@ public class GameController implements GUIController{
         characterButton.setVisible(true);
         characterButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
-                System.out.println((asset));
-                System.out.println(posIsland);
-                System.out.println(choosenStudent);
-                System.out.println(entranceStudent);
-                System.out.println(color);
                 if(!playedCharacterCard) {
                     characterButton.setVisible(false);
                     hboxColorCharacter1.setVisible(false);
@@ -695,7 +686,6 @@ public class GameController implements GUIController{
                         actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
                         Color choosenColor=(Color)actualImageStudent.getUserData();
                         choosenStudent.put(choosenColor,choosenStudent.get(choosenColor)+1);
-                        System.out.println("chosen students: "+choosenStudent);
                         colorSelected++;
                     }
 
@@ -941,7 +931,6 @@ public class GameController implements GUIController{
         if(currentPhase==GamePhase.CHOOSECLOUD){
             Node node=(Node) event.getSource();
             int cloudId=(int) node.getUserData();
-            System.out.println("cloudId"+cloudId);
             gui.send((new ChooseCloud(cloudId)));
             playedCharacterCard=false;
         }
@@ -957,7 +946,6 @@ public class GameController implements GUIController{
      * @param event The event associated to student
      */
     public void setSelectedStudent(MouseEvent event){
-        System.out.println(currentPhase);
         if(currentPhase.equals(GamePhase.MOVESTUDENT)){
             if(selectedStudent != null){
                 for (Node student : ((GridPane)this.mySchoolPane.getChildren().get(1)).getChildren()) {
@@ -989,7 +977,6 @@ public class GameController implements GUIController{
             Color choosenColor=(Color)data[2];
             actualImageStudent.setEffect(new DropShadow(BlurType.GAUSSIAN, javafx.scene.paint.Color.DARKORANGE, 15, 0.7, 0, 0 ));
             entranceStudent.put(choosenColor,entranceStudent.get(choosenColor)+1);
-            System.out.println("entrance students: "+entranceStudent);
         }
     }
 
