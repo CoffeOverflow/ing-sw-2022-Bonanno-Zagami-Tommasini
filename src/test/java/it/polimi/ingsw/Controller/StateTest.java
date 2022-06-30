@@ -19,27 +19,30 @@ public class StateTest {
     private Action a=new Action();
     private Object IllegalArgumentException;
 
-    @Test
+
     public void MoveMotherNatureTurnAction(){
         gc.setState(new MoveMotherNatureState());
         int oldMotherNaturePosition=gc.getModel().getMotherNaturePosition();
         Random rand = new Random();
         int cardNumber1 = rand.nextInt(gc.getModel().getPlayerByID(1).getAssistantCards().size());
-        int cardNumber2 = rand.nextInt(gc.getModel().getPlayerByID(1).getAssistantCards().size());
+        int cardNumber2 = rand.nextInt(gc.getModel().getPlayerByID(2).getAssistantCards().size());
 
         AssistantCard card1=gc.getModel().getPlayerByID(1).getAssistantCards().get(cardNumber1);
-        AssistantCard card2=gc.getModel().getPlayerByID(1).getAssistantCards().get(cardNumber2);
+        AssistantCard card2=gc.getModel().getPlayerByID(2).getAssistantCards().get(cardNumber2);
         gc.addCurrentAssistantCard(1,card1);
         gc.addCurrentAssistantCard(2,card2);
 
         Action action=new Action();
         gc.getModel().setCurrentPlayer(1);
-        action.setMotherNatureSteps(card1.getMothernaturesteps()-1);
+        action.setMotherNatureSteps(card1.getMothernaturesteps());
         gc.getState().turnAction(gc,action);
         assertEquals(gc.getModel().getMotherNaturePosition(),oldMotherNaturePosition+card1.getMothernaturesteps()-1);
-
+        oldMotherNaturePosition=gc.getModel().getMotherNaturePosition();
+        gc.getModel().setCurrentPlayer(2);
+        gc.getModel().setTwoAdditionalSteps(true);
         action.setMotherNatureSteps(card2.getMothernaturesteps()+2);
-
+        gc.getState().turnAction(gc,action);
+        assertEquals(gc.getModel().getMotherNaturePosition(),oldMotherNaturePosition+card2.getMothernaturesteps()+2);
     }
 
     @BeforeEach
@@ -64,7 +67,7 @@ public class StateTest {
             action.setAsset(card.getAsset());
             action.setChosenColor(Color.RED);
             state.turnAction(gc,action);
-            assertTrue();
+            //assertTrue();
             action=new Action();
 
         }
@@ -98,6 +101,8 @@ public class StateTest {
         assertTrue(turnOrder[0]==1);
         assertTrue(turnOrder[1]==3);
         assertTrue(turnOrder[2]==2);
+
+        MoveMotherNatureTurnAction();
     }
 
 
