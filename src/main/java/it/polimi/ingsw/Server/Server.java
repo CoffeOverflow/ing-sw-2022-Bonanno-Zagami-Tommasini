@@ -15,6 +15,9 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static it.polimi.ingsw.Constants.ANSI_RED;
+import static it.polimi.ingsw.Constants.ANSI_RESET;
+
 /**
  * Server class
  * @author Angelo Zagami
@@ -58,11 +61,11 @@ public class Server implements Runnable{
                 port = scanner.nextInt();
             }
             catch (InputMismatchException e){
-                System.err.println("Please insert a numeric argument! Application will now close.");
+                System.err.println(ANSI_RED+"Please insert a numeric argument! Application will now close."+ANSI_RESET);
                 System.exit(-1);
             }
             if (port < 1024) {
-                System.err.println("Error: ports accepted started from 1024! Please insert a new value.");
+                System.err.println(ANSI_RED+"Error: ports accepted started from 1024! Please insert a new value."+ANSI_RESET);
             }
         }while (port < 1024);
         Constants.setPort(port);

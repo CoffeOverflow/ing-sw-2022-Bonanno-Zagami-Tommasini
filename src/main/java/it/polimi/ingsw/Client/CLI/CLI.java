@@ -49,8 +49,21 @@ public class CLI implements View, Runnable {
         Scanner scanner = new Scanner(System.in);
         System.out.print("\nInsert the server IP address > ");
         String ip = scanner.nextLine();
-        System.out.print("Insert the server port > ");
-        int port = scanner.nextInt();
+        int port = 0;
+        do {
+            System.out.print("Insert the server port > ");
+            try{
+                port = scanner.nextInt();
+                if(port < 1024){
+                    System.out.print(ANSI_RED+"Please insert a value > 1024!\n"+ANSI_RESET);
+                }
+            }
+            catch (InputMismatchException e){
+                scanner.nextLine();
+                System.out.print(ANSI_RED+"Please insert a number!\n"+ANSI_RESET);
+            }
+
+        }while(port<1024);
         Constants.setIP(ip);
         Constants.setPort(port);
         ServerHandler server = new ServerHandler();
