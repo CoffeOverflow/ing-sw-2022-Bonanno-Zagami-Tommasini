@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * @author Giuseppe Bonanno
+ * it is the state to take the students of the cloud,
+ * check if there are students on it and if for some error in the game you have too many students at the entrance
  */
 public class TakeStudentsState implements GameControllerState{
     @Override
@@ -27,10 +29,10 @@ public class TakeStudentsState implements GameControllerState{
                 m.getPlayerByID(m.getCurrentPlayer()).addEntryStudents(m.takeStudentsFromCloud(action.getChooseCloud()));
             }
             else
-                System.out.println("Hai troppi studenti all'ingresso");
+                System.out.println("You have too many students at the entrance");
         }
         else
-            System.out.println("La nuvola è vuota");
+            System.out.println("The cloud is empty");
 
 
     }
