@@ -10,7 +10,7 @@ import static it.polimi.ingsw.Constants.ANSI_RESET;
  * @author Federica Tommasini, Angelo Zagami
  */
 public class ActionNonValid implements ServerToClientMessage{
-    private static String msg="the action is not valid \n";
+    private static final String msg="the action is not valid \n";
 
     public static String getMsg() {
         return msg;

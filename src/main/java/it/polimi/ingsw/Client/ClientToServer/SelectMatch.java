@@ -6,7 +6,7 @@ package it.polimi.ingsw.Client.ClientToServer;
  * @author Federica Tommasini, Angelo Zagami
  */
 public class SelectMatch implements SetUpMessage{
-    private int match;
+    private final int match;
 
     public SelectMatch(int match) {
         this.match = match;

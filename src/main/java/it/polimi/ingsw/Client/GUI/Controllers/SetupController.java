@@ -25,19 +25,19 @@ import static javafx.scene.paint.Color.WHITE;
  */
 public class SetupController implements GUIController{
     private GUI gui;
-    @FXML public AnchorPane mainPane;
-    public VBox requestNickname;
-    public VBox chooseMatch;
-    public VBox listOfMatch;
-    public VBox newgameform;
-    public VBox wait;
-    public TextField nickname;
-    public Button send;
-    public Button back;
-    public RadioButton twoPlayers;
-    public RadioButton threePlayers;
-    public RadioButton expertmode;
-    public RadioButton normalmode;
+    @FXML private AnchorPane mainPane;
+    @FXML private VBox requestNickname;
+    @FXML private VBox chooseMatch;
+    @FXML private VBox listOfMatch;
+    @FXML private VBox newgameform;
+    @FXML private VBox wait;
+    @FXML private TextField nickname;
+    @FXML private Button send;
+    @FXML private Button back;
+    @FXML private RadioButton twoPlayers;
+    @FXML private RadioButton threePlayers;
+    @FXML private RadioButton expertmode;
+    @FXML private RadioButton normalmode;
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;

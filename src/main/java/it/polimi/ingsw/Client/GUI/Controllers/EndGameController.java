@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Controllers;
 
 import it.polimi.ingsw.Client.GUI.GUI;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,9 +16,9 @@ import javafx.scene.text.Text;
 public class EndGameController implements GUIController{
     private GUI gui;
 
-    public AnchorPane mainPane;
-    public ImageView endImg;
-    public Text lose;
+    @FXML private AnchorPane mainPane;
+    @FXML private ImageView endImg;
+    @FXML private Text lose;
 
     /***
      * Initialization method

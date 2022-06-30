@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public class MatchCreated implements ServerToClientMessage{
 
-    private int motherNaturePosition;
+    private final int motherNaturePosition;
 
     /*
      * at the beginning one student for each island is set

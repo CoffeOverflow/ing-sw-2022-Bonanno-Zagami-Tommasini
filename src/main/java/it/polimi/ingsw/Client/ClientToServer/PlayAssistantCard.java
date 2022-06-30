@@ -14,7 +14,7 @@ import it.polimi.ingsw.Server.ServerToClient.*;
  */
 public class PlayAssistantCard implements ClientToServerMessage{
 
-    private int cardValue;
+    private final int cardValue;
 
     public PlayAssistantCard(int card){
         cardValue=card;

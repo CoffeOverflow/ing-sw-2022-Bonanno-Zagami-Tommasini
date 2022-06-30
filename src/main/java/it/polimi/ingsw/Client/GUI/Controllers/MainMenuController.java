@@ -20,12 +20,12 @@ import javafx.scene.layout.VBox;
 public class MainMenuController implements GUIController
 {
     private GUI gui;
-    @FXML public AnchorPane mainPane;
-    public Button button;
-    public Button connect;
-    public VBox connection;
-    public TextField address;
-    public TextField port;
+    @FXML private AnchorPane mainPane;
+    @FXML private Button button;
+    @FXML private Button connect;
+    @FXML private VBox connection;
+    @FXML private TextField address;
+    @FXML private TextField port;
 
 
     public void setGui(GUI gui) {

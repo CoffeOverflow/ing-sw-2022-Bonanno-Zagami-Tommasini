@@ -6,7 +6,7 @@ package it.polimi.ingsw.Client.ClientToServer;
  * @author Federica Tommasini
  */
 public class ChooseNickname implements SetUpMessage{
-    private String nickname;
+    private final String nickname;
 
     public ChooseNickname(String nickname){
         this.nickname=nickname;

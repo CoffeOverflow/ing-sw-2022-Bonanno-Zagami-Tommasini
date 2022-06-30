@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 public class SetUpCharacterCard implements ServerToClientMessage{
 
-    private String[] characterCards;
+    private final String[] characterCards;
     private EnumMap<Color, Integer> firstCardStudents;
 
     private EnumMap<Color, Integer> secondCardStudents;

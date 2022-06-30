@@ -8,9 +8,9 @@ package it.polimi.ingsw.Client.ClientToServer;
  */
 public class SelectModeAndPlayers implements SetUpMessage {
 
-    private int numberOfPlayers;
+    private final int numberOfPlayers;
 
-    private boolean expertMode;
+    private final boolean expertMode;
 
     public SelectModeAndPlayers(int numberOfPlayers, boolean mode){
         this.numberOfPlayers=numberOfPlayers;

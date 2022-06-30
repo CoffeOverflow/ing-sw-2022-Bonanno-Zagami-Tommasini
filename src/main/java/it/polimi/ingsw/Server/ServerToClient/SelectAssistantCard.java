@@ -12,7 +12,7 @@ public class SelectAssistantCard implements ServerToClientMessage{
 
     private static String msg="select a card to play \n";
 
-    private String[] availableCards;
+    private final String[] availableCards;
 
     public SelectAssistantCard(String[] cards){
         availableCards=cards;

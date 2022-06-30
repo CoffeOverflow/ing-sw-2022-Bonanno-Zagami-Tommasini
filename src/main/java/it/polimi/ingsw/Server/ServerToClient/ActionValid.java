@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author Federica Tommasini, Angelo Zagami
  */
 public class ActionValid implements ServerToClientMessage{
-    private String msg;
+    private final String msg;
 
     public String getMsg() {
         return msg;

@@ -22,11 +22,11 @@ import static it.polimi.ingsw.Constants.ANSI_RESET;
  */
 public class UseCharacterCard implements ClientToServerMessage{
 
-    private String asset;
-    private Color color;
-    private Integer posIsland;
-    private EnumMap<Color,Integer> choosenStudents;
-    private EnumMap<Color,Integer> entranceStudents;
+    private final String asset;
+    private final Color color;
+    private final Integer posIsland;
+    private final EnumMap<Color,Integer> choosenStudents;
+    private final EnumMap<Color,Integer> entranceStudents;
 
     public UseCharacterCard(String asset,Integer posIsland, EnumMap<Color,Integer> choosenStudents,EnumMap<Color,Integer> entranceStudents,Color color){
         this.asset=asset;

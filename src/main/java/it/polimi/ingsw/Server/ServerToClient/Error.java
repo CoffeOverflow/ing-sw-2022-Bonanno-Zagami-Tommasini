@@ -8,8 +8,8 @@ import java.io.IOException;
  * @author Angelo Zagami, Giuseppe Bonanno
  */
 public class Error implements ServerToClientMessage{
-    private ErrorsType error;
-    private String message;
+    private final ErrorsType error;
+    private final String message;
 
     public Error(ErrorsType error, String message){
         this.error = error;
