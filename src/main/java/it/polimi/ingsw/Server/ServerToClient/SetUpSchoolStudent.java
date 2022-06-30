@@ -5,8 +5,11 @@ import it.polimi.ingsw.Model.Color;
 
 import java.io.IOException;
 import java.util.EnumMap;
-import java.util.HashMap;
 
+/**
+ * implementation of a message from server to client to set up the entrance students of a player
+ * @author Federica Tommasini, Giuseppe Bonanno
+ */
 public class SetUpSchoolStudent implements ServerToClientMessage{
 
     private EnumMap<Color, Integer> entranceStudents;

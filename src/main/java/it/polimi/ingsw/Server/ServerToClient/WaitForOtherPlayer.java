@@ -8,6 +8,9 @@ import java.io.IOException;
 import static it.polimi.ingsw.Constants.ANSI_RESET;
 import static it.polimi.ingsw.Constants.ANSI_YELLOW;
 
+/**
+ *
+ */
 public class WaitForOtherPlayer implements ServerToClientMessage {
     private static String msg= ANSI_YELLOW + "Wait for other players..." + ANSI_RESET;
 
