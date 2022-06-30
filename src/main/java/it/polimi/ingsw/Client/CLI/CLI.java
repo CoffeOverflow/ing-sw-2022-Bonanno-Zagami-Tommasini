@@ -244,6 +244,9 @@ public class CLI implements View, Runnable {
 
     }
 
+    /**
+     * Show the board on cli
+     */
     @Override
     public void showBoard(){
         System.out.println("");
@@ -276,6 +279,10 @@ public class CLI implements View, Runnable {
         }
 
     }
+
+    /**
+     * Show the character cards with their costs and if there are any students on the card or no entry cards
+     */
 
     public void showCharacterCard(){
         List<CharacterCard> characterCards=this.vmodel.getCharacterCards();
@@ -313,6 +320,11 @@ public class CLI implements View, Runnable {
         }
     }
 
+    /**
+     * shows the islands with the students, the no entry cards and the towers on them.
+     * The filled colored circles represent the students
+     * The towers are represented by colored squares (white, black or purple). We had to replace the gray of the towers with purple.
+     */
     public void showIsland(){
 
         EnumMap<Color,Integer> students;
@@ -387,6 +399,11 @@ public class CLI implements View, Runnable {
         }
     }
 
+    /**
+     * Show the schools of each player with the relative nickname.
+     * @param p
+     * @param colorTower
+     */
     public void showSchool(Player p,String colorTower){
 
         char[][] boardElement = new char[5][14];
@@ -400,26 +417,46 @@ public class CLI implements View, Runnable {
         boolean[] professor={p.isPresentProfessor(Color.GREEN),p.isPresentProfessor(Color.RED),p.isPresentProfessor(Color.YELLOW),p.isPresentProfessor(Color.PINK),p.isPresentProfessor(Color.BLUE)};
         int numberOfTower=p.getNumberOfTower();
 
+        /**
+         * initializes the array with the number of students on the school for each color
+         */
         numColorStudents[0]=students.get(Color.GREEN);
         numColorStudents[1]=students.get(Color.RED);
         numColorStudents[2]=students.get(Color.YELLOW);
         numColorStudents[3]=students.get(Color.PINK);
         numColorStudents[4]=students.get(Color.BLUE);
 
+        /**
+         * initializes the array with the number of entrance students for each color
+         */
         numColorEntryStudents[0]=entryStudents.get(Color.GREEN);
         numColorEntryStudents[1]=entryStudents.get(Color.RED);
         numColorEntryStudents[2]=entryStudents.get(Color.YELLOW);
         numColorEntryStudents[3]=entryStudents.get(Color.PINK);
         numColorEntryStudents[4]=entryStudents.get(Color.BLUE);
 
+        /**
+         * Show coins and nickname
+         */
+
         this.showMessage(p.getNickname()+"'s board "); this.showMessage(" Coins: "+p.getMoney()+"\n");
         StringBuilder color=new StringBuilder();
         int num=0;
         for(int i=0;i<5;i++)
             num+=numColorEntryStudents[i];
+        /**
+         * Use the ansiColor array to correctly print students with their colors
+         */
         String[] ansiColor={ANSI_GREEN,ANSI_RED,ANSI_YELLOW,ANSI_PINK,ANSI_BLUE};
+        /**
+         * i=rows
+         * j=columns
+         */
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 14; j++) {
+                /**
+                 * elements on [0][0] is a dashed circle
+                 */
                 if (i == 0 && j == 0) boardElement[i][j] = dashedCircle;
                 else if (j == 12 || j == 13) boardElement[i][j] = emptyRect;
                 else {
@@ -439,7 +476,7 @@ public class CLI implements View, Runnable {
         int k=0;
         for(int i=0;i<5;i++) {
             for (int j = 0; j < 14; j++) {
-                if(j>1 && j<12) {
+                if(j>1 && j<12) { //columns between 2 and 11 are the students on the school
                     if(j!=11)
                     {
                         color.append(ansiColor[i]);
@@ -447,6 +484,9 @@ public class CLI implements View, Runnable {
                     }
                     else
                     {
+                        /**
+                         * If j==11 print the professor
+                         */
                         if(professor[i])
                             boardElement[i][j]=filledCircle;
                         else
@@ -456,6 +496,9 @@ public class CLI implements View, Runnable {
                     }
                 }
                 else if(j<=1){
+                    /**
+                     * For j<=1 print the entrance student
+                     */
                     if(i==0 && j==0)boardElement[i][j]=dashedCircle;
                     else if(num>0){
                         while (numColorEntryStudents[k]==0)
@@ -471,6 +514,10 @@ public class CLI implements View, Runnable {
                     if(num==0)color.append(ANSI_RESET);
                 }
                 else{
+                    /**
+                     * If j>=12 print the tower of the player on the board
+                     * Filled rect if it is present on the board, otherwise print an empty rect
+                     */
                         if (numberOfTower > 0) {
                             boardElement[i][j] = filledRect;
                             numberOfTower--;
@@ -480,7 +527,7 @@ public class CLI implements View, Runnable {
                         if(j!=13)
                         color.append(" ");
                 }
-                if (j == 1 || j == 10 || j == 11 || j == 13) color.append(ANSI_RESET + "|");
+                if (j == 1 || j == 10 || j == 11 || j == 13) color.append(ANSI_RESET + "|"); //separator |
             }
             color.append("\n");
         }
@@ -745,6 +792,10 @@ public class CLI implements View, Runnable {
         }
     }
 
+    /**
+     * To use character cards and set the value to use them
+     * @param card asset of the card
+     */
     public void sendCard(String card){
         String asset=card;
         Integer posIsland=null;
@@ -760,6 +811,9 @@ public class CLI implements View, Runnable {
         for(CharacterCard c:characterCards){
             if(c.getAsset().equals(card)){
                 switch (card){
+                    /**
+                     * Innkeper: Choose a student's color from the card and the island to place it on
+                     */
                     case "innkeeper.jpg":
                         do{
                             this.showMessage("Scegli la posizione dell'isola \n>");
@@ -776,9 +830,10 @@ public class CLI implements View, Runnable {
                         for(Color c1:color.values())
                             choosenStudent.put(c1,0);
                        do{
-                           this.showMessage("Scegli il colore dello studente dalla carta\n>");
+                           this.showMessage("Choose a student's color from the card\n>");
                            String colorStudent=scanner.next();
                            try{
+                               //Check if the color is present on the card
                                color2=Color.valueOf(colorStudent.toUpperCase());
                                boolWhile=Arrays.asList(Color.values()).contains(color2);
                                if(!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2)<=0)
@@ -800,6 +855,9 @@ public class CLI implements View, Runnable {
                         break;
                     case "thief.jpg":
                         do {
+                            /**
+                             * Choose a color and all players will have to remove 3 students (or less if not present) from the entrance
+                             */
                             this.showMessage("Choose the color of students to put on the bag \n>");
                             String colorStudent = scanner.next();
                             try {
@@ -815,6 +873,9 @@ public class CLI implements View, Runnable {
                         break;
                     case "clown.jpg":
                         do{
+                            /**
+                             * change up to 3 students between those on the card and those in your entrance
+                             */
                             this.showMessage("how many students do you want to change?");
                             try{
                                 numStudent= scanner.nextInt();
@@ -836,6 +897,9 @@ public class CLI implements View, Runnable {
                                 this.showMessage("Choose a student from the card\n>");
                                 String colorStudent = scanner.next();
                                 try {
+                                    /**
+                                     * Check if the color is present on the card
+                                     */
                                     color2 = Color.valueOf(colorStudent.toUpperCase());
                                     boolWhile = Arrays.asList(Color.values()).contains(color2);
                                     if (!c.getStudents().get().containsKey(color2) || c.getStudents().get().get(color2) <= 0) {
@@ -880,6 +944,9 @@ public class CLI implements View, Runnable {
 
                     case "princess.jpg":
                         do {
+                            /**
+                             * Take a student and place him in your school
+                             */
                             this.showMessage("Choose a color of the student from the card\n>");
                             String colorStudent = scanner.next();
                             try {
@@ -904,6 +971,9 @@ public class CLI implements View, Runnable {
                         break;
                     case "storyteller.jpg":
                         do{
+                            /**
+                             * choose up to two students to exchange between your school and the entrances
+                             */
                             this.showMessage("how many students do you want to change?");
                             try{
                                 numStudent= scanner.nextInt();
@@ -971,6 +1041,9 @@ public class CLI implements View, Runnable {
                     case "auctioneer.jpg":
                     case "herbalist.jpg":
                         do{
+                            /**
+                             * Choose the island position
+                             */
                             this.showMessage("Choose the island position \n>");
                             try{
                                 posIsland=scanner.nextInt()-1;
@@ -983,6 +1056,9 @@ public class CLI implements View, Runnable {
                         break;
                     case "lumberjack.jpg":
                         do{
+                            /**
+                             * The choosen color will not be considered
+                             */
                             this.showMessage("Choose the color not to be considered when calculating the influence \n>");
                             String colorStudent=scanner.next();
                             try{
@@ -1000,6 +1076,9 @@ public class CLI implements View, Runnable {
                 }
             }
         }
+        /**
+         * Send the message with the parameters set according to the card, those not set will remain null
+         */
         serverHandler.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
         asset=null;
         posIsland=null;

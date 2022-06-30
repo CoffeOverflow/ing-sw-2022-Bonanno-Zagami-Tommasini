@@ -134,6 +134,12 @@ public class VirtualModel {
         }
     }
 
+    /**
+     * @see GameModel
+     * @param islandPos1
+     * @param islandPos2
+     * @param tower
+     */
     public void mergeIslands(int islandPos1, int islandPos2,Tower tower){
         Island deleteIsland,notDeleteIsland;
         int maxNumberOfTower;
@@ -158,6 +164,12 @@ public class VirtualModel {
         motherNaturePosition=islandPosNotDelete;
 
     }
+
+    /**
+     * @see GameModel
+     * @param islandPosition
+     * @param students
+     */
     public void moveStudentsToIsland(int islandPosition, EnumMap<Color,Integer> students )
     {
         for (Color c: Color.values()) {
@@ -165,6 +177,11 @@ public class VirtualModel {
         }
     }
 
+    /**
+     * @see GameModel
+     * @param player
+     * @param studentColor
+     */
     public void moveToSchool (int player,Color studentColor){
         for(Player p:this.players)
             if(p.getPlayerID()==player)

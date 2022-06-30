@@ -9,6 +9,7 @@ import java.util.Optional;
 
 /**
  * @author Giuseppe Bonanno
+ * The state of the controller that checks the movement of students on the islands or on the school
  */
 public class MoveStudentsState implements GameControllerState{
 
@@ -30,6 +31,9 @@ public class MoveStudentsState implements GameControllerState{
         else if(action.getMove().equals(MoveTo.SCHOOL)){
             if(m.getPlayerByID(m.getCurrentPlayer()).studentIsPresent(action.getColorStudent()))
             {
+                /**
+                 * For consistency with the board of the game, the maximum number of students on the school for each color has been set to 9
+                 */
                 if(m.getPlayerByID(m.getCurrentPlayer()).getStudentsOf(action.getColorStudent())<9)
                     m.moveToSchool(m.getCurrentPlayer(),action.getColorStudent());
                 else
