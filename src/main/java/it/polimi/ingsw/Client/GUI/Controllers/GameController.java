@@ -717,6 +717,10 @@ public class GameController implements GUIController{
 
     }
 
+    /**
+     * when clicking on the students on the card, select them and set the variable chosen students
+     * @param event click on students on the card
+     */
     public void setValueForCharacterCard(MouseEvent event){
 
            if(numOfStudentChoose==0){
