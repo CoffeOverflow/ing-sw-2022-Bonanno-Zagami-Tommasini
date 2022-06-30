@@ -292,7 +292,6 @@ public class GameModel {
     }
 
     /**
-     * @author Federica Tommasini
      * check if there is a player that has conquered the island on which mother nature ended up
      * @param islandPosition island to check for conquering
      * @return conquest object that contains information regarding the conquered island
@@ -395,7 +394,6 @@ public class GameModel {
     }
 
     /**
-     * @author Federica Tommasini
      * check if there are near islands to merge
      * @param island conquered island
      * @param tower conqueror's tower
