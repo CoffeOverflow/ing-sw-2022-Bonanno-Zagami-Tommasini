@@ -498,6 +498,11 @@ public class VirtualModel {
                 break;
 
             case DEFAULT:
+                if(bchange.getAsset().equals("auctioneer.jpg")){
+                    if(this.islands.get(bchange.getIslandPosition()).getNoEntryCard()>0){
+                        this.islands.get(bchange.getIslandPosition()).setNoEntryCard(this.islands.get(bchange.getIslandPosition()).getNoEntryCard()-1);
+                    }
+                }
                 /*
                  * decreases the money of the player after he played a character card
                  */
