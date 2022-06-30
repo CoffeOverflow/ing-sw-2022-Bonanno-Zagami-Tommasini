@@ -35,29 +35,20 @@ class PlayerTest {
         }
         player1.addEntryStudents(students);
         assertArrayEquals(player1.getEntryStudents().values().toArray(), students.values().toArray() );
+        if(player1.getEntryStudents().get(Color.BLUE) > 0)
+            assertTrue(player1.studentIsPresent(Color.BLUE));
+        else
+            assertFalse(player1.studentIsPresent(Color.BLUE));
     }
 
     @Test
     public void testAddStudentOf(){
-        //Expert mode
-        player1.setStudents(Color.BLUE, 0);
-        player1.addStudentOf(Color.BLUE);
-        player1.addStudentOf(Color.BLUE);
-        assertEquals(player1.getMoney(), 1);
-        player1.addStudentOf(Color.BLUE);
-        assertEquals(player1.getMoney(), 2);
-        assertEquals(player1.getStudentsOf(Color.BLUE), 3);
-
-        //No expert mode
         player2.setStudents(Color.BLUE, 0);
         player2.addStudentOf(Color.BLUE);
         player2.addStudentOf(Color.BLUE);
-        assertEquals(player2.getMoney(), 0);
         player2.addStudentOf(Color.BLUE);
-        assertEquals(player2.getMoney(), 0);
         assertEquals(player2.getStudentsOf(Color.BLUE), 3);
-
-
+        assertEquals(player2.getStudents().get(Color.BLUE), 3);
 
     }
 
@@ -74,6 +65,25 @@ class PlayerTest {
             assertNotEquals(card.getName(), "Turtle");
         }
     }
+
+   @Test
+   public void money(){
+        assertEquals(player1.getMoney(), 1);
+        assertEquals(player2.getMoney(), 0);
+        player1.addMoney();
+        assertEquals(player1.getMoney(), 2);
+        player1.decreaseMoney(2);
+        assertEquals(player1.getMoney(), 0);
+   }
+
+   @Test
+    public void professor(){
+       assertFalse(player1.isPresentProfessor(Color.BLUE));
+       player1.addProfessor(Color.BLUE);
+       assertTrue(player1.isPresentProfessor(Color.BLUE));
+       player1.removeProfessor(Color.BLUE);
+       assertFalse(player1.isPresentProfessor(Color.BLUE));
+   }
 
 
 
