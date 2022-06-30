@@ -518,7 +518,6 @@ public class GameController implements GUIController{
         int count=0;
         for(Island island: vmodel.getIslands()){
             if(vmodel.getMotherNaturePosition()==count){
-                System.out.println(vmodel.getMotherNaturePosition());
                 Image motherNatureImg=new Image(getClass().getResourceAsStream("/graphics/icons/mother_nature.png"));
                 ImageView motherNatureImgview = new ImageView(motherNatureImg);
                 motherNatureImgview.setFitHeight(20);
@@ -584,9 +583,6 @@ public class GameController implements GUIController{
     public void islandClicked(MouseEvent event){
         Node node = (Node) event.getSource();
         if(currentPhase == GamePhase.MOVESTUDENT && selectedStudent!=null){
-            System.out.println((int) node.getUserData());
-            System.out.println(colorOfSelectedStudent);
-            System.out.println(selectedStudent[0]+" "+selectedStudent[1]);
             gui.send(new MoveStudent(MoveTo.ISLAND,colorOfSelectedStudent,(int) node.getUserData(),gui.getVmodel().getNumOfInstance()));
             colorOfSelectedStudent = null;
             selectedStudent = null;
