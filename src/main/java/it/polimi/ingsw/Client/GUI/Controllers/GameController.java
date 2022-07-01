@@ -983,6 +983,7 @@ public class GameController implements GUIController{
      * @param event The event associated to student
      */
     public void setSelectedStudent(MouseEvent event){
+        System.out.println(currentPhase);
         if(currentPhase.equals(GamePhase.MOVESTUDENT)){
             if(selectedStudent != null){
                 for (Node student : ((GridPane)this.mySchoolPane.getChildren().get(1)).getChildren()) {

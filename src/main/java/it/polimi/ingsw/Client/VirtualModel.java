@@ -167,7 +167,6 @@ public class VirtualModel {
         else notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+ deleteIsland.getNumberOfTowers());
         if(!auctioneerPlayed)
             motherNaturePosition=islandPosNotDelete;
-        else auctioneerPlayed=false;
 
     }
 
@@ -287,6 +286,8 @@ public class VirtualModel {
                     int island2=bchange.getMergedIsland2()==0 ? 0 : bchange.getMergedIsland2() - 1;
                     mergeIslands(island1, island2, bchange.getConquerorTower());
                 }
+                if(auctioneerPlayed)
+                    auctioneerPlayed=false;
                 break;
 
             case MOTHERNATURE:
