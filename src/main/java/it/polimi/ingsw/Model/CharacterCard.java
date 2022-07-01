@@ -245,7 +245,6 @@ public class CharacterCard {
     public void useCard(Integer islandPosition, GameModel model){
         Player player=model.getPlayerByID(model.getCurrentPlayer());
         effect.effect(player,islandPosition, model,this);
-        int count=0;
         if(chosenStudents!=null && chosenStudents.isPresent() && this.getStudents()!=null &&  this.getStudents().isPresent()) {
             for(Color c: chosenStudents.get().keySet()){
                 this.getStudents().get().put(c, this.getStudents().get().get(c)-chosenStudents.get().get(c));

@@ -34,6 +34,8 @@ public class VirtualModel {
 
     private int numOfInstance =0;
 
+    private boolean auctioneerPlayed=false;
+
     /**
      * Return the Player with the specific id
      * @param id
@@ -160,8 +162,12 @@ public class VirtualModel {
         maxNumberOfTower= Math.max(notDeleteIsland.getNumberOfTowers(), deleteIsland.getNumberOfTowers());
 
         moveStudentsToIsland(islandPosNotDelete,deleteIsland.getStudents());
-        notDeleteIsland.setNumberOfTowers(maxNumberOfTower+1);
-        motherNaturePosition=islandPosNotDelete;
+        if(notDeleteIsland.getNumberOfTowers()==0 || deleteIsland.getNumberOfTowers()==0)
+            notDeleteIsland.setNumberOfTowers(maxNumberOfTower+1);
+        else notDeleteIsland.setNumberOfTowers(notDeleteIsland.getNumberOfTowers()+ deleteIsland.getNumberOfTowers());
+        if(!auctioneerPlayed)
+            motherNaturePosition=islandPosNotDelete;
+        else auctioneerPlayed=false;
 
     }
 
@@ -499,6 +505,7 @@ public class VirtualModel {
 
             case DEFAULT:
                 if(bchange.getAsset().equals("auctioneer.jpg")){
+                    auctioneerPlayed=true;
                     if(this.islands.get(bchange.getIslandPosition()).getNoEntryCard()>0){
                         this.islands.get(bchange.getIslandPosition()).setNoEntryCard(this.islands.get(bchange.getIslandPosition()).getNoEntryCard()-1);
                     }

@@ -167,6 +167,7 @@ public class GameModel {
                     break;
             }
         }
+        cardNumbers[0]=1;
         if(expertMode){
             try{
             for(int i=0; i<3;i++) {
@@ -353,7 +354,6 @@ public class GameModel {
          * handle the results of the method that checks if there are islands to merge and set the attribute
          * of the conquest, if the island isn't conquered, set conquest to null
          */
-        Conquest conquest;
         int mergeIsland1=0;
         int mergeIsland2=0;
         if(conqueror.isPresent() && mergeResult==0)

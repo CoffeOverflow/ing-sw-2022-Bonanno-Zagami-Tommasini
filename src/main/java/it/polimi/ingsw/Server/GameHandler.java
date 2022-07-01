@@ -332,7 +332,7 @@ public class GameHandler implements Runnable{
                 minPosition=controller.getModel().getConquest().getMergedIsland2();
             else minPosition=controller.getModel().getConquest().getConqueredIsland();
             if(!characterIsUsed && controller.getModel().getMotherNaturePosition()!=minPosition)
-                sendAll(new UpdateMessage((new BoardChange(-1))));
+              sendAll(new UpdateMessage((new BoardChange(-1))));
         }
         /*
          * reset conquest variable in model and check if any condition of immediate ending of the game is verified,

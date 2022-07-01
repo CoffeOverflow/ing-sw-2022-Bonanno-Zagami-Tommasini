@@ -211,7 +211,7 @@ public class GUI extends Application implements Runnable, View
 
     @Override
     public void actionValid(String message) {
-        //CAMBIO STATO IN BASE AL GAME?
+
         if(currentScene.equals(nameToScene.get("GAME"))){
             GameController controller = (GameController) sceneToController.get(currentScene);
             Platform.runLater(new Runnable() {

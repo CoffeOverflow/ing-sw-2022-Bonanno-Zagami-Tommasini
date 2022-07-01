@@ -205,7 +205,6 @@ public class GameController implements GUIController{
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(message.replaceAll("\u001B\\[[\\d;]*[^\\d;]",""));
-        //alert.setContentText("The entered IP/port doesn't match any active server or the server is not running. Please check errors and try again!");
         alert.showAndWait();
         if(message.equals("Connection error, maybe one player left the match. The app will now close!"))
             System.exit(-1);
@@ -638,7 +637,6 @@ public class GameController implements GUIController{
                     hboxColorCharacter.setVisible(false);
                     currentPhase = GamePhase.GAME;
                     gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
-                    playedCharacterCard=true;
                     if(null!=imageSelectedIsland)
                         imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
                     imageSelectedIsland=null;

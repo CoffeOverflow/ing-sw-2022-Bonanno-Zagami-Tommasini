@@ -65,10 +65,7 @@ public class UseCharacterCard implements ClientToServerMessage{
                if(c.getAsset().equals(asset) && null!=c.getStudents() && c.getStudents().isPresent())
                    cardStudents=c.getStudents().get().clone();
            }
-           game.checkConquest(true);
            BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
-           String[] nameCard=asset.split("\\.");
-           game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+nameCard[0]+ANSI_RESET),player);
            try {
                Thread.sleep(500);
            } catch (InterruptedException e) {
@@ -80,13 +77,16 @@ public class UseCharacterCard implements ClientToServerMessage{
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
+           game.checkConquest(true);
+           String[] nameCard=asset.split("\\.");
+           game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+nameCard[0]+ANSI_RESET),player);
+
        }catch (IllegalStateException e){
            /*
             * if the player doesn't have enough money to play the card, he will receive back an error
             */
            if(e.getMessage().equals("Not enough money")) {
-               game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY), player);
-               game.sendTo(new GenericMessage(ANSI_RED + "you don't have enough money to play the card!" + ANSI_RESET), player);
+               game.sendTo(new Error(ErrorsType.NOTENOUGHMONEY,"you don't have enough money to play the card!"), player);
            }else if(e.getMessage().equals("Unexpected number of chosen students")){
                game.sendTo(new Error(ErrorsType.CHOSENOTVALID),player);
                game.sendTo(new GenericMessage(ANSI_RED + "you selected an incorrect number of students to play the card!" + ANSI_RESET), player);
