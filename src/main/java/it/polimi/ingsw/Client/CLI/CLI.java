@@ -619,6 +619,7 @@ public class CLI implements View, Runnable {
     @Override
     public void chooseOption(ChooseOption message){
         int characterOrMove=0;
+        boolean printNextLine=true;
         Scanner scanner=new Scanner(System.in);
         /*
          * make the player choose the number of the cloud that he wants to take the students from
@@ -666,14 +667,18 @@ public class CLI implements View, Runnable {
                     showMessage("Choose an option: \n 1."+msg+" 2.Play a character card \n" );
                     System.out.print("> ");
                     try {
-
                         characterOrMove = scanner.nextInt();
                     }
                     catch (InputMismatchException e){
                         this.showError("Please insert an integer value");
                     }
-                }else characterOrMove=1;
-                scanner.nextLine();
+                    printNextLine=true;
+                }else {
+                    characterOrMove=1;
+                    printNextLine=false;
+                }
+                if(printNextLine)
+                    scanner.nextLine();
             }while(characterOrMove!=1 && characterOrMove!=2);
 
             switch (characterOrMove) {
@@ -712,19 +717,19 @@ public class CLI implements View, Runnable {
                                      * a student, or if such student is not present in the player's school entrance,
                                      * the player has to provide an input again
                                      */
-                                    System.out.print("Choose the color of the student: \n> ");
-                                    col=scanner.next();
                                     try{
+                                        System.out.print("Choose the color of the student: \n> ");
+                                        col=scanner.next();
                                         Color color2=Color.valueOf(col.toUpperCase());
                                         boolWhile=Arrays.asList(Color.values()).contains(color2);
+                                        if(!vmodel.getClientPlayer().getEntryStudents().containsKey(color))
+                                            this.showError("Choose a color that is present in your entrance");
                                     }catch(Exception e){
                                         boolWhile=false;
                                         this.showError("Choose a valid color");
                                     }
                                 }while (!boolWhile);
                                 color=Color.valueOf(col.toUpperCase());
-                                if(!vmodel.getClientPlayer().getEntryStudents().containsKey(color))
-                                    this.showError("Choose a color that is present in your entrance");
                             }while(!vmodel.getClientPlayer().getEntryStudents().containsKey(color) ||
                                     vmodel.getClientPlayer().getEntryStudents().get(color)==0);
 
