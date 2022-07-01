@@ -634,6 +634,7 @@ public class GameController implements GUIController{
     public void showCharacterOptions(Event event){
         Node card= (Node) event.getSource();
         asset=(String) card.getUserData();
+        System.out.println("player "+asset);
         characterButton.setVisible(true);
         characterButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
