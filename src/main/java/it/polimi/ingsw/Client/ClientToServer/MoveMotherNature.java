@@ -20,16 +20,18 @@ public class MoveMotherNature implements ClientToServerMessage{
     }
 
     public void handleMessage(GameHandler game, ClientHandler player){
-
+        System.out.println("CIAO FEDE");
         Action action=new Action();
         try{
             /*
              * set the state of the controller and execute the doAction method to move mother nature of the steps
              * indicated by the player in the message
              */
+            System.out.println("CIAO FEDE SONO PRIMA DEGLI STEPS: "+steps);
             if(steps<=0){
                 steps+=game.getController().getModel().getIslandSize();
             }
+            System.out.println("CIAO FEDE SONO DOPO DEGLI STEPS: "+steps);
             action.setMotherNatureSteps(steps);
             game.getController().setState(new MoveMotherNatureState());
             System.out.println("Before do action");
