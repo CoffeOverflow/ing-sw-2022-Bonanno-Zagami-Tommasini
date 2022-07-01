@@ -21,6 +21,7 @@ public class CharacterCard {
    // private Optional<Integer> chosenNumberOfSteps;
     private Optional<Color> chosenColor;
     private Optional<Integer> noEntryTiles;
+    private boolean usedChar=false;
 
 
 
@@ -265,7 +266,11 @@ public class CharacterCard {
      * method that increases the cost of the card after its first usage
      */
     public void increaseCost(){
-        cost++;
+        if(!usedChar)
+        {
+            cost++;
+            usedChar=true;
+        }
     }
 
     /**
