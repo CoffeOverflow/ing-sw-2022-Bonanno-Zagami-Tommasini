@@ -32,7 +32,9 @@ public class MoveMotherNature implements ClientToServerMessage{
             }
             action.setMotherNatureSteps(steps);
             game.getController().setState(new MoveMotherNatureState());
+            System.out.println("Before do action");
             game.getController().doAction(action);
+            System.out.println("After do action");
             System.out.println(game.getController().getModel().getMotherNaturePosition());
 
             /*
