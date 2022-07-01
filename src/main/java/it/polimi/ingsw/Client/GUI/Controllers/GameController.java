@@ -226,6 +226,7 @@ public class GameController implements GUIController{
      */
     public void showCharacterCard(){
         List<CharacterCard> characterCards=gui.getVmodel().getCharacterCards();
+        character.getChildren().clear();
         if(firsTimeInMethod){
             for(CharacterCard charCard:characterCards){
                 Image characterImg = new Image(getClass().getResourceAsStream("/graphics/character/"+charCard.getAsset()));
