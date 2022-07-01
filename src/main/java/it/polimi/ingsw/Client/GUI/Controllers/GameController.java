@@ -591,11 +591,6 @@ public class GameController implements GUIController{
             }
         }else if(currentPhase== GamePhase.MOVEMOTHERNATURE && gui.getVmodel().getMotherNaturePosition()!=((int)node.getUserData()) ){
             currentPhase = GamePhase.GAME;
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             gui.send(new MoveMotherNature((int)(node.getUserData())-gui.getVmodel().getMotherNaturePosition()));
             System.out.println("msg mandato");
         }else if(currentPhase == GamePhase.CHARACTER && islandCanSelect){
@@ -643,6 +638,11 @@ public class GameController implements GUIController{
                     hboxColorCharacter1.setVisible(false);
                     hboxColorCharacter.setVisible(false);
                     currentPhase = GamePhase.GAME;
+                    System.out.println(asset);
+                    System.out.println(posIsland);
+                    System.out.println(choosenStudent);
+                    System.out.println(entranceStudent);
+                    System.out.println(color);
                     gui.send(new UseCharacterCard(asset,posIsland,choosenStudent,entranceStudent,color));
                     if(null!=imageSelectedIsland)
                         imageSelectedIsland.setEffect(new DropShadow(0, javafx.scene.paint.Color.DARKORANGE));
