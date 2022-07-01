@@ -722,7 +722,8 @@ public class CLI implements View, Runnable {
                                         col=scanner.next();
                                         Color color2=Color.valueOf(col.toUpperCase());
                                         boolWhile=Arrays.asList(Color.values()).contains(color2);
-                                        if(!vmodel.getClientPlayer().getEntryStudents().containsKey(color))
+                                        if(!vmodel.getClientPlayer().getEntryStudents().containsKey(color2) ||
+                                                vmodel.getClientPlayer().getEntryStudents().get(color2)==0)
                                             this.showError("Choose a color that is present in your entrance");
                                     }catch(Exception e){
                                         boolWhile=false;
