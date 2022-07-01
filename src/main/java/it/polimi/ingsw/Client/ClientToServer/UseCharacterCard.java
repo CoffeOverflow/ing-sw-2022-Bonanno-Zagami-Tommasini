@@ -80,9 +80,7 @@ public class UseCharacterCard implements ClientToServerMessage{
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
-           System.out.println("Before check card");
            game.checkConquest(true);
-           System.out.println("After check card");
        }catch (IllegalStateException e){
            /*
             * if the player doesn't have enough money to play the card, he will receive back an error
@@ -100,7 +98,6 @@ public class UseCharacterCard implements ClientToServerMessage{
         * move the students or to move mother nature
         */
         game.getController().setState(game.getController().getStateToReturn());
-        System.out.println(game.getController().getState());
         if(game.getController().getState() instanceof MoveStudentsState || game.getController().getState() instanceof DecideFirstPlayerState
                 || game.getController().getState() instanceof TakeStudentsState)
             game.sendTo(new ChooseOption(OptionType.MOVESTUDENTS,game.isExpertMode()), game.getClientByPlayerID(game.getController().getModel().getCurrentPlayer()));

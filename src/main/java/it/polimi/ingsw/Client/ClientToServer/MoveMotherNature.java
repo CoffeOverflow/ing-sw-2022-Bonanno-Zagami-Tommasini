@@ -20,33 +20,25 @@ public class MoveMotherNature implements ClientToServerMessage{
     }
 
     public void handleMessage(GameHandler game, ClientHandler player){
-        System.out.println("CIAO FEDE");
         Action action=new Action();
         try{
             /*
              * set the state of the controller and execute the doAction method to move mother nature of the steps
              * indicated by the player in the message
              */
-            System.out.println("CIAO FEDE SONO PRIMA DEGLI STEPS: "+steps);
             if(steps<=0){
                 steps+=game.getController().getModel().getIslandSize();
             }
-            System.out.println("CIAO FEDE SONO DOPO DEGLI STEPS: "+steps);
             action.setMotherNatureSteps(steps);
             game.getController().setState(new MoveMotherNatureState());
-            System.out.println("Before do action");
             game.getController().doAction(action);
-            System.out.println("After do action");
-            System.out.println(game.getController().getModel().getMotherNaturePosition());
 
             /*
              * send an update message to inform the clients of the moving of mother nature
              * and check if any island has been conquered with such move
              */
             game.sendAll(new UpdateMessage(new BoardChange(steps)));
-            System.out.println("After send all"+game.getController().getModel().getMotherNaturePosition());
             game.checkConquest(false);
-            System.out.println("After check conquet"+game.getController().getModel().getMotherNaturePosition());
             /*
              * check if the turn is set to be the last round and if the clouds are empty
              */

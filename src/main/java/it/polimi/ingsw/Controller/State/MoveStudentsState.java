@@ -17,7 +17,6 @@ public class MoveStudentsState implements GameControllerState{
     @Override
     public void turnAction(GameController gc, Action action)throws IllegalArgumentException{
         m=gc.getModel();
-        System.out.println("STATE 1");
         if(action.getMove().equals(MoveTo.ISLAND)){
 
                     if(m.isPresentEntryPlayer(action.getColorStudent())){
@@ -27,10 +26,8 @@ public class MoveStudentsState implements GameControllerState{
                     else {
                         throw new IllegalArgumentException("You don't have students of this color at your entrance");
                     }
-            System.out.println("STATE 2");
         }
         else if(action.getMove().equals(MoveTo.SCHOOL)){
-            System.out.println("STATE 3");
             if(m.getPlayerByID(m.getCurrentPlayer()).studentIsPresent(action.getColorStudent()))
             {
                 /**
