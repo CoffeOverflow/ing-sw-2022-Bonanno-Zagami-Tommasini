@@ -286,8 +286,7 @@ public class VirtualModel {
                     int island2=bchange.getMergedIsland2()==0 ? 0 : bchange.getMergedIsland2() - 1;
                     mergeIslands(island1, island2, bchange.getConquerorTower());
                 }
-                if(auctioneerPlayed)
-                    auctioneerPlayed=false;
+
                 break;
 
             case MOTHERNATURE:
@@ -295,6 +294,8 @@ public class VirtualModel {
                  * the update sets mother nature to a new position, if there was a no entry card on the island, it is put
                  * back on the card
                  */
+                if(auctioneerPlayed)
+                    auctioneerPlayed=false;
                 moveMotherNature(bchange.getMotherNatureSteps());
                 if(islands.get(motherNaturePosition).getNoEntryCard()>0){
                     islands.get(motherNaturePosition).setNoEntryCard(islands.get(motherNaturePosition).getNoEntryCard()-1);
