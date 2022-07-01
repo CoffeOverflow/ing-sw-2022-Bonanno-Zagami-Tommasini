@@ -54,8 +54,6 @@ public class MoveMotherNatureState implements GameControllerState {
             int n=m.getCharactersPositions().get("herbalist.jpg");
             m.getCharacterCards().get(n).setNoEntryTiles(Optional.of(m.getCharacterCards().get(n).getNoEntryTiles().get()+1));
         }
-        for(Player p: m.getPlayers())
-        System.out.println("towers "+p.getNickname()+" "+ p.getNumberOfTower());
 
     }
 

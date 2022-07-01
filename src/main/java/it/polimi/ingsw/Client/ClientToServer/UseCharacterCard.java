@@ -66,6 +66,9 @@ public class UseCharacterCard implements ClientToServerMessage{
                    cardStudents=c.getStudents().get().clone();
            }
            BoardChange change=new BoardChange(asset,posIsland,color,cardStudents,choosenStudents,entranceStudents,player.getPlayerID());
+
+           String[] nameCard=asset.split("\\.");
+           game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+nameCard[0]+ANSI_RESET),player);
            try {
                Thread.sleep(500);
            } catch (InterruptedException e) {
@@ -78,9 +81,6 @@ public class UseCharacterCard implements ClientToServerMessage{
                throw new RuntimeException(e);
            }
            game.checkConquest(true);
-           String[] nameCard=asset.split("\\.");
-           game.sendAllExcept(new GenericMessage(ANSI_RED+game.getController().getModel().getPlayerByID(player.getPlayerID()).getNickname()+" play the card "+nameCard[0]+ANSI_RESET),player);
-
        }catch (IllegalStateException e){
            /*
             * if the player doesn't have enough money to play the card, he will receive back an error

@@ -83,7 +83,7 @@ public class CharacterCard {
         this.asset = asset;
         switch(asset){
             case "auctioneer.jpg":
-                cost=3;
+                cost=0;
                 effect=new Effect2();
                 break;
             case "postman.jpg":

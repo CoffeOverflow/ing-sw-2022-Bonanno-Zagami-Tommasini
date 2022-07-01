@@ -48,6 +48,16 @@ class Effect2 implements Effect{
         if(noEntryCards==0){
             Conquest c=model.computeInfluence(islandPosition);
             model.setConquest(c);
+            if(islandPosition>0 && islandPosition<model.getMotherNaturePosition()){
+                if(null!=c.getMergedIsland1() && null!=c.getMergedIsland2())
+                    model.moveMotherNature(-2);
+                else if(null!=c.getMergedIsland2() || null!=c.getMergedIsland1())
+                    model.moveMotherNature(-1);
+            }else if(islandPosition==0 && model.getMotherNaturePosition()>0){
+                if((null!=c.getMergedIsland1() && c.getMergedIsland1()==1)
+                    || (null!=c.getMergedIsland2() && c.getMergedIsland2()==1))
+                    model.moveMotherNature(-1);
+            }
         }
         else{
             model.setConquest(null);

@@ -317,8 +317,9 @@ public class GameHandler implements Runnable{
             /*
              * island conquered, one or two islands to merge
              */
+            int islandPosition=controller.getModel().getConquest().getConqueredIsland();
             sendAll(new UpdateMessage((new BoardChange(controller.getModel().getConquest().getConqueror(),
-                    controller.getModel().getConquest().getConqueredIsland(),controller.getModel().getConquest().getMergedIsland1(),
+                    islandPosition,controller.getModel().getConquest().getMergedIsland1(),
                     controller.getModel().getConquest().getMergedIsland2()))));
             /*
              * minPosition: island to which mother nature has to be placed at the end of the merge if the variable
@@ -333,6 +334,18 @@ public class GameHandler implements Runnable{
             else minPosition=controller.getModel().getConquest().getConqueredIsland();
             if(!characterIsUsed && controller.getModel().getMotherNaturePosition()!=minPosition)
               sendAll(new UpdateMessage((new BoardChange(-1))));
+            if(characterIsUsed){
+                if(islandPosition>0 && islandPosition<controller.getModel().getMotherNaturePosition()){
+                    if(null!=controller.getModel().getConquest().getMergedIsland1() && null!=controller.getModel().getConquest().getMergedIsland2())
+                        sendAll(new UpdateMessage((new BoardChange(-2))));
+                    else if(null!=controller.getModel().getConquest().getMergedIsland2() || null!=controller.getModel().getConquest().getMergedIsland1())
+                        sendAll(new UpdateMessage((new BoardChange(-1))));
+                }else if(islandPosition==0 && controller.getModel().getMotherNaturePosition()>0){
+                    if((null!=controller.getModel().getConquest().getMergedIsland1() && controller.getModel().getConquest().getMergedIsland1()==1)
+                            || (null!=controller.getModel().getConquest().getMergedIsland2() && controller.getModel().getConquest().getMergedIsland2()==1))
+                        sendAll(new UpdateMessage((new BoardChange(-1))));
+                }
+            }
         }
         /*
          * reset conquest variable in model and check if any condition of immediate ending of the game is verified,
