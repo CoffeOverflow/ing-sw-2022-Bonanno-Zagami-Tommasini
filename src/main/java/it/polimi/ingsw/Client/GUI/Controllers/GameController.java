@@ -629,8 +629,8 @@ public class GameController implements GUIController{
         Node card= (Node) event.getSource();
         asset=(String) card.getUserData();
         characterButton.setVisible(true);
-        characterButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override public void handle(MouseEvent mouseEvent) {
+        characterButton.setOnAction(new EventHandler() {
+            @Override public void handle(Event event) {
                 if(!playedCharacterCard) {
                     characterButton.setVisible(false);
                     hboxColorCharacter1.setVisible(false);
