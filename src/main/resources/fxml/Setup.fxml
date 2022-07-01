@@ -60,7 +60,7 @@
 
         <!--New game-->
         <VBox fx:id="newgameform" alignment="CENTER" layoutY="250" spacing="15">
-            <Label alignment="CENTER" layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Impostazioni partita" />
+            <Label alignment="CENTER" layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Match setting" />
             <Label layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Number of players:" />
             <HBox alignment="CENTER" layoutY="250" prefWidth="600.0" spacing="10">
                 <RadioButton fx:id="twoPlayers" text="2 Players">
