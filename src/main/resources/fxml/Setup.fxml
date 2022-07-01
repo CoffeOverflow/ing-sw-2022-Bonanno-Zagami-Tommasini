@@ -42,7 +42,7 @@
         </HBox>
         <!--Match-->
         <VBox fx:id="chooseMatch" alignment="CENTER" layoutY="250" spacing="30">
-            <Label alignment="CENTER" layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Lista partite" />
+            <Label alignment="CENTER" layoutY="230" prefHeight="21.0" styleClass="inputLabels" text="Game List" />
             <HBox alignment="CENTER" layoutY="250" prefWidth="600.0">
                 <VBox fx:id="listOfMatch" alignment="CENTER" spacing="10">
                     <!--<HBox alignment="CENTER" >
