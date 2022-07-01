@@ -312,6 +312,7 @@ public class GameHandler implements Runnable{
             BoardChange change=new BoardChange(controller.getModel().getConquest().getConqueror(),
                     controller.getModel().getConquest().getConqueredIsland());
             sendAll(new UpdateMessage(change));
+            System.out.println("DEBUG MN 1");
         }else if(controller.getModel().getConquest()!=null && (controller.getModel().getConquest().getMergedIsland1()!=null
                 || controller.getModel().getConquest().getMergedIsland2()!=null)){
             /*
@@ -321,6 +322,7 @@ public class GameHandler implements Runnable{
             sendAll(new UpdateMessage((new BoardChange(controller.getModel().getConquest().getConqueror(),
                     islandPosition,controller.getModel().getConquest().getMergedIsland1(),
                     controller.getModel().getConquest().getMergedIsland2()))));
+            System.out.println("DEBUG MN 2");
             /*
              * minPosition: island to which mother nature has to be placed at the end of the merge if the variable
              * characterIsUsed is set to false
@@ -332,15 +334,18 @@ public class GameHandler implements Runnable{
                     controller.getModel().getConquest().getMergedIsland2()<controller.getModel().getConquest().getConqueredIsland())
                 minPosition=controller.getModel().getConquest().getMergedIsland2();
             else minPosition=controller.getModel().getConquest().getConqueredIsland();
+            System.out.println("DEBUG MN 3");
             if(!characterIsUsed && controller.getModel().getMotherNaturePosition()!=minPosition)
               sendAll(new UpdateMessage((new BoardChange(-1))));
             if(characterIsUsed){
+                System.out.println("DEBUG MN 4");
                 if(islandPosition>0 && islandPosition<controller.getModel().getMotherNaturePosition()){
                     if(null!=controller.getModel().getConquest().getMergedIsland1() && null!=controller.getModel().getConquest().getMergedIsland2())
                         sendAll(new UpdateMessage((new BoardChange(-2))));
                     else if(null!=controller.getModel().getConquest().getMergedIsland2() || null!=controller.getModel().getConquest().getMergedIsland1())
                         sendAll(new UpdateMessage((new BoardChange(-1))));
                 }else if(islandPosition==0 && controller.getModel().getMotherNaturePosition()>0){
+                    System.out.println("DEBUG MN 5");
                     if((null!=controller.getModel().getConquest().getMergedIsland1() && controller.getModel().getConquest().getMergedIsland1()==1)
                             || (null!=controller.getModel().getConquest().getMergedIsland2() && controller.getModel().getConquest().getMergedIsland2()==1))
                         sendAll(new UpdateMessage((new BoardChange(-1))));
