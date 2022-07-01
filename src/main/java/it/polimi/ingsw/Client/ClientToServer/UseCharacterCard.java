@@ -80,7 +80,9 @@ public class UseCharacterCard implements ClientToServerMessage{
            } catch (InterruptedException e) {
                throw new RuntimeException(e);
            }
+           System.out.println("Before check card");
            game.checkConquest(true);
+           System.out.println("After check card");
        }catch (IllegalStateException e){
            /*
             * if the player doesn't have enough money to play the card, he will receive back an error
