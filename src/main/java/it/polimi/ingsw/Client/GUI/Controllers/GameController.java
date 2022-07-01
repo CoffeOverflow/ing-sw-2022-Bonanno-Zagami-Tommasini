@@ -245,7 +245,7 @@ public class GameController implements GUIController{
                         /**
                          * Set the phase to CHARACTER if is your turn
                          */
-                        if(currentPhase!=GamePhase.ANOTHERPLAYERTURN && !playedCharacterCard)
+                        if((currentPhase==GamePhase.MOVESTUDENT || currentPhase==GamePhase.MOVEMOTHERNATURE) && !playedCharacterCard)
                         {   currentPhase=GamePhase.CHARACTER;
                             showCharacterOptions(event);
                     }}
