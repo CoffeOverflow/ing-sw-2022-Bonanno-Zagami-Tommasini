@@ -31,7 +31,7 @@ You can find the rules of the game [here](https://www.craniocreations.it/wp-cont
 ### Usage
 You can launch the game using
 ```
-java -jar PSP_18.jar
+java -jar PSP18.jar
 ```
 In windows, for a correct visualization of CLI you have to run the following command before launch the game:
 ```
