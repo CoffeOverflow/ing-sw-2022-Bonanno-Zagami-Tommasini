@@ -5,7 +5,7 @@ Eriantys is the final test of **"Software Engineering"**, course of **"Computer 
 
 **Teacher**: Pierluigi San Pietro
 
-**Final Score**: 
+**Final Score**: 30/30
 
 ## Project specification
 The project consists of a Java version of the board game *Eriantys*, made by [Cranio Creations](https://www.craniocreations.it/prodotto/eriantys).
