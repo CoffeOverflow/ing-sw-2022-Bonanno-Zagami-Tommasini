@@ -1,5 +1,5 @@
 # Eriantys Game - ing-sw-2022-Bonanno-Zagami-Tommasini
-<img src="https://www.craniocreations.it/wp-content/uploads/2021/06/Eriantys_scatolaFrontombra-600x600.png" width=192px height=192px align="right" />
+<img src="https://www.craniocreations.it/storage/media/products/50/104/Eriantys_scatola3D+ombra.png" width=192px height=192px align="right" />
 
 Eriantys is the final test of **"Software Engineering"**, course of **"Computer Science Engineering"** held at Politecnico di Milano (2021/2022).
 
